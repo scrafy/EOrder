@@ -1,4 +1,4 @@
 package models
 
-class Pagination(val numPages: Int, var actualPage: Int, RecordsByPage: Short)
+class Pagination(var numPages: Int, var actualPage: Int, var RecordsByPage: Short)
 

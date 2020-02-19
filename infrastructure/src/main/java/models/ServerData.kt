@@ -3,6 +3,6 @@ package models
 class ServerData<T>(
     val data: T,
     var paginationData: Pagination?,
-    var validationErrors: List<ValidationError>?
+    var validationErrors: List<InfraValidationError>?
 )
 
