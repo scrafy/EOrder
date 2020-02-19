@@ -2,26 +2,25 @@ package services
 
 import attributes.validations.NullOrEmptyStringValidation
 import interfaces.IValidate
-import models.entities.Entity
 import models.ValidationError
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
-class ValidationService<T: Entity> : IValidate<T>{
+class ValidationService<T: Any> : IValidate<T> {
 
-    override fun isModelValid(entity: T): Boolean {
-        return validate(entity).isEmpty()
+    override fun isModelValid(model: T): Boolean {
+        return validate(model).isEmpty()
     }
 
-    override fun validate(entity: T): List<ValidationError> {
+    override fun validate(model: T): List<ValidationError> {
         var result: MutableList<ValidationError> = arrayListOf()
 
-        entity.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->
+        model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->
 
-            var value: Any? = member.get(entity)
+            var value: Any? = member.get(model)
             member.annotations.forEach lit@{ annotation ->
 
-                if ( annotation is NullOrEmptyStringValidation ){
+                if ( annotation is NullOrEmptyStringValidation){
 
                     if ( (value as String).isNullOrEmpty()){
                         result.add(
@@ -29,7 +28,7 @@ class ValidationService<T: Entity> : IValidate<T>{
                                 getMessageFromAnnotation(annotation),
                                 value,
                                 member.name,
-                                entity::class.simpleName ?: ""
+                                model::class.simpleName ?: ""
                             )
                         )
                         return@lit

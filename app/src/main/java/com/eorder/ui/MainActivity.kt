@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.eorder.R
-import models.entities.Entity
-import models.entities.User
-import services.ValidationService
+import models.LoginRequest
+import usecases.LoguinUseCase
 
 open class MainActivity : AppCompatActivity() {
 
@@ -21,19 +20,19 @@ open class MainActivity : AppCompatActivity() {
 
         var button = findViewById(R.id.button) as Button
 
-       
+
 
         button.setOnClickListener{ view ->
 
 
             var username = findViewById<EditText>(R.id.username)
             var password = findViewById<EditText>(R.id.password)
-            var user = User(
+            var loginRequest = LoginRequest(
                 username = username.text.toString(),
                 password = password.text.toString()
             )
-            var service = ValidationService<Entity>()
-            var result = service.isModelValid(user)
+            var loginUseCase = LoguinUseCase()
+            var result = loginUseCase.login(loginRequest)
             println(result)
         }
     }

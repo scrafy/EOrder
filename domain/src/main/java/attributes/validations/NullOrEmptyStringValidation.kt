@@ -1,6 +1,4 @@
 package attributes.validations
 
-import java.lang.annotation.RetentionPolicy
-
-@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 annotation class NullOrEmptyStringValidation(val message: String)

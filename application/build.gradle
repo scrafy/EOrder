@@ -35,4 +35,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation project(path: ':domain')
     implementation project(path: ':infrastructure')
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }

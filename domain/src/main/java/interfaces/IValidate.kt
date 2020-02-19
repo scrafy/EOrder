@@ -1,10 +1,9 @@
 package interfaces
 
-import models.entities.Entity
 import models.ValidationError
 
-interface IValidate<T: Entity> {
+interface IValidate<T: Any>{
 
-    fun validate(entity: T) :  List<ValidationError>
-    fun isModelValid(entity: T) :  Boolean
+    fun validate(model: T) :  List<ValidationError>
+    fun isModelValid(model: T) :  Boolean
 }

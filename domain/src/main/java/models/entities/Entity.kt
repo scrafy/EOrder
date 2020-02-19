@@ -1,11 +1,8 @@
 package models.entities
 
-import services.ValidationService
-import java.util.UUID
+import java.util.*
 
 
-abstract class Entity{
+abstract class Entity(var id: UUID)
 
-    var id: UUID = UUID.randomUUID()
 
-}
