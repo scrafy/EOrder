@@ -1,7 +1,7 @@
-package models
+package models.infrastructure
 
 class ServerData<T>(
-    val data: T,
+    var data: T?,
     var paginationData: Pagination?,
     var validationErrors: List<InfraValidationError>?
 )
