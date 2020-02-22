@@ -1,6 +1,6 @@
 package enumerations
 
-enum class HttpMethods {
+enum class HttpMethod {
 
     GET,
     POST,

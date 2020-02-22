@@ -36,4 +36,5 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':infrastructure')
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation 'org.koin:koin-android:2.0.0'
 }

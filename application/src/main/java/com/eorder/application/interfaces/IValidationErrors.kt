@@ -1,7 +1,7 @@
-package interfaces
+package com.eorder.application.interfaces
 
 
-import models.ValidationError
+import com.eorder.application.models.ValidationError
 
 interface IValidationErrors {
 

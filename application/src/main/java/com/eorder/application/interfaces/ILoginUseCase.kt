@@ -1,7 +1,7 @@
-package interfaces
+package com.eorder.application.interfaces
 
-import models.LoginRequest
-import models.LoginResponse
+import com.eorder.application.models.LoginRequest
+import com.eorder.application.models.LoginResponse
 import models.entities.Establishment
 
 

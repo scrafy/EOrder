@@ -8,18 +8,14 @@ import com.eorder.application.models.ValidationError
 import models.entities.Establishment
 import services.LoginService
 import com.eorder.application.services.ValidationService
+import interfaces.ILoginService
+import org.koin.android.ext.android.inject
 
 
-class LoginUseCase : ILoginUseCase {
+class LoginUseCase(var loginService: ILoginService) : ILoginUseCase {
 
-    private var loginService: LoginService
-    private var validationService: ValidationService<LoginRequest>
+    private var validationService: ValidationService<LoginRequest> = ValidationService()
 
-    constructor(){
-        this.loginService = LoginService()
-
-        this.validationService = ValidationService()
-    }
 
     override fun login(loginRequest: LoginRequest): LoginResponse<Establishment> {
         var validationErrors: List<ValidationError> = this.validationService.validate(loginRequest)

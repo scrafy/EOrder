@@ -1,4 +1,4 @@
-package models
+package com.eorder.application.models
 
 import attributes.validations.NullOrEmptyStringValidation
 
