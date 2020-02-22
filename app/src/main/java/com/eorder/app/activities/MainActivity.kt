@@ -1,14 +1,24 @@
-package com.eorder.ui
+package com.eorder.app.activities
 
+
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import com.eorder.R
-import models.LoginRequest
-import usecases.LoguinUseCase
+import android.widget.Toast
+import com.eorder.app.R
+import com.eorder.application.interfaces.ILoginUseCase
+import com.eorder.application.models.LoginRequest
+import org.koin.android.ext.android.inject
 
-open class MainActivity : AppCompatActivity() {
+
+
+open class MainActivity : AppCompatActivity()  {
+
+    private val loginUseCase: ILoginUseCase by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +34,10 @@ open class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener{ view ->
 
+            var t = getSystemService(Context.CONNECTIVITY_SERVICE)
+
+            //var n =  t.activeNetworkInfo.isConnected
+
 
             var username = findViewById<EditText>(R.id.username)
             var password = findViewById<EditText>(R.id.password)
@@ -31,7 +45,7 @@ open class MainActivity : AppCompatActivity() {
                 username = username.text.toString(),
                 password = password.text.toString()
             )
-            var loginUseCase = LoguinUseCase()
+
             var result = loginUseCase.login(loginRequest)
             println(result)
         }
