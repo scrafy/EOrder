@@ -1,15 +1,13 @@
 package com.eorder.application.usecases
 
 import com.eorder.application.interfaces.ILoginUseCase
-import models.infrastructure.LoginRequest as infraLoginRequest
+import com.eorder.infrastructure.models.LoginRequest as infraLoginRequest
 import com.eorder.application.models.LoginRequest
 import com.eorder.application.models.LoginResponse
 import com.eorder.application.models.ValidationError
-import models.entities.Establishment
-import services.LoginService
+import com.eorder.domain.models.Establishment
 import com.eorder.application.services.ValidationService
-import interfaces.ILoginService
-import org.koin.android.ext.android.inject
+import com.eorder.infrastructure.com.eorder.infrastructure.interfaces.ILoginService
 
 
 class LoginUseCase(var loginService: ILoginService) : ILoginUseCase {

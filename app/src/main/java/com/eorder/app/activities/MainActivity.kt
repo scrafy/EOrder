@@ -11,8 +11,12 @@ import android.widget.Toast
 import com.eorder.app.R
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.application.models.LoginRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import okhttp3.*
 import org.koin.android.ext.android.inject
-
+import java.io.IOException
 
 
 open class MainActivity : AppCompatActivity()  {
@@ -34,10 +38,6 @@ open class MainActivity : AppCompatActivity()  {
 
         button.setOnClickListener{ view ->
 
-            var t = getSystemService(Context.CONNECTIVITY_SERVICE)
-
-            //var n =  t.activeNetworkInfo.isConnected
-
 
             var username = findViewById<EditText>(R.id.username)
             var password = findViewById<EditText>(R.id.password)
@@ -47,7 +47,7 @@ open class MainActivity : AppCompatActivity()  {
             )
 
             var result = loginUseCase.login(loginRequest)
-            println(result)
+
         }
     }
 }

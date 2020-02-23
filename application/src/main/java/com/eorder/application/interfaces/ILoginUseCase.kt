@@ -2,7 +2,7 @@ package com.eorder.application.interfaces
 
 import com.eorder.application.models.LoginRequest
 import com.eorder.application.models.LoginResponse
-import models.entities.Establishment
+import com.eorder.domain.models.Establishment
 
 
 interface ILoginUseCase {

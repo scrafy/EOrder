@@ -1,6 +1,6 @@
 package com.eorder.application.models
 
-import attributes.validations.NullOrEmptyStringValidation
+import com.eorder.domain.attributes.NullOrEmptyStringValidation
 
 class LoginRequest {
 

@@ -1,6 +1,6 @@
 package com.eorder.application.services
 
-import attributes.validations.NullOrEmptyStringValidation
+import com.eorder.domain.attributes.NullOrEmptyStringValidation
 import com.eorder.application.interfaces.IValidate
 import com.eorder.application.models.ValidationError
 import kotlin.reflect.KVisibility
