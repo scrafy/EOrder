@@ -1,4 +1,4 @@
-package com.eorder.application.models
+package com.eorder.domain.models
 
 class ValidationError {
 

@@ -1,18 +1,18 @@
-package com.eorder.application.services
+package com.eorder.domain.services
 
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
-import com.eorder.application.interfaces.IValidate
-import com.eorder.application.models.ValidationError
+import com.eorder.domain.interfaces.services.IValidationModelService
+import com.eorder.domain.models.ValidationError
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
-class ValidationService<T: Any> : IValidate<T> {
+class ValidationModelService : IValidationModelService {
 
-    override fun isModelValid(model: T): Boolean {
+    override fun isModelValid(model: Any): Boolean {
         return validate(model).isEmpty()
     }
 
-    override fun validate(model: T): List<ValidationError> {
+    override fun validate(model: Any): List<ValidationError> {
         var result: MutableList<ValidationError> = arrayListOf()
 
         model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->

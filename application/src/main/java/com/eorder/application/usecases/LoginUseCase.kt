@@ -1,36 +1,38 @@
 package com.eorder.application.usecases
 
-import com.eorder.application.interfaces.ILoginUseCase
-import com.eorder.infrastructure.models.LoginRequest as infraLoginRequest
-import com.eorder.application.models.LoginRequest
-import com.eorder.application.models.LoginResponse
-import com.eorder.application.models.ValidationError
-import com.eorder.domain.models.Establishment
-import com.eorder.application.services.ValidationService
-import com.eorder.infrastructure.com.eorder.infrastructure.interfaces.ILoginService
+import com.eorder.domain.models.LoginRequest
+import com.eorder.domain.models.LoginResponse
+import com.eorder.domain.enumerations.ErrorCode
+import com.eorder.domain.exceptions.InvalidJwtTokenException
+import com.eorder.domain.exceptions.ModelValidationException
+import com.eorder.domain.interfaces.services.IJwtTokenService
+import com.eorder.domain.interfaces.services.ILoginService
+import com.eorder.domain.interfaces.services.IValidationModelService
+import com.eorder.domain.interfaces.usecases.ILoginUseCase
+import com.eorder.domain.models.ValidationError
 
 
-class LoginUseCase(var loginService: ILoginService) : ILoginUseCase {
+//var loginService: ILoginService, var validationService: IValidationModelService, var jwtTokenService: IJwtTokenService
+class LoginUseCase(override val loginService: ILoginService,
+                   override val jwtTokenService: IJwtTokenService,
+                   override val validationModelService: IValidationModelService
+) : ILoginUseCase {
 
-    private var validationService: ValidationService<LoginRequest> = ValidationService()
 
+    override fun login(loginRequest: LoginRequest): LoginResponse {
 
-    override fun login(loginRequest: LoginRequest): LoginResponse<Establishment> {
-        var validationErrors: List<ValidationError> = this.validationService.validate(loginRequest)
+        var validationErrors: List<ValidationError> = this.validationModelService.validate(loginRequest)
 
         if (validationErrors.isNotEmpty()){
 
-            return LoginResponse(validationErrors, null)
+            throw ModelValidationException(ErrorCode.VALIDATION_ERROR, "Exists validation errors", validationErrors)
         }
-        return LoginResponse(
-            validationErrors,
-            this.loginService.loguin(
-                infraLoginRequest(
-                    loginRequest.username,
-                    loginRequest.password
-                )
-            )
-        )
+        var response =  this.loginService.login( loginRequest )
+
+        if ( !jwtTokenService.isValidToken(response?.serverData?.data ?: ""))
+            throw InvalidJwtTokenException(ErrorCode.JWT_TOKEN_INVALID, "JWT token is invalid")
+
+        return LoginResponse(response)
     }
 
 }

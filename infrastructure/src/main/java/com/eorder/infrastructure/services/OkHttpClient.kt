@@ -1,7 +1,7 @@
 package com.eorder.infrastructure.services
 
+import com.eorder.infrastructure.interfaces.IHttpClient
 import com.google.gson.Gson
-import com.eorder.infrastructure.com.eorder.infrastructure.interfaces.IOkHttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -14,8 +14,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
-class OkHttpClient() :
-    IOkHttpClient {
+class OkHttpClient : IHttpClient {
 
 
     override fun getJsonResponse(url: String) : String? {

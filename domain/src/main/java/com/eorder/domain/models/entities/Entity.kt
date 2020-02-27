@@ -1,4 +1,4 @@
-package com.eorder.domain.models
+package com.eorder.domain.models.entities
 
 import java.util.*
 

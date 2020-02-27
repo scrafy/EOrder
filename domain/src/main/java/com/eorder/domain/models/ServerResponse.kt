@@ -1,8 +1,8 @@
-package com.eorder.infrastructure.models
+package com.eorder.domain.models
 
 class ServerResponse<T>(
 
-    var statusCode: Short? = null,
+    var statusCode: Int? = null,
     var serverError: ServerError? = null,
     var serverData: ServerData<T>? = null
 

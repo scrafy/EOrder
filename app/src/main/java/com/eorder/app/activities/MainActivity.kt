@@ -1,22 +1,13 @@
 package com.eorder.app.activities
 
 
-import android.content.Context
-import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import com.eorder.app.R
-import com.eorder.application.interfaces.ILoginUseCase
-import com.eorder.application.models.LoginRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import okhttp3.*
+import com.eorder.domain.interfaces.usecases.ILoginUseCase
 import org.koin.android.ext.android.inject
-import java.io.IOException
 
 
 open class MainActivity : AppCompatActivity()  {
@@ -33,7 +24,7 @@ open class MainActivity : AppCompatActivity()  {
     private fun config() {
 
         var button = findViewById(R.id.button) as Button
-
+        var result : com.eorder.domain.models.LoginResponse? = null
 
 
         button.setOnClickListener{ view ->
@@ -41,12 +32,12 @@ open class MainActivity : AppCompatActivity()  {
 
             var username = findViewById<EditText>(R.id.username)
             var password = findViewById<EditText>(R.id.password)
-            var loginRequest = LoginRequest(
+            var loginRequest = com.eorder.domain.models.LoginRequest(
                 username = username.text.toString(),
                 password = password.text.toString()
             )
 
-            var result = loginUseCase.login(loginRequest)
+            result = loginUseCase.login(loginRequest)
 
         }
     }
