@@ -1,6 +1,6 @@
 package com.eorder.infrastructure.extensions
 
-import com.eorder.domain.models.Establishment
+import com.eorder.infrastructure.models.Establishment
 
 fun Establishment.ToDomain(): com.eorder.domain.models.entities.Establishment {
 

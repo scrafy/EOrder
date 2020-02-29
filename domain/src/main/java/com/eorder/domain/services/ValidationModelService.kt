@@ -1,7 +1,7 @@
 package com.eorder.domain.services
 
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
-import com.eorder.domain.interfaces.services.IValidationModelService
+import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.ValidationError
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties

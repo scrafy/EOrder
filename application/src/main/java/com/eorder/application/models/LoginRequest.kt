@@ -1,4 +1,4 @@
-package com.eorder.domain.models
+package com.eorder.application.models
 
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
 

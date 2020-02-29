@@ -1,9 +1,9 @@
 package com.eorder.application.di
 
 import com.eorder.application.usecases.LoginUseCase
-import com.eorder.domain.interfaces.services.IJwtTokenService
-import com.eorder.domain.interfaces.services.IValidationModelService
-import com.eorder.domain.interfaces.usecases.ILoginUseCase
+import com.eorder.application.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IValidationModelService
+import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.domain.services.ValidationModelService
 import org.koin.dsl.bind
 import org.koin.dsl.module

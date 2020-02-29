@@ -2,9 +2,6 @@ package com.eorder.infrastructure.services
 
 import com.eorder.infrastructure.interfaces.IHttpClient
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,7 +23,7 @@ class OkHttpClient : IHttpClient {
             .url(url)
             .build()
 
-        return runBlocking(Dispatchers.IO) { async {client.newCall(request).execute() }.await().body?.string()}
+        return client.newCall(request).execute().body?.string()
 
     }
 
@@ -39,7 +36,7 @@ class OkHttpClient : IHttpClient {
             .url(url)
             .build()
 
-        return runBlocking(Dispatchers.IO) { async{client.newCall(request).execute() }.await().body?.string()}
+        return client.newCall(request).execute().body?.string()
 
     }
 
@@ -57,7 +54,7 @@ class OkHttpClient : IHttpClient {
             .url(url)
             .build()
 
-        return runBlocking(Dispatchers.IO) { async{client.newCall(request).execute() }.await().body?.string()}
+        return client.newCall(request).execute().body?.string()
 
     }
 
@@ -73,7 +70,7 @@ class OkHttpClient : IHttpClient {
             .post(requestBody.build())
             .build()
 
-        return runBlocking(Dispatchers.IO) { async{client.newCall(request).execute() }.await().body?.string()}
+        return client.newCall(request).execute().body?.string()
     }
 
     override fun postMultipartFormDataWithAttachment(url: String, data: Map<String, String>, filePath: String, format: String, fileName: String) : String? {
@@ -89,7 +86,7 @@ class OkHttpClient : IHttpClient {
             .post(requestBody.build())
             .build()
 
-        return runBlocking(Dispatchers.IO) { async{client.newCall(request).execute() }.await().body?.string()}
+        return client.newCall(request).execute().body?.string()
     }
 
 

@@ -1,10 +1,11 @@
 package com.eorder.infrastructure.services
 
-import com.eorder.domain.interfaces.services.ILoginService
-import com.eorder.domain.models.LoginRequest
-import com.eorder.domain.models.ServerData
-import com.eorder.domain.models.ServerResponse
+import com.eorder.infrastructure.interfaces.ILoginService
+import com.eorder.infrastructure.models.LoginRequest
+import com.eorder.infrastructure.models.ServerData
+import com.eorder.infrastructure.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
+
 
 
 class LoginService(var httpClient: IHttpClient) : BaseService(),
@@ -12,7 +13,6 @@ class LoginService(var httpClient: IHttpClient) : BaseService(),
 
     override fun login(loguinRequest: LoginRequest): ServerResponse<String> {
 
-        // TODO hacer llamada a backend
 
         var response: ServerResponse<String> =
             ServerResponse(

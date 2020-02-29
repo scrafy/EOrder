@@ -1,6 +1,7 @@
 package com.eorder.app
 
 import android.app.Application
+import com.eorder.app.com.eorder.app.di.appModule
 import com.eorder.application.di.applicationModule
 import com.eorder.infrastructure.di.infrastructureModule
 import org.koin.android.ext.koin.androidContext
@@ -13,9 +14,11 @@ class Main : Application(){
     override fun onCreate(){
         super.onCreate()
         startKoin {
-            modules(applicationModule, infrastructureModule)
+            modules(listOf(applicationModule, infrastructureModule, appModule))
             androidLogger()
             androidContext(this@Main)
         }
+       // var t = R.xml.config.toString()
+
     }
 }

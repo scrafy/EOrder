@@ -1,4 +1,4 @@
-package com.eorder.domain.interfaces.services
+package com.eorder.application.interfaces
 
 import com.eorder.domain.enumerations.UserRole
 

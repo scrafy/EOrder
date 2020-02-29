@@ -4,7 +4,7 @@ import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.ServerErrorException
 import com.eorder.domain.exceptions.ServerErrorUnhadledException
 import com.eorder.domain.exceptions.ServerErrorValidationException
-import com.eorder.domain.models.ServerResponse
+import com.eorder.infrastructure.models.ServerResponse
 
 abstract class BaseService {
 

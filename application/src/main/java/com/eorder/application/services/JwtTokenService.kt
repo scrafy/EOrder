@@ -2,7 +2,7 @@ package com.eorder.application.services
 
 
 import com.eorder.domain.enumerations.UserRole
-import com.eorder.domain.interfaces.services.IJwtTokenService
+import com.eorder.application.interfaces.IJwtTokenService
 import org.json.JSONObject
 
 class JwtTokenService : IJwtTokenService {

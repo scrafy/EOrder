@@ -2,7 +2,7 @@ package com.eorder.infrastructure.di
 
 
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.eorder.domain.interfaces.services.ILoginService
+import com.eorder.infrastructure.interfaces.ILoginService
 import com.eorder.infrastructure.services.LoginService
 import org.koin.dsl.bind
 import org.koin.dsl.module
