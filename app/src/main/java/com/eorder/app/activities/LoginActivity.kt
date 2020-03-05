@@ -1,6 +1,7 @@
 package com.eorder.app.activities
 
-import androidx.appcompat.app.AppCompatActivity
+
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,23 +9,17 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.application.models.LoginRequest
 import com.eorder.application.models.LoginResponse
-import com.eorder.domain.exceptions.ModelValidationException
-import com.eorder.domain.exceptions.ServerErrorException
-import com.eorder.domain.exceptions.ServerErrorUnhadledException
-import com.eorder.domain.exceptions.ServerErrorValidationException
 import com.eorder.domain.models.ValidationError
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.lang.Exception
 
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseViewModelActivity() {
+
 
     var model: LoginViewModel? = null
 
@@ -37,7 +32,7 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    private fun setObservers(){
+    override fun setObservers(){
 
         model?.getloginResultsObservable()?.observe(this, Observer<LoginResponse> { it ->
 
@@ -50,6 +45,9 @@ class LoginActivity : BaseActivity() {
 
         })
     }
+
+
+
 
     override fun setValidationErrors(errors: List<ValidationError>?){
 
@@ -68,13 +66,13 @@ class LoginActivity : BaseActivity() {
         findViewById<EditText>(R.id.editText_username).requestFocus()
     }
 
-    private fun setListeners(){
+    override fun setListeners(){
 
-        findViewById<Button>(R.id.button_signIn).setOnClickListener({view ->
+        findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
 
             var loginRequest = LoginRequest(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
             model?.login(loginRequest)
-        })
+        }
 
         findViewById<EditText>(R.id.editText_username).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -102,5 +100,11 @@ class LoginActivity : BaseActivity() {
                 findViewById<TextView>(R.id.textView_message_error_password).setText(null)
             }
         })
+
+        findViewById<TextView>(R.id.textView_recoverPassword).setOnClickListener { v ->
+
+            val intent = Intent(this, RecoverPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

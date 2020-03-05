@@ -7,14 +7,14 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 
 abstract class BaseViewModel : ViewModel(){
 
-    protected val error: MutableLiveData<Throwable> = MutableLiveData()
+    protected open val error: MutableLiveData<Throwable> = MutableLiveData()
 
 
     fun getErrorObservable() : LiveData<Throwable>{
          return error
     }
 
-    protected fun handleError(): CoroutineExceptionHandler {
+    fun handleError(): CoroutineExceptionHandler {
         return CoroutineExceptionHandler { _, ex ->
 
             error.postValue(ex)
