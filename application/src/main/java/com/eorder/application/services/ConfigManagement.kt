@@ -1,17 +1,21 @@
 package com.eorder.application.services
 
-import android.util.Xml
-import org.xml.sax.XMLReader
+import android.app.Application
+import android.content.Context
+import android.net.Uri
+import com.eorder.application.R
+import java.io.File
+import java.io.FileReader
+import java.nio.file.Path
 
 
 class ConfigManagement {
 
     companion object ConfigManagement {
 
-        fun loadConfig(file: String){
+        fun loadConfig() : String?{
 
-              //sR.xml.config.toString()))
-
+           return  ConfigManagement::class.java.getResource("/xml/config.xml")?.readText()
         }
     }
 }

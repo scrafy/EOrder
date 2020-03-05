@@ -6,12 +6,11 @@ import com.eorder.app.com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.application.models.LoginRequest
 import com.eorder.application.models.LoginResponse
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MainViewModel(val loginUseCase: ILoginUseCase) : BaseViewModel() {
+class LoginViewModel(val loginUseCase: ILoginUseCase) : BaseViewModel() {
 
     private val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
 

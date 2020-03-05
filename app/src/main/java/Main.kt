@@ -1,8 +1,11 @@
 package com.eorder.app
 
 import android.app.Application
+import android.content.Context
 import com.eorder.app.com.eorder.app.di.appModule
+import com.eorder.application.R
 import com.eorder.application.di.applicationModule
+import com.eorder.application.services.ConfigManagement
 import com.eorder.infrastructure.di.infrastructureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,7 +21,7 @@ class Main : Application(){
             androidLogger()
             androidContext(this@Main)
         }
-       // var t = R.xml.config.toString()
+        var t = ConfigManagement.loadConfig()
 
     }
 }

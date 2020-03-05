@@ -1,11 +1,13 @@
 package com.eorder.infrastructure.services
 
+import com.eorder.domain.models.ValidationError
 import com.eorder.infrastructure.interfaces.ILoginService
 import com.eorder.infrastructure.models.LoginRequest
 import com.eorder.infrastructure.models.ServerData
 import com.eorder.infrastructure.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
-
+import com.eorder.infrastructure.models.ServerError
+import java.lang.Exception
 
 
 class LoginService(var httpClient: IHttpClient) : BaseService(),
@@ -24,7 +26,7 @@ class LoginService(var httpClient: IHttpClient) : BaseService(),
                 )
             )
         checkServerErrorInResponse(response)
-
+        throw Exception("caca de la buena")
         return response
     }
 
