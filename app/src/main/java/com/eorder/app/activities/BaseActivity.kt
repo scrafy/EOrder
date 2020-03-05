@@ -23,15 +23,15 @@ abstract class BaseActivity : AppCompatActivity(){
             "ServerErrorValidationException" -> setValidationErrors((ex as ServerErrorValidationException).validationErrors)
             "ServerErrorException"  -> {
                 Toast.makeText(this,(ex as ServerErrorException).message, Toast.LENGTH_LONG).show()
-                clearAndFocus()
+                clearEditTextAndFocus()
             }
             "ServerErrorUnhadledException" -> {
                 Toast.makeText(this,(ex as ServerErrorUnhadledException).message, Toast.LENGTH_LONG).show()
-                clearAndFocus()
+                clearEditTextAndFocus()
             }
             else -> {
                 Toast.makeText(this,(ex as Exception).message, Toast.LENGTH_LONG).show()
-                clearAndFocus()
+                clearEditTextAndFocus()
             }
 
         }
