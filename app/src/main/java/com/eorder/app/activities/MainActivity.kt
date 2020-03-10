@@ -4,11 +4,11 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 
 
- class MainActivity : BaseActivity()  {
+class MainActivity : AppCompatActivity()  {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,13 +18,12 @@ import com.eorder.app.com.eorder.app.activities.BaseActivity
 
     }
 
-    override fun setListeners() {
+    fun setListeners() {
 
         val loginButton = findViewById<Button>(R.id.button_signIn)
         loginButton.setOnClickListener { v ->
 
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
     }

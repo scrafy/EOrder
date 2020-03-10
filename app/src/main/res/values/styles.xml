@@ -9,4 +9,16 @@
 
     </style>
 
-</resources>
+
+    <style name="toolbar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+
+    <style name="popupMenu">
+        <item name="android:textColorPrimary">@android:color/black</item>
+
+    </style>
+
+ </resources>

@@ -9,16 +9,18 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.application.models.LoginRequest
 import com.eorder.application.models.LoginResponse
 import com.eorder.domain.models.ValidationError
-import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class LoginActivity : BaseViewModelActivity() {
+class LoginActivity : BaseActivity(), IManageFormErrors {
 
 
     var model: LoginViewModel? = null
@@ -32,11 +34,11 @@ class LoginActivity : BaseViewModelActivity() {
     }
 
 
-    override fun setObservers(){
+    fun setObservers(){
 
         model?.getloginResultsObservable()?.observe(this, Observer<LoginResponse> { it ->
 
-            Log.d("", Gson().toJson(it))
+            startActivity(Intent(this, LandingActivity::class.java))
         })
 
         model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
@@ -45,8 +47,6 @@ class LoginActivity : BaseViewModelActivity() {
 
         })
     }
-
-
 
 
     override fun setValidationErrors(errors: List<ValidationError>?){
@@ -66,7 +66,7 @@ class LoginActivity : BaseViewModelActivity() {
         findViewById<EditText>(R.id.editText_username).requestFocus()
     }
 
-    override fun setListeners(){
+    fun setListeners(){
 
         findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
 

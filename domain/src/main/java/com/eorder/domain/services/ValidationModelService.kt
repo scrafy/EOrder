@@ -1,5 +1,6 @@
 package com.eorder.domain.services
 
+import com.eorder.domain.attributes.FieldEqualToOtherValidation
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.ValidationError
@@ -18,20 +19,41 @@ class ValidationModelService : IValidationModelService {
         model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->
 
             var value: Any? = member.get(model)
-            member.annotations.forEach lit@{ annotation ->
+            member.annotations.sortedBy { it -> (getValuesFromAnnotation(it)["executionOrder"])?.toInt() }.forEach { annotation ->
 
                 if ( annotation is NullOrEmptyStringValidation){
 
                     if ( (value as String).isNullOrEmpty()){
+
                         result.add(
                             ValidationError(
-                                getMessageFromAnnotation(annotation),
+                                getValuesFromAnnotation(annotation)["message"] ?: "",
                                 value,
                                 member.name,
                                 model::class.simpleName ?: ""
                             )
                         )
-                        return@lit
+
+                    }
+
+                } else if ( annotation is FieldEqualToOtherValidation){
+
+                    var anotationValues = getValuesFromAnnotation(annotation)
+                    var memberToCompare =  model.javaClass.kotlin.memberProperties.filter {member ->
+
+                        member.visibility == KVisibility.PUBLIC && member.name.equals(anotationValues["fieldName"])
+                    }.first()
+
+                    if ( value != memberToCompare.get(model)){
+
+                        result.add(
+                            ValidationError(
+                                anotationValues["message"] ?: "",
+                                value.toString(),
+                                member.name,
+                                model::class.simpleName ?: ""
+                            )
+                        )
                     }
                 }
             }
@@ -39,10 +61,14 @@ class ValidationModelService : IValidationModelService {
         return result
     }
 
-    private fun getMessageFromAnnotation(annotation: Any) : String{
+    private fun getValuesFromAnnotation(annotation: Any) : Map<String, String>{
 
-        var first: Int = annotation.toString().indexOf('#', 0,true)
-        var last: Int = annotation.toString().indexOf('#', first + 1 , true)
-        return annotation.toString().substring(first + 1, last)
+        val result: MutableMap<String, String> = mutableMapOf()
+        annotation.toString().split("(")[1].substring(0, annotation.toString().split("(")[1].length -1 ) .split(",").forEach { it ->
+
+            result[it.split("=")[0].trim()] = it.split("=")[1].trim()
+        }
+
+        return result
     }
 }

@@ -1,12 +1,27 @@
 <resources>
-    <string name="app_name">EOrder</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+
+    <!--LATERAL NAVIGATION MENU -->
+
+    <string name="lateral_nav_menu_open">Open</string>
+    <string name="lateral_nav_menu_close">Close</string>
+    <string name="lateral_nav_menu_header_1_title">Common Actions</string>
+    <string name="lateral_nav_menu_header_2_title">Orders</string>
+    <string name="lateral_nav_menu_header_3_title">Personal</string>
+    <string name="lateral_nav_menu_old_orders">Orders done</string>
+    <string name="lateral_nav_menu_favourite_products">Favorite products</string>
+    <string name="lateral_nav_menu_mails">Messages</string>
+    <string name="lateral_nav_menu_profile">Profile</string>
+    <string name="lateral_nav_menu_centers">Centers</string>
+    <string name="lateral_nav_menu_categories">Categories</string>
+    <string name="lateral_nav_menu_providers">Providers</string>
+    <string name="lateral_nav_menu_catalogs">Catalogs</string>
+    <string name="lateral_nav_menu_products">Products</string>
+    <string name="lateral_nav_menu_makeorder">Make a order</string>
+
+
+    <!--CARD VIEW CENTER LIST-->
+    <string name="card_view_center_list_enabled">Enabled</string>
+    <string name="card_view_center_list_disabled">Disabled</string>
+
+
 </resources>

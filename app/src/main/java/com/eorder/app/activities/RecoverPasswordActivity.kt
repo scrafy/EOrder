@@ -1,31 +1,127 @@
 package com.eorder.app.activities
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.dialogs.AlertDialog
+import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
+import com.eorder.application.models.RecoverPasswordRequest
+import com.eorder.application.models.RecoverPasswordResponse
 import com.eorder.domain.models.ValidationError
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class RecoverPasswordActivity : BaseViewModelActivity() {
+class RecoverPasswordActivity : BaseActivity(), IManageFormErrors {
 
+    var model: RecoverPasswordViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recover_password)
+        model = getViewModel()
+        setObservers()
+        setListeners()
     }
 
-    override fun setObservers() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun setObservers() {
+
+        model?.getRecoverPasswordObservable()?.observe(this, Observer<RecoverPasswordResponse> { it ->
+
+           var dialog = AlertDialog(this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
+
+               val intent = Intent(this, LoginActivity::class.java)
+               startActivity(intent)
+
+           }.show()
+        })
+
+        model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
+
+            manageException(ex)
+
+        })
+
     }
 
-    override fun setListeners() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    fun setListeners() {
+
+        findViewById<Button>(R.id.button_send).setOnClickListener { v ->
+
+            var recoverPasswordRequest = RecoverPasswordRequest(findViewById<EditText>(R.id.editText_oldpassword).text.toString(), findViewById<EditText>(R.id.editText_newpassword).text.toString(), findViewById<EditText>(R.id.editText_confirmpassword).text.toString())
+            model?.recoverPassword(recoverPasswordRequest)
+        }
+
+        findViewById<EditText>(R.id.editText_oldpassword).addTextChangedListener(object :
+            TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                findViewById<TextView>(R.id.textView_message_error_oldpassword).setText(null)
+            }
+        })
+
+        findViewById<EditText>(R.id.editText_newpassword).addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                findViewById<TextView>(R.id.textView_message_error_newpassword).setText(null)
+            }
+        })
+
+        findViewById<EditText>(R.id.editText_confirmpassword).addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                findViewById<TextView>(R.id.textView_message_error_confirmpassword).setText(null)
+            }
+        })
     }
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        findViewById<TextView>(R.id.textView_message_error_oldpassword).text =
+            errors?.firstOrNull{ it -> it.fieldName.equals("oldPassword")}?.errorMessage
+                ?: null
+
+        findViewById<TextView>(R.id.textView_message_error_newpassword).text =
+            errors?.firstOrNull{ it -> it.fieldName.equals("newPassword")}?.errorMessage
+                ?: null
+
+        findViewById<TextView>(R.id.textView_message_error_confirmpassword).text =
+            errors?.firstOrNull{ it -> it.fieldName.equals("confirmPassword")}?.errorMessage
+                ?: null
     }
 
     override fun clearEditTextAndFocus() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        findViewById<EditText>(R.id.editText_oldpassword).getText().clear()
+        findViewById<EditText>(R.id.editText_newpassword).getText().clear()
+        findViewById<EditText>(R.id.editText_confirmpassword).getText().clear()
+        findViewById<EditText>(R.id.editText_oldpassword).requestFocus()
     }
 }
