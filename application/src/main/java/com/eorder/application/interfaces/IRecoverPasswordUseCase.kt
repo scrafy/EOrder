@@ -2,8 +2,8 @@ package com.eorder.application.interfaces
 
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.models.RecoverPasswordRequest
-import com.eorder.application.models.RecoverPasswordResponse
 import com.eorder.infrastructure.interfaces.ILoginService
+import com.eorder.infrastructure.models.ServerResponse
 
 
 interface IRecoverPasswordUseCase {
@@ -11,5 +11,5 @@ interface IRecoverPasswordUseCase {
     val loginService: ILoginService
     val validationModelService: IValidationModelService
 
-    fun recoverPassword(recoverPasswordRequest: RecoverPasswordRequest) : RecoverPasswordResponse
+    fun recoverPassword(recoverPasswordRequest: RecoverPasswordRequest) : ServerResponse<String>
 }

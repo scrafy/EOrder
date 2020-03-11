@@ -1,6 +1,5 @@
-package com.eorder.app.com.eorder.app.adapters
+package com.eorder.app.com.eorder.app.adapters.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.activities.CenterActivity
+import com.eorder.app.com.eorder.app.interfaces.IShowCatalogsByCenter
+import com.eorder.app.com.eorder.app.interfaces.IShowCenterInfo
 import com.eorder.infrastructure.models.Center
 
 class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAdapter.CenterViewHolder>() {
@@ -19,9 +18,12 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CenterViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.center_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.centers_list, parent, false)
 
-        return CenterViewHolder(view, parent.context)
+        return CenterViewHolder(
+            view,
+            parent.context
+        )
     }
 
     override fun getItemCount(): Int {
@@ -58,12 +60,12 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
 
             view.findViewById<ImageView>(R.id.imgView_center_card_view_catalog).setOnClickListener{view ->
 
-                (context as CenterActivity).showCatalogs(this.idCenter)
+                (context as IShowCatalogsByCenter).showCatalogsByCenter(this.idCenter)
             }
 
             view.findViewById<ImageView>(R.id.imgView_center_card_view_info).setOnClickListener{view ->
 
-                (context as CenterActivity).showCenterInfo(this.idCenter)
+                (context as IShowCenterInfo).showCenterInfo(this.idCenter)
             }
         }
 
@@ -75,10 +77,10 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
             this.email?.setText(center.email)
             this.address?.setText(center.address)
             if (center.enabled) {
-                this.enabled?.setText(R.string.card_view_center_list_enabled)
+                this.enabled?.setText(R.string.enabled)
                 this.enabled?.setTextColor(Color.GREEN)
             }else{
-                this.enabled?.setText(R.string.card_view_center_list_disabled)
+                this.enabled?.setText(R.string.disabled)
                 this.enabled?.setTextColor(Color.RED)
             }
        }

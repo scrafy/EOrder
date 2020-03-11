@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#d50000"
+                android:textColor="@color/colorPrimary"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="15dp"
@@ -88,6 +88,7 @@
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/edit_textbox_rounded"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -99,7 +100,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#d50000"
+                android:textColor="@color/colorPrimary"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="15dp"

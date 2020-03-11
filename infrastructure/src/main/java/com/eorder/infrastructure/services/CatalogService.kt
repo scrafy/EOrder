@@ -1,10 +1,10 @@
 package com.eorder.infrastructure.services
 
-import com.eorder.infrastructure.interfaces.ICatalogRepository
+import com.eorder.infrastructure.interfaces.ICatalogService
 import com.eorder.infrastructure.interfaces.IHttpClient
 import com.eorder.infrastructure.models.*
 
-class CatalogRepository(httpClient: IHttpClient) : ICatalogRepository {
+class CatalogService(httpClient: IHttpClient) : BaseService(), ICatalogService {
 
      override fun getCatalogs(): ServerResponse<List<Catalog>> {
 
@@ -31,13 +31,13 @@ class CatalogRepository(httpClient: IHttpClient) : ICatalogRepository {
                     null
                 )
             )
-        // checkServerErrorInResponse(response)
+         checkServerErrorInResponse(response)
 
         return response
     }
 
 
-    override fun getCatalogsByCentre(centerId:Int) : ServerResponse<List<Catalog>>{
+    override fun getCatalogsByCenter(centerId:Int) : ServerResponse<List<Catalog>>{
         //TODO make a backend call
 
         var catalogs = mutableListOf<Catalog>()
@@ -59,7 +59,7 @@ class CatalogRepository(httpClient: IHttpClient) : ICatalogRepository {
                     null
                 )
             )
-        // checkServerErrorInResponse(response)
+         checkServerErrorInResponse(response)
 
         return response
     }

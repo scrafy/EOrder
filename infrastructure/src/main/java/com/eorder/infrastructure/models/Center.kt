@@ -13,6 +13,6 @@ class Center(
        val province: Province,
        val sector: Sector,
        val rate: Rate,
-       val buyer: Buyer
+       val buyer: Buyer?
 ) {
 }

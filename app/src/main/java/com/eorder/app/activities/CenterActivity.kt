@@ -3,25 +3,23 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
-import com.eorder.app.com.eorder.app.adapters.CentersAdapter
-import com.eorder.app.com.eorder.app.viewmodels.CenterViewModel
-import com.eorder.application.models.GetCatalogsByCentreResponse
-import com.eorder.application.models.GetCentersResponse
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import com.eorder.app.com.eorder.app.adapters.fragments.CentersAdapter
+import com.eorder.app.com.eorder.app.interfaces.IShowCatalogsByCenter
+import com.eorder.app.com.eorder.app.interfaces.IShowCenterInfo
+import com.eorder.app.com.eorder.app.interfaces.IShowProductsByCatalog
+import com.eorder.app.fragments.CatalogsByCenterFragment
+import com.eorder.app.fragments.CentersFragment
+import com.eorder.app.fragments.ProductsFragment
 
 
+class CenterActivity : AppCompatActivity(), IShowCatalogsByCenter, IShowCenterInfo, IShowProductsByCatalog {
 
-class CenterActivity : BaseActivity() {
-
-    var model: CenterViewModel? = null
     var recyclerView : RecyclerView ? = null
     var adapter = CentersAdapter(mutableListOf())
 
@@ -30,41 +28,40 @@ class CenterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_centers)
         init()
-        model = getViewModel()
-        setObservers()
-        model?.getCenters()
-
     }
 
-    fun setObservers(){
+    override fun showCatalogsByCenter(centerId: Int?) {
 
-        model?.getCentersResultObservable()?.observe(this, Observer<GetCentersResponse> { it ->
+        if (centerId != null){
 
-            adapter.centers =  it.data.serverData?.data ?: mutableListOf()
-            adapter.notifyDataSetChanged()
+            var args = Bundle()
+            args.putInt("centerId", centerId)
+            var fragment = CatalogsByCenterFragment()
+            fragment.arguments = args
+            supportFragmentManager.beginTransaction().replace(R.id.linear_layout_center_fragment_container, fragment).addToBackStack(null).commit()
 
-        })
-
-        model?.getCatalogByCentreObservable()?.observe(this, Observer<GetCatalogsByCentreResponse> { it ->
-
-           println(it.data.serverData?.data)
-
-        })
-
-        model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
-
-            manageException(ex)
-
-        })
+        }else{
+            //TODO show snack bar informando de que el centro id es invalido
+        }
     }
 
-    fun showCatalogs(centerId: Int?){
+    override fun showProductsByCatalog(catalogId: Int?) {
 
-        if (centerId != null)
-            model?.getCatalogByCentre(centerId)
+        if (catalogId != null){
+
+            var args = Bundle()
+            args.putInt("catalogId", catalogId)
+            var fragment = ProductsFragment()
+            fragment.arguments = args
+            supportFragmentManager.beginTransaction().replace(R.id.linear_layout_center_fragment_container, fragment).addToBackStack(null).commit()
+
+        }else{
+            //TODO show snack bar informando de que el centro id es invalido
+        }
     }
 
-    fun showCenterInfo(centerId: Int?){
+
+    override fun showCenterInfo(centerId: Int?){
         Toast.makeText(this, centerId.toString(), Toast.LENGTH_SHORT).show()
     }
 
@@ -80,12 +77,7 @@ class CenterActivity : BaseActivity() {
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-        recyclerView = findViewById<RecyclerView>(R.id.recView_centers)
-        recyclerView?.adapter = adapter
-        layout.orientation = LinearLayoutManager.VERTICAL
-        recyclerView?.layoutManager = layout
-        recyclerView?.itemAnimator = DefaultItemAnimator()
-
+        supportFragmentManager.beginTransaction().add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
 
     }
 }

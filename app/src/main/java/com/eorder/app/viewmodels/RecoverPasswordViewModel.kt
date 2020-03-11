@@ -2,19 +2,20 @@ package com.eorder.app.com.eorder.app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.eorder.app.com.eorder.app.interfaces.IManageException
 import com.eorder.application.interfaces.IRecoverPasswordUseCase
 import com.eorder.application.models.RecoverPasswordRequest
-import com.eorder.application.models.RecoverPasswordResponse
+import com.eorder.infrastructure.models.ServerResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class RecoverPasswordViewModel(val recoverPasswordUseCase: IRecoverPasswordUseCase) : BaseViewModel() {
+class RecoverPasswordViewModel(val recoverPasswordUseCase: IRecoverPasswordUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
 
-    private val recoverPasswordResult: MutableLiveData<RecoverPasswordResponse> = MutableLiveData()
+    private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
-    fun getRecoverPasswordObservable() : LiveData<RecoverPasswordResponse>{
+    fun getRecoverPasswordObservable() : LiveData<ServerResponse<String>>{
 
         return recoverPasswordResult
     }
@@ -23,7 +24,7 @@ class RecoverPasswordViewModel(val recoverPasswordUseCase: IRecoverPasswordUseCa
 
         GlobalScope.launch(this.handleError()){
 
-                var result: RecoverPasswordResponse? = recoverPasswordUseCase?.recoverPassword(recoverPasswordRequest)
+                var result = recoverPasswordUseCase?.recoverPassword(recoverPasswordRequest)
                 recoverPasswordResult.postValue(result)
             }
      }

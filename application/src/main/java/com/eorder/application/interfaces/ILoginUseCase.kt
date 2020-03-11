@@ -2,8 +2,8 @@ package com.eorder.application.interfaces
 
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.models.LoginRequest
-import com.eorder.application.models.LoginResponse
 import com.eorder.infrastructure.interfaces.ILoginService
+import com.eorder.infrastructure.models.ServerResponse
 
 
 interface ILoginUseCase {
@@ -12,5 +12,5 @@ interface ILoginUseCase {
     val jwtTokenService: IJwtTokenService
     val validationModelService: IValidationModelService
 
-    fun login(loginRequest: LoginRequest) : LoginResponse
+    fun login(loginRequest: LoginRequest) : ServerResponse<String>
 }

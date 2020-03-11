@@ -5,22 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.application.models.LoginRequest
-import com.eorder.application.models.LoginResponse
 import com.eorder.domain.models.ValidationError
+import com.eorder.infrastructure.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class LoginActivity : BaseActivity(), IManageFormErrors {
+class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
 
 
     var model: LoginViewModel? = null
@@ -36,14 +35,14 @@ class LoginActivity : BaseActivity(), IManageFormErrors {
 
     fun setObservers(){
 
-        model?.getloginResultsObservable()?.observe(this, Observer<LoginResponse> { it ->
+        model?.getloginResultsObservable()?.observe(this, Observer<ServerResponse<String>> { it ->
 
             startActivity(Intent(this, LandingActivity::class.java))
         })
 
         model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
 
-            manageException(ex)
+            model?.manageExceptionService?.manageException(this, ex)
 
         })
     }
@@ -58,6 +57,10 @@ class LoginActivity : BaseActivity(), IManageFormErrors {
         findViewById<TextView>(R.id.textView_message_error_password).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("password")}?.errorMessage
                 ?: null
+    }
+
+    override fun showMessage(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun clearEditTextAndFocus(){

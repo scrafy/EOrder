@@ -1,4 +1,4 @@
 package com.eorder.infrastructure.models
 
-class Pagination(var numPages: Int, var actualPage: Int, var RecordsByPage: Short)
+class Pagination(val numPages: Int, val actualPage: Int, val RecordsByPage: Short)
 

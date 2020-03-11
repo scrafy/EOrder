@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
-import com.google.android.material.navigation.NavigationView
 
 
 class LandingActivity : AppCompatActivity() {

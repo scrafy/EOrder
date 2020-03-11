@@ -4,6 +4,6 @@ class Catalog(
     val id:Int,
     val name:String,
     val enabled: Boolean,
-    val seller: Seller
+    val seller: Seller?
 ) {
 }

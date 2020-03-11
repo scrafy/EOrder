@@ -1,5 +1,10 @@
 <resources>
 
+    <!--COMMON-->
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+
+
     <!--LATERAL NAVIGATION MENU -->
 
     <string name="lateral_nav_menu_open">Open</string>
@@ -19,9 +24,7 @@
     <string name="lateral_nav_menu_makeorder">Make a order</string>
 
 
-    <!--CARD VIEW CENTER LIST-->
-    <string name="card_view_center_list_enabled">Enabled</string>
-    <string name="card_view_center_list_disabled">Disabled</string>
-
+    <!--CARD VIEW CATALOG CENTER-->
+    <string name="card_view_catalog_center_list_view_seller">View seller</string>
 
 </resources>

@@ -11,16 +11,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.dialogs.AlertDialog
 import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.application.models.RecoverPasswordRequest
-import com.eorder.application.models.RecoverPasswordResponse
 import com.eorder.domain.models.ValidationError
+import com.eorder.infrastructure.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class RecoverPasswordActivity : BaseActivity(), IManageFormErrors {
+class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
 
     var model: RecoverPasswordViewModel? = null
 
@@ -32,9 +32,13 @@ class RecoverPasswordActivity : BaseActivity(), IManageFormErrors {
         setListeners()
     }
 
+    override fun showMessage(message: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun setObservers() {
 
-        model?.getRecoverPasswordObservable()?.observe(this, Observer<RecoverPasswordResponse> { it ->
+        model?.getRecoverPasswordObservable()?.observe(this, Observer<ServerResponse<String>> { it ->
 
            var dialog = AlertDialog(this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
 
@@ -46,7 +50,7 @@ class RecoverPasswordActivity : BaseActivity(), IManageFormErrors {
 
         model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
 
-            manageException(ex)
+            model?.manageExceptionService?.manageException(this, ex)
 
         })
 

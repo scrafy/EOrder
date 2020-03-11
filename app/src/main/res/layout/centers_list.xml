@@ -10,6 +10,7 @@
     android:layout_marginTop="10dp"
     android:elevation="15dp"
     card_view:cardCornerRadius="5dp"
+    android:background="@drawable/card_view_border"
     >
 
     <LinearLayout
@@ -78,14 +79,14 @@
             android:orientation="horizontal"
             android:gravity="right"
             android:layout_marginBottom="10dp"
-           >
+            >
             <ImageView
-            android:layout_width="96px"
-            android:layout_height="96px"
-            android:src="@drawable/ic_info_outline_black_48dp"
+                android:layout_width="96px"
+                android:layout_height="96px"
+                android:src="@drawable/ic_info_outline_black_48dp"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/imgView_center_card_view_info"
-            />
+                />
             <ImageView
                 android:layout_width="96px"
                 android:layout_height="96px"

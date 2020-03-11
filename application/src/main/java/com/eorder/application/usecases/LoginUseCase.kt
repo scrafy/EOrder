@@ -3,7 +3,6 @@ package com.eorder.application.usecases
 
 import com.eorder.application.extensions.toInfrastructure
 import com.eorder.application.models.LoginRequest
-import com.eorder.application.models.LoginResponse
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.InvalidJwtTokenException
 import com.eorder.domain.exceptions.ModelValidationException
@@ -12,7 +11,7 @@ import com.eorder.infrastructure.interfaces.ILoginService
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.domain.models.ValidationError
-
+import com.eorder.infrastructure.models.ServerResponse
 
 
 class LoginUseCase(override val loginService: ILoginService,
@@ -21,7 +20,7 @@ class LoginUseCase(override val loginService: ILoginService,
 ) : ILoginUseCase {
 
 
-    override fun login(loginRequest: LoginRequest): LoginResponse {
+    override fun login(loginRequest: LoginRequest): ServerResponse<String> {
 
 
         var validationErrors: List<ValidationError> = this.validationModelService.validate(loginRequest)
@@ -36,7 +35,7 @@ class LoginUseCase(override val loginService: ILoginService,
 
         //TODO store
 
-        return LoginResponse(response)
+        return response
     }
 
 }
