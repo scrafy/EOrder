@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.activities.CenterActivity
-import com.eorder.app.com.eorder.app.adapters.fragments.CatalogsByCenterAdapter
+import com.eorder.app.adapters.fragments.CatalogsByCenterAdapter
 import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.com.eorder.app.viewmodels.fragments.CatalogsByCenterViewModel
 import com.eorder.infrastructure.models.Catalog
@@ -25,7 +25,10 @@ class CatalogsByCenterFragment : Fragment(), IShowSnackBarMessage {
 
     var model: CatalogsByCenterViewModel? = null
     var recyclerView : RecyclerView ? = null
-    var adapter = CatalogsByCenterAdapter(mutableListOf())
+    var adapter =
+        CatalogsByCenterAdapter(
+            mutableListOf()
+        )
 
     companion object {
         fun newInstance() = CatalogsByCenterFragment()

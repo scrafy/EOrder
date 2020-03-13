@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.adapters.fragments
+package com.eorder.app.adapters.fragments
 
 import com.eorder.infrastructure.models.Catalog
 import android.content.Context
@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IShowCatalogsByCenter
 import com.eorder.app.com.eorder.app.interfaces.IShowProductsByCatalog
 
 
@@ -22,7 +20,10 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.center_catalogs, parent, false)
 
-        return CatalogViewHolder(view, parent.context)
+        return CatalogViewHolder(
+            view,
+            parent.context
+        )
     }
 
     override fun getItemCount(): Int {

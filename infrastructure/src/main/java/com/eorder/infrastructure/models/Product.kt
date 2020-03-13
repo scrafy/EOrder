@@ -9,6 +9,7 @@ class Product(
     val secondEan:Long?,
     val taxRate:Float,
     val taxId: Tax,
+    val price:Float,
     val enabled:Boolean,
     val description: String,
     val name: String,

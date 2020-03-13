@@ -12,4 +12,6 @@
     <color name="text_icons">#FFFFFF</color>
     <color name="lightPrimaryColor">#E1BEE7</color>
 
+    <color name="zero_amount_products">#cccbc7</color>
+
 </resources>

@@ -9,7 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.adapters.fragments.CentersAdapter
+import com.eorder.app.adapters.fragments.CentersAdapter
 import com.eorder.app.com.eorder.app.interfaces.IShowCatalogsByCenter
 import com.eorder.app.com.eorder.app.interfaces.IShowCenterInfo
 import com.eorder.app.com.eorder.app.interfaces.IShowProductsByCatalog
@@ -21,7 +21,8 @@ import com.eorder.app.fragments.ProductsFragment
 class CenterActivity : AppCompatActivity(), IShowCatalogsByCenter, IShowCenterInfo, IShowProductsByCatalog {
 
     var recyclerView : RecyclerView ? = null
-    var adapter = CentersAdapter(mutableListOf())
+    var adapter =
+        CentersAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

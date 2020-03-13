@@ -1,6 +1,6 @@
 package com.eorder.application.interfaces
 
-import com.eorder.infrastructure.models.Product
+import com.eorder.application.models.Product
 import com.eorder.infrastructure.models.ServerResponse
 
 interface IGetProductsByCatalogUseCase {

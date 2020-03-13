@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.adapters.fragments
+package com.eorder.app.adapters.fragments
 
 import android.content.Context
 import android.graphics.Color
