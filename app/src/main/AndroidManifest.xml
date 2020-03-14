@@ -14,12 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.CenterActivity"></activity>
-        <activity android:name=".activities.LandingActivity" />
-        <activity android:name=".activities.BaseViewModelActivity" />
+        <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.RecoverPasswordActivity" />
-        <activity android:name=".activities.BaseHandleErrorActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.LandingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

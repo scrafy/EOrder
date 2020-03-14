@@ -5,11 +5,12 @@
     android:layout_height="wrap_content"
     android:id="@+id/toolbar"
     android:background="?attr/colorPrimary"
-    app:theme="@style/toolbar"
+    android:theme="@style/toolbar"
     android:minHeight="?attr/actionBarSize"
     android:elevation="10dp"
     app:popupTheme="@style/popupMenu"
     app:title="PedidoE"
+    android:paddingRight="20dp"
 
     >
 </androidx.appcompat.widget.Toolbar>

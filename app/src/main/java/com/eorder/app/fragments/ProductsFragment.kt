@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.ProductAdapter
+import com.eorder.app.com.eorder.app.interfaces.IChangeToolbar
+import com.eorder.app.com.eorder.app.interfaces.IToolBarSearch
 import com.eorder.app.com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.models.Product
 import com.eorder.infrastructure.models.ServerResponse
@@ -22,27 +24,34 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-
-class ProductsFragment : Fragment() {
+class ProductsFragment : Fragment(), IToolBarSearch {
 
     lateinit var model: ProductsViewModel
     lateinit var recyclerView : RecyclerView
     lateinit var adapter: ProductAdapter
     lateinit var products:List<Product>
 
+
     companion object {
-        fun newInstance() = ProductsFragment()
+        var self: ProductsFragment? = null
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        self = this
         return inflater.inflate(R.layout.products_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        var map = mutableMapOf<String, Int>()
+        map["product_list_menu"] = R.menu.product_list_menu
+        (this.activity as IChangeToolbar)?.changeToolbar(map)
+
+
         model = getViewModel()
         init()
         setObservers()
@@ -55,6 +64,19 @@ class ProductsFragment : Fragment() {
         }
     }
 
+    override fun search(query: String) {
+        adapter.products = products.filter { p -> p.name.toLowerCase().contains(query.toLowerCase()) }
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy(){
+        super.onDestroy()
+        var map = mutableMapOf<String, Int>()
+        map["main_menu"] = R.menu.main_menu
+        (this.activity as IChangeToolbar)?.changeToolbar(map)
+    }
+
+
     private fun setItemsSpinner(){
 
         lateinit var categories: MutableList<String>
@@ -62,7 +84,7 @@ class ProductsFragment : Fragment() {
 
         categories = mutableListOf()
         categories.add(this.resources.getString(R.string.product_categories))
-        products.groupBy { p -> p.category.name }.keys?.forEach { s -> categories.add(s) }
+        products.groupBy { p -> p.category.name }.keys.forEach { s -> categories.add(s) }
 
         var categoriesAdapter = ArrayAdapter<String>(this.activity as Context, android.R.layout.simple_spinner_item,categories)
         spinner_product_list_categories.adapter = categoriesAdapter
@@ -113,10 +135,10 @@ class ProductsFragment : Fragment() {
             ) {
                 when(position){
 
-                    0 -> { adapter.products = products?.sortedBy { p -> p.name } ?: listOf(); adapter.notifyDataSetChanged() }
-                    1 -> { adapter.products = products?.sortedByDescending { p -> p.name } ?: listOf(); adapter.notifyDataSetChanged() }
-                    2 -> { adapter.products = products?.sortedBy { p -> p.price } ?: listOf(); adapter.notifyDataSetChanged() }
-                    3 -> { adapter.products = products?.sortedByDescending { p -> p.price } ?: listOf(); adapter.notifyDataSetChanged() }
+                    0 -> { adapter.products = products.sortedBy { p -> p.name } ; adapter.notifyDataSetChanged() }
+                    1 -> { adapter.products = products.sortedByDescending { p -> p.name } ; adapter.notifyDataSetChanged() }
+                    2 -> { adapter.products = products.sortedBy { p -> p.price } ; adapter.notifyDataSetChanged() }
+                    3 -> { adapter.products = products.sortedByDescending { p -> p.price }; adapter.notifyDataSetChanged() }
                 }
             }
 

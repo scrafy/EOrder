@@ -3,6 +3,9 @@
     <!--COMMON-->
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+    <string name="search">Searchsssss</string>
+    <string name="shop">Shop</string>
+
 
 
     <!--LATERAL NAVIGATION MENU -->
@@ -32,5 +35,8 @@
     <string name="product_order_by_price_high">Price from high to low</string>
     <string name="product_order_by_price_low">Price from low to high</string>
 
+
+    <!--TOOLBAR PRODUCTS-->
+    <string name="toolbar_proudct_list_search">Search</string>
 
 </resources>
