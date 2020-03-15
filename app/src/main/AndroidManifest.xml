@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CenterActivity"></activity>
+        <activity android:name=".activities.BaseActivity"></activity>
+        <activity android:name=".activities.ShopActivity" />
+        <activity android:name=".activities.CenterActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.RecoverPasswordActivity" />
         <activity android:name=".activities.LoginActivity" />

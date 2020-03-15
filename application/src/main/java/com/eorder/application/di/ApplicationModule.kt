@@ -22,5 +22,6 @@ val applicationModule = module {
     /*SERVICES*/
     single { ValidationModelService() } bind IValidationModelService::class
     single { com.eorder.application.services.JwtTokenService() } bind IJwtTokenService::class
+    single { com.eorder.application.services.ShopService(mutableListOf()) } bind IShopService::class
 
 }

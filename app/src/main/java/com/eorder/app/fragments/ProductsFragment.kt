@@ -6,16 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
+import com.eorder.app.activities.BaseActivity
 import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.ProductAdapter
-import com.eorder.app.com.eorder.app.interfaces.IChangeToolbar
+import com.eorder.app.com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.com.eorder.app.interfaces.IToolBarSearch
 import com.eorder.app.com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.models.Product
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class ProductsFragment : Fragment(), IToolBarSearch {
+class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
 
     lateinit var model: ProductsViewModel
     lateinit var recyclerView : RecyclerView
@@ -45,11 +45,12 @@ class ProductsFragment : Fragment(), IToolBarSearch {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
         super.onActivityCreated(savedInstanceState)
 
         var map = mutableMapOf<String, Int>()
         map["product_list_menu"] = R.menu.product_list_menu
-        (this.activity as IChangeToolbar)?.changeToolbar(map)
+        (this.activity as BaseActivity)?.addActionBar(map)
 
 
         model = getViewModel()
@@ -64,6 +65,35 @@ class ProductsFragment : Fragment(), IToolBarSearch {
         }
     }
 
+
+    override fun setAdapterListeners(view: View, obj:Any?) {
+
+        var product = obj as Product
+        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener { it ->
+
+            if (product.amount > 0)
+                product.amount--
+            adapter.notifyDataSetChanged()
+
+        }
+
+        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener { it ->
+
+            product.amount++
+            adapter.notifyDataSetChanged()
+
+        }
+
+        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener { it ->
+            product.favorite = !product.favorite
+            adapter.notifyDataSetChanged()
+
+        }
+
+
+    }
+
+
     override fun search(query: String) {
         adapter.products = products.filter { p -> p.name.toLowerCase().contains(query.toLowerCase()) }
         adapter.notifyDataSetChanged()
@@ -73,7 +103,7 @@ class ProductsFragment : Fragment(), IToolBarSearch {
         super.onDestroy()
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
-        (this.activity as IChangeToolbar)?.changeToolbar(map)
+        (this.activity as BaseActivity)?.addActionBar(map)
     }
 
 
@@ -149,7 +179,7 @@ class ProductsFragment : Fragment(), IToolBarSearch {
 
         model.getProductsByCatalogObservable().observe((this.activity as CenterActivity), Observer<ServerResponse<List<Product>>> { it ->
 
-            products = it.serverData?.data ?: listOf()
+            products = (it.serverData?.data ?: listOf())
             adapter.products = products
             adapter.notifyDataSetChanged()
             setItemsSpinner()
@@ -165,7 +195,7 @@ class ProductsFragment : Fragment(), IToolBarSearch {
     private fun init(){
 
         var layout = LinearLayoutManager(this.context)
-        adapter = ProductAdapter(listOf())
+        adapter = ProductAdapter(listOf(), this)
         recyclerView = this.view!!.findViewById(R.id.recView_product_list_fragment)
         recyclerView.adapter = adapter
         layout.orientation = LinearLayoutManager.VERTICAL

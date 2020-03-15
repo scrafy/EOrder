@@ -4,24 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.fragments.ProductsFragment
 import com.eorder.application.models.Product
 
 
-class ProductAdapter(var products: List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(var products: List<Product>, private val fragment: ProductsFragment) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
+   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.products_list, parent, false)
-
         return ProductViewHolder(
             view,
-            parent.context
+            parent.context,
+            fragment
         )
     }
 
@@ -35,22 +35,14 @@ class ProductAdapter(var products: List<Product>) : RecyclerView.Adapter<Product
     }
 
 
-    class ProductViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
+    class ProductViewHolder(private val view: View, private val context: Context, private val fragment: ProductsFragment) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var name: TextView
-        private lateinit var category: TextView
-        private lateinit var price: TextView
-        private lateinit var textViewAmount: TextView
+        private var name: TextView = view.findViewById<TextView>(R.id.textView_product_list_name)
+        private var category: TextView = view.findViewById<TextView>(R.id.textView_product_list_category)
+        private var price: TextView = view.findViewById<TextView>(R.id.textView_product_list_price)
+        private var textViewAmount: TextView = view.findViewById<TextView>(R.id.textView_product_list_amount)
         private lateinit var product:Product
 
-        init{
-
-            this.name = view.findViewById<TextView>(R.id.textView_product_list_name)
-            this.category = view.findViewById<TextView>(R.id.textView_product_list_category)
-            this.price = view.findViewById<TextView>(R.id.textView_product_list_price)
-            this.textViewAmount = view.findViewById<TextView>(R.id.textView_product_list_amount)
-            setListener()
-        }
 
         private fun repaintModel(){
 
@@ -74,28 +66,6 @@ class ProductAdapter(var products: List<Product>) : RecyclerView.Adapter<Product
             amountView.setText(this.product.amount.toString())
         }
 
-        private fun setListener() {
-
-            view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener { it ->
-
-               if (this.product.amount > 0)
-                    this.product.amount--
-
-                repaintModel()
-            }
-
-            view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener { it ->
-
-                this.product.amount++
-                repaintModel()
-            }
-
-            view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener { it ->
-                this.product.favorite = !this.product.favorite
-                repaintModel()
-            }
-        }
-
 
         fun setData(product: Product){
 
@@ -104,6 +74,7 @@ class ProductAdapter(var products: List<Product>) : RecyclerView.Adapter<Product
            this.category.setText(product.category.name)
            this.price.setText("${product.price.toString()}€")
            this.textViewAmount.setText(this.product.amount.toString())
+           ( fragment as ISetAdapterListener).setAdapterListeners(view, this.product)
             repaintModel()
         }
     }

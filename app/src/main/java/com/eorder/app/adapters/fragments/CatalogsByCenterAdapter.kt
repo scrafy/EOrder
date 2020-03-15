@@ -38,10 +38,10 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
     class CatalogViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
 
-        private var catalogName: TextView ? = null
-        private var enabled: TextView ? = null
-        private var imgProducts: ImageView? = null
-        private var catalogId: Int? = null
+        private lateinit var catalogName: TextView
+        private lateinit var enabled: TextView
+        private lateinit var imgProducts: ImageView
+        private lateinit var catalog:Catalog
 
 
 
@@ -57,22 +57,27 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
             view.findViewById<ImageView>(R.id.imgView_catalog_center_products).setOnClickListener{view ->
 
-                (context as IShowProductsByCatalog).showProductsByCatalog(this.catalogId)
+                (context as IShowProductsByCatalog).showProductsByCatalog(this.catalog.id)
             }
 
         }
 
-        fun setData(catalog: Catalog){
+        private fun repaint(){
 
-            this.catalogId = catalog.id
-            this.catalogName?.setText(catalog.name)
-            if (catalog.enabled) {
+            if (this.catalog.enabled) {
                 this.enabled?.setText(R.string.enabled)
                 this.enabled?.setTextColor(Color.GREEN)
             }else{
                 this.enabled?.setText(R.string.disabled)
                 this.enabled?.setTextColor(Color.RED)
             }
+        }
+
+        fun setData(catalog: Catalog){
+            this.catalog = catalog
+            this.catalogId = catalog.id
+            this.catalogName?.setText(catalog.name)
+           repaint()
         }
     }
 }

@@ -27,9 +27,6 @@ class CentersFragment : Fragment(), IShowSnackBarMessage {
     var adapter =
         CentersAdapter(mutableListOf())
 
-    companion object {
-        fun newInstance() = CentersFragment()
-    }
 
     private lateinit var viewModel: CatalogsByCenterViewModel
 

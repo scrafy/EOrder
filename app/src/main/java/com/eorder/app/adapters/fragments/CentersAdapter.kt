@@ -38,12 +38,12 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
 
     class CenterViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
 
-        private var centerName: TextView ? = null
-        private var email: TextView ? = null
-        private var address: TextView ? = null
-        private var enabled: TextView ? = null
-        private var imgCenter: ImageView? = null
-        private var idCenter: Int? = null
+        private lateinit var centerName: TextView
+        private lateinit var email: TextView
+        private lateinit var address: TextView
+        private lateinit var enabled: TextView
+        private lateinit var imgCenter: ImageView
+        private lateinit var center: Center
 
 
         init{
@@ -60,22 +60,16 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
 
             view.findViewById<ImageView>(R.id.imgView_center_card_view_catalog).setOnClickListener{view ->
 
-                (context as IShowCatalogsByCenter).showCatalogsByCenter(this.idCenter)
+                (context as IShowCatalogsByCenter).showCatalogsByCenter(this.center.id)
             }
 
             view.findViewById<ImageView>(R.id.imgView_center_card_view_info).setOnClickListener{view ->
 
-                (context as IShowCenterInfo).showCenterInfo(this.idCenter)
+                (context as IShowCenterInfo).showCenterInfo(this.center.id)
             }
         }
 
-
-        fun setData(center: Center){
-
-            this.idCenter = center.id
-            this.centerName?.setText(center.center_name)
-            this.email?.setText(center.email)
-            this.address?.setText(center.address)
+        private fun repaint(){
             if (center.enabled) {
                 this.enabled?.setText(R.string.enabled)
                 this.enabled?.setTextColor(Color.GREEN)
@@ -83,6 +77,15 @@ class CentersAdapter(var centers: List<Center>) : RecyclerView.Adapter<CentersAd
                 this.enabled?.setText(R.string.disabled)
                 this.enabled?.setTextColor(Color.RED)
             }
+        }
+
+        fun setData(center: Center){
+
+            this.center = center
+            this.centerName?.setText(center.center_name)
+            this.email?.setText(center.email)
+            this.address?.setText(center.address)
+            repaint()
        }
     }
 }

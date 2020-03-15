@@ -10,7 +10,6 @@
     android:elevation="10dp"
     app:popupTheme="@style/popupMenu"
     app:title="PedidoE"
-    android:paddingRight="20dp"
 
     >
 </androidx.appcompat.widget.Toolbar>

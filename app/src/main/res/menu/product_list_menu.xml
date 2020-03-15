@@ -6,7 +6,6 @@
 
     <item
         android:id="@+id/item_menu_product_list_search"
-        android:title="@string/search"
         app:showAsAction="always"
         android:orderInCategory="1"
         app:actionViewClass="android.widget.SearchView"

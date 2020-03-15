@@ -30,9 +30,6 @@ class CatalogsByCenterFragment : Fragment(), IShowSnackBarMessage {
             mutableListOf()
         )
 
-    companion object {
-        fun newInstance() = CatalogsByCenterFragment()
-    }
 
     private lateinit var viewModel: CatalogsByCenterViewModel
 
