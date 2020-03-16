@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.activities.BaseActivity
-import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.ProductAdapter
+import com.eorder.app.com.eorder.app.interfaces.IGetSearchObservable
+import com.eorder.app.com.eorder.app.interfaces.ISetActionBar
 import com.eorder.app.com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.com.eorder.app.interfaces.IToolBarSearch
 import com.eorder.app.com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.models.Product
 import com.eorder.infrastructure.models.ServerResponse
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
+class ProductsFragment : Fragment(),  ISetAdapterListener {
 
     lateinit var model: ProductsViewModel
     lateinit var recyclerView : RecyclerView
@@ -50,9 +50,7 @@ class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
 
         var map = mutableMapOf<String, Int>()
         map["product_list_menu"] = R.menu.product_list_menu
-        (this.activity as BaseActivity)?.addActionBar(map)
-
-
+        (this.activity as ISetActionBar)?.setActionBar(map)
         model = getViewModel()
         init()
         setObservers()
@@ -93,17 +91,11 @@ class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
 
     }
 
-
-    override fun search(query: String) {
-        adapter.products = products.filter { p -> p.name.toLowerCase().contains(query.toLowerCase()) }
-        adapter.notifyDataSetChanged()
-    }
-
     override fun onDestroy(){
         super.onDestroy()
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
-        (this.activity as BaseActivity)?.addActionBar(map)
+        (this.activity as ISetActionBar)?.setActionBar(map)
     }
 
 
@@ -177,7 +169,15 @@ class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
 
     fun setObservers(){
 
-        model.getProductsByCatalogObservable().observe((this.activity as CenterActivity), Observer<ServerResponse<List<Product>>> { it ->
+
+        (this.activity as IGetSearchObservable).getSearchObservable().observe((this.activity as LifecycleOwner), Observer<String> { search ->
+
+            adapter.products = products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
+            adapter.notifyDataSetChanged()
+
+        })
+
+        model.getProductsByCatalogObservable().observe((this.activity as LifecycleOwner), Observer<ServerResponse<List<Product>>> { it ->
 
             products = (it.serverData?.data ?: listOf())
             adapter.products = products
@@ -186,7 +186,7 @@ class ProductsFragment : Fragment(), IToolBarSearch, ISetAdapterListener {
 
         })
 
-        model.getErrorObservable().observe((this.activity as CenterActivity), Observer<Throwable>{ ex ->
+        model.getErrorObservable().observe((this.activity as LifecycleOwner), Observer<Throwable>{ ex ->
 
             model.manageExceptionService.manageException(this, ex)
         })

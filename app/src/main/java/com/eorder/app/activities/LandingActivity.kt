@@ -7,16 +7,15 @@ import android.widget.TextView
 import com.eorder.app.R
 
 
-class LandingActivity : BaseActivity() {
+class LandingActivity : MenuActivity() {
 
-     override fun addActionBar(menu: MutableMap<String, Int>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landing)
         setListeners()
+        init()
 
     }
 
@@ -28,6 +27,11 @@ class LandingActivity : BaseActivity() {
             startActivity(Intent(this, CenterActivity::class.java))
 
         }
+    }
+
+    private fun init(){
+        currentToolBarMenu["main_menu"] = R.menu.main_menu
+        setToolbarAndLateralMenu(currentToolBarMenu)
     }
 
 }

@@ -1,12 +1,8 @@
 package com.eorder.app.activities
 
-import android.content.Intent
+
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.interfaces.*
 import com.eorder.app.fragments.CatalogsByCenterFragment
@@ -14,15 +10,9 @@ import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
 
 
-class CenterActivity : BaseActivity(), IShowCatalogsByCenter, IShowCenterInfo,
+class CenterActivity : MenuActivity(), IShowCatalogsByCenter, IShowCenterInfo,
     IShowProductsByCatalog {
 
-    override fun addActionBar(menu: MutableMap<String, Int>) {
-
-        currentToolBarMenu = menu
-        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        this.setSupportActionBar(toolbar)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,11 +20,6 @@ class CenterActivity : BaseActivity(), IShowCatalogsByCenter, IShowCenterInfo,
         setContentView(R.layout.activity_centers)
         init()
 
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        return super.onCreateOptionsMenu(menu)
     }
 
     override fun showCatalogsByCenter(centerId: Int?) {
@@ -80,5 +65,8 @@ class CenterActivity : BaseActivity(), IShowCatalogsByCenter, IShowCenterInfo,
 
         supportFragmentManager.beginTransaction()
             .add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
+
+        currentToolBarMenu["main_menu"] = R.menu.main_menu
+        setToolbarAndLateralMenu(currentToolBarMenu)
     }
 }

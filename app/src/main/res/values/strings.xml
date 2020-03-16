@@ -3,7 +3,6 @@
     <!--COMMON-->
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
-    <string name="search">Searchsssss</string>
     <string name="shop">Shop</string>
 
 
@@ -36,6 +35,6 @@
 
 
     <!--TOOLBAR PRODUCTS-->
-    <string name="toolbar_proudct_list_search">Search</string>
+    <string name="toolbar_proudct_list_search">Search product...</string>
 
 </resources>

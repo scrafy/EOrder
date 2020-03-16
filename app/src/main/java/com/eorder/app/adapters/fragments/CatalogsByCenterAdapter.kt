@@ -75,7 +75,6 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
         fun setData(catalog: Catalog){
             this.catalog = catalog
-            this.catalogId = catalog.id
             this.catalogName?.setText(catalog.name)
            repaint()
         }
