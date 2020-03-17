@@ -2,8 +2,7 @@ package com.eorder.app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.com.eorder.app.interfaces.IManageException
-import com.eorder.app.com.eorder.app.viewmodels.BaseViewModel
+import com.eorder.app.interfaces.IManageException
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.application.models.LoginRequest
 import com.eorder.infrastructure.models.ServerResponse

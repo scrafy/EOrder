@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
-import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.application.models.LoginRequest
 import com.eorder.domain.models.ValidationError

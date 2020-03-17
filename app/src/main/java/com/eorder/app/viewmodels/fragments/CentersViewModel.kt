@@ -1,9 +1,9 @@
-package com.eorder.app.com.eorder.app.viewmodels.fragments
+package com.eorder.app.viewmodels.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.com.eorder.app.interfaces.IManageException
-import com.eorder.app.com.eorder.app.viewmodels.BaseViewModel
+import com.eorder.app.interfaces.IManageException
+import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetCentersUseCase
 import com.eorder.infrastructure.models.Center
 import com.eorder.infrastructure.models.ServerResponse

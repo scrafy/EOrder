@@ -1,19 +1,17 @@
 package com.eorder.app.adapters.fragments
 
 import com.eorder.infrastructure.models.Catalog
-import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IShowProductsByCatalog
+import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.interfaces.ISetAdapterListener
 
 
-class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsByCenterAdapter.CatalogViewHolder>() {
+class CatalogsByCenterAdapter(private val fragment:Fragment, var catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsByCenterAdapter.CatalogViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
@@ -22,7 +20,7 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
         return CatalogViewHolder(
             view,
-            parent.context
+            fragment
         )
     }
 
@@ -32,51 +30,20 @@ class CatalogsByCenterAdapter(var catalogs: List<Catalog>) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: CatalogViewHolder, position: Int) {
 
-        holder.setData(catalogs.get(position))
+        holder.setModel(catalogs.get(position))
     }
 
 
-    class CatalogViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
+    class CatalogViewHolder(private val view: View, private val fragment: Fragment) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var catalogName: TextView
-        private lateinit var enabled: TextView
-        private lateinit var imgProducts: ImageView
         private lateinit var catalog:Catalog
 
 
+        fun setModel(catalog: Catalog){
 
-        init{
-
-            this.catalogName = view.findViewById<TextView>(R.id.textView_catalog_center_catalog_name)
-            this.enabled = view.findViewById<TextView>(R.id.textView_catalog_center_enabled)
-            this.imgProducts = view.findViewById<ImageView>(R.id.imgView_catalog_center_products)
-            setListener()
-        }
-
-        private fun setListener() {
-
-            view.findViewById<ImageView>(R.id.imgView_catalog_center_products).setOnClickListener{view ->
-
-                (context as IShowProductsByCatalog).showProductsByCatalog(this.catalog.id)
-            }
-
-        }
-
-        private fun repaint(){
-
-            if (this.catalog.enabled) {
-                this.enabled?.setText(R.string.enabled)
-                this.enabled?.setTextColor(Color.GREEN)
-            }else{
-                this.enabled?.setText(R.string.disabled)
-                this.enabled?.setTextColor(Color.RED)
-            }
-        }
-
-        fun setData(catalog: Catalog){
             this.catalog = catalog
-            this.catalogName?.setText(catalog.name)
-           repaint()
+            (fragment as IRepaintModel).repaintModel(view, catalog)
+            (fragment as ISetAdapterListener).setAdapterListeners(view, catalog)
         }
     }
 }

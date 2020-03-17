@@ -4,6 +4,7 @@
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
     <string name="shop">Shop</string>
+    <string name="title">PedidoE</string>
 
 
     <!--LATERAL NAVIGATION MENU -->
@@ -24,6 +25,11 @@
     <string name="lateral_nav_menu_products">Products</string>
     <string name="lateral_nav_menu_makeorder">Make a order</string>
 
+    <!--MAIN MENU-->
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="signout">Sign out</string>
+
 
     <!--CARD VIEW CATALOG CENTER-->
     <string name="card_view_catalog_center_list_view_seller">View seller</string>
@@ -36,5 +42,15 @@
 
     <!--TOOLBAR PRODUCTS-->
     <string name="toolbar_proudct_list_search">Search product...</string>
+
+
+    <!--SHOP-->
+    <string name="textview_shop_total_products">Total of products:</string>
+    <string name="textview_shop_tax_base">Tax Base:</string>
+    <string name="textview_shop_total_taxes">Total Taxes:</string>
+    <string name="textview_shop_total">Total:</string>
+    <string name="textview_shop_order_summary">Order Summary</string>
+    <string name="textview_shop_product_list">Product List</string>
+    <string name="button_shop_confirm">Confirm order</string>
 
 </resources>

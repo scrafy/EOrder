@@ -9,7 +9,7 @@
     android:minHeight="?attr/actionBarSize"
     android:elevation="10dp"
     app:popupTheme="@style/popupMenu"
-    app:title="PedidoE"
+    app:title="@string/title"
 
     >
 </androidx.appcompat.widget.Toolbar>

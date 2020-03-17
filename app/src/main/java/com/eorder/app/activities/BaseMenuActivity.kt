@@ -12,16 +12,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IGetSearchObservable
-import com.eorder.app.com.eorder.app.interfaces.ISetActionBar
+import com.eorder.app.interfaces.IGetSearchObservable
+import com.eorder.app.interfaces.ISetActionBar
 
 
-abstract class MenuActivity : AppCompatActivity(), IGetSearchObservable, ISetActionBar {
+abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISetActionBar {
 
 
     protected var currentToolBarMenu: MutableMap<String, Int> = mutableMapOf()
     private val search: MutableLiveData<String> = MutableLiveData()
 
+
+    abstract fun setMenuToolbar()
 
     override fun getSearchObservable() : LiveData<String> {
         return search
@@ -31,6 +33,47 @@ abstract class MenuActivity : AppCompatActivity(), IGetSearchObservable, ISetAct
         currentToolBarMenu = menu
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
         this.setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        setToolbarAndLateralMenu(currentToolBarMenu)
+        when(currentToolBarMenu.keys.first()){
+
+            "product_list_menu" -> {
+
+                val itemShop = menu?.findItem(R.id.item_menu_product_list_shop)
+                itemShop?.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener{
+
+
+                    override fun onMenuItemClick(item: MenuItem?): Boolean {
+                        startActivity(Intent(getContext(), ShopActivity::class.java))
+                        return true
+                    }
+
+                })
+                val itemSearch = menu?.findItem(R.id.item_menu_product_list_search)
+                val search = (itemSearch?.actionView as SearchView)
+                search.queryHint = resources.getString(R.string.toolbar_proudct_list_search)
+                search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        getContext().search.value = query ?: "" //= query ?: ""
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        getContext().search.value = newText ?: ""
+                        return true
+                    }
+
+                })
+
+            }
+
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 
 
@@ -86,49 +129,6 @@ abstract class MenuActivity : AppCompatActivity(), IGetSearchObservable, ISetAct
 
             })
     }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        setToolbarAndLateralMenu(currentToolBarMenu)
-        when(currentToolBarMenu.keys.first()){
-
-            "product_list_menu" -> {
-
-                val itemShop = menu?.findItem(R.id.item_menu_product_list_shop)
-                itemShop?.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener{
-
-
-                    override fun onMenuItemClick(item: MenuItem?): Boolean {
-                        startActivity(Intent(getContext(), ShopActivity::class.java))
-                        return true
-                    }
-
-                })
-                val itemSearch = menu?.findItem(R.id.item_menu_product_list_search)
-                val search = (itemSearch?.actionView as SearchView)
-                search.queryHint = resources.getString(R.string.toolbar_proudct_list_search)
-                search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        getContext().search.postValue(query ?: "") //= query ?: ""
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        getContext().search.postValue(newText ?: "")
-                         return true
-                    }
-
-                })
-
-            }
-
-        }
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
 
     protected fun getContext() = this
 }

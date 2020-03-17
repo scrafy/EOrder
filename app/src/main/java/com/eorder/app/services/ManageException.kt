@@ -1,9 +1,9 @@
-package com.eorder.app.com.eorder.app.services
+package com.eorder.app.services
 
 
-import com.eorder.app.com.eorder.app.interfaces.IManageException
-import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
-import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.app.interfaces.IManageException
+import com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.domain.exceptions.ModelValidationException
 import com.eorder.domain.exceptions.ServerErrorValidationException
 

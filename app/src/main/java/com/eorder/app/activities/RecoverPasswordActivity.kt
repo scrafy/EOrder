@@ -11,10 +11,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.dialogs.AlertDialog
-import com.eorder.app.com.eorder.app.interfaces.IManageFormErrors
-import com.eorder.app.com.eorder.app.interfaces.IShowSnackBarMessage
-import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
+import com.eorder.app.dialogs.AlertDialogOk
+import com.eorder.app.interfaces.IManageFormErrors
+import com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.application.models.RecoverPasswordRequest
 import com.eorder.domain.models.ValidationError
 import com.eorder.infrastructure.models.ServerResponse
@@ -40,7 +40,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
         model?.getRecoverPasswordObservable()?.observe(this, Observer<ServerResponse<String>> { it ->
 
-           var dialog = AlertDialog(this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
+           var dialog = AlertDialogOk(R.layout.alert_dialog_ok,this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
 
                val intent = Intent(this, LoginActivity::class.java)
                startActivity(intent)

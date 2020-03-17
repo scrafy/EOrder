@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.eorder.app.R
 
 
-class LandingActivity : MenuActivity() {
+class LandingActivity : BaseMenuActivity() {
 
 
 
@@ -16,6 +16,7 @@ class LandingActivity : MenuActivity() {
         setContentView(R.layout.activity_landing)
         setListeners()
         init()
+        setMenuToolbar()
 
     }
 
@@ -30,6 +31,11 @@ class LandingActivity : MenuActivity() {
     }
 
     private fun init(){
+        currentToolBarMenu["main_menu"] = R.menu.main_menu
+        setToolbarAndLateralMenu(currentToolBarMenu)
+    }
+
+    override fun setMenuToolbar() {
         currentToolBarMenu["main_menu"] = R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
     }

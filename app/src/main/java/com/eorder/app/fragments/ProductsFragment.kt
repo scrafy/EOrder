@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,22 +15,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.ProductAdapter
-import com.eorder.app.com.eorder.app.interfaces.IGetSearchObservable
-import com.eorder.app.com.eorder.app.interfaces.ISetActionBar
-import com.eorder.app.com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.com.eorder.app.viewmodels.fragments.ProductsViewModel
+import com.eorder.app.interfaces.IGetSearchObservable
+import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.interfaces.ISetActionBar
+import com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.models.Product
 import com.eorder.infrastructure.models.ServerResponse
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class ProductsFragment : Fragment(),  ISetAdapterListener {
+class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
 
-    lateinit var model: ProductsViewModel
-    lateinit var recyclerView : RecyclerView
-    lateinit var adapter: ProductAdapter
-    lateinit var products:List<Product>
+
+    private lateinit var model: ProductsViewModel
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var adapter: ProductAdapter
+    private var products:List<Product> = listOf()
 
 
     companion object {
@@ -42,6 +45,40 @@ class ProductsFragment : Fragment(),  ISetAdapterListener {
     ): View? {
         self = this
         return inflater.inflate(R.layout.products_fragment, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
+        repaintShopIcon()
+    }
+
+    override fun repaintModel(view: View, model: Any?) {
+
+        var product = model as Product
+        view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
+        view.findViewById<TextView>(R.id.textView_product_list_category).setText(product.category.name)
+        view.findViewById<TextView>(R.id.textView_product_list_price).setText(product.price.toString())
+        view.findViewById<TextView>(R.id.textView_product_list_amount).setText(product.amount.toString())
+
+        var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
+        var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
+
+        if (product.amount == 0) {
+            amountView.background = this.activity?.getDrawable(R.drawable.shape_amount_zero_products)
+        } else {
+            amountView.background = this.activity?.getDrawable(R.drawable.shape_amount_products)
+        }
+
+        if (product.favorite) {
+            heart.setBackgroundResource(R.drawable.ic_purple_corazon)
+
+        } else {
+            heart.setBackgroundResource(R.drawable.ic_corazon_purple_outline)
+
+        }
+        amountView.setText(product.amount.toString())
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,14 +108,24 @@ class ProductsFragment : Fragment(),  ISetAdapterListener {
 
             if (product.amount > 0)
                 product.amount--
+
+            if (product.amount == 0)
+                model.removeProductFromShop(product)
+
             adapter.notifyDataSetChanged()
+            repaintShopIcon()
 
         }
 
         view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener { it ->
 
             product.amount++
+
+            if (!model.existProduct(product.id))
+                model.addProductToShop(product)
+
             adapter.notifyDataSetChanged()
+            repaintShopIcon()
 
         }
 
@@ -195,7 +242,10 @@ class ProductsFragment : Fragment(),  ISetAdapterListener {
     private fun init(){
 
         var layout = LinearLayoutManager(this.context)
-        adapter = ProductAdapter(listOf(), this)
+        adapter = ProductAdapter(
+            listOf(),
+            this
+        )
         recyclerView = this.view!!.findViewById(R.id.recView_product_list_fragment)
         recyclerView.adapter = adapter
         layout.orientation = LinearLayoutManager.VERTICAL
@@ -203,4 +253,16 @@ class ProductsFragment : Fragment(),  ISetAdapterListener {
         recyclerView.itemAnimator = DefaultItemAnimator()
     }
 
+    private fun repaintShopIcon(){
+
+        val toolbar = this.activity?.findViewById<Toolbar>(R.id.toolbar)
+        if (products.firstOrNull{ p -> p.amount > 0 } != null){
+
+            val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
+            menuItem?.setIcon(R.drawable.ic_white_full_order)
+        }else{
+            val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
+            menuItem?.setIcon(R.drawable.ic_shopping_cart_white_24dp)
+        }
+    }
 }

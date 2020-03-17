@@ -1,8 +1,8 @@
-package com.eorder.app.com.eorder.app.viewmodels
+package com.eorder.app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.com.eorder.app.interfaces.IManageException
+import com.eorder.app.interfaces.IManageException
 import com.eorder.application.interfaces.IRecoverPasswordUseCase
 import com.eorder.application.models.RecoverPasswordRequest
 import com.eorder.infrastructure.models.ServerResponse

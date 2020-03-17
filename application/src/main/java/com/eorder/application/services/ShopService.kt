@@ -6,6 +6,12 @@ import com.eorder.application.models.Product
 class ShopService(override var products: MutableList<Product>) : IShopService {
 
 
+    override fun existProduct(productId: Int) : Boolean {
+
+        return (products.firstOrNull{ p -> p.id == productId} != null)
+    }
+
+
     override fun getTotalAmount(): Float {
         return getTotalTaxBaseAmount() + getTotalTaxesAmount()
     }
@@ -14,7 +20,7 @@ class ShopService(override var products: MutableList<Product>) : IShopService {
     override fun getTotalTaxesAmount(): Float {
         var total:Float = 0F
 
-        products.forEach(){p -> total += p.taxRate}
+        products.forEach(){p -> total += (p.taxRate * p.price * p.amount)/100}
         return total
     }
 
@@ -23,7 +29,7 @@ class ShopService(override var products: MutableList<Product>) : IShopService {
 
         var total:Float = 0F
 
-        products.forEach(){p -> total += p.price}
+        products.forEach(){p -> total += (p.price * p.amount)}
         return total
     }
 
@@ -36,8 +42,24 @@ class ShopService(override var products: MutableList<Product>) : IShopService {
         products.remove(product)
     }
 
+    override fun addAmountOfProduct(productId: Int) {
+
+        var p = products.find{ p -> p.id == productId}
+
+        if (p != null)
+            p.amount++
+    }
+
+    override fun removeAmountOfProduct(productId: Int) {
+
+        var p = products.find{ p -> p.id == productId}
+
+        if (p != null && p.amount > 0)
+            p.amount--
+    }
+
     override fun getAmounfOfProducts(): Int{
 
-        return products.size
+        return products.sumBy { p -> p.amount }
     }
 }
