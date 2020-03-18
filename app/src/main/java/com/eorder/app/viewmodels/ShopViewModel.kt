@@ -13,7 +13,7 @@ class ShopViewModel(private val shopService: IShopService) : BaseViewModel() {
     }
 
     fun getAmounfOfProducts(): Int{
-        return shopService.products.size
+        return shopService.getAmounfOfProducts()
     }
 
     fun getTotalTaxBaseAmount(): Float {
@@ -26,7 +26,7 @@ class ShopViewModel(private val shopService: IShopService) : BaseViewModel() {
     }
 
     fun getTotalAmount(): Float {
-        return shopService.getTotalTaxesAmount().round(2)
+        return shopService.getTotalAmount().round(2)
     }
 
     fun removeProductFromShop(product: Product){

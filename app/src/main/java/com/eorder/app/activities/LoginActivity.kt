@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
 
 
-    var model: LoginViewModel? = null
+    private lateinit var model: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +35,14 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
 
     fun setObservers(){
 
-        model?.getloginResultsObservable()?.observe(this, Observer<ServerResponse<String>> { it ->
+        model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
             startActivity(Intent(this, LandingActivity::class.java))
         })
 
-        model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
+        model.getErrorObservable().observe(this, Observer<Throwable>{ex ->
 
-            model?.manageExceptionService?.manageException(this, ex)
+            model.manageExceptionService.manageException(this, ex)
 
         })
     }
@@ -52,11 +52,11 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
 
         findViewById<TextView>(R.id.textView_message_error_username).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("username")}?.errorMessage
-                ?: null
+
 
         findViewById<TextView>(R.id.textView_message_error_password).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("password")}?.errorMessage
-                ?: null
+
     }
 
     override fun showMessage(message: String) {
@@ -73,8 +73,8 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
 
         findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
 
-            var loginRequest = LoginRequest(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
-            model?.login(loginRequest)
+            val loginRequest = LoginRequest(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
+            model.login(loginRequest)
         }
 
         findViewById<EditText>(R.id.editText_username).addTextChangedListener(object : TextWatcher {

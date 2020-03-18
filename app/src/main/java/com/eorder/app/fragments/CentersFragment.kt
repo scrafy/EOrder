@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,7 @@ import com.eorder.app.R
 import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.CentersAdapter
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsByCenterViewModel
@@ -61,22 +65,11 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
 
         val center = (obj as Center)
 
-        view.findViewById<ImageView>(R.id.imgView_center_card_view_catalog)
+        view.findViewById<CardView>(R.id.cardView_center_list_item)
             .setOnClickListener { view ->
 
-                if (center != null) {
+                (this.activity as ISelectCenter).selectCenter(center.id)
 
-                    var args = Bundle()
-                    args.putInt("centerId", center.id)
-                    var fragment = CatalogsByCenterFragment()
-                    fragment.arguments = args
-                    this.activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.linear_layout_center_fragment_container, fragment)
-                        ?.addToBackStack(null)?.commit()
-
-                } else {
-                    //TODO show snack bar informando de que el centro id es invalido
-                }
             }
 
         view.findViewById<ImageView>(R.id.imgView_center_card_view_info)
@@ -106,7 +99,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     fun setObservers() {
 
         model.getCentersResultObservable().observe(
-            (this.activity as CenterActivity),
+            (this.activity as LifecycleOwner),
             Observer<ServerResponse<List<Center>>> { it ->
 
                 adapter.centers = it.serverData?.data ?: mutableListOf()
@@ -114,7 +107,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
             })
 
         model.getErrorObservable()
-            ?.observe((this.activity as CenterActivity), Observer<Throwable> { ex ->
+            ?.observe((this.activity as LifecycleOwner), Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this, ex)
             })

@@ -2,12 +2,9 @@ package com.eorder.app.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ExpandableListView
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.adapters.fragments.ShopProductsAdapter
+import com.eorder.app.adapters.ShopProductsAdapter
 import com.eorder.app.interfaces.IShopRepaintModel
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -26,22 +23,7 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
         model = getViewModel()
-        if (model.getProducts().isEmpty()) {
-
-            var dialog = AlertDialogOk(
-                R.layout.alert_dialog_ok,
-                this,
-                "Shop",
-                "The shop is empty. Please add a product...",
-                "OK"
-            ) { d, i ->
-
-                this.onBackPressed()
-
-            }
-            dialog.show()
-        } else
-            init()
+        isShopEmpty()
     }
 
     override fun setMenuToolbar() {
@@ -152,4 +134,25 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         findViewById<TextView>(R.id.textView_shop_amount_total).setText(model.getTotalAmount().toString() + "€")
 
     }
+
+    private fun isShopEmpty() {
+
+        if (model.getProducts().isEmpty()) {
+
+            var dialog = AlertDialogOk(
+                R.layout.alert_dialog_ok,
+                this,
+                "Shop",
+                "The shop is empty. Please add a product...",
+                "OK"
+            ) { d, i ->
+
+                this.onBackPressed()
+
+            }
+            dialog.show()
+        } else
+            init()
+    }
+
 }

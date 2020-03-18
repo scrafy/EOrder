@@ -23,8 +23,6 @@ class CenterActivity : BaseMenuActivity()
 
         supportFragmentManager.beginTransaction()
             .add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
-
-
     }
 
     override fun setMenuToolbar() {

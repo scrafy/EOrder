@@ -12,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class ProductsViewModel(val getProductsByCatalog: IGetProductsByCatalogUseCase, val manageExceptionService: IManageException, private val shopService: IShopService) : BaseViewModel() {
+class ProductsViewModel(private val getProductsByCatalog: IGetProductsByCatalogUseCase, val manageExceptionService: IManageException, private val shopService: IShopService) : BaseViewModel() {
 
     private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
 
@@ -39,5 +39,13 @@ class ProductsViewModel(val getProductsByCatalog: IGetProductsByCatalogUseCase, 
     }
 
     fun existProduct(productId:Int) = shopService.existProduct(productId)
+
+    fun cleanShop() = shopService.cleanShop()
+
+    fun getProductsFromShop() = shopService.products
+
+    fun setProductsToShop(products:MutableList<Product>) {
+        shopService.products = products
+    }
 
 }

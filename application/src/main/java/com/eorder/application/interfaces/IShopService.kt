@@ -6,6 +6,7 @@ interface IShopService {
 
     var products: MutableList<Product>
 
+    fun cleanShop()
     fun addProductToShop(product:Product)
     fun removeProductFromShop(product:Product)
     fun getAmounfOfProducts(): Int

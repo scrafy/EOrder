@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.CatalogsByCenterAdapter
+import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IShowSnackBarMessage
@@ -49,21 +52,9 @@ class CatalogsByCenterFragment : Fragment(), IShowSnackBarMessage, IRepaintModel
     override fun setAdapterListeners(view: View, obj: Any?) {
         val catalog = (obj as Catalog)
 
-        view.findViewById<ImageView>(R.id.imgView_catalog_center_products).setOnClickListener{v ->
+        view.findViewById<CardView>(R.id.cardView_catalog_fragment_item).setOnClickListener{v ->
 
-            if (catalog != null) {
-
-                var args = Bundle()
-                args.putInt("catalogId", catalog.id)
-                var fragment = ProductsFragment()
-                fragment.arguments = args
-                this.activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.linear_layout_center_fragment_container, fragment)
-                    ?.addToBackStack(null)?.commit()
-
-            } else {
-                //TODO show snack bar informando de que el catalogo id es invalido
-            }
+            (this.activity as ISelectCatalog).selectCatalog(catalog.id)
         }
     }
 
@@ -107,13 +98,13 @@ class CatalogsByCenterFragment : Fragment(), IShowSnackBarMessage, IRepaintModel
 
     fun setObservers(){
 
-        model.getCatalogByCentreObservable().observe((this.activity as CenterActivity), Observer<ServerResponse<List<Catalog>>> { it ->
+        model.getCatalogByCentreObservable().observe((this.activity as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> { it ->
 
             adapter.catalogs = it.serverData?.data ?: mutableListOf()
             adapter.notifyDataSetChanged()
         })
 
-       model.getErrorObservable().observe((this.activity as CenterActivity), Observer<Throwable>{ex ->
+       model.getErrorObservable().observe((this.activity as LifecycleOwner), Observer<Throwable>{ex ->
 
            model.manageExceptionService.manageException(this, ex)
 

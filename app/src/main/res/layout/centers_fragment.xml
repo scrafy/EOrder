@@ -5,16 +5,13 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="com.eorder.app.fragments.CentersFragment">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recView_centers_list_fragment"
         />
 
-</LinearLayout>
+
 
 </FrameLayout>

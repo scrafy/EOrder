@@ -10,7 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class LoginViewModel(val loginUseCase: ILoginUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class LoginViewModel(private val loginUseCase: ILoginUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
 
     private val loginResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 

@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
 
-    var model: RecoverPasswordViewModel? = null
+    private lateinit var model: RecoverPasswordViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
     fun setObservers() {
 
-        model?.getRecoverPasswordObservable()?.observe(this, Observer<ServerResponse<String>> { it ->
+        model.getRecoverPasswordObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
            var dialog = AlertDialogOk(R.layout.alert_dialog_ok,this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
 
@@ -48,9 +48,9 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
            }.show()
         })
 
-        model?.getErrorObservable()?.observe(this, Observer<Throwable>{ex ->
+        model.getErrorObservable().observe(this, Observer<Throwable>{ex ->
 
-            model?.manageExceptionService?.manageException(this, ex)
+            model.manageExceptionService.manageException(this, ex)
 
         })
 
@@ -60,8 +60,8 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
         findViewById<Button>(R.id.button_send).setOnClickListener { v ->
 
-            var recoverPasswordRequest = RecoverPasswordRequest(findViewById<EditText>(R.id.editText_oldpassword).text.toString(), findViewById<EditText>(R.id.editText_newpassword).text.toString(), findViewById<EditText>(R.id.editText_confirmpassword).text.toString())
-            model?.recoverPassword(recoverPasswordRequest)
+            val recoverPasswordRequest = RecoverPasswordRequest(findViewById<EditText>(R.id.editText_oldpassword).text.toString(), findViewById<EditText>(R.id.editText_newpassword).text.toString(), findViewById<EditText>(R.id.editText_confirmpassword).text.toString())
+            model.recoverPassword(recoverPasswordRequest)
         }
 
         findViewById<EditText>(R.id.editText_oldpassword).addTextChangedListener(object :
@@ -110,15 +110,15 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
         findViewById<TextView>(R.id.textView_message_error_oldpassword).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("oldPassword")}?.errorMessage
-                ?: null
+
 
         findViewById<TextView>(R.id.textView_message_error_newpassword).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("newPassword")}?.errorMessage
-                ?: null
+
 
         findViewById<TextView>(R.id.textView_message_error_confirmpassword).text =
             errors?.firstOrNull{ it -> it.fieldName.equals("confirmPassword")}?.errorMessage
-                ?: null
+
     }
 
     override fun clearEditTextAndFocus() {

@@ -28,6 +28,12 @@ class LandingActivity : BaseMenuActivity() {
             startActivity(Intent(this, CenterActivity::class.java))
 
         }
+
+        findViewById<TextView>(R.id.textView_order).setOnClickListener{view ->
+
+            startActivity(Intent(this, OrderActivity::class.java))
+
+        }
     }
 
     private fun init(){

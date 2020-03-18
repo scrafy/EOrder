@@ -10,7 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class RecoverPasswordViewModel(val recoverPasswordUseCase: IRecoverPasswordUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class RecoverPasswordViewModel(private val recoverPasswordUseCase: IRecoverPasswordUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
 
     private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 

@@ -10,7 +10,7 @@ import com.eorder.infrastructure.models.ServerResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class CatalogsByCenterViewModel(val getCatalogByCenter: IGetCatalogsByCenterUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class CatalogsByCenterViewModel(private val getCatalogByCenter: IGetCatalogsByCenterUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
 
     private val getCatalogByCentresResult: MutableLiveData<ServerResponse<List<Catalog>>> = MutableLiveData()
 

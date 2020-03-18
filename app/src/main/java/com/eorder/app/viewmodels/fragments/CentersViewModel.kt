@@ -11,7 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class CentersViewModel(val getCentersUseCase: IGetCentersUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class CentersViewModel(private val getCentersUseCase: IGetCentersUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
 

@@ -12,8 +12,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.R
+import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.IGetSearchObservable
 import com.eorder.app.interfaces.ISetActionBar
+import com.eorder.application.interfaces.IShopService
+import org.koin.android.ext.android.inject
 
 
 abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISetActionBar {
@@ -25,7 +28,7 @@ abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISe
 
     abstract fun setMenuToolbar()
 
-    override fun getSearchObservable() : LiveData<String> {
+    override fun getSearchObservable(): LiveData<String> {
         return search
     }
 
@@ -38,15 +41,34 @@ abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISe
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         setToolbarAndLateralMenu(currentToolBarMenu)
-        when(currentToolBarMenu.keys.first()){
+        when (currentToolBarMenu.keys.first()) {
 
             "product_list_menu" -> {
 
                 val itemShop = menu?.findItem(R.id.item_menu_product_list_shop)
-                itemShop?.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener{
+                itemShop?.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener {
 
 
                     override fun onMenuItemClick(item: MenuItem?): Boolean {
+
+                        val shopService by inject<IShopService>()
+
+                        if (shopService.products.isEmpty()) {
+
+                            AlertDialogOk(
+                                R.layout.alert_dialog_ok,
+                                getContext(),
+                                resources.getString(R.string.alert_dialog_shop_empty_title),
+                                resources.getString(R.string.alert_dialog_shop_empty_message),
+                                "OK"
+                            ) { dialog, i ->
+
+                                dialog.cancel()
+                            }.show()
+
+                            return true
+                        }
+
                         startActivity(Intent(getContext(), ShopActivity::class.java))
                         return true
                     }
@@ -55,7 +77,7 @@ abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISe
                 val itemSearch = menu?.findItem(R.id.item_menu_product_list_search)
                 val search = (itemSearch?.actionView as SearchView)
                 search.queryHint = resources.getString(R.string.toolbar_proudct_list_search)
-                search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         getContext().search.value = query ?: "" //= query ?: ""

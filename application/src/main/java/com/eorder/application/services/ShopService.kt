@@ -6,6 +6,11 @@ import com.eorder.application.models.Product
 class ShopService(override var products: MutableList<Product>) : IShopService {
 
 
+    override fun cleanShop() {
+        products.clear()
+    }
+
+
     override fun existProduct(productId: Int) : Boolean {
 
         return (products.firstOrNull{ p -> p.id == productId} != null)

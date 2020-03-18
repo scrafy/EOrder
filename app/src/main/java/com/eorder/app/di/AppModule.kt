@@ -1,5 +1,6 @@
 package com.eorder.app.com.eorder.app.di
 
+import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.interfaces.IManageException
 import com.eorder.app.services.ManageException
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
@@ -21,6 +22,7 @@ val appModule = module {
     viewModel { CatalogsByCenterViewModel(get(), get()) }
     viewModel { ProductsViewModel(get(), get(), get()) }
     viewModel { ShopViewModel(get()) }
+    viewModel { OrderViewModel(get()) }
 
 
 
