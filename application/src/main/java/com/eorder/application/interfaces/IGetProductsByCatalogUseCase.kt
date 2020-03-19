@@ -1,7 +1,7 @@
 package com.eorder.application.interfaces
 
-import com.eorder.application.models.Product
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.ServerResponse
 
 interface IGetProductsByCatalogUseCase {
 

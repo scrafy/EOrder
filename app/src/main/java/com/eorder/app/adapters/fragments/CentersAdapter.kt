@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.infrastructure.models.Center
+import com.eorder.domain.models.Center
 
 class CentersAdapter(private val fragment: Fragment, var centers: List<Center>) : RecyclerView.Adapter<CentersAdapter.CenterViewHolder>() {
 

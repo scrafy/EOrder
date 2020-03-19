@@ -5,11 +5,13 @@ import android.view.View
 import android.widget.*
 import com.eorder.app.R
 import com.eorder.app.adapters.ShopProductsAdapter
+import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.IShopRepaintModel
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.ShopViewModel
-import com.eorder.application.models.Product
+import com.eorder.application.extensions.toBitmap
+import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -42,12 +44,13 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
 
 
+        view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(product.imageBase64?.toBitmap())
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
             product.price.toString()
         view.findViewById<TextView>(R.id.textView_product_list_category).text =
-            product.category.name
+            product.category
         view.findViewById<TextView>(R.id.textView_product_list_name).text = product.name
         this.setAdapterListeners(
             view,
@@ -107,7 +110,7 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
 
     private fun init() {
 
-        var groups = model.getProducts().groupBy { p -> p.seller?.companyName ?: "" }
+        var groups = model.getProducts().groupBy { p -> p.category }
 
         adapter = ShopProductsAdapter(this, groups.keys.toList(), groups)
         expandable = findViewById<ExpandableListView>(R.id.expandable_shop_products)
@@ -119,7 +122,7 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
 
     private fun setProductsOnExpandable() {
 
-        val groups = model.getProducts().groupBy { p -> p.seller?.companyName ?: "" }
+        val groups = model.getProducts().groupBy { p -> p.category }
         adapter.items = groups
         adapter.groups = groups.keys.toList()
         if (model.getProducts().isEmpty())

@@ -1,6 +1,8 @@
 package com.eorder.app.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,25 +18,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.ProductAdapter
 import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
-import com.eorder.app.interfaces.IGetSearchObservable
-import com.eorder.app.interfaces.IRepaintModel
-import com.eorder.app.interfaces.ISetActionBar
-import com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
-import com.eorder.application.models.Product
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.application.extensions.toBase64
+import com.eorder.application.extensions.toBitmap
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.products_fragment.*
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import java.io.InputStream
+import java.net.URL
 
 
-class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
-
+class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
+    IToolbarSearch {
 
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
     private var products: List<Product> = listOf()
-
+    private val refreshImageProductObservable: MutableLiveData<Any> = MutableLiveData()
 
     companion object {
         var self: ProductsFragment? = null
@@ -53,20 +58,34 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
         (this.activity as IRepaintShopIcon).repaintShopIcon()
     }
 
+    override fun showMessage(message: String) {
+        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun getSearchFromToolbar(search: String) {
+        adapter.products =
+            products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
+        adapter.notifyDataSetChanged()
+    }
 
     override fun repaintModel(view: View, model: Any?) {
 
         var product = model as Product
+        var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
+        var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
+        var bm: Bitmap
+
         view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
         view.findViewById<TextView>(R.id.textView_product_list_category)
-            .setText(product.category.name)
+            .setText(product.category)
         view.findViewById<TextView>(R.id.textView_product_list_price)
             .setText(product.price.toString())
         view.findViewById<TextView>(R.id.textView_product_list_amount)
             .setText(product.amount.toString())
 
-        var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
-        var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
+        view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+            .setImageBitmap(product.imageBase64?.toBitmap())
+
 
         if (product.amount == 0) {
             amountView.background =
@@ -158,7 +177,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
 
         categories = mutableListOf()
         categories.add(this.resources.getString(R.string.product_categories))
-        products.groupBy { p -> p.category.name }.keys.forEach { s -> categories.add(s) }
+        products.groupBy { p -> p.category }.keys.forEach { s -> categories.add(s) }
 
         var categoriesAdapter = ArrayAdapter<String>(
             this.activity as Context,
@@ -185,7 +204,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
                         adapter.notifyDataSetChanged()
                     } else {
                         adapter.products =
-                            products.filter { p -> p.category.name === categories[position] }
+                            products.filter { p -> p.category === categories[position] }
                         adapter.notifyDataSetChanged()
                     }
 
@@ -244,26 +263,15 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
     fun setObservers() {
 
 
-        (this.activity as IGetSearchObservable).getSearchObservable()
-            .observe((this.activity as LifecycleOwner), Observer<String> { search ->
-
-                adapter.products =
-                    products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
-                adapter.notifyDataSetChanged()
-
-            })
-
         model.getProductsByCatalogObservable().observe(
             (this.activity as LifecycleOwner),
             Observer<ServerResponse<List<Product>>> { it ->
 
                 products = (it.serverData?.data ?: listOf())
                 adapter.products = products
-                adapter.notifyDataSetChanged()
                 setItemsSpinner()
                 setProductCurrentState()
-
-
+                setImageProduct()
             })
 
         model.getErrorObservable()
@@ -271,6 +279,21 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
 
                 model.manageExceptionService.manageException(this, ex)
             })
+    }
+
+    private fun setImageProduct() {
+
+        CoroutineScope(Dispatchers.IO).launch(this.model.handleError()) {
+
+            products.forEach { p ->
+
+                p.imageBase64 =
+                    BitmapFactory.decodeStream(URL(p.imageUrl).content as InputStream).toBase64()
+                refreshImageProductObservable.postValue("OK")
+            }
+
+        }
+
     }
 
     private fun init() {
@@ -285,6 +308,11 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener {
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        refreshImageProductObservable.observe((this.activity as LifecycleOwner), Observer { p ->
+
+            adapter.notifyDataSetChanged()
+        })
     }
 
 

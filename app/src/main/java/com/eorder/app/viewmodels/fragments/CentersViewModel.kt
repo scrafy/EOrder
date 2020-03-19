@@ -5,26 +5,29 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetCentersUseCase
-import com.eorder.infrastructure.models.Center
-import com.eorder.infrastructure.models.ServerResponse
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.eorder.application.interfaces.IShopService
+import com.eorder.domain.models.Center
+import com.eorder.domain.models.ServerResponse
+import kotlinx.coroutines.*
 
 
-class CentersViewModel(private val getCentersUseCase: IGetCentersUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class CentersViewModel(
+    private val getCentersUseCase: IGetCentersUseCase,
+    val manageExceptionService: IManageException
+) : BaseViewModel() {
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
 
-    fun getCentersResultObservable() : LiveData<ServerResponse<List<Center>>> {
+    fun getCentersResultObservable(): LiveData<ServerResponse<List<Center>>> {
 
         return getCentersResult
     }
 
     fun getCenters() {
 
-        GlobalScope.launch(this.handleError()){
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result= getCentersUseCase.getCenters()
+            var result = getCentersUseCase.getCenters()
             getCentersResult.postValue(result)
         }
     }

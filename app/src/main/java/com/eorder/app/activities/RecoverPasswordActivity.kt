@@ -15,9 +15,9 @@ import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.IManageFormErrors
 import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
-import com.eorder.application.models.RecoverPasswordRequest
+import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
@@ -60,7 +60,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
         findViewById<Button>(R.id.button_send).setOnClickListener { v ->
 
-            val recoverPasswordRequest = RecoverPasswordRequest(findViewById<EditText>(R.id.editText_oldpassword).text.toString(), findViewById<EditText>(R.id.editText_newpassword).text.toString(), findViewById<EditText>(R.id.editText_confirmpassword).text.toString())
+            val recoverPasswordRequest = RecoverPassword(findViewById<EditText>(R.id.editText_oldpassword).text.toString(), findViewById<EditText>(R.id.editText_newpassword).text.toString(), findViewById<EditText>(R.id.editText_confirmpassword).text.toString())
             model.recoverPassword(recoverPasswordRequest)
         }
 

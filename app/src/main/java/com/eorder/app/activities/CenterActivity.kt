@@ -6,7 +6,6 @@ import com.eorder.app.R
 import com.eorder.app.fragments.CentersFragment
 
 
-
 class CenterActivity : BaseMenuActivity()
 {
 

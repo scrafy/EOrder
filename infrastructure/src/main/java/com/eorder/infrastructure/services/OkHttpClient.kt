@@ -89,12 +89,5 @@ class OkHttpClient : IHttpClient {
         return client.newCall(request).execute().body?.string()
     }
 
-
-   /* private fun internet() : Boolean{
-
-      //  var t = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        var n =  t.activeNetworkInfo.isConnected
-    }*/
 }
 

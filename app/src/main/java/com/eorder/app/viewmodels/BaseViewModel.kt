@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-abstract class BaseViewModel() : ViewModel(){
+abstract class BaseViewModel : ViewModel(){
 
     protected open val error: MutableLiveData<Throwable> = MutableLiveData()
 

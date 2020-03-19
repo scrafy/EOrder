@@ -8,7 +8,7 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.eorder.app.R
 import com.eorder.app.interfaces.IShopRepaintModel
-import com.eorder.application.models.Product
+import com.eorder.domain.models.Product
 
 
 class ShopProductsAdapter(

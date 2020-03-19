@@ -9,28 +9,23 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.eorder.app.R
 import com.eorder.app.dialogs.AlertDialogOk
-import com.eorder.app.interfaces.IGetSearchObservable
+import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.application.interfaces.IShopService
 import org.koin.android.ext.android.inject
 
 
-abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISetActionBar {
+abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
 
 
     protected var currentToolBarMenu: MutableMap<String, Int> = mutableMapOf()
-    private val search: MutableLiveData<String> = MutableLiveData()
 
 
     abstract fun setMenuToolbar()
 
-    override fun getSearchObservable(): LiveData<String> {
-        return search
-    }
+
 
     override fun setActionBar(menu: MutableMap<String, Int>) {
         currentToolBarMenu = menu
@@ -53,7 +48,7 @@ abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISe
 
                         val shopService by inject<IShopService>()
 
-                        if (shopService.products.isEmpty()) {
+                        if (shopService.order.products.isEmpty()) {
 
                             AlertDialogOk(
                                 R.layout.alert_dialog_ok,
@@ -80,12 +75,12 @@ abstract class BaseMenuActivity : AppCompatActivity(), IGetSearchObservable, ISe
                 search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        getContext().search.value = query ?: "" //= query ?: ""
+                        (getContext() as IToolbarSearch).getSearchFromToolbar(query ?: "")
                         return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        getContext().search.value = newText ?: ""
+                        (getContext() as IToolbarSearch).getSearchFromToolbar(newText ?: "")
                         return true
                     }
 

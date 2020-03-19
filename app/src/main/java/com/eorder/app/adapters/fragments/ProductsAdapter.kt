@@ -9,7 +9,7 @@ import com.eorder.app.R
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.interfaces.IRepaintModel
-import com.eorder.application.models.Product
+import com.eorder.domain.models.Product
 
 
 class ProductAdapter(var products: List<Product>, private val fragment: ProductsFragment) :

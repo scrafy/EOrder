@@ -1,7 +1,7 @@
 package com.eorder.application.interfaces
 
-import com.eorder.infrastructure.models.Center
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.domain.models.Center
+import com.eorder.domain.models.ServerResponse
 
 interface IGetCentersUseCase {
 

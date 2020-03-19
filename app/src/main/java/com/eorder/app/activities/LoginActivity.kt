@@ -14,9 +14,9 @@ import com.eorder.app.R
 import com.eorder.app.interfaces.IManageFormErrors
 import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
-import com.eorder.application.models.LoginRequest
+import com.eorder.domain.models.Login
 import com.eorder.domain.models.ValidationError
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
 
         findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
 
-            val loginRequest = LoginRequest(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
+            val loginRequest = Login(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
             model.login(loginRequest)
         }
 

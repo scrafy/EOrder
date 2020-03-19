@@ -1,10 +1,11 @@
 package com.eorder.application.interfaces
 
-import com.eorder.application.models.Product
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.Order
 
 interface IShopService {
 
-    var products: MutableList<Product>
+    var order: Order
 
     fun cleanShop()
     fun addProductToShop(product:Product)

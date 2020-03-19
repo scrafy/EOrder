@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.interfaces.IManageException
 import com.eorder.application.interfaces.ILoginUseCase
-import com.eorder.application.models.LoginRequest
-import com.eorder.infrastructure.models.ServerResponse
-import kotlinx.coroutines.GlobalScope
+import com.eorder.domain.models.Login
+import com.eorder.domain.models.ServerResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -20,9 +21,9 @@ class LoginViewModel(private val loginUseCase: ILoginUseCase, val manageExceptio
         return loginResult
     }
 
-     fun login(loginRequest: LoginRequest) {
+     fun login(loginRequest: Login) {
 
-        GlobalScope.launch(this.handleError()){
+         CoroutineScope(Dispatchers.IO).launch(this.handleError()){
 
                 var result =  loginUseCase.login(loginRequest)
                 loginResult.postValue(result)

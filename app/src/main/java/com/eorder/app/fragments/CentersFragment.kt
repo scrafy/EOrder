@@ -1,6 +1,5 @@
 package com.eorder.app.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,16 +15,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.activities.CenterActivity
 import com.eorder.app.adapters.fragments.CentersAdapter
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IShowSnackBarMessage
-import com.eorder.app.viewmodels.fragments.CatalogsByCenterViewModel
+import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.CentersViewModel
-import com.eorder.infrastructure.models.Center
-import com.eorder.infrastructure.models.ServerResponse
+import com.eorder.domain.models.Center
+import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -36,7 +34,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     private lateinit var adapter: CentersAdapter
 
 
-    private lateinit var viewModel: CatalogsByCenterViewModel
+    private lateinit var viewModel: CatalogsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +46,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     }
 
     override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,7 +67,6 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
             .setOnClickListener { view ->
 
                 (this.activity as ISelectCenter).selectCenter(center.id)
-
             }
 
         view.findViewById<ImageView>(R.id.imgView_center_card_view_info)
@@ -87,13 +84,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         view.findViewById<TextView>(R.id.textView_email).setText(center.email)
         view.findViewById<TextView>(R.id.textView_address).setText(center.address)
 
-        if (center.enabled) {
-            view.findViewById<TextView>(R.id.textView_enabled).setText(R.string.enabled)
-            view.findViewById<TextView>(R.id.textView_enabled).setTextColor(Color.GREEN)
-        } else {
-            view.findViewById<TextView>(R.id.textView_enabled).setText(R.string.disabled)
-            view.findViewById<TextView>(R.id.textView_enabled).setTextColor(Color.RED)
-        }
+
     }
 
     fun setObservers() {

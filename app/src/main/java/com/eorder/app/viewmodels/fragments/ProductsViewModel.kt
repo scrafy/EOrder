@@ -6,46 +6,54 @@ import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetProductsByCatalogUseCase
 import com.eorder.application.interfaces.IShopService
-import com.eorder.application.models.Product
-import com.eorder.infrastructure.models.ServerResponse
-import kotlinx.coroutines.GlobalScope
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.ServerResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class ProductsViewModel(private val getProductsByCatalog: IGetProductsByCatalogUseCase, val manageExceptionService: IManageException, private val shopService: IShopService) : BaseViewModel() {
+class ProductsViewModel(
 
-    private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
+    private val getProductsByCatalogUseCase: IGetProductsByCatalogUseCase,
+    val manageExceptionService: IManageException,
+    private val shopService: IShopService
 
-    fun getProductsByCatalogObservable() : LiveData<ServerResponse<List<Product>>> {
+) : BaseViewModel() {
+
+    private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> =
+        MutableLiveData()
+
+    fun getProductsByCatalogObservable(): LiveData<ServerResponse<List<Product>>> {
 
         return getProductsByCatalogResult
     }
 
-    fun getProductsByCatalog(catalogId:Int) {
+    fun getProductsByCatalog(catalogId: Int) {
 
-        GlobalScope.launch(this.handleError()){
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result= getProductsByCatalog.getProductsByCatalog(catalogId)
+            var result = getProductsByCatalogUseCase.getProductsByCatalog(catalogId)
             getProductsByCatalogResult.postValue(result)
         }
     }
 
-    fun addProductToShop(product:Product){
+    fun addProductToShop(product: Product) {
         shopService.addProductToShop(product)
     }
 
-    fun removeProductFromShop(product:Product){
+    fun removeProductFromShop(product: Product) {
         shopService.removeProductFromShop(product)
     }
 
-    fun existProduct(productId:Int) = shopService.existProduct(productId)
+    fun existProduct(productId: Int) = shopService.existProduct(productId)
 
     fun cleanShop() = shopService.cleanShop()
 
-    fun getProductsFromShop() = shopService.products
+    fun getProductsFromShop() = shopService.order.products
 
-    fun setProductsToShop(products:MutableList<Product>) {
-        shopService.products = products
+    fun setProductsToShop(products: MutableList<Product>) {
+        shopService.order.products = products
     }
 
 }

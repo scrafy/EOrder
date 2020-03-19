@@ -1,7 +1,7 @@
 package com.eorder.app.interfaces
 
 import android.view.View
-import com.eorder.application.models.Product
+import com.eorder.domain.models.Product
 
 interface IShopRepaintModel {
 

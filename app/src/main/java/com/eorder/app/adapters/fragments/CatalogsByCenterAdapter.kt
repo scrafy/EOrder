@@ -1,6 +1,6 @@
 package com.eorder.app.adapters.fragments
 
-import com.eorder.infrastructure.models.Catalog
+import com.eorder.domain.models.Catalog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +36,7 @@ class CatalogsByCenterAdapter(private val fragment:Fragment, var catalogs: List<
 
     class CatalogViewHolder(private val view: View, private val fragment: Fragment) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var catalog:Catalog
+        private lateinit var catalog: Catalog
 
 
         fun setModel(catalog: Catalog){

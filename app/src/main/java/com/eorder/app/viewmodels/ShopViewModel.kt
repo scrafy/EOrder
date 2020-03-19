@@ -2,14 +2,14 @@ package com.eorder.app.viewmodels
 
 import com.eorder.application.extensions.round
 import com.eorder.application.interfaces.IShopService
-import com.eorder.application.models.Product
+import com.eorder.domain.models.Product
 
 
 class ShopViewModel(private val shopService: IShopService) : BaseViewModel() {
 
     fun getProducts() : List<Product>{
 
-        return shopService.products
+        return shopService.order.products
     }
 
     fun getAmounfOfProducts(): Int{
@@ -33,4 +33,6 @@ class ShopViewModel(private val shopService: IShopService) : BaseViewModel() {
 
         shopService.removeProductFromShop(product)
     }
+
+
 }
