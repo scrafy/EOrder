@@ -18,10 +18,7 @@ class CentersViewModel(
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
 
-    fun getCentersResultObservable(): LiveData<ServerResponse<List<Center>>> {
-
-        return getCentersResult
-    }
+    fun getCentersResultObservable(): LiveData<ServerResponse<List<Center>>> = getCentersResult
 
     fun getCenters() {
 

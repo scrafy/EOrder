@@ -46,7 +46,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,7 +66,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         view.findViewById<CardView>(R.id.cardView_center_list_item)
             .setOnClickListener { view ->
 
-                (this.activity as ISelectCenter).selectCenter(center.id)
+                (context as ISelectCenter).selectCenter(center)
             }
 
         view.findViewById<ImageView>(R.id.imgView_center_card_view_info)
@@ -90,7 +90,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     fun setObservers() {
 
         model.getCentersResultObservable().observe(
-            (this.activity as LifecycleOwner),
+            (context as LifecycleOwner),
             Observer<ServerResponse<List<Center>>> { it ->
 
                 adapter.centers = it.serverData?.data ?: mutableListOf()
@@ -98,7 +98,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
             })
 
         model.getErrorObservable()
-            ?.observe((this.activity as LifecycleOwner), Observer<Throwable> { ex ->
+            ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this, ex)
             })

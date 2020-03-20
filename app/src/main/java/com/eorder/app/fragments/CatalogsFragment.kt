@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.adapters.fragments.CatalogsByCenterAdapter
+import com.eorder.app.adapters.fragments.CatalogsAdapter
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -32,10 +32,7 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
 
     private lateinit var model: CatalogsViewModel
     private var recyclerView : RecyclerView? = null
-    private lateinit var adapter:CatalogsByCenterAdapter
-    private lateinit var viewModel: CatalogsViewModel
-
-
+    private lateinit var adapter:CatalogsAdapter
 
 
     override fun onCreateView(
@@ -52,7 +49,7 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
 
         view.findViewById<CardView>(R.id.cardView_catalog_fragment_item).setOnClickListener{v ->
 
-            (this.activity as ISelectCatalog).selectCatalog(catalog.id)
+            (context as ISelectCatalog).selectCatalog(catalog.id)
         }
     }
 
@@ -82,18 +79,18 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     fun setObservers(){
 
-        model.getCatalogBySellersObservable().observe((this.activity as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> { it ->
+        model.getCatalogBySellersObservable().observe((context as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> { it ->
 
             adapter.catalogs = it.serverData?.data ?: mutableListOf()
             adapter.notifyDataSetChanged()
         })
 
-       model.getErrorObservable().observe((this.activity as LifecycleOwner), Observer<Throwable>{ex ->
+       model.getErrorObservable().observe((context as LifecycleOwner), Observer<Throwable>{ex ->
 
            model.manageExceptionService.manageException(this, ex)
 
@@ -103,7 +100,7 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
     private fun init(){
 
         val layout = LinearLayoutManager(this.context)
-        adapter =  CatalogsByCenterAdapter(
+        adapter =  CatalogsAdapter(
             this,
             listOf()
         )

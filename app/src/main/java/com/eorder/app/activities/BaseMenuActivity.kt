@@ -51,7 +51,6 @@ abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
                         if (shopService.order.products.isEmpty()) {
 
                             AlertDialogOk(
-                                R.layout.alert_dialog_ok,
                                 getContext(),
                                 resources.getString(R.string.alert_dialog_shop_empty_title),
                                 resources.getString(R.string.alert_dialog_shop_empty_message),

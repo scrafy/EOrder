@@ -16,10 +16,7 @@ class RecoverPasswordViewModel(private val recoverPasswordUseCase: IRecoverPassw
     private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
-    fun getRecoverPasswordObservable() : LiveData<ServerResponse<String>>{
-
-        return recoverPasswordResult
-    }
+    fun getRecoverPasswordObservable() : LiveData<ServerResponse<String>> = recoverPasswordResult
 
      fun recoverPassword(recoverPasswordRequest: RecoverPassword) {
 

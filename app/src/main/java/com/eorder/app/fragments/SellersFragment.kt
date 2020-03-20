@@ -44,7 +44,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,7 +70,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         view.findViewById<CardView>(R.id.cardView_sellers_list_item)
             .setOnClickListener { view ->
 
-                (this.activity as ISelectSeller).selectSeller(seller.id)
+                (context as ISelectSeller).selectSeller(seller)
             }
 
 
@@ -85,7 +85,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     fun setObservers() {
 
         model.getSellersByCenterResultObservable().observe(
-            (this.activity as LifecycleOwner),
+            (context as LifecycleOwner),
             Observer<ServerResponse<List<Seller>>> { it ->
 
                 adapter.sellers = it.serverData?.data ?: mutableListOf()
@@ -93,7 +93,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
             })
 
         model.getErrorObservable()
-            ?.observe((this.activity as LifecycleOwner), Observer<Throwable> { ex ->
+            ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this, ex)
             })

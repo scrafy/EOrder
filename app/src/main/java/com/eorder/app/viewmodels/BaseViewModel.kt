@@ -10,9 +10,7 @@ abstract class BaseViewModel : ViewModel(){
     protected open val error: MutableLiveData<Throwable> = MutableLiveData()
 
 
-    fun getErrorObservable() : LiveData<Throwable>{
-         return error
-    }
+    fun getErrorObservable() : LiveData<Throwable> = error
 
     fun handleError(): CoroutineExceptionHandler {
         return CoroutineExceptionHandler { _, ex ->

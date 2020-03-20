@@ -1,13 +1,20 @@
 package com.eorder.application.services
 
 import com.eorder.application.interfaces.IShopService
+import com.eorder.domain.models.Center
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
+import com.eorder.domain.models.Seller
 
-class ShopService(override var order: Order) : IShopService {
+class ShopService : IShopService {
 
+    override var order: Order = Order(Center(), Seller())
 
     override fun cleanShop() {
+        order = Order(Center(), Seller())
+    }
+
+    override fun cleanProducts() {
         order.products.clear()
     }
 

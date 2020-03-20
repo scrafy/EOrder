@@ -1,6 +1,5 @@
 package com.eorder.app.fragments
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -40,26 +39,22 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
     private var products: List<Product> = listOf()
     private val refreshImageProductObservable: MutableLiveData<Any> = MutableLiveData()
 
-    companion object {
-        var self: ProductsFragment? = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        self = this
+
         return inflater.inflate(R.layout.products_fragment, container, false)
     }
 
     override fun onStart() {
         super.onStart()
         adapter.notifyDataSetChanged()
-        (this.activity as IRepaintShopIcon).repaintShopIcon()
+        (context as IRepaintShopIcon).repaintShopIcon()
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun getSearchFromToolbar(search: String) {
@@ -89,9 +84,9 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
 
         if (product.amount == 0) {
             amountView.background =
-                this.activity?.getDrawable(R.drawable.shape_amount_zero_products)
+                context?.getDrawable(R.drawable.shape_amount_zero_products)
         } else {
-            amountView.background = this.activity?.getDrawable(R.drawable.shape_amount_products)
+            amountView.background = context?.getDrawable(R.drawable.shape_amount_products)
         }
 
         if (product.favorite) {
@@ -111,7 +106,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
 
         var map = mutableMapOf<String, Int>()
         map["product_list_menu"] = R.menu.product_list_menu
-        (this.activity as ISetActionBar)?.setActionBar(map)
+        (context as ISetActionBar)?.setActionBar(map)
         model = getViewModel()
         init()
         setObservers()
@@ -137,7 +132,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
                 model.removeProductFromShop(product)
 
             adapter.notifyDataSetChanged()
-            (this.activity as IRepaintShopIcon).repaintShopIcon()
+            (context as IRepaintShopIcon).repaintShopIcon()
 
         }
 
@@ -149,7 +144,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
                 model.addProductToShop(product)
 
             adapter.notifyDataSetChanged()
-            (this.activity as IRepaintShopIcon).repaintShopIcon()
+            (context as IRepaintShopIcon).repaintShopIcon()
 
         }
 
@@ -158,15 +153,13 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
             adapter.notifyDataSetChanged()
 
         }
-
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
-        (this.activity as ISetActionBar)?.setActionBar(map)
+        (context as ISetActionBar)?.setActionBar(map)
     }
 
 
@@ -180,7 +173,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         products.groupBy { p -> p.category }.keys.forEach { s -> categories.add(s) }
 
         var categoriesAdapter = ArrayAdapter<String>(
-            this.activity as Context,
+            context!!,
             android.R.layout.simple_spinner_item,
             categories
         )
@@ -218,7 +211,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         order.add(this.resources.getString(R.string.product_order_by_price_high))
 
         var orderAdapter = ArrayAdapter<String>(
-            this.activity as Context,
+            context!!,
             android.R.layout.simple_spinner_item,
             order
         )
@@ -264,7 +257,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
 
 
         model.getProductsByCatalogObservable().observe(
-            (this.activity as LifecycleOwner),
+            (context as LifecycleOwner),
             Observer<ServerResponse<List<Product>>> { it ->
 
                 products = (it.serverData?.data ?: listOf())
@@ -275,7 +268,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
             })
 
         model.getErrorObservable()
-            .observe((this.activity as LifecycleOwner), Observer<Throwable> { ex ->
+            .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this, ex)
             })
@@ -309,7 +302,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
 
-        refreshImageProductObservable.observe((this.activity as LifecycleOwner), Observer { p ->
+        refreshImageProductObservable.observe((context as LifecycleOwner), Observer { p ->
 
             adapter.notifyDataSetChanged()
         })
@@ -320,7 +313,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
 
         var aux = mutableListOf<Product>()
 
-        if (!model.getProductsFromShop().isEmpty()) {
+        if (model.getProductsFromShop().isNotEmpty()) {
 
             val productsShop = model.getProductsFromShop()
             this.products.forEach { p ->
@@ -334,7 +327,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
                 }
 
             }
-            model.cleanShop()
+            model.cleanProducts()
             model.setProductsToShop(aux)
 
         }

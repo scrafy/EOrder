@@ -16,10 +16,7 @@ class LoginViewModel(private val loginUseCase: ILoginUseCase, val manageExceptio
     private val loginResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
-    fun getloginResultsObservable() : LiveData<ServerResponse<String>>{
-
-        return loginResult
-    }
+    fun getloginResultsObservable() : LiveData<ServerResponse<String>> = loginResult
 
      fun login(loginRequest: Login) {
 

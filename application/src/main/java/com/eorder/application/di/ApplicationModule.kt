@@ -5,7 +5,9 @@ import com.eorder.application.services.JwtTokenService
 import com.eorder.application.services.ShopService
 import com.eorder.application.usecases.*
 import com.eorder.domain.interfaces.IValidationModelService
+import com.eorder.domain.models.Center
 import com.eorder.domain.models.Order
+import com.eorder.domain.models.Seller
 import com.eorder.domain.services.ValidationModelService
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -26,8 +28,6 @@ val applicationModule = module {
     /*SERVICES*/
     single { ValidationModelService() } bind IValidationModelService::class
     single { JwtTokenService() } bind IJwtTokenService::class
-    single { ShopService(get()) } bind IShopService::class
-
-    factory { Order(0,0) }
+    single { ShopService() } bind IShopService::class
 
 }

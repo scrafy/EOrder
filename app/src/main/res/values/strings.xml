@@ -44,22 +44,27 @@
     <string name="toolbar_proudct_list_search">Search product...</string>
 
 
-    <!--SHOP-->
-    <string name="textview_shop_total_products">Total of products:</string>
+    <!--SHOP ACTIVITY-->
+    <string name="textview_shop_total_products">Total of products</string>
     <string name="textview_shop_tax_base">Tax Base:</string>
     <string name="textview_shop_total_taxes">Total Taxes:</string>
     <string name="textview_shop_total">Total:</string>
+    <string name="textview_shop_center">Center:</string>
+    <string name="textview_shop_seller">Seller:</string>
     <string name="textview_shop_order_summary">Order Summary</string>
     <string name="textview_shop_product_list">Product List</string>
     <string name="button_shop_confirm">Confirm order</string>
-
-
-    <!--ALERTS DIALOGS-->
     <string name="alert_dialog_shop_empty_title">Shop</string>
     <string name="alert_dialog_shop_empty_message">The shop is empty, please, add a product...</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--ORDER ACTIVITY-->
+    <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
+    <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
+    <string name="alert_dialog_order_activity_change_seller_button_confirm">Change seller</string>
+    <string name="alert_dialog_order_activity_button_deny">No change</string>
+    <string name="alert_dialog_order_activity_change_center_button_confirm">Change center</string>
+
 
 
 </resources>

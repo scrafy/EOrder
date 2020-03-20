@@ -24,10 +24,7 @@ class ProductsViewModel(
     private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> =
         MutableLiveData()
 
-    fun getProductsByCatalogObservable(): LiveData<ServerResponse<List<Product>>> {
-
-        return getProductsByCatalogResult
-    }
+    fun getProductsByCatalogObservable(): LiveData<ServerResponse<List<Product>>> = getProductsByCatalogResult
 
     fun getProductsByCatalog(catalogId: Int) {
 
@@ -38,20 +35,11 @@ class ProductsViewModel(
         }
     }
 
-    fun addProductToShop(product: Product) {
-        shopService.addProductToShop(product)
-    }
-
-    fun removeProductFromShop(product: Product) {
-        shopService.removeProductFromShop(product)
-    }
-
+    fun addProductToShop(product: Product) = shopService.addProductToShop(product)
+    fun removeProductFromShop(product: Product) =  shopService.removeProductFromShop(product)
     fun existProduct(productId: Int) = shopService.existProduct(productId)
-
-    fun cleanShop() = shopService.cleanShop()
-
+    fun cleanProducts() = shopService.cleanProducts()
     fun getProductsFromShop() = shopService.order.products
-
     fun setProductsToShop(products: MutableList<Product>) {
         shopService.order.products = products
     }

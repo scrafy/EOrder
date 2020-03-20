@@ -1,6 +1,8 @@
 package com.eorder.app.com.eorder.app.interfaces
 
+import com.eorder.domain.models.Seller
+
 interface ISelectSeller {
 
-    fun selectSeller(sellerId:Int)
+    fun selectSeller(seller: Seller)
 }

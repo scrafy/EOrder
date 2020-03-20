@@ -44,7 +44,8 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
 
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(product.imageBase64?.toBitmap())
+        view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+            .setImageBitmap(product.imageBase64?.toBitmap())
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
@@ -135,6 +136,8 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         findViewById<TextView>(R.id.textView_shop_amount_tax_base).setText(model.getTotalTaxBaseAmount().toString() + "€")
         findViewById<TextView>(R.id.textView_shop_amount_total_taxes).setText(model.getTotalTaxesAmount().toString() + "€")
         findViewById<TextView>(R.id.textView_shop_amount_total).setText(model.getTotalAmount().toString() + "€")
+        findViewById<TextView>(R.id.textView_shop_center).text = model.getCenterName()
+        findViewById<TextView>(R.id.textView_shop_seller).text = model.getSellerName()
 
     }
 
@@ -143,11 +146,11 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         if (model.getProducts().isEmpty()) {
 
             var dialog = AlertDialogOk(
-                R.layout.alert_dialog_ok,
                 this,
                 "Shop",
                 "The shop is empty. Please add a product...",
                 "OK"
+
             ) { d, i ->
 
                 this.onBackPressed()

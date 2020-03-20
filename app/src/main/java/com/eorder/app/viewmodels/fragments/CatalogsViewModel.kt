@@ -14,10 +14,7 @@ class CatalogsViewModel(private val getCatalogBySellerUseCase: IGetCatalogsBySel
     private val getCatalogBySellersResult: MutableLiveData<ServerResponse<List<Catalog>>> = MutableLiveData()
 
 
-    fun getCatalogBySellersObservable() : LiveData<ServerResponse<List<Catalog>>> {
-
-        return getCatalogBySellersResult
-    }
+    fun getCatalogBySellersObservable() : LiveData<ServerResponse<List<Catalog>>> = getCatalogBySellersResult
 
     fun getCatalogBySeller(sellerId: Int) {
 

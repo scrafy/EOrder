@@ -40,7 +40,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSna
 
         model.getRecoverPasswordObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
-           var dialog = AlertDialogOk(R.layout.alert_dialog_ok,this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
+           var dialog = AlertDialogOk(this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
 
                val intent = Intent(this, LoginActivity::class.java)
                startActivity(intent)

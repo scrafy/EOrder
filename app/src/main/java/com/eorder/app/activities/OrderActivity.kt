@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.Toolbar
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
 import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
@@ -14,10 +15,13 @@ import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.IToolbarSearch
+import com.eorder.domain.models.Center
+import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon, IToolbarSearch, ISelectSeller {
+class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
+    IToolbarSearch, ISelectSeller {
 
     private lateinit var model: OrderViewModel
 
@@ -32,7 +36,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     override fun repaintShopIcon() {
 
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        if ( !model.getProductsFromShop().isEmpty() ) {
+        if (!model.getProductsFromShop().isEmpty()) {
 
             val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
             menuItem?.setIcon(R.drawable.ic_white_full_order)
@@ -44,7 +48,9 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun getSearchFromToolbar(search: String) {
 
-        (this.supportFragmentManager.fragments.first() as IToolbarSearch).getSearchFromToolbar(search)
+        (this.supportFragmentManager.fragments.first() as IToolbarSearch).getSearchFromToolbar(
+            search
+        )
     }
 
     override fun setMenuToolbar() {
@@ -56,38 +62,64 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         super.onCreateOptionsMenu(menu)
-        if ( menu?.findItem(R.id.item_menu_product_list_shop) != null ){
+        if (menu?.findItem(R.id.item_menu_product_list_shop) != null) {
             this.repaintShopIcon()
         }
         return true
     }
 
-    override fun selectCenter(centerId: Int) {
+    override fun selectCenter(center: Center) {
 
-        var fragment = SellersFragment()
-        var args = Bundle()
+        if (model.isPossibleChangeCenter(center)) {
 
-        args.putInt("centerId", centerId)
-        fragment.arguments = args
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linear_layout_center_fragment_container, fragment)
-            .addToBackStack(null).commit()
+            loadSellersFragment(center)
 
-        model.addCenterToOrder(centerId)
+        } else {
+            AlertDialogQuestion(
+                this,
+                "Shop",
+                getString(R.string.alert_dialog_order_activity_change_center).format(model.getCurrentOrderCenter().center_name,center.center_name),
+                resources.getString(R.string.alert_dialog_order_activity_change_center_button_confirm),
+                resources.getString(R.string.alert_dialog_order_activity_button_deny),
+                { d, i ->
+
+                    model.cleanShop()
+                    loadSellersFragment(center)
+
+                },
+                { d, i ->
+
+
+                }).show()
+        }
+
     }
 
-    override fun selectSeller(sellerId: Int) {
+    override fun selectSeller(seller: Seller) {
 
-        var fragment = CatalogsFragment()
-        var args = Bundle()
+        if (model.isPossibleChangeSeller(seller)) {
 
-        args.putInt("sellerId", sellerId)
-        fragment.arguments = args
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linear_layout_center_fragment_container, fragment)
-            .addToBackStack(null).commit()
+            loadCatalogsFragment(seller)
 
-        model.addSellerToOrder(sellerId)
+        } else {
+            AlertDialogQuestion(
+                this,
+                "Shop",
+                 getString(R.string.alert_dialog_order_activity_change_seller).format(model.getCurrentOrderSeller().companyName,seller.companyName),
+                resources.getString(R.string.alert_dialog_order_activity_change_seller_button_confirm),
+                resources.getString(R.string.alert_dialog_order_activity_button_deny),
+                { d, i ->
+
+                    model.cleanShop()
+                    loadCatalogsFragment(seller)
+
+                },
+                { d, i ->
+
+
+                }).show()
+        }
+
     }
 
     override fun selectCatalog(catalogId: Int) {
@@ -105,6 +137,33 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
         supportFragmentManager.beginTransaction()
             .add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
+    }
+
+    private fun loadSellersFragment(center: Center) {
+
+        var fragment = SellersFragment()
+        var args = Bundle()
+        args.putInt("centerId", center.id!!)
+        fragment.arguments = args
+        this.supportFragmentManager.beginTransaction()
+            .replace(R.id.linear_layout_center_fragment_container, fragment)
+            .addToBackStack(null).commit()
+
+        model.addCenterToOrder(center)
+    }
+
+    private fun loadCatalogsFragment(seller: Seller) {
+
+        var fragment = CatalogsFragment()
+        var args = Bundle()
+
+        args.putInt("sellerId", seller.id!!)
+        fragment.arguments = args
+        this.supportFragmentManager.beginTransaction()
+            .replace(R.id.linear_layout_center_fragment_container, fragment)
+            .addToBackStack(null).commit()
+
+        model.addSellerToOrder(seller)
     }
 
 }

@@ -11,7 +11,7 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 
 
-class CatalogsByCenterAdapter(private val fragment:Fragment, var catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsByCenterAdapter.CatalogViewHolder>() {
+class CatalogsAdapter(private val fragment:Fragment, var catalogs: List<Catalog>) : RecyclerView.Adapter<CatalogsAdapter.CatalogViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {

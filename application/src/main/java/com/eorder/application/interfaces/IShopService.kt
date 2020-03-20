@@ -5,9 +5,10 @@ import com.eorder.domain.models.Order
 
 interface IShopService {
 
-    var order: Order
+    var order:Order
 
     fun cleanShop()
+    fun cleanProducts()
     fun addProductToShop(product:Product)
     fun removeProductFromShop(product:Product)
     fun getAmounfOfProducts(): Int
