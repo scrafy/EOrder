@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetSellersByCenterUseCase
+import com.eorder.application.interfaces.ILoadImagesService
+import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -13,8 +15,9 @@ import kotlinx.coroutines.launch
 
 class SellersViewModel(
     private val getSellersByCenterUseCase: IGetSellersByCenterUseCase,
-    val manageExceptionService: IManageException
-) : BaseViewModel() {
+    val manageExceptionService: IManageException,
+    private val loadImageService: ILoadImagesService
+    ) : BaseViewModel() {
 
     private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> = MutableLiveData()
 
@@ -31,5 +34,8 @@ class SellersViewModel(
             getSellersByCenterResult.postValue(result)
         }
     }
+
+    fun loadImages(list:List<UrlLoadedImage>) = loadImageService.loadImages(list)
+    fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
 }
 

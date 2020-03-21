@@ -65,6 +65,15 @@
     <string name="alert_dialog_order_activity_button_deny">No change</string>
     <string name="alert_dialog_order_activity_change_center_button_confirm">Change center</string>
 
+    <!--CATALOGS FRAGMENT-->
+    <string name="catalog_fragment_number_of_products">%d products</string>
+    <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>
+
+    <!--CENTERS FRAGMENT-->
+    <string name="center_fragment_choose_center">Select a center</string>
+
+    <!--SELLERS FRAGMENT-->
+    <string name="seller_fragment_choose_seller">Select a seller</string>
 
 
 </resources>

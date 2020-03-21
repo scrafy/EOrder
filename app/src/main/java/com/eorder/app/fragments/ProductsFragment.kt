@@ -1,7 +1,6 @@
 package com.eorder.app.fragments
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,15 +17,13 @@ import com.eorder.app.adapters.fragments.ProductAdapter
 import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
-import com.eorder.application.extensions.toBase64
 import com.eorder.application.extensions.toBitmap
+import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.products_fragment.*
-import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.io.InputStream
-import java.net.URL
+import pl.droidsonroids.gif.GifDrawable
 
 
 class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
@@ -37,7 +33,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
     private var products: List<Product> = listOf()
-    private val refreshImageProductObservable: MutableLiveData<Any> = MutableLiveData()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +74,16 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         view.findViewById<TextView>(R.id.textView_product_list_amount)
             .setText(product.amount.toString())
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
-            .setImageBitmap(product.imageBase64?.toBitmap())
+
+        if (product.imageBase64 == null){
+
+            view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+
+        }else{
+            view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+                .setImageBitmap(product.imageBase64?.toBitmap())
+        }
 
 
         if (product.amount == 0) {
@@ -90,10 +94,10 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         }
 
         if (product.favorite) {
-            heart.setBackgroundResource(R.drawable.ic_purple_corazon)
+            heart.setBackgroundResource(R.drawable.ic_corazon)
 
         } else {
-            heart.setBackgroundResource(R.drawable.ic_corazon_purple_outline)
+            heart.setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
         amountView.setText(product.amount.toString())
@@ -118,7 +122,6 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
             //TODO show snackbar showing message error
         }
     }
-
 
     override fun setAdapterListeners(view: View, obj: Any?) {
 
@@ -264,7 +267,21 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
                 adapter.products = products
                 setItemsSpinner()
                 setProductCurrentState()
-                setImageProduct()
+                adapter.notifyDataSetChanged()
+                var items = products.filter{p -> p.imageUrl != null}.map { p ->
+
+                    UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
+                }
+
+                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+
+                    items.forEach { item ->
+
+                        this.products.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
+                    }
+                    adapter.notifyDataSetChanged()
+                })
+
             })
 
         model.getErrorObservable()
@@ -272,21 +289,11 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
 
                 model.manageExceptionService.manageException(this, ex)
             })
-    }
 
-    private fun setImageProduct() {
+        model.getLoadImageErrorObservable().observe((context as LifecycleOwner), Observer { ex ->
 
-        CoroutineScope(Dispatchers.IO).launch(this.model.handleError()) {
-
-            products.forEach { p ->
-
-                p.imageBase64 =
-                    BitmapFactory.decodeStream(URL(p.imageUrl).content as InputStream).toBase64()
-                refreshImageProductObservable.postValue("OK")
-            }
-
-        }
-
+            model.manageExceptionService.manageException(this, ex)
+        })
     }
 
     private fun init() {
@@ -302,10 +309,6 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
 
-        refreshImageProductObservable.observe((context as LifecycleOwner), Observer { p ->
-
-            adapter.notifyDataSetChanged()
-        })
     }
 
 

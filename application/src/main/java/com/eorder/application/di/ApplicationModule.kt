@@ -2,6 +2,7 @@ package com.eorder.application.di
 
 import com.eorder.application.interfaces.*
 import com.eorder.application.services.JwtTokenService
+import com.eorder.application.services.LoadImagesService
 import com.eorder.application.services.ShopService
 import com.eorder.application.usecases.*
 import com.eorder.domain.interfaces.IValidationModelService
@@ -29,5 +30,5 @@ val applicationModule = module {
     single { ValidationModelService() } bind IValidationModelService::class
     single { JwtTokenService() } bind IJwtTokenService::class
     single { ShopService() } bind IShopService::class
-
+    factory { LoadImagesService() } bind ILoadImagesService::class
 }

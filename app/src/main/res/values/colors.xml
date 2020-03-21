@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#9C27B0</color>
-    <color name="colorPrimaryDark">#7B1FA2</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorPrimary">#3979FF</color>
+    <color name="colorPrimaryDark">#122646</color>
+    <color name="colorAccent">#F68E13</color>
 
 
     <color name="primaryText">#212121</color>
@@ -11,7 +11,6 @@
     <color name="dividerColor">#BDBDBD</color>
     <color name="text_icons">#FFFFFF</color>
     <color name="lightPrimaryColor">#E1BEE7</color>
-
     <color name="zero_amount_products">#cccbc7</color>
 
 </resources>

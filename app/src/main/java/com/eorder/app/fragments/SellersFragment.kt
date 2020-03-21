@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -21,15 +22,20 @@ import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.SellersViewModel
+import com.eorder.application.extensions.toBitmap
+import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.models.Center
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import pl.droidsonroids.gif.GifDrawable
 
 class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
 
     private lateinit var model: SellersViewModel
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: SellerAdapter
+    private lateinit var sellers: List<Seller>
 
 
     private lateinit var viewModel: CatalogsViewModel
@@ -54,7 +60,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         init()
         setObservers()
         var centerId = arguments?.getInt("centerId")
-        if ( centerId != null)
+        if (centerId != null)
 
             model.getSellersByCenter(centerId)
         else {
@@ -79,7 +85,17 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     override fun repaintModel(view: View, model: Any?) {
 
         val seller = (model as Seller)
-        view.findViewById<TextView>(R.id.textView_sellers_list_name).setText(seller.companyName)
+        view.findViewById<TextView>(R.id.textView_sellers_list_name).text = seller.companyName
+
+        if (seller.imageBase64 == null){
+
+            view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
+                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+
+        }else{
+            view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
+                .setImageBitmap(seller.imageBase64?.toBitmap())
+        }
     }
 
     fun setObservers() {
@@ -88,12 +104,32 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
             (context as LifecycleOwner),
             Observer<ServerResponse<List<Seller>>> { it ->
 
-                adapter.sellers = it.serverData?.data ?: mutableListOf()
+                sellers = it.serverData?.data ?: mutableListOf()
+                adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
+                var items = sellers.filter{p -> p.imageUrl != null && p.id != null}.map { p ->
+
+                    UrlLoadedImage(p.id!!, p.imageBase64, p.imageUrl!!)
+                }
+
+                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+
+                    items.forEach { item ->
+
+                        this.sellers.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
+                    }
+                    adapter.notifyDataSetChanged()
+                })
             })
 
         model.getErrorObservable()
             ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
+
+                model.manageExceptionService.manageException(this, ex)
+            })
+
+        model.getLoadImageErrorObservable()
+            .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this, ex)
             })
@@ -104,7 +140,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         val layout = LinearLayoutManager(this.context)
 
         adapter = SellerAdapter(this, mutableListOf())
-        recyclerView = this.view?.findViewById<RecyclerView>(R.id.recView_sellers_list_fragment)
+        recyclerView = this.view?.findViewById<RecyclerView>(R.id.recView_sellers_fragment)
         recyclerView?.adapter = adapter
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layout

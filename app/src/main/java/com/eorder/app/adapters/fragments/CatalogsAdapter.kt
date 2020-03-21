@@ -16,7 +16,7 @@ class CatalogsAdapter(private val fragment:Fragment, var catalogs: List<Catalog>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatalogViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.center_catalogs, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.catalogs_list, parent, false)
 
         return CatalogViewHolder(
             view,

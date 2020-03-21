@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetCentersUseCase
-import com.eorder.application.interfaces.IShopService
+import com.eorder.application.interfaces.ILoadImagesService
+import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.*
@@ -13,6 +14,7 @@ import kotlinx.coroutines.*
 
 class CentersViewModel(
     private val getCentersUseCase: IGetCentersUseCase,
+    private val loadImageService: ILoadImagesService,
     val manageExceptionService: IManageException
 ) : BaseViewModel() {
 
@@ -28,4 +30,7 @@ class CentersViewModel(
             getCentersResult.postValue(result)
         }
     }
+
+    fun loadImages(list:List<UrlLoadedImage>) = loadImageService.loadImages(list)
+    fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
 }

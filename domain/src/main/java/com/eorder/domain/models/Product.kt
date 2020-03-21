@@ -10,8 +10,8 @@ class Product(
     val description: String,
     val name: String,
     val category: String,
-    val imageUrl: String,
+    var imageUrl: String? = null,
     var imageBase64: String? = null,
     var favorite:Boolean = false
-) {
-}
+
+)

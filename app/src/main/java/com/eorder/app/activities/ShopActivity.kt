@@ -3,9 +3,7 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.eorder.app.R
 import com.eorder.app.adapters.ShopProductsAdapter
-import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.IShopRepaintModel
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -13,23 +11,27 @@ import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.application.extensions.toBitmap
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import android.widget.ExpandableListAdapter
+import android.widget.ExpandableListView
+import com.eorder.app.R
 
 
 class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel {
 
     lateinit var model: ShopViewModel
     lateinit var adapter: ShopProductsAdapter
-    lateinit var expandable: ExpandableListView
+    lateinit var expandable: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
         model = getViewModel()
         isShopEmpty()
+
     }
 
     override fun setMenuToolbar() {
-        currentToolBarMenu["main_menu"] = R.menu.main_menu
+        currentToolBarMenu["main_menu"] = com.eorder.app.R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
     }
 
@@ -66,10 +68,10 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         }
 
         if (product.favorite) {
-            heart.setBackgroundResource(R.drawable.ic_purple_corazon)
+            heart.setBackgroundResource(R.drawable.ic_corazon)
 
         } else {
-            heart.setBackgroundResource(R.drawable.ic_corazon_purple_outline)
+            heart.setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
         amountView.setText(product.amount.toString())
@@ -85,6 +87,9 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
 
             if (product.amount == 0) {
                 model.removeProductFromShop(product)
+                if (model.getProducts().isEmpty()){
+                    this.onBackPressed()
+                }
                 setProductsOnExpandable()
             }
 
@@ -108,6 +113,54 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
         }
     }
 
+    private fun setListeners(){
+
+       /* expandable.setOnGroupClickListener { parent, view, groupPosition, id ->
+
+            //setListViewHeight((view as ExpandableListView),groupPosition)
+            true
+        }*/
+    }
+
+    private fun setListViewHeight(
+        listView: ExpandableListView,
+        group: Int
+    ) {
+        val listAdapter = listView.expandableListAdapter as ExpandableListAdapter
+        var totalHeight = 0
+        val desiredWidth = View.MeasureSpec.makeMeasureSpec(
+            listView.width,
+            View.MeasureSpec.EXACTLY
+        )
+        for (i in 0 until listAdapter.groupCount) {
+            val groupItem = listAdapter.getGroupView(i, false, null, listView)
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED)
+
+            totalHeight += groupItem.measuredHeight
+
+            if (listView.isGroupExpanded(i) && i != group || !listView.isGroupExpanded(i) && i == group) {
+                for (j in 0 until listAdapter.getChildrenCount(i)) {
+                    val listItem = listAdapter.getChildView(
+                        i, j, false, null,
+                        listView
+                    )
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED)
+
+                    totalHeight += listItem.measuredHeight
+
+                }
+            }
+        }
+
+        val params = listView.layoutParams
+        var height = totalHeight + listView.dividerHeight * (listAdapter.groupCount - 1)
+        if (height < 10)
+            height = 200
+        params.height = height
+        listView.layoutParams = params
+        listView.requestLayout()
+
+    }
 
     private fun init() {
 
@@ -115,8 +168,8 @@ class ShopActivity : BaseMenuActivity(), ISetAdapterListener, IShopRepaintModel 
 
         adapter = ShopProductsAdapter(this, groups.keys.toList(), groups)
         expandable = findViewById<ExpandableListView>(R.id.expandable_shop_products)
-        expandable.setAdapter(adapter)
-        expandable.expandGroup(0)
+      //  expandable.setAdapter(adapter)
+       // expandable.expandGroup(0)
         setTotals()
 
     }

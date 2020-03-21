@@ -19,12 +19,12 @@ val appModule = module {
     /*VIEW MODEL*/
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RecoverPasswordViewModel(get(), get()) }
-    viewModel { CentersViewModel(get(), get() ) }
-    viewModel { CatalogsViewModel(get(), get()) }
-    viewModel { ProductsViewModel(get(), get(), get()) }
+    viewModel { CentersViewModel(get(), get(), get() ) }
+    viewModel { CatalogsViewModel(get(), get(), get()) }
+    viewModel { ProductsViewModel(get(), get(), get(), get()) }
     viewModel { ShopViewModel(get()) }
     viewModel { OrderViewModel(get()) }
-    viewModel { SellersViewModel(get(),get()) }
+    viewModel { SellersViewModel(get(),get(), get()) }
 
 
     /*SERVICES*/
