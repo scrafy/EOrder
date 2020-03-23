@@ -27,11 +27,11 @@ import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.com.eorder.app.fragments.BaseFragment
 import java.lang.Exception
 
 
-@Suppress("DEPRECATION")
-class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
+class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
     IToolbarSearch {
 
     private lateinit var model: ProductsViewModel
@@ -49,6 +49,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
     }
 
     override fun onStart() {
+        this.checkToken()
         super.onStart()
         adapter.notifyDataSetChanged()
         (context as IRepaintShopIcon).repaintShopIcon()

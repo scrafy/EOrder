@@ -11,7 +11,6 @@ import org.koin.dsl.module
 val infrastructureModule = module {
 
     /*SERVICES*/
-    single { JwtTokenService(get()) } bind IJwtTokenService::class
     single { OkHttpClient(okhttp3.OkHttpClient(), get()) } bind IHttpClient::class
 
 

@@ -18,6 +18,7 @@ import com.eorder.app.R
 import com.eorder.app.adapters.fragments.SellerAdapter
 import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.com.eorder.app.fragments.BaseFragment
 import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -33,7 +34,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
-class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
+class SellersFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
 
     private lateinit var model: SellersViewModel
     private var recyclerView: RecyclerView? = null
@@ -53,6 +54,7 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     }
 
     override fun onStart() {
+        this.checkToken()
         (context as BaseFloatingButtonActivity).showFloatingButton()
         super.onStart()
     }

@@ -3,7 +3,7 @@ package com.eorder.application.usecases
 
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.ModelValidationException
-import com.eorder.infrastructure.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.domain.models.Login

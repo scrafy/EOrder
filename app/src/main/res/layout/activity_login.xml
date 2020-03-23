@@ -131,10 +131,10 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_boton_rounded"
                 android:text="Sign In"
-                android:textColor="@color/text_icons"
+                android:textColor="@android:color/black"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/button_signIn"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@android:color/white"
                 />
 
 

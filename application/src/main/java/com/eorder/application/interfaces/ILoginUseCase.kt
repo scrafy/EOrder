@@ -4,7 +4,7 @@ import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IJwtTokenService
 
 
 interface ILoginUseCase {

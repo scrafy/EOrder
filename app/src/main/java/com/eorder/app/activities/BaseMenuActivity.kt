@@ -9,13 +9,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.application.interfaces.IShopService
-import com.eorder.infrastructure.interfaces.IJwtTokenService
 import org.koin.android.ext.android.inject
 
 

@@ -1,8 +1,7 @@
 package com.eorder.infrastructure.services
 
-import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.eorder.infrastructure.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IJwtTokenService
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType

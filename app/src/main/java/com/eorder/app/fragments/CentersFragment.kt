@@ -31,13 +31,14 @@ import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import android.graphics.Bitmap
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.com.eorder.app.fragments.BaseFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.io.*
 import java.lang.Exception
 
 
-class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
+class CentersFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
 
     private lateinit var model: CentersViewModel
     private var recyclerView: RecyclerView? = null
@@ -55,6 +56,7 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     }
 
     override fun onStart() {
+        this.checkToken()
         (context as BaseFloatingButtonActivity).showFloatingButton()
         super.onStart()
     }

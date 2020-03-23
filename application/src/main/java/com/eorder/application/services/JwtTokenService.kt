@@ -1,12 +1,9 @@
-package com.eorder.infrastructure.services
+package com.eorder.application.services
 
-import android.os.Build
-import android.provider.Settings.System.DATE_FORMAT
-import androidx.annotation.RequiresApi
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.InvalidJwtTokenException
 import com.eorder.domain.interfaces.IConfigurationManager
-import com.eorder.infrastructure.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IJwtTokenService
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +11,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.nio.charset.StandardCharsets
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 

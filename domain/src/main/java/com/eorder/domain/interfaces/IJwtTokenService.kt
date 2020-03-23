@@ -1,4 +1,4 @@
-package com.eorder.infrastructure.interfaces
+package com.eorder.domain.interfaces
 
 
 interface IJwtTokenService {
