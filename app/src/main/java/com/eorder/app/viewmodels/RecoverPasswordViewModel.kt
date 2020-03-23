@@ -11,20 +11,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class RecoverPasswordViewModel(private val recoverPasswordUseCase: IRecoverPasswordUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class RecoverPasswordViewModel(
+    private val recoverPasswordUseCase: IRecoverPasswordUseCase,
+    val manageExceptionService: IManageException
+) : BaseViewModel() {
 
     private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
-    fun getRecoverPasswordObservable() : LiveData<ServerResponse<String>> = recoverPasswordResult
+    fun getRecoverPasswordObservable(): LiveData<ServerResponse<String>> = recoverPasswordResult
 
-     fun recoverPassword(recoverPasswordRequest: RecoverPassword) {
+    fun recoverPassword(recoverPasswordRequest: RecoverPassword) {
 
-         CoroutineScope(Dispatchers.IO).launch(this.handleError()){
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-                var result = recoverPasswordUseCase?.recoverPassword(recoverPasswordRequest)
-                recoverPasswordResult.postValue(result)
-            }
-     }
+            var result = recoverPasswordUseCase?.recoverPassword(recoverPasswordRequest)
+            recoverPasswordResult.postValue(result)
+        }
+    }
 
 }

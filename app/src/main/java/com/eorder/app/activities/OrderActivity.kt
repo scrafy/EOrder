@@ -1,5 +1,6 @@
 package com.eorder.app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.Toolbar
@@ -16,6 +17,7 @@ import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.domain.models.Center
+import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -33,17 +35,27 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         setMenuToolbar()
     }
 
+   /* override fun checkToken() {
+        if (!model.isValidToken()) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }*/
+
     override fun repaintShopIcon() {
 
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        if (!model.getProductsFromShop().isEmpty()) {
+        if (model.getProductsFromShop().isNotEmpty()) {
 
             val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
-            menuItem?.setIcon(R.drawable.ic_white_full_order)
+            menuItem?.setIcon(R.drawable.ic_orange_full_order)
         } else {
             val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
             menuItem?.setIcon(R.drawable.ic_shopping_cart_white_24dp)
         }
+    }
+
+    override fun getProductsFromShop(): List<Product> {
+        return model.getProductsFromShop()
     }
 
     override fun getSearchFromToolbar(search: String) {

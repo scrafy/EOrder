@@ -1,6 +1,5 @@
 package com.eorder.app.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,13 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CentersAdapter
+import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -27,9 +25,16 @@ import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
+import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
-
+import com.eorder.app.R
+import android.graphics.Bitmap
+import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import java.io.*
+import java.lang.Exception
 
 
 class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
@@ -40,7 +45,6 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
     private lateinit var centers: List<Center>
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +52,11 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
 
         return inflater.inflate(R.layout.centers_fragment, container, false)
 
+    }
+
+    override fun onStart() {
+        (context as BaseFloatingButtonActivity).showFloatingButton()
+        super.onStart()
     }
 
     override fun showMessage(message: String) {
@@ -80,22 +89,31 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
 
         val center = (model as Center)
 
-        view.findViewById<TextView>(R.id.textView_center_name).setText(center.center_name)
+        view.findViewById<TextView>(R.id.textView_center_name).text = center.center_name
 
 
-        view.findViewById<ImageView>(R.id.imgView_center_list_img_center)
-            .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+        if (center.imageBase64 == null) {
+            try {
+                view.findViewById<ImageView>(R.id.imgView_center_list_img_center)
+                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+            } catch (ex: Exception) {
 
-        if (center.imageBase64 == null){
+            }
 
-            view.findViewById<ImageView>(R.id.imgView_center_list_img_center)
-                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
-
-        }else{
-            view.findViewById<ImageView>(R.id.imgView_center_list_img_center)
+        } else {
+            view.findViewById<ImageView>(com.eorder.app.R.id.imgView_center_list_img_center)
                 .setImageBitmap(center.imageBase64?.toBitmap())
         }
 
+    }
+
+    private fun bitMapToInputStream(bm: Bitmap): InputStream {
+
+        val baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val bais = ByteArrayInputStream(baos.toByteArray())
+        bais.reset()
+        return bais
     }
 
     fun setObservers() {
@@ -107,31 +125,33 @@ class CentersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
                 centers = it.serverData?.data ?: mutableListOf()
                 adapter.centers = centers
                 adapter.notifyDataSetChanged()
-                var items = centers.filter{p -> p.imageUrl != null && p.id != null}.map { p ->
+                var items = centers.filter { p -> p.imageUrl != null && p.id != null }.map { p ->
 
                     UrlLoadedImage(p.id!!, p.imageBase64, p.imageUrl!!)
                 }
 
-                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                model.loadImages(items)
+                    .observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
 
-                    items.forEach { item ->
+                        items.forEach { item ->
 
-                        this.centers.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
-                    }
-                    adapter.notifyDataSetChanged()
-                })
+                            this.centers.find { c -> c.id == item.id }?.imageBase64 =
+                                item.imageBase64
+                        }
+                        adapter.notifyDataSetChanged()
+                    })
             })
 
         model.getErrorObservable()
             ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
             })
 
         model.getLoadImageErrorObservable()
             .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
             })
     }
 

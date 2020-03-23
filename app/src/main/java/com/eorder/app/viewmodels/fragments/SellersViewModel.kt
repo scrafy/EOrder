@@ -17,16 +17,18 @@ class SellersViewModel(
     private val getSellersByCenterUseCase: IGetSellersByCenterUseCase,
     val manageExceptionService: IManageException,
     private val loadImageService: ILoadImagesService
-    ) : BaseViewModel() {
 
-    private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> = MutableLiveData()
+) : BaseViewModel() {
+
+    private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> =
+        MutableLiveData()
 
     fun getSellersByCenterResultObservable(): LiveData<ServerResponse<List<Seller>>> {
 
         return getSellersByCenterResult
     }
 
-    fun getSellersByCenter(centerId:Int) {
+    fun getSellersByCenter(centerId: Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
@@ -35,7 +37,7 @@ class SellersViewModel(
         }
     }
 
-    fun loadImages(list:List<UrlLoadedImage>) = loadImageService.loadImages(list)
+    fun loadImages(list: List<UrlLoadedImage>) = loadImageService.loadImages(list)
     fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
 }
 

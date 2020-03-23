@@ -1,5 +1,6 @@
 package com.eorder.app.fragments
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.eorder.app.R
 import com.eorder.app.adapters.fragments.ProductAdapter
 import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.interfaces.*
@@ -24,8 +24,13 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
+import com.eorder.app.R
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import java.lang.Exception
 
 
+@Suppress("DEPRECATION")
 class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
     IToolbarSearch {
 
@@ -47,6 +52,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         super.onStart()
         adapter.notifyDataSetChanged()
         (context as IRepaintShopIcon).repaintShopIcon()
+        (context as BaseFloatingButtonActivity).hideFloatingButton()
     }
 
     override fun showMessage(message: String) {
@@ -75,12 +81,16 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
             .setText(product.amount.toString())
 
 
-        if (product.imageBase64 == null){
+        if (product.imageBase64 == null) {
 
-            view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
-                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+            try {
+                view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+            } catch (ex: Exception) {
 
-        }else{
+            }
+
+        } else {
             view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
                 .setImageBitmap(product.imageBase64?.toBitmap())
         }
@@ -109,7 +119,7 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
         super.onActivityCreated(savedInstanceState)
 
         var map = mutableMapOf<String, Int>()
-        map["product_list_menu"] = R.menu.product_list_menu
+        map["cart_menu"] = R.menu.cart_menu
         (context as ISetActionBar)?.setActionBar(map)
         model = getViewModel()
         init()
@@ -268,31 +278,33 @@ class ProductsFragment : Fragment(), IRepaintModel, ISetAdapterListener, IShowSn
                 setItemsSpinner()
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
-                var items = products.filter{p -> p.imageUrl != null}.map { p ->
+                var items = products.filter { p -> p.imageUrl != null }.map { p ->
 
                     UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
                 }
 
-                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                model.loadImages(items)
+                    .observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
 
-                    items.forEach { item ->
+                        items.forEach { item ->
 
-                        this.products.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
-                    }
-                    adapter.notifyDataSetChanged()
-                })
+                            this.products.find { c -> c.id == item.id }?.imageBase64 =
+                                item.imageBase64
+                        }
+                        adapter.notifyDataSetChanged()
+                    })
 
             })
 
         model.getErrorObservable()
             .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
             })
 
         model.getLoadImageErrorObservable().observe((context as LifecycleOwner), Observer { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.manageExceptionService.manageException(this.context!!, ex)
         })
     }
 

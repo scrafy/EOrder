@@ -16,6 +16,7 @@ class CentersViewModel(
     private val getCentersUseCase: IGetCentersUseCase,
     private val loadImageService: ILoadImagesService,
     val manageExceptionService: IManageException
+
 ) : BaseViewModel() {
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()

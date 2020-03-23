@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/signout"
-        android:title="@string/settings"
+        android:title="@string/signout"
         app:showAsAction="never"
         android:orderInCategory="103"
         />

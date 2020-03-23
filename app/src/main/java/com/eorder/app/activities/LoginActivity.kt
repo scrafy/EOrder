@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
@@ -37,7 +38,10 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
 
         model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
-            startActivity(Intent(this, LandingActivity::class.java))
+            var intent = Intent(this, LandingActivity::class.java)
+            startActivity(intent)
+            finish()
+
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable>{ex ->
@@ -60,7 +64,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
     }
 
     override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, message,Toast.LENGTH_SHORT).show()
     }
 
     override fun clearEditTextAndFocus(){

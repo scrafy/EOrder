@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -30,6 +32,7 @@ import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
+import java.lang.Exception
 
 
 class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
@@ -60,6 +63,10 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
         }
     }
 
+    override fun onStart(){
+        (context as BaseFloatingButtonActivity).showFloatingButton()
+        super.onStart()
+    }
 
     override fun repaintModel(view: View, model: Any?) {
 
@@ -73,8 +80,14 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
 
         if (catalog.imageBase64 == null){
 
-            view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
-                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+            try {
+                view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
+                    .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+            }
+            catch(ex: Exception){
+
+            }
+
 
         }else{
             view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
@@ -126,13 +139,13 @@ class CatalogsFragment : Fragment(), IShowSnackBarMessage, IRepaintModel,
 
         model.getErrorObservable().observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.manageExceptionService.manageException(this.context!!, ex)
 
         })
 
         model.getLoadImageErrorObservable().observe((context as LifecycleOwner), Observer { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.manageExceptionService.manageException(this.context!!, ex)
         })
     }
 

@@ -5,7 +5,9 @@ import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.models.Product
 
 
-class ShopViewModel(private val shopService: IShopService) : BaseViewModel() {
+class ShopViewModel(
+    private val shopService: IShopService
+) : BaseViewModel() {
 
     fun getProducts(): List<Product> = shopService.order.products
     fun getAmounfOfProducts(): Int = shopService.getAmounfOfProducts()

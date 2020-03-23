@@ -1,6 +1,7 @@
 package com.eorder.app.services
 
 
+import android.content.Context
 import com.eorder.app.interfaces.IManageException
 import com.eorder.app.interfaces.IManageFormErrors
 import com.eorder.app.interfaces.IShowSnackBarMessage
@@ -9,7 +10,7 @@ import com.eorder.domain.exceptions.ServerErrorValidationException
 
 class ManageException : IManageException {
 
-    override fun manageException(context: Any, ex: Throwable) {
+    override fun manageException(context: Context, ex: Throwable) {
 
         when(ex::class.simpleName){
 
@@ -22,6 +23,10 @@ class ManageException : IManageException {
             "ServerErrorUnhadledException" -> {
                 (context as IShowSnackBarMessage).showMessage(ex.message ?: "")
 
+            }
+            "InvalidJwtTokenException" ->  {
+
+                (context as IShowSnackBarMessage).showMessage(ex.message ?: "")
             }
             else -> {
 

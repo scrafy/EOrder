@@ -15,7 +15,8 @@ class CatalogsViewModel(
     private val getCatalogBySellerUseCase: IGetCatalogsBySellerUseCase,
     val manageExceptionService: IManageException,
     private val loadImageService: ILoadImagesService
-) : BaseViewModel() {
+
+    ) : BaseViewModel() {
 
     private val getCatalogBySellersResult: MutableLiveData<ServerResponse<List<Catalog>>> =
         MutableLiveData()

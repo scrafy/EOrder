@@ -6,7 +6,7 @@ import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 
-class CenterRepository(httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
+class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
 
     override fun getUserCenters(userId: Int): ServerResponse<List<Center>> {
 

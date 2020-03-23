@@ -6,7 +6,7 @@ import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 
-class CatalogRepository(httpClient: IHttpClient) : BaseRepository(), ICatalogRepository {
+class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(), ICatalogRepository {
 
 
     override fun getSellerCatalogs(sellerId:Int): ServerResponse<List<Catalog>> {

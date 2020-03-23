@@ -2,7 +2,6 @@ package com.eorder.app.activities
 
 import android.content.Intent
 import android.view.Menu
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
@@ -10,21 +9,23 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.application.interfaces.IShopService
+import com.eorder.infrastructure.interfaces.IJwtTokenService
 import org.koin.android.ext.android.inject
 
 
-abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
+abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
 
     protected var currentToolBarMenu: MutableMap<String, Int> = mutableMapOf()
 
 
     abstract fun setMenuToolbar()
-
 
 
     override fun setActionBar(menu: MutableMap<String, Int>) {
@@ -38,7 +39,7 @@ abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
         setToolbarAndLateralMenu(currentToolBarMenu)
         when (currentToolBarMenu.keys.first()) {
 
-            "product_list_menu" -> {
+            "cart_menu" -> {
 
                 val itemShop = menu?.findItem(R.id.item_menu_product_list_shop)
                 itemShop?.setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener {
@@ -98,7 +99,7 @@ abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
         val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
         if (menu.values.first() == R.menu.main_menu)
             toolbar.setPadding(0, 0, 10, 0)
-        if (menu.values.first() == R.menu.product_list_menu)
+        if (menu.values.first() == R.menu.cart_menu)
             toolbar.setPadding(0, 0, 70, 0)
         toolbar.inflateMenu(menu.values.first())
         setListenersMainMenu()
@@ -133,11 +134,11 @@ abstract class BaseMenuActivity : AppCompatActivity(), ISetActionBar {
                             "Settings",
                             Toast.LENGTH_LONG
                         ).show()
-                        R.id.signout -> Toast.makeText(
-                            getContext(),
-                            "Salir",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        R.id.signout -> {
+                            getContext().tokenService.token = null
+                            startActivity(Intent(getContext(), MainActivity::class.java))
+                        }
+
                     }
                     return true
                 }

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.SellerAdapter
+import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -29,6 +31,7 @@ import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
+import java.lang.Exception
 
 class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
 
@@ -47,6 +50,11 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
 
         return inflater.inflate(R.layout.sellers_fragment, container, false)
 
+    }
+
+    override fun onStart() {
+        (context as BaseFloatingButtonActivity).showFloatingButton()
+        super.onStart()
     }
 
     override fun showMessage(message: String) {
@@ -87,12 +95,16 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
         val seller = (model as Seller)
         view.findViewById<TextView>(R.id.textView_sellers_list_name).text = seller.companyName
 
-        if (seller.imageBase64 == null){
+        if (seller.imageBase64 == null) {
 
-            view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
-                .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+            try {
+                view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
+                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+            } catch (ex: Exception) {
 
-        }else{
+            }
+
+        } else {
             view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
                 .setImageBitmap(seller.imageBase64?.toBitmap())
         }
@@ -107,31 +119,33 @@ class SellersFragment : Fragment(), IShowSnackBarMessage, IRepaintModel, ISetAda
                 sellers = it.serverData?.data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
-                var items = sellers.filter{p -> p.imageUrl != null && p.id != null}.map { p ->
+                var items = sellers.filter { p -> p.imageUrl != null && p.id != null }.map { p ->
 
                     UrlLoadedImage(p.id!!, p.imageBase64, p.imageUrl!!)
                 }
 
-                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                model.loadImages(items)
+                    .observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
 
-                    items.forEach { item ->
+                        items.forEach { item ->
 
-                        this.sellers.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
-                    }
-                    adapter.notifyDataSetChanged()
-                })
+                            this.sellers.find { c -> c.id == item.id }?.imageBase64 =
+                                item.imageBase64
+                        }
+                        adapter.notifyDataSetChanged()
+                    })
             })
 
         model.getErrorObservable()
             ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
             })
 
         model.getLoadImageErrorObservable()
             .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
             })
     }
 

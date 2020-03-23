@@ -14,7 +14,7 @@ class ValidationModelService : IValidationModelService {
     }
 
     override fun validate(model: Any): List<ValidationError> {
-        var result: MutableList<ValidationError> = arrayListOf()
+        var result: MutableList<ValidationError> = mutableListOf()
 
         model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->
 

@@ -11,20 +11,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class LoginViewModel(private val loginUseCase: ILoginUseCase, val manageExceptionService: IManageException) : BaseViewModel() {
+class LoginViewModel(
+    private val loginUseCase: ILoginUseCase,
+    val manageExceptionService: IManageException
+) : BaseViewModel() {
 
     private val loginResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
-    fun getloginResultsObservable() : LiveData<ServerResponse<String>> = loginResult
+    fun getloginResultsObservable(): LiveData<ServerResponse<String>> = loginResult
 
-     fun login(loginRequest: Login) {
+    fun login(loginRequest: Login) {
 
-         CoroutineScope(Dispatchers.IO).launch(this.handleError()){
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-                var result =  loginUseCase.login(loginRequest)
-                loginResult.postValue(result)
-            }
-     }
+            var result = loginUseCase.login(loginRequest)
+            loginResult.postValue(result)
+        }
+    }
 
 }

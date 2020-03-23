@@ -1,7 +1,6 @@
 package com.eorder.application.services
 
 
-import android.graphics.BitmapFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.extensions.toBase64
@@ -12,26 +11,26 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.InputStream
-import java.net.URL
 
 
-class LoadImagesService : ILoadImagesService {
+class LoadImagesService(
+    private val picasso: Picasso
+) : ILoadImagesService {
 
-    private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> =
-        MutableLiveData()
+    private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> = MutableLiveData()
+
     private val errorLoadImageObservable: MutableLiveData<Throwable> = MutableLiveData()
 
     override fun loadImages(list: List<UrlLoadedImage>): LiveData<List<UrlLoadedImage>> {
+
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             list.filter { item -> item.imageUrl != null }.forEach { item ->
 
-                try{
-                    item.imageBase64 =  Picasso.get().load(item.imageUrl).get().toBase64()
-                }
-                catch(ex: Exception){
+                try {
+                    item.imageBase64 = picasso.load(item.imageUrl).get().toBase64()
+                } catch (ex: Exception) {
 
                 }
 

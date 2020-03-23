@@ -1,18 +1,21 @@
 package com.eorder.application.di
 
+import androidx.lifecycle.MutableLiveData
 import com.eorder.application.interfaces.*
-import com.eorder.application.services.JwtTokenService
+import com.eorder.application.services.ConfigurationManager
+import com.eorder.infrastructure.services.JwtTokenService
 import com.eorder.application.services.LoadImagesService
 import com.eorder.application.services.ShopService
 import com.eorder.application.usecases.*
+import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IValidationModelService
-import com.eorder.domain.models.Center
-import com.eorder.domain.models.Order
-import com.eorder.domain.models.Seller
 import com.eorder.domain.services.ValidationModelService
+import com.eorder.infrastructure.interfaces.IJwtTokenService
+import com.squareup.picasso.Picasso
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.bind
 import org.koin.dsl.module
-
+import java.util.*
 
 
 val applicationModule = module {
@@ -28,7 +31,7 @@ val applicationModule = module {
 
     /*SERVICES*/
     single { ValidationModelService() } bind IValidationModelService::class
-    single { JwtTokenService() } bind IJwtTokenService::class
     single { ShopService() } bind IShopService::class
-    factory { LoadImagesService() } bind ILoadImagesService::class
+    factory { LoadImagesService(Picasso.get()) } bind ILoadImagesService::class
+    single { ConfigurationManager(this.androidContext(), Properties()) } bind IConfigurationManager::class
 }

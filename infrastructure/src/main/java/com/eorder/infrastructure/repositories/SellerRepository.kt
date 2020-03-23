@@ -6,7 +6,7 @@ import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 
-class SellerRepository(httpClient: IHttpClient) : BaseRepository(), ISellerRepository {
+class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), ISellerRepository {
 
     override fun getSellersByCenter(centerId:Int) : ServerResponse<List<Seller>> {
 
