@@ -14,7 +14,7 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.application.extensions.toBitmap
 
 
-class ShopActivity: BaseMenuActivity(), IRepaintModel {
+class ShopActivity : BaseMenuActivity(), IRepaintModel {
 
     lateinit var model: ShopViewModel
     lateinit var adapter: ShopProductsAdapter
@@ -28,20 +28,20 @@ class ShopActivity: BaseMenuActivity(), IRepaintModel {
 
     }
 
-   /* override fun checkToken() {
-        if (!model.isValidToken()) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }*/
-
     override fun getProductsFromShop(): List<Product> {
-       return model.getProducts()
+        return model.getProducts()
     }
 
     override fun setMenuToolbar() {
         currentToolBarMenu["main_menu"] = R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
     }
+
+    override fun onStart() {
+        super.onStart()
+        this.hideFloatingButton()
+    }
+
 
     override fun repaintModel(
         view: View,

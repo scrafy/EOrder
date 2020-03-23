@@ -24,14 +24,6 @@ class LandingActivity : BaseMenuActivity()  {
         setMenuToolbar()
     }
 
-   /* override fun checkToken() {
-
-        if (!model.isValidToken()){
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }*/
-
-
     private fun setListeners() {
 
 

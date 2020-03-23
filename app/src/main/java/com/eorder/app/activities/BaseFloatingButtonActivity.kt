@@ -1,6 +1,5 @@
 package com.eorder.app.com.eorder.app.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import com.eorder.app.activities.ShopActivity
@@ -34,7 +33,6 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     fun hideFloatingButton() {
         cart_floating_button.visibility = View.INVISIBLE
     }
