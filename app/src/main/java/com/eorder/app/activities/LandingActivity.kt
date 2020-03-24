@@ -10,6 +10,7 @@ import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
+
 class LandingActivity : BaseMenuActivity()  {
 
 
@@ -24,6 +25,7 @@ class LandingActivity : BaseMenuActivity()  {
         setMenuToolbar()
     }
 
+
     private fun setListeners() {
 
 
@@ -33,6 +35,11 @@ class LandingActivity : BaseMenuActivity()  {
 
         }
     }
+
+    override fun onBackPressed() {
+
+    }
+
 
     override fun setMenuToolbar() {
         currentToolBarMenu["main_menu"] = R.menu.main_menu

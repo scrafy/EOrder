@@ -27,17 +27,27 @@ class MainActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.button_signIn)
         loginButton.setOnClickListener { v ->
-
             startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+
         }
 
     }
+   /* override fun onResume() {
+        super.onResume()
+        val mngr = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+        val taskList = mngr.getRunningTasks(10)
+    }*/
 
     fun showSessionExpiredMessage() {
 
-        if ( intent.getStringExtra("session_expired") != null )
-            AlertDialogOk(this,resources.getString(R.string.main_activity_session_expired),intent.getStringExtra("session_expired"), "OK") { d, i ->}.show()
+        if (intent.getStringExtra("session_expired") != null)
+            AlertDialogOk(
+                this,
+                resources.getString(R.string.main_activity_session_expired),
+                intent.getStringExtra("session_expired"),
+                "OK"
+            ) { d, i -> }.show()
 
     }
 

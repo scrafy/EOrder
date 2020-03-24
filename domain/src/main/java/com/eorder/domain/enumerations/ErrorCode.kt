@@ -7,4 +7,5 @@ enum class ErrorCode(var code: Int) {
     SERVER_ERROR(102),
     SERVER_VALIDATION_ERROR(103),
     JWT_TOKEN_INVALID(104),
+    SHOP_EMPTY(105)
 }

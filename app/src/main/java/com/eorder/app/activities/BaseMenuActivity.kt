@@ -133,8 +133,8 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                             Toast.LENGTH_LONG
                         ).show()
                         R.id.signout -> {
-                            getContext().tokenService.token = null
-                            startActivity(Intent(getContext(), MainActivity::class.java))
+                            getContext().tokenService.cleanToken()
+                            navigateUpTo(Intent(getContext(), MainActivity::class.java))
                         }
 
                     }

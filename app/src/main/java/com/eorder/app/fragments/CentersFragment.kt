@@ -1,7 +1,6 @@
 package com.eorder.app.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,30 +14,27 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.adapters.fragments.CentersAdapter
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CentersViewModel
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
-import com.squareup.picasso.Picasso
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import android.graphics.Bitmap
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
 import com.eorder.app.com.eorder.app.fragments.BaseFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import java.io.*
 import java.lang.Exception
 
 
-class CentersFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
+class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
 
     private lateinit var model: CentersViewModel
     private var recyclerView: RecyclerView? = null
@@ -53,12 +49,6 @@ class CentersFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel, ISe
 
         return inflater.inflate(R.layout.centers_fragment, container, false)
 
-    }
-
-    override fun onStart() {
-        this.checkToken()
-        (context as BaseFloatingButtonActivity).showFloatingButton()
-        super.onStart()
     }
 
     override fun showMessage(message: String) {

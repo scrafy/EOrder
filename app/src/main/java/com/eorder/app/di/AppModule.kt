@@ -2,8 +2,8 @@ package com.eorder.app.com.eorder.app.di
 
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
-import com.eorder.app.interfaces.IManageException
-import com.eorder.app.services.ManageException
+import com.eorder.domain.interfaces.IManageException
+import com.eorder.application.services.ManageException
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
@@ -19,19 +19,15 @@ import org.koin.dsl.module
 val appModule = module {
 
     /*VIEW MODEL*/
-    viewModel { LoginViewModel(get(), get()) }
-    viewModel { RecoverPasswordViewModel(get(), get()) }
-    viewModel { CentersViewModel(get(), get(), get()) }
-    viewModel { CatalogsViewModel(get(), get(), get()) }
-    viewModel { ProductsViewModel(get(), get(), get(), get()) }
-    viewModel { ShopViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
+    viewModel { RecoverPasswordViewModel(get()) }
+    viewModel { CentersViewModel(get(), get()) }
+    viewModel { CatalogsViewModel(get(), get()) }
+    viewModel { ProductsViewModel(get(), get(), get()) }
+    viewModel { ShopViewModel(get(), get()) }
     viewModel { OrderViewModel(get()) }
-    viewModel { SellersViewModel(get(), get(), get()) }
+    viewModel { SellersViewModel(get(), get()) }
     viewModel { LandingViewModel(get()) }
     viewModel { MainViewModel() }
 
-
-    /*SERVICES*/
-
-    single { ManageException() } bind IManageException::class
 }

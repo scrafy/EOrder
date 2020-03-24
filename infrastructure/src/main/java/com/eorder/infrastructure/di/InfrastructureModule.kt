@@ -20,6 +20,7 @@ val infrastructureModule = module {
     single { CatalogRepository(get()) } bind ICatalogRepository::class
     single { ProductRepository(get()) } bind IProductRepository::class
     single { SellerRepository(get()) } bind ISellerRepository::class
+    single { OrderRepository(get(), get()) } bind IOrderRepository::class
 
 }
 

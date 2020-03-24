@@ -1,5 +1,7 @@
 package com.eorder.infrastructure.services
 
+import com.eorder.domain.enumerations.ErrorCode
+import com.eorder.domain.exceptions.InvalidJwtTokenException
 import com.eorder.infrastructure.interfaces.IHttpClient
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.google.gson.Gson
@@ -12,22 +14,24 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
-class OkHttpClient(private val client:OkHttpClient, private val tokenService: IJwtTokenService) : IHttpClient {
+class OkHttpClient(private val client: OkHttpClient, private val tokenService: IJwtTokenService) :
+    IHttpClient {
 
     override fun getJsonResponse(url: String, headers: Map<String, String>?): String? {
 
 
         val request = with(Request.Builder()) {
             addHeader("Accept", "application/json")
-            addHeader("Authorization", "Bearer ${tokenService.token}")
+            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             get()
             url(url)
             build()
         }
 
-
-        return client.newCall(request).execute().body?.string()
+        val resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp.body?.string()
 
     }
 
@@ -35,13 +39,15 @@ class OkHttpClient(private val client:OkHttpClient, private val tokenService: IJ
 
         val request = with(Request.Builder()) {
             addHeader("Accept", "application/json")
-            addHeader("Authorization", "Bearer ${tokenService.token}")
+            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(Gson().toJson(body).toRequestBody("application/json; charset=utf-8".toMediaType()))
             url(url)
             build()
         }
-        return client.newCall(request).execute().body?.string()
+        val resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp.body?.string()
 
     }
 
@@ -57,14 +63,16 @@ class OkHttpClient(private val client:OkHttpClient, private val tokenService: IJ
 
 
         val request = with(Request.Builder()) {
-            addHeader("Authorization", "Bearer ${tokenService.token}")
+            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(form.build())
             url(url)
             build()
         }
 
-        return client.newCall(request).execute().body?.string()
+        val resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp.body?.string()
 
     }
 
@@ -81,12 +89,14 @@ class OkHttpClient(private val client:OkHttpClient, private val tokenService: IJ
 
         val request = with(Request.Builder()) {
             url(url)
-            addHeader("Authorization", "Bearer ${tokenService.token}")
+            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(requestBody.build())
             build()
         }
-        return client.newCall(request).execute().body?.string()
+        val resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp.body?.string()
     }
 
     override fun postMultipartFormDataWithAttachment(
@@ -105,13 +115,30 @@ class OkHttpClient(private val client:OkHttpClient, private val tokenService: IJ
 
         val request = with(Request.Builder()) {
             url(url)
-            addHeader("Authorization", "Bearer ${tokenService.token}")
+            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(requestBody.build())
             build()
         }
-        return client.newCall(request).execute().body?.string()
+        val resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp.body?.string()
     }
 
+    private fun refreshToken(newToken: String?) {
+
+        val list = newToken?.split(" ")
+        if (list != null) {
+            tokenService.refreshToken(
+                list[1]
+            )
+        } else {
+            throw InvalidJwtTokenException(
+                ErrorCode.JWT_TOKEN_INVALID,
+                "The getToken() session is invalid"
+            )
+        }
+
+    }
 }
 

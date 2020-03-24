@@ -1,6 +1,5 @@
 package com.eorder.app.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.Toolbar
@@ -34,12 +33,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         init()
         setMenuToolbar()
     }
-
-   /* override fun checkToken() {
-        if (!model.isValidToken()) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }*/
 
     override fun repaintShopIcon() {
 

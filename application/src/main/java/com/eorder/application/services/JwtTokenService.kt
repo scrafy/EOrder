@@ -1,5 +1,7 @@
 package com.eorder.application.services
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.InvalidJwtTokenException
 import com.eorder.domain.interfaces.IConfigurationManager
@@ -15,16 +17,73 @@ import java.time.Instant
 import java.util.*
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 class JwtTokenService(
     private val configurationManager: IConfigurationManager
 ) : IJwtTokenService {
 
-    override var token: String? = null
+    private var token: String? = null
     private var jws: Jws<Claims?>? = null
 
-    init{
+    init {
 
         this.checkToken()
+    }
+
+    override fun cleanToken() {
+        this.token = null
+    }
+
+    override fun refreshToken(newToken: String) {
+        this.token = newToken
+    }
+
+    override fun getToken(): String {
+
+        return this.token ?: throw InvalidJwtTokenException(ErrorCode.JWT_TOKEN_INVALID, "The JWT token is invalid")
+    }
+
+    override fun addToken(token: String) {
+        this.jws = this.setToken(token)
+        this.token = token
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun isValidToken(): Boolean {
+
+        if (token == null)
+            return false
+
+        val date: Date = jws?.body?.expiration!!
+
+        if (date < Date.from(Instant.now())) {
+            return false
+        }
+        return true
+
+    }
+
+    override fun getClaimFromToken(claim: String): Any? {
+
+        if (jws != null) {
+            return Jwts.claims()[claim]
+        }
+        return null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkToken() {
+
+        val self = this
+        GlobalScope.launch(Dispatchers.Default) {
+
+            if (self.token != null && !self.isValidToken())
+                self.token = null
+            else
+                delay(5000)
+        }
+
     }
 
     private fun setToken(token: String): Jws<Claims?> {
@@ -49,48 +108,6 @@ class JwtTokenService(
                 ex.message ?: "The JWT token is not valid"
             )
         }
-    }
-
-    override fun addToken(token: String) {
-        this.jws = this.setToken(token)
-        this.token = token
-    }
-
-
-    override fun isValidToken(): Boolean {
-
-        if (token == null)
-            return false
-
-        val date: Date = jws?.body?.expiration!!
-
-        if (date < Date.from(Instant.now())) {
-            return false
-        }
-        return true
-
-
-    }
-
-    override fun getClaimFromToken(claim: String): Any? {
-
-        if (jws != null) {
-            return Jwts.claims()[claim]
-        }
-        return null
-    }
-
-    private fun checkToken() {
-
-        val self = this
-        GlobalScope.launch(Dispatchers.Default) {
-
-            if (self.token != null && !self.isValidToken())
-                self.token = null
-            else
-                delay(5000)
-        }
-
     }
 
 }

@@ -2,7 +2,6 @@ package com.eorder.app.fragments
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -19,13 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
 import com.eorder.app.com.eorder.app.fragments.BaseFragment
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
@@ -36,7 +34,7 @@ import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
 
-class CatalogsFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel,
+class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel,
     ISetAdapterListener {
 
 
@@ -62,12 +60,6 @@ class CatalogsFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel,
 
             (context as ISelectCatalog).selectCatalog(catalog.id)
         }
-    }
-
-    override fun onStart(){
-        this.checkToken()
-        (context as BaseFloatingButtonActivity).showFloatingButton()
-        super.onStart()
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -163,7 +155,7 @@ class CatalogsFragment : BaseFragment(), IShowSnackBarMessage, IRepaintModel,
         recyclerView?.adapter = adapter
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layout
-        recyclerView?.itemAnimator = DefaultItemAnimator()
+        recyclerView?.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator?
     }
 
 }

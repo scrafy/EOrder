@@ -1,4 +1,4 @@
-package com.eorder.app.interfaces
+package com.eorder.domain.interfaces
 
 interface IShowSnackBarMessage {
 

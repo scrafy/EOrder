@@ -1,5 +1,6 @@
 package com.eorder.app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -9,23 +10,30 @@ import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.widget.ExpandableListView
+import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
+import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_shop.*
 
 
-class ShopActivity : BaseMenuActivity(), IRepaintModel {
+class ShopActivity : BaseMenuActivity(), IRepaintModel,
+    IShowSnackBarMessage {
 
     lateinit var model: ShopViewModel
     lateinit var adapter: ShopProductsAdapter
     lateinit var listView: ListView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
         model = getViewModel()
+        setObservers()
+        setListeners()
         isShopEmpty()
-
     }
 
     override fun getProductsFromShop(): List<Product> {
@@ -40,6 +48,10 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel {
     override fun onStart() {
         super.onStart()
         this.hideFloatingButton()
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -85,6 +97,28 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel {
 
         }
 
+    }
+
+
+    fun setObservers() {
+
+        model.getConfirmOrderResultObservable().observe(this, Observer<ServerResponse<Int>> { it ->
+
+            AlertDialogOk(
+                this, resources.getString(R.string.alert_dialog_confirm_order_title),
+                resources.getString(R.string.alert_dialog_confirm_order_message), "OK"
+            ) { _, _ ->
+                navigateUpTo(Intent(this, LandingActivity::class.java))
+
+            }.show()
+
+        })
+
+        model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
+
+            model.manageExceptionService.manageException(this, ex)
+
+        })
     }
 
     private fun setAdapterListeners(view: View, obj: Any?) {
@@ -161,6 +195,14 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel {
             dialog.show()
         } else
             init()
+    }
+
+    private fun setListeners() {
+
+        button_shop_activity_confirm_order.setOnClickListener { v ->
+
+            model.confirmOrder()
+        }
     }
 
 }

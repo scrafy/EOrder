@@ -12,15 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.dialogs.AlertDialogOk
-import com.eorder.app.interfaces.IManageFormErrors
-import com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.domain.interfaces.IManageFormErrors
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
+class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors,
+    IShowSnackBarMessage {
 
     private lateinit var model: RecoverPasswordViewModel
 

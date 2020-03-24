@@ -48,6 +48,8 @@
     <string name="textview_shop_total_products">Total of products</string>
     <string name="textview_shop_tax_base">Tax Base:</string>
     <string name="textview_shop_total_taxes">Total Taxes:</string>
+    <string name="alert_dialog_confirm_order_title">Order done</string>
+    <string name="alert_dialog_confirm_order_message">The order has been processed correctly</string>
     <string name="textview_shop_total">Total:</string>
     <string name="textview_shop_center">Center:</string>
     <string name="textview_shop_seller">Seller:</string>

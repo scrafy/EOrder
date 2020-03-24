@@ -17,7 +17,7 @@ abstract class BaseActivity : AppCompatActivity() {
         if (!tokenService.isValidToken()) {
             var intent = Intent(this, MainActivity::class.java)
             intent.putExtra("session_expired", resources.getString(R.string.main_activity_session_expired_message))
-            startActivity(intent)
+            navigateUpTo(intent)
         }
     }
 

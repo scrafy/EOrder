@@ -14,6 +14,8 @@ class ShopService : IShopService {
         order = Order(Center(), Seller())
     }
 
+    override fun isShopEmpty(): Boolean = order.products.isEmpty()
+
     override fun cleanProducts() {
         order.products.clear()
     }

@@ -2,7 +2,6 @@ package com.eorder.app.viewmodels.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetProductsByCatalogUseCase
 import com.eorder.application.interfaces.ILoadImagesService
@@ -19,7 +18,6 @@ class ProductsViewModel(
 
     private val getProductsByCatalogUseCase: IGetProductsByCatalogUseCase,
     private val loadImageService: ILoadImagesService,
-    val manageExceptionService: IManageException,
     private val shopService: IShopService
 
 ) : BaseViewModel() {

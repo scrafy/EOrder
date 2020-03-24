@@ -1,9 +1,7 @@
 package com.eorder.app.fragments
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +23,14 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.fragments.BaseFragment
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import java.lang.Exception
 
 
-class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener, IShowSnackBarMessage,
+class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
+    IShowSnackBarMessage,
     IToolbarSearch {
 
     private lateinit var model: ProductsViewModel
@@ -49,7 +48,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener, ISh
     }
 
     override fun onStart() {
-        this.checkToken()
         super.onStart()
         adapter.notifyDataSetChanged()
         (context as IRepaintShopIcon).repaintShopIcon()

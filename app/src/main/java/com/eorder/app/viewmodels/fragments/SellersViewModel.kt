@@ -2,7 +2,6 @@ package com.eorder.app.viewmodels.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.interfaces.IManageException
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetSellersByCenterUseCase
 import com.eorder.application.interfaces.ILoadImagesService
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 
 class SellersViewModel(
     private val getSellersByCenterUseCase: IGetSellersByCenterUseCase,
-    val manageExceptionService: IManageException,
     private val loadImageService: ILoadImagesService
 
 ) : BaseViewModel() {

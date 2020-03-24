@@ -18,5 +18,6 @@ interface IShopService {
     fun existProduct(productId:Int): Boolean
     fun addAmountOfProduct(productId: Int)
     fun removeAmountOfProduct(productId: Int)
+    fun isShopEmpty(): Boolean
 
 }

@@ -12,39 +12,40 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.interfaces.IManageFormErrors
-import com.eorder.app.interfaces.IShowSnackBarMessage
+import com.eorder.domain.interfaces.IManageFormErrors
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
+class LoginActivity : AppCompatActivity(), IManageFormErrors,
+    IShowSnackBarMessage {
 
 
     private lateinit var model: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout. activity_login)
+        setContentView(R.layout.activity_login)
         model = getViewModel()
         setObservers()
         setListeners()
     }
 
 
-    fun setObservers(){
+    fun setObservers() {
 
         model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
-            var intent = Intent(this, LandingActivity::class.java)
+            val intent = Intent(this, LandingActivity::class.java)
             startActivity(intent)
             finish()
 
         })
 
-        model.getErrorObservable().observe(this, Observer<Throwable>{ex ->
+        model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
             model.manageExceptionService.manageException(this, ex)
 
@@ -52,32 +53,35 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
     }
 
 
-    override fun setValidationErrors(errors: List<ValidationError>?){
+    override fun setValidationErrors(errors: List<ValidationError>?) {
 
         findViewById<TextView>(R.id.textView_message_error_username).text =
-            errors?.firstOrNull{ it -> it.fieldName.equals("username")}?.errorMessage
+            errors?.firstOrNull { it -> it.fieldName.equals("username") }?.errorMessage
 
 
         findViewById<TextView>(R.id.textView_message_error_password).text =
-            errors?.firstOrNull{ it -> it.fieldName.equals("password")}?.errorMessage
+            errors?.firstOrNull { it -> it.fieldName.equals("password") }?.errorMessage
 
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message,Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun clearEditTextAndFocus(){
+    override fun clearEditTextAndFocus() {
         findViewById<EditText>(R.id.editText_username).getText().clear()
         findViewById<EditText>(R.id.editText_password).getText().clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
     }
 
-    fun setListeners(){
+    fun setListeners() {
 
         findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
 
-            val loginRequest = Login(findViewById<EditText>(R.id.editText_username).text.toString(), findViewById<EditText>(R.id.editText_password).text.toString())
+            val loginRequest = Login(
+                findViewById<EditText>(R.id.editText_username).text.toString(),
+                findViewById<EditText>(R.id.editText_password).text.toString()
+            )
             model.login(loginRequest)
         }
 
@@ -114,4 +118,5 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessa
             startActivity(intent)
         }
     }
+
 }

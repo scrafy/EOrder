@@ -1,12 +1,13 @@
 package com.eorder.application.di
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.*
-import com.eorder.application.services.ConfigurationManager
-import com.eorder.application.services.LoadImagesService
-import com.eorder.application.services.ShopService
+import com.eorder.application.services.*
 import com.eorder.application.usecases.*
 import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.services.ValidationModelService
 import com.squareup.picasso.Picasso
@@ -16,6 +17,7 @@ import org.koin.dsl.module
 import java.util.*
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 val applicationModule = module {
 
     /*USE CASES*/
@@ -25,6 +27,7 @@ val applicationModule = module {
     single { GetCatalogsBySellerUseCase( get() ) } bind IGetCatalogsBySellerUseCase::class
     single { GetProductsByCatalogUseCase( get() ) } bind IGetProductsByCatalogUseCase::class
     single { GetSellersByCenterUseCase( get() ) } bind IGetSellersByCenterUseCase::class
+    single { ConfirmOrderUseCase( get(), get()) } bind IConfirmOrderUseCase::class
 
 
     /*SERVICES*/
@@ -32,5 +35,6 @@ val applicationModule = module {
     single { ShopService() } bind IShopService::class
     factory { LoadImagesService(Picasso.get()) } bind ILoadImagesService::class
     single { ConfigurationManager(this.androidContext(), Properties()) } bind IConfigurationManager::class
-    single { com.eorder.application.services.JwtTokenService(get()) } bind IJwtTokenService::class
+    single { JwtTokenService(get()) } bind IJwtTokenService::class
+    single { ManageException() } bind IManageException::class
 }

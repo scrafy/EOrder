@@ -2,7 +2,6 @@ package com.eorder.app.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.interfaces.IManageException
 import com.eorder.application.interfaces.ILoginUseCase
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ServerResponse
@@ -12,8 +11,7 @@ import kotlinx.coroutines.launch
 
 
 class LoginViewModel(
-    private val loginUseCase: ILoginUseCase,
-    val manageExceptionService: IManageException
+    private val loginUseCase: ILoginUseCase
 ) : BaseViewModel() {
 
     private val loginResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
