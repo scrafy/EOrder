@@ -24,6 +24,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
 
     abstract fun setMenuToolbar()
+    abstract fun signOutApp()
 
 
     override fun setActionBar(menu: MutableMap<String, Int>) {
@@ -133,8 +134,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                             Toast.LENGTH_LONG
                         ).show()
                         R.id.signout -> {
-                            getContext().tokenService.cleanToken()
-                            navigateUpTo(Intent(getContext(), MainActivity::class.java))
+                            getContext().signOutApp()
                         }
 
                     }

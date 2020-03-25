@@ -52,15 +52,28 @@ class ProductsViewModel(
         shopService.getOrder().products = products
     }
 
-    fun writeProductsFavorites(context: Context?, products:List<Int>){
+    fun writeProductsFavorites(context: Context?, products: List<Int>) {
 
-        sharedPreferencesService.writeToSharedPreferences(context, products,"favorite_products", products.javaClass )
+        sharedPreferencesService.writeToSharedPreferences(
+            context,
+            products,
+            "favorite_products",
+            products.javaClass
+        )
     }
 
-    fun loadFavoritesProducts(context: Context?) : List<Int>? {
+    fun loadFavoritesProducts(context: Context?): List<Int>? {
 
-        var list = sharedPreferencesService.loadFromSharedPreferences(context, "favorite_products", List::class.java) as List<Int>
-        return list?.map { p -> p.toInt() }
+        var list = sharedPreferencesService.loadFromSharedPreferences(
+            context,
+            "favorite_products",
+            List::class.java
+        )
+        if (list != null) {
+            val aux = list as List<Int>
+            return aux.map { p -> p.toInt() }
+        }
+        return null
     }
 
 }

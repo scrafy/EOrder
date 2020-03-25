@@ -10,6 +10,7 @@ import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.widget.ExpandableListView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.interfaces.IRepaintModel
@@ -19,8 +20,9 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
 
 
-class ShopActivity : BaseMenuActivity(), IRepaintModel,
+class ShopActivity : AppCompatActivity(), IRepaintModel,
     IShowSnackBarMessage {
+
 
     lateinit var model: ShopViewModel
     lateinit var adapter: ShopProductsAdapter
@@ -36,24 +38,9 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
         isShopEmpty()
     }
 
-    override fun getProductsFromShop(): List<Product> {
-        return model.getProducts()
-    }
-
-    override fun setMenuToolbar() {
-        currentToolBarMenu["main_menu"] = R.menu.main_menu
-        setToolbarAndLateralMenu(currentToolBarMenu)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        this.hideFloatingButton()
-    }
-
     override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 
     override fun repaintModel(
         view: View,
@@ -102,7 +89,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
 
     fun setObservers() {
 
-        model.getConfirmOrderResultObservable().observe(this, Observer<ServerResponse<Int>> { it ->
+        model.getConfirmOrderResultObservable().observe(this, Observer<ServerResponse<Int>> {
 
             AlertDialogOk(
                 this, resources.getString(R.string.alert_dialog_confirm_order_title),
@@ -124,7 +111,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
     private fun setAdapterListeners(view: View, obj: Any?) {
 
         var product = obj as Product
-        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener { it ->
+        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener {
 
             if (product.amount > 0)
                 product.amount--
@@ -142,7 +129,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
 
         }
 
-        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener { it ->
+        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener {
 
             product.amount++
             adapter.notifyDataSetChanged()
@@ -150,7 +137,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
 
         }
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener { it ->
+        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
             model.writeProductsFavorites(this, model.getProducts().filter{ p -> p.favorite }.map { p -> p.id })
@@ -169,10 +156,10 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
 
     private fun setTotals() {
 
-        findViewById<TextView>(R.id.textView_shop_amount_products).setText(model.getAmounfOfProducts().toString())
-        findViewById<TextView>(R.id.textView_shop_amount_tax_base).setText(model.getTotalTaxBaseAmount().toString() + "€")
-        findViewById<TextView>(R.id.textView_shop_amount_total_taxes).setText(model.getTotalTaxesAmount().toString() + "€")
-        findViewById<TextView>(R.id.textView_shop_amount_total).setText(model.getTotalAmount().toString() + "€")
+        findViewById<TextView>(R.id.textView_shop_amount_products).text = model.getAmountOfProducts().toString()
+        findViewById<TextView>(R.id.textView_shop_amount_tax_base).text = model.getTotalTaxBaseAmount().toString() + "€"
+        findViewById<TextView>(R.id.textView_shop_amount_total_taxes).text = model.getTotalTaxesAmount().toString() + "€"
+        findViewById<TextView>(R.id.textView_shop_amount_total).text = model.getTotalAmount().toString() + "€"
         findViewById<TextView>(R.id.textView_shop_center).text = model.getCenterName()
         findViewById<TextView>(R.id.textView_shop_seller).text = model.getSellerName()
 
@@ -188,7 +175,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
                 "The shop is empty. Please add a product...",
                 "OK"
 
-            ) { d, i ->
+            ) { _, _ ->
 
                 this.onBackPressed()
 
@@ -200,7 +187,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
 
     private fun setListeners() {
 
-        button_shop_activity_confirm_order.setOnClickListener { v ->
+        button_shop_activity_confirm_order.setOnClickListener {
 
             model.confirmOrder()
         }

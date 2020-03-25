@@ -1,6 +1,7 @@
 package com.eorder.app.com.eorder.app.di
 
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
+import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.ShopViewModel
@@ -21,9 +22,10 @@ val appModule = module {
     viewModel { CatalogsViewModel(get(), get()) }
     viewModel { ProductsViewModel(get(), get(), get(), get()) }
     viewModel { ShopViewModel(get(), get(), get()) }
-    viewModel { OrderViewModel(get()) }
+    viewModel { OrderViewModel(get(), get(), get()) }
     viewModel { SellersViewModel(get(), get()) }
-    viewModel { LandingViewModel(get()) }
+    viewModel { LandingViewModel(get(), get(), get()) }
+    viewModel { MainViewModel(get(), get()) }
 
 
 }

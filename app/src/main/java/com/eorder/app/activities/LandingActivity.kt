@@ -12,7 +12,6 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class LandingActivity : BaseMenuActivity() {
 
-
     private lateinit var model: LandingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +46,10 @@ class LandingActivity : BaseMenuActivity() {
 
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()
+    }
+
+    override fun signOutApp() {
+        model.signOutApp(this)
     }
 
 }

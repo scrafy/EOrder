@@ -64,6 +64,11 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         setToolbarAndLateralMenu(currentToolBarMenu)
     }
 
+    override fun signOutApp() {
+        model.signOutApp(this)
+    }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         super.onCreateOptionsMenu(menu)

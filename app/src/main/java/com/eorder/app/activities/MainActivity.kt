@@ -6,17 +6,22 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.dialogs.AlertDialogOk
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        model = getViewModel()
         setListeners()
         showSessionExpiredMessage()
+        init()
     }
 
     fun setListeners() {
@@ -40,5 +45,13 @@ class MainActivity : AppCompatActivity() {
             ) { d, i -> }.show()
 
     }
+
+    private fun init() {
+
+        model.loadSessionToken(this)
+        if (model.isLogged())
+            startActivity(Intent(this, LandingActivity::class.java))
+    }
+
 
 }

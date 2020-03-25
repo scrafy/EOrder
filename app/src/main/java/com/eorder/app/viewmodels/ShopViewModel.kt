@@ -7,6 +7,7 @@ import com.eorder.application.extensions.round
 import com.eorder.application.interfaces.IConfirmOrderUseCase
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
+import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class ShopViewModel(
     fun getConfirmOrderResultObservable(): LiveData<ServerResponse<Int>> = confirmOrderResult
 
     fun getProducts(): List<Product> = shopService.getOrder().products
-    fun getAmounfOfProducts(): Int = shopService.getAmountOfProducts()
+    fun getAmountOfProducts(): Int = shopService.getAmountOfProducts()
     fun getTotalTaxBaseAmount(): Float = shopService.getTotalTaxBaseAmount().round(2)
     fun getTotalTaxesAmount(): Float = shopService.getTotalTaxesAmount().round(2)
     fun getTotalAmount(): Float = shopService.getTotalAmount().round(2)
