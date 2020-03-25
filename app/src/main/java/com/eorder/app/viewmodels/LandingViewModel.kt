@@ -4,11 +4,10 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IShopService
 
 
-
 class LandingViewModel(
     private val shopService: IShopService
 ) : BaseViewModel() {
 
 
-    fun getProductsFromShop() = shopService.order.products
+    fun getProductsFromShop() = shopService.getOrder().products
 }

@@ -8,11 +8,14 @@ import com.eorder.domain.models.Seller
 
 class ShopService : IShopService {
 
-    override var order: Order = Order(Center(), Seller())
+    private var order: Order = Order(Center(), Seller())
 
     override fun cleanShop() {
         order = Order(Center(), Seller())
     }
+
+    override fun getOrder(): Order = this.order
+    override fun setOrder(order:Order) { this.order = order }
 
     override fun isShopEmpty(): Boolean = order.products.isEmpty()
 
@@ -73,7 +76,7 @@ class ShopService : IShopService {
             p.amount--
     }
 
-    override fun getAmounfOfProducts(): Int{
+    override fun getAmountOfProducts(): Int{
 
         return order.products.sumBy { p -> p.amount }
     }

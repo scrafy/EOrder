@@ -5,13 +5,13 @@ import com.eorder.domain.models.Order
 
 interface IShopService {
 
-    var order:Order
-
     fun cleanShop()
+    fun getOrder(): Order
+    fun setOrder(order:Order)
     fun cleanProducts()
     fun addProductToShop(product:Product)
     fun removeProductFromShop(product:Product)
-    fun getAmounfOfProducts(): Int
+    fun getAmountOfProducts(): Int
     fun getTotalTaxBaseAmount(): Float
     fun getTotalTaxesAmount():Float
     fun getTotalAmount():Float

@@ -135,7 +135,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     override fun setAdapterListeners(view: View, obj: Any?) {
 
         var product = obj as Product
-        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener { it ->
+        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener {
 
             if (product.amount > 0)
                 product.amount--
@@ -148,7 +148,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener { it ->
+        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener {
 
             product.amount++
 
@@ -160,9 +160,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener { it ->
+        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
+
+            model.writeProductsFavorites(
+                context,
+                products.filter { p -> p.favorite }.map { p -> p.id })
 
         }
     }
@@ -343,7 +347,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             }
             model.cleanProducts()
             model.setProductsToShop(aux)
-
         }
+
+        val favorites = model.loadFavoritesProducts(context)
+
+        if (favorites != null)
+            this.products.filter { p ->
+                p.id in favorites
+            }.forEach { p -> p.favorite = true }
     }
 }

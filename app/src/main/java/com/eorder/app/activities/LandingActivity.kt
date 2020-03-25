@@ -10,8 +10,7 @@ import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-
-class LandingActivity : BaseMenuActivity()  {
+class LandingActivity : BaseMenuActivity() {
 
 
     private lateinit var model: LandingViewModel
@@ -23,6 +22,7 @@ class LandingActivity : BaseMenuActivity()  {
         model = getViewModel()
         setListeners()
         setMenuToolbar()
+
     }
 
 
@@ -32,7 +32,6 @@ class LandingActivity : BaseMenuActivity()  {
         findViewById<TextView>(R.id.textView_order).setOnClickListener { view ->
 
             startActivity(Intent(this, OrderActivity::class.java))
-
         }
     }
 

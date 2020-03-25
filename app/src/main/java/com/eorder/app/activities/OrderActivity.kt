@@ -83,7 +83,10 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             AlertDialogQuestion(
                 this,
                 "Shop",
-                getString(R.string.alert_dialog_order_activity_change_center).format(model.getCurrentOrderCenter().center_name,center.center_name),
+                getString(R.string.alert_dialog_order_activity_change_center).format(
+                    model.getCurrentOrderCenter().center_name,
+                    center.center_name
+                ),
                 resources.getString(R.string.alert_dialog_order_activity_change_center_button_confirm),
                 resources.getString(R.string.alert_dialog_order_activity_button_deny),
                 { d, i ->
@@ -110,7 +113,10 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             AlertDialogQuestion(
                 this,
                 "Shop",
-                 getString(R.string.alert_dialog_order_activity_change_seller).format(model.getCurrentOrderSeller().companyName,seller.companyName),
+                getString(R.string.alert_dialog_order_activity_change_seller).format(
+                    model.getCurrentOrderSeller().companyName,
+                    seller.companyName
+                ),
                 resources.getString(R.string.alert_dialog_order_activity_change_seller_button_confirm),
                 resources.getString(R.string.alert_dialog_order_activity_button_deny),
                 { d, i ->

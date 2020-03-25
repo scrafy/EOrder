@@ -47,7 +47,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
                         val shopService by inject<IShopService>()
 
-                        if (shopService.order.products.isEmpty()) {
+                        if (shopService.getOrder().products.isEmpty()) {
 
                             AlertDialogOk(
                                 getContext(),

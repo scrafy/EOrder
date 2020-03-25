@@ -12,28 +12,28 @@ class OrderViewModel(
 ) : BaseViewModel() {
 
 
-    fun getProductsFromShop() = shopService.order.products
+    fun getProductsFromShop() = shopService.getOrder().products
 
     fun addCenterToOrder(center: Center) {
 
-        shopService.order.center = center
+        shopService.getOrder().center = center
     }
 
     fun addSellerToOrder(seller: Seller) {
 
-        shopService.order.seller = seller
+        shopService.getOrder().seller = seller
     }
 
     fun cleanShop() = shopService.cleanShop()
 
     fun isPossibleChangeSeller(seller: Seller): Boolean =
-        !(shopService.order.seller.id != null && shopService.order.seller.id != seller.id && shopService.order.products.isNotEmpty())
+        !(shopService.getOrder().seller.id != null && shopService.getOrder().seller.id != seller.id && shopService.getOrder().products.isNotEmpty())
 
     fun isPossibleChangeCenter(center: Center): Boolean =
-        !(shopService.order.center.id != null && shopService.order.center.id != center.id && shopService.order.products.isNotEmpty())
+        !(shopService.getOrder().center.id != null && shopService.getOrder().center.id != center.id && shopService.getOrder().products.isNotEmpty())
 
-    fun getCurrentOrderCenter() = shopService.order.center
+    fun getCurrentOrderCenter() = shopService.getOrder().center
 
-    fun getCurrentOrderSeller() = shopService.order.seller
+    fun getCurrentOrderSeller() = shopService.getOrder().seller
 
 }

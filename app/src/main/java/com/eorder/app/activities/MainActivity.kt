@@ -7,18 +7,14 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.eorder.app.R
 import com.eorder.app.dialogs.AlertDialogOk
-import com.eorder.app.viewmodels.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        model = getViewModel()
         setListeners()
         showSessionExpiredMessage()
     }
@@ -32,12 +28,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-   /* override fun onResume() {
-        super.onResume()
-        val mngr = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-
-        val taskList = mngr.getRunningTasks(10)
-    }*/
 
     fun showSessionExpiredMessage() {
 

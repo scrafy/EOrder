@@ -153,6 +153,7 @@ class ShopActivity : BaseMenuActivity(), IRepaintModel,
         view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener { it ->
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
+            model.writeProductsFavorites(this, model.getProducts().filter{ p -> p.favorite }.map { p -> p.id })
 
         }
     }
