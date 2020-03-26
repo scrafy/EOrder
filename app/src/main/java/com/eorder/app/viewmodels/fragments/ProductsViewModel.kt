@@ -9,6 +9,8 @@ import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
 import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -22,9 +24,11 @@ class ProductsViewModel(
     private val getProductsByCatalogUseCase: IGetProductsByCatalogUseCase,
     private val loadImageService: ILoadImagesService,
     private val shopService: IShopService,
-    private val sharedPreferencesService: ISharedPreferencesService
+    private val sharedPreferencesService: ISharedPreferencesService,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
 
-) : BaseViewModel() {
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> =
         MutableLiveData()

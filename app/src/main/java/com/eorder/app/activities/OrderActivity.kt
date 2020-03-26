@@ -58,6 +58,11 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         )
     }
 
+    override fun checkValidSession() {
+
+        model.checkValidSession(this)
+    }
+
     override fun setMenuToolbar() {
 
         currentToolBarMenu["main_menu"] = R.menu.main_menu

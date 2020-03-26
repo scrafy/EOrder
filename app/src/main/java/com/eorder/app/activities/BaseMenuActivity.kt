@@ -24,7 +24,6 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
 
     abstract fun setMenuToolbar()
-    abstract fun signOutApp()
 
 
     override fun setActionBar(menu: MutableMap<String, Int>) {

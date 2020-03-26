@@ -8,6 +8,7 @@ import com.eorder.application.interfaces.IConfirmOrderUseCase
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +19,10 @@ import kotlinx.coroutines.launch
 class ShopViewModel(
     private val confirmOrderUseCase: IConfirmOrderUseCase,
     private val shopService: IShopService,
-    private val sharedPreferencesService: ISharedPreferencesService
-) : BaseViewModel() {
+    private val sharedPreferencesService: ISharedPreferencesService,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService,manageExceptionService) {
 
     private val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
 

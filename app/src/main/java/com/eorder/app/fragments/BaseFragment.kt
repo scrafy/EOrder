@@ -7,7 +7,7 @@ import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 abstract class BaseFragment : Fragment() {
 
     override fun onStart() {
-        (context as BaseActivity).checkToken()
+        (context as BaseActivity).checkValidSession()
         (context as BaseFloatingButtonActivity).showFloatingButton()
         super.onStart()
     }

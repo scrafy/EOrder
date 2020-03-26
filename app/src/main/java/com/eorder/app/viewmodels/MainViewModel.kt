@@ -4,12 +4,14 @@ import android.content.Context
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import java.lang.Exception
 
 class MainViewModel(
     private val jwtTokenService: IJwtTokenService,
-    private val sharedPreferencesService: ISharedPreferencesService
-) : BaseViewModel() {
+    private val sharedPreferencesService: ISharedPreferencesService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     fun isLogged(): Boolean = jwtTokenService.isValidToken()
 

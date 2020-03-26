@@ -16,16 +16,16 @@ import org.koin.dsl.module
 val appModule = module {
 
     /*VIEW MODEL*/
-    viewModel { LoginViewModel(get()) }
-    viewModel { RecoverPasswordViewModel(get()) }
-    viewModel { CentersViewModel(get(), get()) }
-    viewModel { CatalogsViewModel(get(), get()) }
-    viewModel { ProductsViewModel(get(), get(), get(), get()) }
-    viewModel { ShopViewModel(get(), get(), get()) }
-    viewModel { OrderViewModel(get(), get(), get()) }
-    viewModel { SellersViewModel(get(), get()) }
-    viewModel { LandingViewModel(get(), get(), get()) }
-    viewModel { MainViewModel(get(), get()) }
+    viewModel { LoginViewModel(get(), get(), get()) }
+    viewModel { RecoverPasswordViewModel(get(), get(), get()) }
+    viewModel { CentersViewModel(get(), get(), get(), get()) }
+    viewModel { CatalogsViewModel(get(), get(), get(), get()) }
+    viewModel { ProductsViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ShopViewModel(get(), get(), get(), get(), get()) }
+    viewModel { OrderViewModel(get(), get(), get(), get()) }
+    viewModel { SellersViewModel(get(), get(), get(), get()) }
+    viewModel { LandingViewModel(get(), get(), get(), get()) }
+    viewModel { MainViewModel(get(), get(), get()) }
 
 
 }

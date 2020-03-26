@@ -5,6 +5,7 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Seller
 
@@ -13,8 +14,9 @@ import com.eorder.domain.models.Seller
 class OrderViewModel(
     private val shopService: IShopService,
     jwtTokenService: IJwtTokenService,
-    sharedPreferencesService: ISharedPreferencesService
-)  : BaseMainMenuActionsViewModel(jwtTokenService, sharedPreferencesService) {
+    sharedPreferencesService: ISharedPreferencesService,
+    manageExceptionService: IManageException
+)  : BaseMainMenuActionsViewModel(jwtTokenService, sharedPreferencesService, manageExceptionService) {
 
 
     fun getProductsFromShop() = shopService.getOrder().products

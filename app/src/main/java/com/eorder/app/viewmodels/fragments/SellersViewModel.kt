@@ -6,6 +6,8 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetSellersByCenterUseCase
 import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -14,9 +16,11 @@ import kotlinx.coroutines.launch
 
 class SellersViewModel(
     private val getSellersByCenterUseCase: IGetSellersByCenterUseCase,
-    private val loadImageService: ILoadImagesService
+    private val loadImageService: ILoadImagesService,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
 
-) : BaseViewModel() {
+) : BaseViewModel(jwtTokenService,manageExceptionService ) {
 
     private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> =
         MutableLiveData()

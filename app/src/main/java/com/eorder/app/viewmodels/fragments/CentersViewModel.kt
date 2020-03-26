@@ -6,6 +6,8 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetCentersUseCase
 import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.*
@@ -13,8 +15,10 @@ import kotlinx.coroutines.*
 
 class CentersViewModel(
     private val getCentersUseCase: IGetCentersUseCase,
-    private val loadImageService: ILoadImagesService
-) : BaseViewModel() {
+    private val loadImageService: ILoadImagesService,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
 

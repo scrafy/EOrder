@@ -3,6 +3,8 @@ package com.eorder.app.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.interfaces.ILoginUseCase
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -11,8 +13,10 @@ import kotlinx.coroutines.launch
 
 
 class LoginViewModel(
-    private val loginUseCase: ILoginUseCase
-) : BaseViewModel() {
+    private val loginUseCase: ILoginUseCase,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService,manageExceptionService) {
 
     private val loginResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 

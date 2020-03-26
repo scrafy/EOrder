@@ -3,7 +3,7 @@ package com.eorder.domain.interfaces
 
 interface IJwtTokenService {
 
-    fun getToken(): String
+    fun getToken(): String?
 
     fun cleanToken()
 

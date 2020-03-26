@@ -38,9 +38,9 @@ class JwtTokenService(
         this.token = newToken
     }
 
-    override fun getToken(): String {
+    override fun getToken(): String? {
 
-        return this.token ?: throw InvalidJwtTokenException(ErrorCode.JWT_TOKEN_INVALID, "The JWT token is invalid")
+        return this.token
     }
 
     override fun addToken(token: String) {

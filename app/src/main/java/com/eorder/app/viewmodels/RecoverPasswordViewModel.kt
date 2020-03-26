@@ -3,6 +3,8 @@ package com.eorder.app.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.interfaces.IRecoverPasswordUseCase
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -11,8 +13,10 @@ import kotlinx.coroutines.launch
 
 
 class RecoverPasswordViewModel(
-    private val recoverPasswordUseCase: IRecoverPasswordUseCase
-) : BaseViewModel() {
+    private val recoverPasswordUseCase: IRecoverPasswordUseCase,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 

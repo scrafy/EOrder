@@ -7,13 +7,15 @@ import com.eorder.app.activities.LandingActivity
 import com.eorder.app.activities.MainActivity
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 
 
 abstract class BaseMainMenuActionsViewModel(
 
     private val jwtTokenService: IJwtTokenService,
-    private val sharedPreferencesService: ISharedPreferencesService
-) : BaseViewModel() {
+    private val sharedPreferencesService: ISharedPreferencesService,
+    manageExceptionService: IManageException
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     fun signOutApp(context: Context) {
 

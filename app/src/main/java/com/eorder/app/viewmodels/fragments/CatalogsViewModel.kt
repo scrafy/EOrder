@@ -6,15 +6,19 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.interfaces.IGetCatalogsBySellerUseCase
 import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.*
 
 class CatalogsViewModel(
     private val getCatalogBySellerUseCase: IGetCatalogsBySellerUseCase,
-    private val loadImageService: ILoadImagesService
+    private val loadImageService: ILoadImagesService,
+    jwtTokenService: IJwtTokenService,
+    manageExceptionService: IManageException
 
-    ) : BaseViewModel() {
+    ) : BaseViewModel(jwtTokenService, manageExceptionService ) {
 
     private val getCatalogBySellersResult: MutableLiveData<ServerResponse<List<Catalog>>> =
         MutableLiveData()
