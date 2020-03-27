@@ -66,10 +66,7 @@ class JwtTokenService(
 
     override fun getClaimFromToken(claim: String): Any? {
 
-        if (jws != null) {
-            return Jwts.claims()[claim]
-        }
-        return null
+        return jws?.body?.get(claim)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

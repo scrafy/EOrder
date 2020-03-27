@@ -5,13 +5,13 @@ import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.models.ServerResponse
 import com.eorder.domain.exceptions.ShopEmptyException
+import com.eorder.domain.interfaces.IOrderRepository
 import com.eorder.domain.models.Order
-import com.eorder.infrastructure.repositories.OrderRepository
 
 
 class ConfirmOrderUseCase(
     private val shopService: IShopService,
-    private val orderRepository: OrderRepository
+    private val orderRepository: IOrderRepository
 ) : IConfirmOrderUseCase {
 
     override fun confirmOrder(order: Order): ServerResponse<Int> {

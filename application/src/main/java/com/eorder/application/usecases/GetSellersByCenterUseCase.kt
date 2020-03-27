@@ -6,7 +6,7 @@ import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 
 
-class GetSellersByCenterUseCase(val sellerRepository: ISellerRepository):
+class GetSellersByCenterUseCase(private val sellerRepository: ISellerRepository):
     IGetSellersByCenterUseCase {
 
 

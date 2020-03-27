@@ -6,6 +6,7 @@ import com.eorder.domain.exceptions.ModelValidationException
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.interfaces.ILoginUseCase
+import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
@@ -13,7 +14,7 @@ import com.eorder.infrastructure.repositories.UserRepository
 
 
 class LoginUseCase(
-    override val userRepository: UserRepository,
+    override val userRepository: IUserRepository,
     override val jwtTokenService: IJwtTokenService,
     override val validationModelService: IValidationModelService
 ) : ILoginUseCase {

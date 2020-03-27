@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import com.eorder.app.activities.ShopActivity
+import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 
@@ -29,9 +30,10 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
 
     private fun setListeners() {
 
-        cart_floating_button.setOnClickListener { v ->
+        cart_floating_button.setOnClickListener {
 
-            startActivity(Intent(this, ShopActivity::class.java))
+            (this as IOnFloatinButtonShopClicked).onFloatingButtonClicked()
+
         }
     }
 

@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.domain.models.Product
+import kotlinx.android.synthetic.main.activity_landing.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class LandingActivity : BaseMenuActivity() {
+class LandingActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked {
 
     private lateinit var model: LandingViewModel
 
@@ -24,13 +26,22 @@ class LandingActivity : BaseMenuActivity() {
 
     }
 
+    override fun onFloatingButtonClicked() {
+        var intent = Intent(this, ShopActivity::class.java)
+        startActivity(intent)
+    }
 
     private fun setListeners() {
 
 
-        findViewById<TextView>(R.id.textView_order).setOnClickListener { view ->
+        textView_landing_activity_make_order.setOnClickListener {
 
             startActivity(Intent(this, OrderActivity::class.java))
+        }
+
+        textView_landing_page_favorite_products.setOnClickListener {
+
+            startActivity(Intent(this, FavoritesActivity::class.java))
         }
     }
 

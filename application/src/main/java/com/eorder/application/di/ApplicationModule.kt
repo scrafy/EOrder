@@ -25,6 +25,7 @@ val applicationModule = module {
     single { GetProductsByCatalogUseCase(get()) } bind IGetProductsByCatalogUseCase::class
     single { GetSellersByCenterUseCase(get()) } bind IGetSellersByCenterUseCase::class
     single { ConfirmOrderUseCase(get(), get()) } bind IConfirmOrderUseCase::class
+    single { GetFavoriteProductsUseCase(get(), get()) } bind IGetFavoriteProductsUseCase::class
 
 
 

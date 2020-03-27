@@ -1,5 +1,6 @@
 package com.eorder.app.com.eorder.app.di
 
+import FavoritesActivityViewModel
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
@@ -26,6 +27,7 @@ val appModule = module {
     viewModel { SellersViewModel(get(), get(), get(), get()) }
     viewModel { LandingViewModel(get(), get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
+    viewModel { FavoritesActivityViewModel(get(), get(), get(), get(), get(), get()) }
 
 
 }

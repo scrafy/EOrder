@@ -5,6 +5,7 @@ import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
+import com.google.gson.Gson
 
 class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
 
@@ -81,7 +82,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
 
             )
         )
-
 
         var response: ServerResponse<List<Center>> =
             ServerResponse(

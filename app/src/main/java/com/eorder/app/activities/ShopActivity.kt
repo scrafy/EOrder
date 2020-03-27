@@ -10,9 +10,9 @@ import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.widget.ExpandableListView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
@@ -20,13 +20,12 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
 
 
-class ShopActivity : AppCompatActivity(), IRepaintModel,
+class ShopActivity : BaseActivity(), IRepaintModel,
     IShowSnackBarMessage {
 
-
-    lateinit var model: ShopViewModel
-    lateinit var adapter: ShopProductsAdapter
-    lateinit var listView: ListView
+    private lateinit var model: ShopViewModel
+    private lateinit var adapter: ShopProductsAdapter
+    private lateinit var listView: ListView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +40,12 @@ class ShopActivity : AppCompatActivity(), IRepaintModel,
     override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+    override fun checkValidSession() {
+
+        model.checkValidSession(this)
+    }
+
 
     override fun repaintModel(
         view: View,
@@ -95,8 +100,10 @@ class ShopActivity : AppCompatActivity(), IRepaintModel,
                 this, resources.getString(R.string.alert_dialog_confirm_order_title),
                 resources.getString(R.string.alert_dialog_confirm_order_message), "OK"
             ) { _, _ ->
-                navigateUpTo(Intent(this, LandingActivity::class.java))
-
+                if (intent.getStringExtra("activity_name") != null)
+                    navigateUpTo(Intent(this, LandingActivity::class.java))
+                else
+                    this.onBackPressed()
             }.show()
 
         })
@@ -140,26 +147,47 @@ class ShopActivity : AppCompatActivity(), IRepaintModel,
         view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
-            model.writeProductsFavorites(this, model.getProducts().filter{ p -> p.favorite }.map { p -> p.id })
+            model.writeProductsFavorites(
+                this,
+                model.getProducts().filter { p -> p.favorite }.map { p -> p.id })
 
         }
     }
 
     private fun init() {
 
-        adapter = ShopProductsAdapter(model.getProducts(), this)
+        var products = model.getProducts()
+        setProductsFavoriteState(products)
+        adapter = ShopProductsAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
         setTotals()
+    }
 
+    private fun setProductsFavoriteState(products: List<Product>) {
+
+        products.forEach { p ->
+
+            p.favorite = false
+        }
+        val favorites = model.loadFavoritesProducts(this)
+
+        if (favorites != null)
+            products.filter { p ->
+                p.id in favorites
+            }.forEach { p -> p.favorite = true }
     }
 
     private fun setTotals() {
 
-        findViewById<TextView>(R.id.textView_shop_amount_products).text = model.getAmountOfProducts().toString()
-        findViewById<TextView>(R.id.textView_shop_amount_tax_base).text = model.getTotalTaxBaseAmount().toString() + "€"
-        findViewById<TextView>(R.id.textView_shop_amount_total_taxes).text = model.getTotalTaxesAmount().toString() + "€"
-        findViewById<TextView>(R.id.textView_shop_amount_total).text = model.getTotalAmount().toString() + "€"
+        findViewById<TextView>(R.id.textView_shop_amount_products).text =
+            model.getAmountOfProducts().toString()
+        findViewById<TextView>(R.id.textView_shop_amount_tax_base).text =
+            model.getTotalTaxBaseAmount().toString() + "€"
+        findViewById<TextView>(R.id.textView_shop_amount_total_taxes).text =
+            model.getTotalTaxesAmount().toString() + "€"
+        findViewById<TextView>(R.id.textView_shop_amount_total).text =
+            model.getTotalAmount().toString() + "€"
         findViewById<TextView>(R.id.textView_shop_center).text = model.getCenterName()
         findViewById<TextView>(R.id.textView_shop_seller).text = model.getSellerName()
 

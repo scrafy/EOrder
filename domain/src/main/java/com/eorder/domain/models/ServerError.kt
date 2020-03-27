@@ -1,7 +1,5 @@
 package com.eorder.domain.models
 
-import com.eorder.domain.models.ValidationError
-
 class ServerError(
 
     val errorMessage: String,

@@ -1,6 +1,5 @@
 package com.eorder.app.activities
 
-import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
@@ -10,11 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
-import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
-import com.eorder.application.interfaces.IShopService
-import org.koin.android.ext.android.inject
+import com.eorder.app.interfaces.IOnShopIconClicked
 
 
 abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
@@ -24,6 +21,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
 
     abstract fun setMenuToolbar()
+    abstract fun signOutApp()
 
 
     override fun setActionBar(menu: MutableMap<String, Int>) {
@@ -45,24 +43,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
                     override fun onMenuItemClick(item: MenuItem?): Boolean {
 
-                        val shopService by inject<IShopService>()
-
-                        if (shopService.getOrder().products.isEmpty()) {
-
-                            AlertDialogOk(
-                                getContext(),
-                                resources.getString(R.string.alert_dialog_shop_empty_title),
-                                resources.getString(R.string.alert_dialog_shop_empty_message),
-                                "OK"
-                            ) { dialog, i ->
-
-                                dialog.cancel()
-                            }.show()
-
-                            return true
-                        }
-
-                        startActivity(Intent(getContext(), ShopActivity::class.java))
+                        (getContext() as IOnShopIconClicked).onShopIconClicked()
                         return true
                     }
 

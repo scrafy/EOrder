@@ -113,16 +113,16 @@
                         tools:ignore="MissingConstraints"></TextView>
 
                     <TextView
-                        android:id="@+id/textView_category"
+                        android:id="@+id/textView_landing_page_favorite_products"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_marginStart="48dp"
                         android:layout_marginTop="60dp"
                         android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_lista"
+                        android:drawableTop="@drawable/ic_heart"
                         android:gravity="center"
                         android:padding="20dp"
-                        android:text="Categories"
+                        android:text="@string/landing_activity_favorties"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"
@@ -133,7 +133,7 @@
                         tools:ignore="MissingConstraints"></TextView>
 
                     <TextView
-                        android:id="@+id/textView_order"
+                        android:id="@+id/textView_landing_activity_make_order"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_marginTop="60dp"

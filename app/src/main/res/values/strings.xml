@@ -82,5 +82,12 @@
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Select a seller</string>
 
+    <!--LANDING ACTIVITY-->
+    <string name="landing_activity_favorties">Favorite products</string>
+
+    <!--FAVORITE ACTIVITY-->
+    <string name="favorite_activity_alert_dialog_title">Remove product</string>
+    <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this products from your favourite list?</string>
+
 
 </resources>

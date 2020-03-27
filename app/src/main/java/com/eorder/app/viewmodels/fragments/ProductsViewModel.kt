@@ -46,7 +46,6 @@ class ProductsViewModel(
     }
 
     fun loadImages(list: List<UrlLoadedImage>) = loadImageService.loadImages(list)
-    fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
     fun addProductToShop(product: Product) = shopService.addProductToShop(product)
     fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
     fun existProduct(productId: Int) = shopService.existProduct(productId)

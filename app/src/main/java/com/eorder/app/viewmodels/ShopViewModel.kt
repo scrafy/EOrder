@@ -22,7 +22,7 @@ class ShopViewModel(
     private val sharedPreferencesService: ISharedPreferencesService,
     jwtTokenService: IJwtTokenService,
     manageExceptionService: IManageException
-) : BaseViewModel(jwtTokenService,manageExceptionService) {
+) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     private val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
 
@@ -37,16 +37,36 @@ class ShopViewModel(
     fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
     fun getSellerName() = shopService.getOrder().seller.companyName
     fun getCenterName() = shopService.getOrder().center.center_name
-    fun confirmOrder(){
+    fun confirmOrder() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
             val result = confirmOrderUseCase.confirmOrder(shopService.getOrder())
             confirmOrderResult.postValue(result)
         }
     }
-    fun writeProductsFavorites(context: Context?, products:List<Int>){
 
-        sharedPreferencesService.writeToSharedPreferences(context, products,"favorite_products", products.javaClass )
+    fun writeProductsFavorites(context: Context?, products: List<Int>) {
+
+        sharedPreferencesService.writeToSharedPreferences(
+            context,
+            products,
+            "favorite_products",
+            products.javaClass
+        )
+    }
+
+    fun loadFavoritesProducts(context: Context?): List<Int>? {
+
+        var list = sharedPreferencesService.loadFromSharedPreferences(
+            context,
+            "favorite_products",
+            List::class.java
+        )
+        if (list != null) {
+            val aux = list as List<Int>
+            return aux.map { p -> p.toInt() }
+        }
+        return null
     }
 
 }

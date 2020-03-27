@@ -304,11 +304,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 model.manageExceptionService.manageException(this.context!!, ex)
             })
-
-        model.getLoadImageErrorObservable().observe((context as LifecycleOwner), Observer { ex ->
-
-            model.manageExceptionService.manageException(this.context!!, ex)
-        })
     }
 
     private fun init() {
@@ -350,7 +345,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         }
 
         val favorites = model.loadFavoritesProducts(context)
-
+        this.products.forEach { p -> p.favorite = false }
         if (favorites != null)
             this.products.filter { p ->
                 p.id in favorites

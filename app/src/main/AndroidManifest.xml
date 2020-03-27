@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".Main"
         android:allowBackup="true"
@@ -14,13 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.FavoritesActivity"></activity>
         <activity android:name=".activities.OrderActivity" />
         <activity android:name=".activities.BaseMenuActivity" />
         <activity android:name=".activities.ShopActivity" />
-        <activity android:name=".activities.LandingActivity"/>
+        <activity android:name=".activities.LandingActivity" />
         <activity android:name=".activities.RecoverPasswordActivity" />
-        <activity android:name=".activities.LoginActivity"/>
-        <activity android:name=".activities.MainActivity" >
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

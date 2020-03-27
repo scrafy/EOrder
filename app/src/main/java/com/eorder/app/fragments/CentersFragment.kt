@@ -99,15 +99,6 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
 
     }
 
-    private fun bitMapToInputStream(bm: Bitmap): InputStream {
-
-        val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val bais = ByteArrayInputStream(baos.toByteArray())
-        bais.reset()
-        return bais
-    }
-
     fun setObservers() {
 
         model.getCentersResultObservable().observe(

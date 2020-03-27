@@ -1,20 +1,26 @@
 package com.eorder.app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
+import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
+import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.fragments.CatalogsFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectCenter
+import com.eorder.app.interfaces.IOnShopIconClicked
 import com.eorder.app.interfaces.IToolbarSearch
+import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
@@ -22,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
-    IToolbarSearch, ISelectSeller {
+    IShowSnackBarMessage, IToolbarSearch, ISelectSeller, IOnShopIconClicked, IOnFloatinButtonShopClicked {
 
     private lateinit var model: OrderViewModel
 
@@ -58,6 +64,39 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         )
     }
 
+    override fun onShopIconClicked() {
+
+        if (model.getProductsFromShop().isEmpty()) {
+
+            AlertDialogOk(
+                getContext(),
+                resources.getString(R.string.alert_dialog_shop_empty_title),
+                resources.getString(R.string.alert_dialog_shop_empty_message),
+                "OK"
+            ) { dialog, i ->
+
+                dialog.cancel()
+            }.show()
+
+            return
+        }
+        var intent = Intent(this, ShopActivity::class.java)
+        intent.putExtra(
+            "activity_name",
+            "order"
+        )
+        startActivity(intent)
+    }
+
+    override fun onFloatingButtonClicked() {
+        var intent = Intent(this, ShopActivity::class.java)
+        intent.putExtra(
+            "activity_name",
+            "order"
+        )
+        startActivity(intent)
+    }
+
     override fun checkValidSession() {
 
         model.checkValidSession(this)
@@ -88,6 +127,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         if (model.isPossibleChangeCenter(center)) {
 
             loadSellersFragment(center)
+            model.addCenterToOrder(center)
 
         } else {
             AlertDialogQuestion(
@@ -118,6 +158,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         if (model.isPossibleChangeSeller(seller)) {
 
             loadCatalogsFragment(seller)
+            model.addSellerToOrder(seller)
 
         } else {
             AlertDialogQuestion(
@@ -160,6 +201,10 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             .add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
     }
 
+    override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun loadSellersFragment(center: Center) {
 
         var fragment = SellersFragment()
@@ -170,7 +215,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             .replace(R.id.linear_layout_center_fragment_container, fragment)
             .addToBackStack(null).commit()
 
-        model.addCenterToOrder(center)
     }
 
     private fun loadCatalogsFragment(seller: Seller) {
@@ -184,7 +228,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             .replace(R.id.linear_layout_center_fragment_container, fragment)
             .addToBackStack(null).commit()
 
-        model.addSellerToOrder(seller)
+
     }
 
 }

@@ -7,19 +7,14 @@ import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 
 
-class GetUserCentersUseCase(val centerRepository: ICenterRepository, val tokenService: IJwtTokenService /*val sessionStorage: ISessionStorage*/ ) : IGetCentersUseCase
-{
+class GetUserCentersUseCase(
+    private val centerRepository: ICenterRepository,
+    private val tokenService: IJwtTokenService
+) : IGetCentersUseCase {
 
     override fun getCenters(): ServerResponse<List<Center>> {
 
-        /* if (!sessionStorage.isSessionValid())
-            throw UserSessionExpiredException*/
-
-        /* TODO obtener el userid del token almacenado donde sea q lo estemos guardando
-        val token = sessionStorage.getParameter("token")
-        val userId = tokenService.getClaimFromToken(token, "userid") as Int*/
-
-        val userId = 123
-        return centerRepository.getUserCenters(userId)
+        val userId = (tokenService.getClaimFromToken("userId") as String)
+        return centerRepository.getUserCenters(userId.toInt())
     }
 }
