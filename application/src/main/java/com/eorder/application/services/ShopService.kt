@@ -1,21 +1,22 @@
 package com.eorder.application.services
 
 import com.eorder.application.interfaces.IShopService
-import com.eorder.domain.models.Center
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
-import com.eorder.domain.models.Seller
+
 
 class ShopService : IShopService {
 
-    private var order: Order = Order(Center(), Seller())
+    private var order: Order = Order()
 
     override fun cleanShop() {
-        order = Order(Center(), Seller())
+        order = Order()
     }
 
     override fun getOrder(): Order = this.order
-    override fun setOrder(order:Order) { this.order = order }
+    override fun setOrder(order: Order) {
+        this.order = order
+    }
 
     override fun isShopEmpty(): Boolean = order.products.isEmpty()
 
@@ -23,34 +24,32 @@ class ShopService : IShopService {
         order.products.clear()
     }
 
+    override fun resetTotals() {
+        order.total = 0F
+        order.totalBase = 0F
+        order.totalTaxes = 0F
+    }
 
-    override fun existProduct(productId: Int) : Boolean {
-
-        return (order.products.firstOrNull{ p -> p.id == productId} != null)
+    override fun getTotalAmount(): Float? {
+        return order.total
     }
 
 
-    override fun getTotalAmount(): Float {
-        return getTotalTaxBaseAmount() + getTotalTaxesAmount()
+    override fun getTotalTaxesAmount(): Float? {
+       return order.totalTaxes
     }
 
 
-    override fun getTotalTaxesAmount(): Float {
-        var total:Float = 0F
+    override fun getTotalTaxBaseAmount(): Float? {
 
-        order.products.forEach(){p -> total += (p.taxRate * p.price * p.amount)/100}
-        return total
+       return order.totalBase
     }
 
 
-    override fun getTotalTaxBaseAmount(): Float {
+    override fun existProduct(productId: Int): Boolean {
 
-        var total:Float = 0F
-
-        order.products.forEach(){p -> total += (p.price * p.amount)}
-        return total
+        return (order.products.firstOrNull { p -> p.id == productId } != null)
     }
-
 
     override fun addProductToShop(product: Product) {
         order.products.add(product)
@@ -62,7 +61,7 @@ class ShopService : IShopService {
 
     override fun addAmountOfProduct(productId: Int) {
 
-        var p = order.products.find{ p -> p.id == productId}
+        var p = order.products.find { p -> p.id == productId }
 
         if (p != null)
             p.amount++
@@ -70,13 +69,13 @@ class ShopService : IShopService {
 
     override fun removeAmountOfProduct(productId: Int) {
 
-        var p = order.products.find{ p -> p.id == productId}
+        var p = order.products.find { p -> p.id == productId }
 
         if (p != null && p.amount > 0)
             p.amount--
     }
 
-    override fun getAmountOfProducts(): Int{
+    override fun getAmountOfProducts(): Int {
 
         return order.products.sumBy { p -> p.amount }
     }

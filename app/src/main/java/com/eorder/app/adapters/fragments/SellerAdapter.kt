@@ -11,7 +11,8 @@ import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.domain.models.Seller
 
 
-class SellerAdapter(private val fragment: Fragment, var sellers: List<Seller>) : RecyclerView.Adapter<SellerAdapter.SellerViewHolder>() {
+class SellerAdapter(private val fragment: Fragment, var sellers: List<Seller>) :
+    RecyclerView.Adapter<SellerAdapter.SellerViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
@@ -34,14 +35,12 @@ class SellerAdapter(private val fragment: Fragment, var sellers: List<Seller>) :
     }
 
 
-    class SellerViewHolder(private val view: View, private val fragment: Fragment) : RecyclerView.ViewHolder(view) {
+    class SellerViewHolder(private val view: View, private val fragment: Fragment) :
+        RecyclerView.ViewHolder(view) {
 
 
-        private lateinit var seller: Seller
+        fun setData(seller: Seller) {
 
-        fun setData(seller: Seller){
-
-            this.seller = seller
             (fragment as IRepaintModel).repaintModel(view, seller)
             (fragment as ISetAdapterListener).setAdapterListeners(view, seller)
         }

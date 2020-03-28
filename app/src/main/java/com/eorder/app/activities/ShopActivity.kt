@@ -1,6 +1,7 @@
 package com.eorder.app.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -10,12 +11,15 @@ import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.widget.ExpandableListView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.activities.BaseActivity
+import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
+import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
 
@@ -28,6 +32,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private lateinit var listView: ListView
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop)
@@ -35,6 +40,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         setObservers()
         setListeners()
         isShopEmpty()
+
     }
 
     override fun showMessage(message: String) {
@@ -63,7 +69,8 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
-            product.price.toString()
+            if (product.price == 0F) "N/A" else product.price.toString()
+
         view.findViewById<TextView>(R.id.textView_product_list_category).text =
             product.category
         view.findViewById<TextView>(R.id.textView_product_list_name).text = product.name
@@ -108,6 +115,12 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         })
 
+        model.getSummaryTotalsOrderResultObservable()
+            .observe(this, Observer<ServerResponse<Order>> {
+
+                this.setTotals()
+            })
+
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
             model.manageExceptionService.manageException(this, ex)
@@ -132,7 +145,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             }
 
             adapter.notifyDataSetChanged()
-            setTotals()
+            model.getOrderTotalsSummary()
 
         }
 
@@ -140,7 +153,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
             product.amount++
             adapter.notifyDataSetChanged()
-            setTotals()
+            model.getOrderTotalsSummary()
 
         }
 
@@ -161,7 +174,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         adapter = ShopProductsAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
-        setTotals()
+        model.getOrderTotalsSummary()
     }
 
     private fun setProductsFavoriteState(products: List<Product>) {
@@ -213,11 +226,24 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             init()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {
 
         button_shop_activity_confirm_order.setOnClickListener {
 
-            model.confirmOrder()
+            AlertDialogQuestion(
+                this,
+                resources.getString(R.string.shop),
+                resources.getString(R.string.alert_dialog_shop_confirm_message),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
+                { _, _ ->
+
+                    model.saveOrder(this)
+                    model.confirmOrder()
+                },
+                { _, _ -> }
+            ).show()
         }
     }
 

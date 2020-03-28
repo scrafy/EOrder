@@ -3,7 +3,6 @@ package com.eorder.app.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
@@ -41,7 +40,12 @@ class LandingActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked {
 
         textView_landing_page_favorite_products.setOnClickListener {
 
-            startActivity(Intent(this, FavoritesActivity::class.java))
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+
+        textView_landing_activity_orders_done.setOnClickListener {
+
+            startActivity(Intent(this, OrderDoneActivity::class.java))
         }
     }
 

@@ -36,12 +36,8 @@ class CatalogsAdapter(private val fragment:Fragment, var catalogs: List<Catalog>
 
     class CatalogViewHolder(private val view: View, private val fragment: Fragment) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var catalog: Catalog
+       fun setModel(catalog: Catalog){
 
-
-        fun setModel(catalog: Catalog){
-
-            this.catalog = catalog
             (fragment as IRepaintModel).repaintModel(view, catalog)
             (fragment as ISetAdapterListener).setAdapterListeners(view, catalog)
         }

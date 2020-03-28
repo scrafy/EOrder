@@ -67,16 +67,12 @@ class ProductsViewModel(
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {
 
-        var list = sharedPreferencesService.loadFromSharedPreferences(
+        return sharedPreferencesService.loadFromSharedPreferences<List<Int>>(
             context,
             "favorite_products",
             List::class.java
-        )
-        if (list != null) {
-            val aux = list as List<Int>
-            return aux.map { p -> p.toInt() }
-        }
-        return null
+        )?.map { p -> p.toInt() }
+
     }
 
 }

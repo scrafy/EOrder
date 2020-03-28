@@ -121,7 +121,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
                     UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
                 }
 
-                model.loadImages(items).observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                model.loadImages(items).observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
 
                     items.forEach { item ->
 
@@ -131,13 +131,13 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
                 })
             })
 
-        model.getErrorObservable().observe((context as LifecycleOwner), Observer<Throwable> { ex ->
+        model.getErrorObservable().observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
             model.manageExceptionService.manageException(this.context!!, ex)
 
         })
 
-        model.getLoadImageErrorObservable().observe((context as LifecycleOwner), Observer { ex ->
+        model.getLoadImageErrorObservable().observe(this.activity as LifecycleOwner, Observer { ex ->
 
             model.manageExceptionService.manageException(this.context!!, ex)
         })

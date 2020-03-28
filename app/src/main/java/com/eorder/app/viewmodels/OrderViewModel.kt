@@ -21,26 +21,29 @@ class OrderViewModel(
 
     fun getProductsFromShop() = shopService.getOrder().products
 
-    fun addCenterToOrder(center: Center) {
+    fun addCenterToOrder( centerId:Int, centerName: String, centerImageUrl:String? ) {
 
-        shopService.getOrder().center = center
+        shopService.getOrder().centerId = centerId
+        shopService.getOrder().centerName = centerName
+        shopService.getOrder().centerImageUrl = centerImageUrl
     }
 
-    fun addSellerToOrder(seller: Seller) {
+    fun addSellerToOrder( sellerId:Int, sellerName: String ) {
 
-        shopService.getOrder().seller = seller
+        shopService.getOrder().sellerId = sellerId
+        shopService.getOrder().sellerName = sellerName
     }
 
     fun cleanShop() = shopService.cleanShop()
 
     fun isPossibleChangeSeller(seller: Seller): Boolean =
-        !(shopService.getOrder().seller.id != null && shopService.getOrder().seller.id != seller.id && shopService.getOrder().products.isNotEmpty())
+        !(shopService.getOrder().sellerId != null && shopService.getOrder().sellerId != seller.id && shopService.getOrder().products.isNotEmpty())
 
     fun isPossibleChangeCenter(center: Center): Boolean =
-        !(shopService.getOrder().center.id != null && shopService.getOrder().center.id != center.id && shopService.getOrder().products.isNotEmpty())
+        !(shopService.getOrder().centerId != null && shopService.getOrder().centerId != center.id && shopService.getOrder().products.isNotEmpty())
 
-    fun getCurrentOrderCenter() = shopService.getOrder().center
+    fun getCurrentOrderCenterName() = shopService.getOrder().centerName
 
-    fun getCurrentOrderSeller() = shopService.getOrder().seller
+    fun getCurrentOrderSellerName() = shopService.getOrder().sellerName
 
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.google.gson.Gson
-import kotlin.reflect.KClass
+import java.lang.reflect.Type
 
 
 class SharedPreferencesService : ISharedPreferencesService {
@@ -13,24 +13,24 @@ class SharedPreferencesService : ISharedPreferencesService {
     override fun <T> loadFromSharedPreferences(
         context: Context?,
         key: String,
-        klass: Class<T>
+        type: Type
     ): T? {
 
         val preferences =
             context?.getSharedPreferences("SHARED_PREFERENCES", MODE_PRIVATE)
         val stringJson = preferences?.getString(key, null) ?: return null
 
-        return Gson().fromJson<T>(
+        return Gson().fromJson(
             stringJson,
-            klass
+            type
         )
     }
 
-    override fun <T> writeToSharedPreferences(
+    override fun writeToSharedPreferences(
         context: Context?,
-        obj: T?,
+        obj: Any?,
         key: String,
-        klass: Class<T>
+        type: Type
     ) {
 
         val preferences =
@@ -38,7 +38,7 @@ class SharedPreferencesService : ISharedPreferencesService {
         if (obj == null) {
             preferences?.edit()?.putString(key, null)?.commit()
         } else {
-            preferences?.edit()?.putString(key, Gson().toJson(obj, klass))
+            preferences?.edit()?.putString(key, Gson().toJson(obj, type))
                 ?.commit()
         }
     }

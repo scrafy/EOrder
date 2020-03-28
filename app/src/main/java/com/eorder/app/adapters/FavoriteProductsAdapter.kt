@@ -38,12 +38,8 @@ class FavoriteProductsAdapter(var products: List<Product>) :
     class FavoritesViewHolder(private val view: View, private val context: Context) :
         RecyclerView.ViewHolder(view) {
 
-
-        private lateinit var product: Product
-
         fun setData(product: Product) {
 
-            this.product = product
             (context as IRepaintModel).repaintModel(view, product)
             (context as ISetAdapterListener).setAdapterListeners(view, product)
         }

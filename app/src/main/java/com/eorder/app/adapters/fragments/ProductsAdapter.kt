@@ -41,14 +41,10 @@ class ProductAdapter(var products: List<Product>, private val fragment: Products
     ) : RecyclerView.ViewHolder(view) {
 
 
-        private lateinit var product: Product
-
-
         fun setData(product: Product) {
 
-            this.product = product
-            (fragment as ISetAdapterListener).setAdapterListeners(view, this.product)
-            (fragment as IRepaintModel).repaintModel(view, this.product)
+            (fragment as ISetAdapterListener).setAdapterListeners(view, product)
+            (fragment as IRepaintModel).repaintModel(view, product)
 
         }
     }

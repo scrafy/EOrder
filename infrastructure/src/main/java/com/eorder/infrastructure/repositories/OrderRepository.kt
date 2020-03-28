@@ -8,7 +8,10 @@ import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 
 
-class OrderRepository(private val configurationManager: IConfigurationManager, private val httpClient: IHttpClient) : BaseRepository(), IOrderRepository {
+class OrderRepository(
+    private val configurationManager: IConfigurationManager,
+    private val httpClient: IHttpClient
+) : BaseRepository(), IOrderRepository {
 
     override fun confirmOrder(order: Order): ServerResponse<Int> {
 
@@ -20,4 +23,24 @@ class OrderRepository(private val configurationManager: IConfigurationManager, p
         checkServerErrorInResponse(resp)
         return resp
     }
+
+
+    override fun getOrdersDone(): ServerResponse<List<Order>> {
+        TODO()
+    }
+
+    override fun getOrderTotalsSummary(order:Order): ServerResponse<Order>{
+
+        order.products.forEach { p ->
+
+            p.totalBase = p.amount * p.price
+            p.totalTaxes = (p.totalBase * p.rate)/100
+            p.total = p.totalBase + p.totalTaxes
+            order.totalBase += p.totalBase
+            order.totalTaxes += p.totalTaxes
+            order.total += p.total
+        }
+        return ServerResponse(200,null,ServerData(order,null))
+    }
+
 }

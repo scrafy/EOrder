@@ -6,4 +6,7 @@ import com.eorder.domain.models.ServerResponse
 interface IOrderRepository {
 
     fun confirmOrder(order: Order) : ServerResponse<Int>
+    fun getOrdersDone(): ServerResponse<List<Order>>
+    fun getOrderTotalsSummary(order:Order): ServerResponse<Order>
+
 }

@@ -69,15 +69,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var product = model as Product
         var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
         var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
-        var bm: Bitmap
+
 
         view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
-        view.findViewById<TextView>(R.id.textView_product_list_category)
-            .setText(product.category)
-        view.findViewById<TextView>(R.id.textView_product_list_price)
-            .setText(product.price.toString())
-        view.findViewById<TextView>(R.id.textView_product_list_amount)
-            .setText(product.amount.toString())
+        view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
+        view.findViewById<TextView>(R.id.textView_product_list_price).text = if ( product.price == 0F )  "N/A" else product.price.toString()
+        view.findViewById<TextView>(R.id.textView_product_list_amount).text = product.amount.toString()
 
 
         if (product.imageBase64 == null) {
@@ -273,7 +270,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
 
         model.getProductsByCatalogObservable().observe(
-            (context as LifecycleOwner),
+            this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> { it ->
 
                 products = (it.serverData?.data ?: listOf())
@@ -287,20 +284,22 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 }
 
                 model.loadImages(items)
-                    .observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                    .observe(
+                        this.activity as LifecycleOwner,
+                        Observer<List<UrlLoadedImage>> { items ->
 
-                        items.forEach { item ->
+                            items.forEach { item ->
 
-                            this.products.find { c -> c.id == item.id }?.imageBase64 =
-                                item.imageBase64
-                        }
-                        adapter.notifyDataSetChanged()
-                    })
+                                this.products.find { c -> c.id == item.id }?.imageBase64 =
+                                    item.imageBase64
+                            }
+                            adapter.notifyDataSetChanged()
+                        })
 
             })
 
         model.getErrorObservable()
-            .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
+            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this.context!!, ex)
             })

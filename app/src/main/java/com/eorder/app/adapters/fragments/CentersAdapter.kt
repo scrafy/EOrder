@@ -36,11 +36,8 @@ class CentersAdapter(private val fragment: Fragment, var centers: List<Center>) 
     class CenterViewHolder(private val view: View, private val fragment: Fragment) : RecyclerView.ViewHolder(view) {
 
 
-        private lateinit var center: Center
-
         fun setData(center: Center){
 
-            this.center = center
             (fragment as IRepaintModel).repaintModel(view, center)
             (fragment as ISetAdapterListener).setAdapterListeners(view, center)
        }

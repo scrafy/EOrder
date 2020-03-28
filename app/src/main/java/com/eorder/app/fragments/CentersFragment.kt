@@ -102,7 +102,7 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
     fun setObservers() {
 
         model.getCentersResultObservable().observe(
-            (context as LifecycleOwner),
+            this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Center>>> { it ->
 
                 centers = it.serverData?.data ?: mutableListOf()
@@ -114,7 +114,7 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
                 }
 
                 model.loadImages(items)
-                    .observe((context as LifecycleOwner), Observer<List<UrlLoadedImage>> { items ->
+                    .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
 
                         items.forEach { item ->
 
@@ -126,13 +126,13 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
             })
 
         model.getErrorObservable()
-            ?.observe((context as LifecycleOwner), Observer<Throwable> { ex ->
+            ?.observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this.context!!, ex)
             })
 
         model.getLoadImageErrorObservable()
-            .observe((context as LifecycleOwner), Observer<Throwable> { ex ->
+            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
                 model.manageExceptionService.manageException(this.context!!, ex)
             })

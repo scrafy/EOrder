@@ -17,7 +17,7 @@ class MainViewModel(
 
     fun loadSessionToken(context: Context) {
 
-        val token = sharedPreferencesService.loadFromSharedPreferences(
+        val token = sharedPreferencesService.loadFromSharedPreferences<String>(
             context,
             "user_session",
             String::class.java

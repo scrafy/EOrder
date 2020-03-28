@@ -20,12 +20,14 @@ val applicationModule = module {
     /*USE CASES*/
     single { LoginUseCase(get(), get(), get()) } bind ILoginUseCase::class
     single { RecoverPasswordUseCase(get(), get()) } bind IRecoverPasswordUseCase::class
-    single { GetUserCentersUseCase(get(), get()) } bind IGetCentersUseCase::class
-    single { GetCatalogsBySellerUseCase(get()) } bind IGetCatalogsBySellerUseCase::class
-    single { GetProductsByCatalogUseCase(get()) } bind IGetProductsByCatalogUseCase::class
-    single { GetSellersByCenterUseCase(get()) } bind IGetSellersByCenterUseCase::class
+    single { UserCentersUseCase(get(), get()) } bind IGetCentersUseCase::class
+    single { CatalogsBySellerUseCase(get()) } bind IGetCatalogsBySellerUseCase::class
+    single { ProductsByCatalogUseCase(get()) } bind IGetProductsByCatalogUseCase::class
+    single { SellersByCenterUseCase(get()) } bind IGetSellersByCenterUseCase::class
     single { ConfirmOrderUseCase(get(), get()) } bind IConfirmOrderUseCase::class
-    single { GetFavoriteProductsUseCase(get(), get()) } bind IGetFavoriteProductsUseCase::class
+    single { FavoriteProductsUseCase(get(), get()) } bind IGetFavoriteProductsUseCase::class
+    single { OrdersDoneUseCase(get(), get()) } bind IOrderDoneUseCase::class
+    single { OrderSummaryTotalsUseCase(get(), get()) } bind IOrderSummaryTotalsUseCase::class
 
 
 

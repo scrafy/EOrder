@@ -9,7 +9,7 @@ import com.google.gson.Gson
 
 class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
 
-    override fun getUserCenters(userId: Int): ServerResponse<List<Center>> {
+    override fun getUserCenters(): ServerResponse<List<Center>> {
 
         //TODO make a backend call
 

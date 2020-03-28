@@ -1,10 +1,20 @@
 package com.eorder.domain.models
 
-class Order(
+import java.util.*
 
-    var center:Center,
-    var seller:Seller,
-    var products:MutableList<Product> = mutableListOf()
+class Order{
 
-) {
+    var id:Int? = null
+    var createdAt: Date? = null
+    var centerId: Int? = null
+    var centerName:String?  = null
+    var centerImageUrl: String? = null
+    var imageBase64: String? = null
+    var sellerId: Int? = null
+    var sellerName:String? = null
+    var totalBase:Float=0F
+    var totalTaxes:Float=0F
+    var total:Float=0F
+    var products: MutableList<Product> = mutableListOf()
+
 }

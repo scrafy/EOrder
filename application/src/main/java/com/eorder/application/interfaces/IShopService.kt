@@ -9,15 +9,16 @@ interface IShopService {
     fun getOrder(): Order
     fun setOrder(order:Order)
     fun cleanProducts()
+    fun getTotalTaxBaseAmount(): Float?
+    fun getTotalTaxesAmount():Float?
+    fun getTotalAmount():Float?
     fun addProductToShop(product:Product)
     fun removeProductFromShop(product:Product)
     fun getAmountOfProducts(): Int
-    fun getTotalTaxBaseAmount(): Float
-    fun getTotalTaxesAmount():Float
-    fun getTotalAmount():Float
     fun existProduct(productId:Int): Boolean
     fun addAmountOfProduct(productId: Int)
     fun removeAmountOfProduct(productId: Int)
     fun isShopEmpty(): Boolean
+    fun resetTotals()
 
 }

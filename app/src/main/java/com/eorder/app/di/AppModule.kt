@@ -1,8 +1,9 @@
 package com.eorder.app.com.eorder.app.di
 
-import FavoritesActivityViewModel
+import FavoriteViewModel
 import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
+import com.eorder.app.com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.ShopViewModel
@@ -22,12 +23,13 @@ val appModule = module {
     viewModel { CentersViewModel(get(), get(), get(), get()) }
     viewModel { CatalogsViewModel(get(), get(), get(), get()) }
     viewModel { ProductsViewModel(get(), get(), get(), get(), get(), get()) }
-    viewModel { ShopViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ShopViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { OrderViewModel(get(), get(), get(), get()) }
     viewModel { SellersViewModel(get(), get(), get(), get()) }
     viewModel { LandingViewModel(get(), get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
-    viewModel { FavoritesActivityViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { FavoriteViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { OrderDoneViewModel(get(), get(), get(), get(), get(), get()) }
 
 
 }

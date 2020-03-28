@@ -5,6 +5,8 @@
     <string name="disabled">Disabled</string>
     <string name="shop">Shop</string>
     <string name="title">PedidoE</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
     <!--LATERAL NAVIGATION MENU -->
@@ -44,6 +46,10 @@
     <string name="toolbar_proudct_list_search">Search product...</string>
 
 
+    <!--ORDER LIST-->
+    <string name="button_order_list_repeat">repeat</string>
+
+
     <!--SHOP ACTIVITY-->
     <string name="textview_shop_total_products">Total of products</string>
     <string name="textview_shop_tax_base">Tax Base:</string>
@@ -58,6 +64,7 @@
     <string name="button_shop_confirm">Confirm order</string>
     <string name="alert_dialog_shop_empty_title">Shop</string>
     <string name="alert_dialog_shop_empty_message">The shop is empty, please, add a product...</string>
+    <string name="alert_dialog_shop_confirm_message">¿Are you sure you want to confirm the order?</string>
 
 
     <!--ORDER ACTIVITY-->
@@ -72,6 +79,17 @@
     <string name="main_activity_session_expired_message">The session has expired, please, login again</string>
     <string name="main_activity_login">LOGIN</string>
 
+    <!--LANDING ACTIVITY-->
+    <string name="landing_activity_favorties">Favorite products</string>
+
+    <!--FAVORITE ACTIVITY-->
+    <string name="favorite_activity_alert_dialog_title">Remove favorite</string>
+    <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this product from your favourite list?</string>
+
+    <!--ORDER DONE ACTIVITY-->
+
+    <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
+
     <!--CATALOGS FRAGMENT-->
     <string name="catalog_fragment_number_of_products">%d products</string>
     <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>
@@ -82,12 +100,7 @@
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Select a seller</string>
 
-    <!--LANDING ACTIVITY-->
-    <string name="landing_activity_favorties">Favorite products</string>
 
-    <!--FAVORITE ACTIVITY-->
-    <string name="favorite_activity_alert_dialog_title">Remove product</string>
-    <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this products from your favourite list?</string>
 
 
 </resources>

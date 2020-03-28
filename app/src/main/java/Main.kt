@@ -57,7 +57,7 @@ class Main : Application(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
 
-        val order = sharedPreferencesService.loadFromSharedPreferences(
+        val order = sharedPreferencesService.loadFromSharedPreferences<Order>(
             this@Main,
             "shop_order",
             Order::class.java

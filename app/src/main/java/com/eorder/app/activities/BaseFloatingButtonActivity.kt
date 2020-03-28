@@ -40,6 +40,7 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
     @SuppressLint("RestrictedApi")
     fun hideFloatingButton() {
         cart_floating_button.visibility = View.INVISIBLE
+
     }
 
 }

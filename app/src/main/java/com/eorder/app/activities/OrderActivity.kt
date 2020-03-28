@@ -127,14 +127,14 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         if (model.isPossibleChangeCenter(center)) {
 
             loadSellersFragment(center)
-            model.addCenterToOrder(center)
+            model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
 
         } else {
             AlertDialogQuestion(
                 this,
                 "Shop",
                 getString(R.string.alert_dialog_order_activity_change_center).format(
-                    model.getCurrentOrderCenter().center_name,
+                    model.getCurrentOrderCenterName(),
                     center.center_name
                 ),
                 resources.getString(R.string.alert_dialog_order_activity_change_center_button_confirm),
@@ -158,14 +158,14 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         if (model.isPossibleChangeSeller(seller)) {
 
             loadCatalogsFragment(seller)
-            model.addSellerToOrder(seller)
+            model.addSellerToOrder(seller.id!!, seller.companyName!!)
 
         } else {
             AlertDialogQuestion(
                 this,
                 "Shop",
                 getString(R.string.alert_dialog_order_activity_change_seller).format(
-                    model.getCurrentOrderSeller().companyName,
+                    model.getCurrentOrderSellerName(),
                     seller.companyName
                 ),
                 resources.getString(R.string.alert_dialog_order_activity_change_seller_button_confirm),
