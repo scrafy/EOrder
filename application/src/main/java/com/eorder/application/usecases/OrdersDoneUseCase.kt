@@ -1,7 +1,6 @@
 package com.eorder.application.usecases
 
 import android.content.Context
-import com.eorder.application.extensions.round
 import com.eorder.application.interfaces.IOrderDoneUseCase
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.models.OrdersWrapper
@@ -31,7 +30,7 @@ class OrdersDoneUseCase(
             "orders_done",
             OrdersWrapper::class.java
         )?.orders ?: mutableListOf<Order>()
-        orders.forEach { o -> o.total = o.total.round(2) }
+
 
         return ServerResponse<List<Order>>(200, null, ServerData(orders, null))
     }

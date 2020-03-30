@@ -14,6 +14,7 @@ class Order{
     var sellerName:String? = null
     var totalBase:Float=0F
     var totalTaxes:Float=0F
+    var totalProducts:Int = 0
     var total:Float=0F
     var products: MutableList<Product> = mutableListOf()
 

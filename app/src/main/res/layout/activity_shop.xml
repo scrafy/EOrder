@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/frameLayout_activity_shop_main_container"
+    >
 
     <ScrollView
 
@@ -15,9 +16,7 @@
             android:id="@+id/linearLayout_landing_activity_main_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-
-            >
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/toolbar"
@@ -28,17 +27,32 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="@string/textview_shop_order_summary"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20dp"
-                    android:textStyle="bold"></TextView>
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/textview_shop_order_summary"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20dp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="See breakdown"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/colorPrimary"
+                        android:id="@+id/textView_activity_shop_breakdown"
+                        />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,42 +190,55 @@
 
                 </LinearLayout>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginBottom="15dp"
-                    android:paddingTop="20dp"
-                    android:text="@string/textview_shop_product_list"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20dp"
-                    android:textStyle="bold"></TextView>
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="bottom"
+                        android:text="@string/textview_shop_product_list"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20dp"
+                        android:textStyle="bold"></TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="20dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_carro_vacio"
+                            android:id="@+id/imgView_shop_activity_empty_car"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
                 <com.eorder.app.Views.ExpandedListView
                     android:id="@+id/listView_activity_shop_product_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-                    />
+                    android:layout_marginBottom="20dp" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="40dp"
-                    android:gravity="bottom|center"
-                    android:orientation="horizontal"
-                    android:paddingBottom="20dp">
+                    android:layout_marginBottom="60dp">
 
-                    <Button
-                        android:id="@+id/button_shop_activity_confirm_order"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorPrimary"
-                        android:elevation="10dp"
-                        android:text="@string/button_shop_confirm"
-                        android:textColor="@android:color/white"></Button>
                 </LinearLayout>
 
 
@@ -221,5 +248,16 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/button_shop_activity_confirm_order"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimary"
+        android:elevation="10dp"
+        android:text="@string/button_shop_confirm"
+        android:textColor="@android:color/white"></Button>
 
 </FrameLayout>

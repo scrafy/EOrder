@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.OrderDoneActivity"></activity>
+        <activity android:name=".activities.CartBreakdownActivity"></activity>
+        <activity android:name=".activities.OrderDoneActivity" />
         <activity android:name=".activities.FavoriteActivity" />
         <activity android:name=".activities.OrderActivity" />
         <activity android:name=".activities.BaseMenuActivity" />

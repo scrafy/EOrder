@@ -65,6 +65,7 @@
     <string name="alert_dialog_shop_empty_title">Shop</string>
     <string name="alert_dialog_shop_empty_message">The shop is empty, please, add a product...</string>
     <string name="alert_dialog_shop_confirm_message">¿Are you sure you want to confirm the order?</string>
+    <string name="alert_dialog_shop_delete">¿Are you sure you want to empty the cart?</string>
 
 
     <!--ORDER ACTIVITY-->
@@ -100,7 +101,7 @@
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Select a seller</string>
 
-
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

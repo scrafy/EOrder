@@ -245,6 +245,29 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 { _, _ -> }
             ).show()
         }
+
+        imgView_shop_activity_empty_car.setOnClickListener {
+
+
+            AlertDialogQuestion(
+                this,
+                resources.getString(R.string.shop),
+                resources.getString(R.string.alert_dialog_shop_delete),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
+                { _, _ ->
+
+                    model.cleanShop()
+                    this.onBackPressed()
+                },
+                { _, _ -> }
+            ).show()
+        }
+
+        textView_activity_shop_breakdown.setOnClickListener {
+
+            startActivity(Intent(this, CartBreakdownActivity::class.java))
+        }
     }
 
 }

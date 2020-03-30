@@ -5,6 +5,7 @@ import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
+import com.eorder.app.viewmodels.CartBreakdownModelView
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
@@ -30,6 +31,7 @@ val appModule = module {
     viewModel { MainViewModel(get(), get(), get()) }
     viewModel { FavoriteViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { OrderDoneViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { CartBreakdownModelView(get(), get(), get()) }
 
 
 }

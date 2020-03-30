@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.extensions.round
 import com.eorder.application.interfaces.IConfirmOrderUseCase
 import com.eorder.application.interfaces.IOrderSummaryTotalsUseCase
 import com.eorder.application.interfaces.ISharedPreferencesService
@@ -40,13 +39,14 @@ class ShopViewModel(
         summaryTotalsOrderResult
 
     fun getConfirmOrderResultObservable(): LiveData<ServerResponse<Int>> = confirmOrderResult
-    fun getTotalTaxBaseAmount(): Float? = shopService.getTotalTaxBaseAmount()?.round(2)
-    fun getTotalTaxesAmount(): Float? = shopService.getTotalTaxesAmount()?.round(2)
-    fun getTotalAmount(): Float? = shopService.getTotalAmount()?.round(2)
+    fun getTotalTaxBaseAmount(): Float? = shopService.getTotalTaxBaseAmount()
+    fun getTotalTaxesAmount(): Float? = shopService.getTotalTaxesAmount()
+    fun getTotalAmount(): Float? = shopService.getTotalAmount()
     fun getProducts(): List<Product> = shopService.getOrder().products
     fun getAmountOfProducts(): Int = shopService.getAmountOfProducts()
     fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
     fun getSellerName() = shopService.getOrder().sellerName
+    fun cleanShop() = shopService.cleanShop()
     fun getCenterName() = shopService.getOrder().centerName
     fun confirmOrder() {
 
