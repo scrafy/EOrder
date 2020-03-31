@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.eorder.app.adapters.ShopProductsAdapter
+import com.eorder.app.adapters.ShopAdapter
 import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
@@ -19,17 +19,21 @@ import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
+import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
+import pl.droidsonroids.gif.GifDrawable
+import java.lang.Exception
 
 
 class ShopActivity : BaseActivity(), IRepaintModel,
     IShowSnackBarMessage {
 
     private lateinit var model: ShopViewModel
-    private lateinit var adapter: ShopProductsAdapter
+    private lateinit var adapter: ShopAdapter
     private lateinit var listView: ListView
+    private lateinit var products: List<Product>
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,8 +68,21 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
 
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
-            .setImageBitmap(product.imageBase64?.toBitmap())
+        if (product.imageBase64 == null) {
+
+            try {
+                view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+                    .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
+            } catch (ex: Exception) {
+
+            }
+
+
+        } else {
+            view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
+                .setImageBitmap(product.imageBase64?.toBitmap())
+        }
+
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
@@ -169,12 +186,19 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
     private fun init() {
 
-        var products = model.getProducts()
+        products = model.getProducts()
         setProductsFavoriteState(products)
-        adapter = ShopProductsAdapter(products, this)
+        adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
         model.getOrderTotalsSummary()
+        loadImages(products.filter { o -> o.imageUrl != null && o.imageBase64 == null }.map { o ->
+            UrlLoadedImage(
+                o.id!!,
+                null,
+                o.imageUrl!!
+            )
+        })
     }
 
     private fun setProductsFavoriteState(products: List<Product>) {
@@ -225,6 +249,18 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         } else
             init()
     }
+
+    private fun loadImages(items: List<UrlLoadedImage>) =
+
+        model.loadImages(items)
+            .observe(this, Observer<List<UrlLoadedImage>> { items ->
+
+                items.forEach { item ->
+
+                    this.products.find { o -> o.id == item.id }?.imageBase64 = item.imageBase64
+                }
+                adapter.notifyDataSetChanged()
+            })
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {

@@ -41,7 +41,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors,
 
         model.getRecoverPasswordObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
-           var dialog = AlertDialogOk(this, "Password Recovery", "The password has been changed correctly","OK") { _, _->
+           var dialog = AlertDialogOk(this, resources.getString(R.string.recover_password_activity_alert_dialog_title), resources.getString(R.string.recover_password_activity_alert_dialog_message),"OK") { _, _->
 
                val intent = Intent(this, LoginActivity::class.java)
                startActivity(intent)

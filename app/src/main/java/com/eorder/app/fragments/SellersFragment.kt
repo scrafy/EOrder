@@ -32,7 +32,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
-class SellersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
+class SellersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel,
+    ISetAdapterListener {
 
     private lateinit var model: SellersViewModel
     private var recyclerView: RecyclerView? = null
@@ -104,6 +105,20 @@ class SellersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
         }
     }
 
+    private fun loadImages(items: List<UrlLoadedImage>) {
+
+        model.loadImages(items)
+            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
+
+                items.forEach { item ->
+
+                    this.sellers.find { c -> c.id == item.id }?.imageBase64 =
+                        item.imageBase64
+                }
+                adapter.notifyDataSetChanged()
+            })
+    }
+
     fun setObservers() {
 
         model.getSellersByCenterResultObservable().observe(
@@ -113,21 +128,13 @@ class SellersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
                 sellers = it.serverData?.data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
-                var items = sellers.filter { p -> p.imageUrl != null && p.id != null }.map { p ->
+                var items =
+                    sellers.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
 
-                    UrlLoadedImage(p.id!!, p.imageBase64, p.imageUrl!!)
-                }
+                        UrlLoadedImage(p.id!!, null, p.imageUrl!!)
+                    }
+                loadImages(items)
 
-                model.loadImages(items)
-                    .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                        items.forEach { item ->
-
-                            this.sellers.find { c -> c.id == item.id }?.imageBase64 =
-                                item.imageBase64
-                        }
-                        adapter.notifyDataSetChanged()
-                    })
             })
 
         model.getErrorObservable()

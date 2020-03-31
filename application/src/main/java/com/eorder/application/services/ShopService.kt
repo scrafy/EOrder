@@ -10,6 +10,7 @@ class ShopService : IShopService {
     private var order: Order = Order()
 
     override fun cleanShop() {
+        order.products.forEach { p -> p.amount = 0 }
         order = Order()
     }
 
@@ -28,6 +29,7 @@ class ShopService : IShopService {
         order.total = 0F
         order.totalBase = 0F
         order.totalTaxes = 0F
+        order.totalProducts = 0
     }
 
     override fun getTotalAmount(): Float? {

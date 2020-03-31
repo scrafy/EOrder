@@ -5,11 +5,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.interfaces.IConfirmOrderUseCase
-import com.eorder.application.interfaces.IOrderSummaryTotalsUseCase
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.application.interfaces.IShopService
+import com.eorder.application.extensions.clone
+import com.eorder.application.interfaces.*
 import com.eorder.application.models.OrdersWrapper
+import com.eorder.application.models.UrlLoadedImage
+import com.eorder.application.services.LoadImagesService
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Order
@@ -27,6 +27,7 @@ class ShopViewModel(
     private val shopService: IShopService,
     private val sharedPreferencesService: ISharedPreferencesService,
     private val orderSummaryTotalsUseCase: IOrderSummaryTotalsUseCase,
+    private val loadImagesService: ILoadImagesService,
     jwtTokenService: IJwtTokenService,
     manageExceptionService: IManageException
 ) : BaseViewModel(jwtTokenService, manageExceptionService) {
@@ -45,9 +46,11 @@ class ShopViewModel(
     fun getProducts(): List<Product> = shopService.getOrder().products
     fun getAmountOfProducts(): Int = shopService.getAmountOfProducts()
     fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
-    fun getSellerName() = shopService.getOrder().sellerName
-    fun cleanShop() = shopService.cleanShop()
-    fun getCenterName() = shopService.getOrder().centerName
+    fun getSellerName() = shopService.getOrder().seller.sellerName
+    fun cleanShop(){
+        shopService.cleanShop()
+    }
+    fun getCenterName() = shopService.getOrder().center.centerName
     fun confirmOrder() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
@@ -76,7 +79,7 @@ class ShopViewModel(
             OrdersWrapper::class.java
         )) ?: OrdersWrapper(mutableListOf())
 
-        var order = shopService.getOrder()
+        var order = shopService.getOrder().clone()
         order.createdAt = Date.from(Instant.now())
         orders.orders.add(order)
 
@@ -87,7 +90,7 @@ class ShopViewModel(
             OrdersWrapper::class.java
         )
     }
-
+    fun loadImages(list: List<UrlLoadedImage>) = loadImagesService.loadImages(list)
     fun writeProductsFavorites(context: Context?, products: List<Int>) {
 
         sharedPreferencesService.writeToSharedPreferences(

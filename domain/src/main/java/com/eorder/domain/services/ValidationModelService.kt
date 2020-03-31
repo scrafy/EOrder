@@ -16,55 +16,63 @@ class ValidationModelService : IValidationModelService {
     override fun validate(model: Any): List<ValidationError> {
         var result: MutableList<ValidationError> = mutableListOf()
 
-        model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }.forEach { member ->
+        model.javaClass.kotlin.memberProperties.filter { member -> member.visibility == KVisibility.PUBLIC }
+            .forEach { member ->
 
-            var value: Any? = member.get(model)
-            member.annotations.sortedBy { it -> (getValuesFromAnnotation(it)["executionOrder"])?.toInt() }.forEach { annotation ->
+                val value: Any? = member.get(model)
+                member.annotations.sortedBy { annotation -> (getValuesFromAnnotation(annotation)["executionOrder"])?.toInt() }
+                    .forEach { annotation ->
 
-                if ( annotation is NullOrEmptyStringValidation){
+                        if (annotation is NullOrEmptyStringValidation) {
 
-                    if ( (value as String).isNullOrEmpty()){
+                            if ((value as String).isNullOrEmpty()) {
 
-                        result.add(
-                            ValidationError(
-                                getValuesFromAnnotation(annotation)["message"] ?: "",
-                                value,
-                                member.name,
-                                model::class.simpleName ?: ""
-                            )
-                        )
+                                result.add(
+                                    ValidationError(
+                                        getValuesFromAnnotation(annotation)["message"] ?: "",
+                                        member.name,
+                                        model::class.simpleName ?: "",
+                                        value.toString()
+                                    )
+                                )
 
+                            }
+
+                        } else if (annotation is FieldEqualToOtherValidation) {
+
+                            var anotationValues = getValuesFromAnnotation(annotation)
+                            var memberToCompare =
+                                model.javaClass.kotlin.memberProperties.filter { member ->
+
+                                    member.visibility == KVisibility.PUBLIC && member.name.equals(
+                                        anotationValues["fieldName"]
+                                    )
+                                }.first()
+
+                            if (value != memberToCompare.get(model)) {
+
+                                result.add(
+                                    ValidationError(
+                                        anotationValues["message"] ?: "",
+                                        member.name,
+                                        model::class.simpleName ?: "",
+                                        value.toString()
+                                    )
+                                )
+                            }
+                        }
                     }
-
-                } else if ( annotation is FieldEqualToOtherValidation){
-
-                    var anotationValues = getValuesFromAnnotation(annotation)
-                    var memberToCompare =  model.javaClass.kotlin.memberProperties.filter {member ->
-
-                        member.visibility == KVisibility.PUBLIC && member.name.equals(anotationValues["fieldName"])
-                    }.first()
-
-                    if ( value != memberToCompare.get(model)){
-
-                        result.add(
-                            ValidationError(
-                                anotationValues["message"] ?: "",
-                                value.toString(),
-                                member.name,
-                                model::class.simpleName ?: ""
-                            )
-                        )
-                    }
-                }
             }
-        }
         return result
     }
 
-    private fun getValuesFromAnnotation(annotation: Any) : Map<String, String>{
+    private fun getValuesFromAnnotation(annotation: Annotation): Map<String, String> {
 
         val result: MutableMap<String, String> = mutableMapOf()
-        annotation.toString().split("(")[1].substring(0, annotation.toString().split("(")[1].length -1 ) .split(",").forEach { it ->
+        annotation.toString().split("(")[1].substring(
+            0,
+            annotation.toString().split("(")[1].length - 1
+        ).split(",").forEach { it ->
 
             result[it.split("=")[0].trim()] = it.split("=")[1].trim()
         }

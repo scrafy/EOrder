@@ -24,7 +24,7 @@ val appModule = module {
     viewModel { CentersViewModel(get(), get(), get(), get()) }
     viewModel { CatalogsViewModel(get(), get(), get(), get()) }
     viewModel { ProductsViewModel(get(), get(), get(), get(), get(), get()) }
-    viewModel { ShopViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ShopViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { OrderViewModel(get(), get(), get(), get()) }
     viewModel { SellersViewModel(get(), get(), get(), get()) }
     viewModel { LandingViewModel(get(), get(), get(), get()) }

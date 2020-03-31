@@ -210,16 +210,32 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
     override fun login(loguinRequest: Login): ServerResponse<String> {
 
         //TODO MAKE REAL CALL TO BACKEND
-        var response: ServerResponse<String> =
-            ServerResponse(
+
+        var response: ServerResponse<String>? = null
+
+        if (loguinRequest.username == "jose")
+
+            response = ServerResponse(
                 200,
                 null,
                 ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODUyNDg0ODUsImV4cCI6MTYxNjc4OTE4OSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjoiTWFuYWdlciIsInVzZXJJZCI6IjEyMyJ9.0BXbwpSK2dnX86tvcV2T0MB2ktNsLKMAsO10LGMlt4Q",
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODU1OTQ2MTQsImV4cCI6MTYxNzEzMTkxMiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjEyMyJ9.OJyQ_OBeVljhiyoY_VoRMPIkuGJ-mtHbfDiV7PkhTv0",
                     null
                 )
             )
-        checkServerErrorInResponse(response)
+
+        if (loguinRequest.username == "fran")
+
+            response = ServerResponse(
+                200,
+                null,
+                ServerData(
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODU1OTQ2MTQsImV4cCI6MTYxNzEzMTkxMiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjEyNCJ9.IIK36DwnOoauXfK0lrQdaEmQUPX9VnRSYNmimaIeRbk",
+                    null
+                )
+            )
+
+        checkServerErrorInResponse(response!!)
         return response
     }
 

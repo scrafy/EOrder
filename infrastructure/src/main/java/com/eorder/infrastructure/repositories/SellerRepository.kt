@@ -46,7 +46,7 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "España",
                 "Barcelona",
                 "Horeca",
-                "https://www.cocacolaespana.es/content/dam/journey/es/es/private/historia/love-coca-cola/2019/evolucion-logo/logo-coca-cola-2003.rendition.940.456.jpg"
+                "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
             )
         )
         sellers.add(

@@ -1,6 +1,5 @@
 package com.eorder.app.fragments
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -73,8 +72,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
         view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
-        view.findViewById<TextView>(R.id.textView_product_list_price).text = if ( product.price == 0F )  "N/A" else product.price.toString()
-        view.findViewById<TextView>(R.id.textView_product_list_amount).text = product.amount.toString()
+        view.findViewById<TextView>(R.id.textView_product_list_price).text =
+            if (product.price == 0F) "N/A" else product.price.toString()
+        view.findViewById<TextView>(R.id.textView_product_list_amount).text =
+            product.amount.toString()
 
 
         if (product.imageBase64 == null) {
@@ -114,9 +115,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         super.onActivityCreated(savedInstanceState)
 
-        var map = mutableMapOf<String, Int>()
-        map["cart_menu"] = R.menu.cart_menu
-        (context as ISetActionBar)?.setActionBar(map)
         model = getViewModel()
         init()
         setObservers()
@@ -266,6 +264,22 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         }
     }
 
+    private fun loadImages(items: List<UrlLoadedImage>) {
+
+        model.loadImages(items)
+            .observe(
+                this.activity as LifecycleOwner,
+                Observer<List<UrlLoadedImage>> { items ->
+
+                    items.forEach { item ->
+
+                        this.products.find { c -> c.id == item.id }?.imageBase64 =
+                            item.imageBase64
+                    }
+                    adapter.notifyDataSetChanged()
+                })
+    }
+
     fun setObservers() {
 
 
@@ -278,23 +292,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 setItemsSpinner()
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
-                var items = products.filter { p -> p.imageUrl != null }.map { p ->
+                var items =
+                    products.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
 
-                    UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
-                }
+                        UrlLoadedImage(p.id, null, p.imageUrl!!)
+                    }
 
-                model.loadImages(items)
-                    .observe(
-                        this.activity as LifecycleOwner,
-                        Observer<List<UrlLoadedImage>> { items ->
-
-                            items.forEach { item ->
-
-                                this.products.find { c -> c.id == item.id }?.imageBase64 =
-                                    item.imageBase64
-                            }
-                            adapter.notifyDataSetChanged()
-                        })
+                loadImages(items)
 
             })
 
@@ -307,6 +311,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun init() {
 
+        var map = mutableMapOf<String, Int>()
+        map["cart_menu"] = R.menu.cart_menu
+        (context as ISetActionBar)?.setActionBar(map)
+
         var layout = LinearLayoutManager(this.context)
         adapter = ProductAdapter(
             listOf(),
@@ -317,7 +325,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
-
     }
 
 

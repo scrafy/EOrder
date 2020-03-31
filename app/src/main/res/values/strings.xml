@@ -49,6 +49,9 @@
     <!--ORDER LIST-->
     <string name="button_order_list_repeat">repeat</string>
 
+    <!--RECOVER PASSWORD ACTIVITY-->
+    <string name="recover_password_activity_alert_dialog_title">Password Recovery</string>
+    <string name="recover_password_activity_alert_dialog_message">The password has been changed correctly</string>
 
     <!--SHOP ACTIVITY-->
     <string name="textview_shop_total_products">Total of products</string>
@@ -87,6 +90,16 @@
     <string name="favorite_activity_alert_dialog_title">Remove favorite</string>
     <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this product from your favourite list?</string>
 
+    <!--SHOP BREAKDOWN ACTIVITY-->
+    <string name="shop_breakdown_activity_product_name">Product</string>
+    <string name="shop_breakdown_activity_price">Price</string>
+    <string name="shop_breakdown_activity_quantity">Quantity</string>
+    <string name="shop_breakdown_activity_total_base">Total base</string>
+    <string name="shop_breakdown_activity_tax_type">Tax type</string>
+    <string name="shop_breakdown_activity_tax">Tax</string>
+    <string name="shop_breakdown_activity_total_tax">Total tax</string>
+    <string name="shop_breakdown_activity_total">Total</string>
+
     <!--ORDER DONE ACTIVITY-->
 
     <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
@@ -101,7 +114,6 @@
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Select a seller</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

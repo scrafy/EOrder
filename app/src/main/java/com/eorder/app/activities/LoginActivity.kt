@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextView>(R.id.textView_message_error_username).setText(null)
+                findViewById<TextView>(R.id.textView_message_error_username).text = null
             }
         })
 
@@ -108,7 +108,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextView>(R.id.textView_message_error_password).setText(null)
+                findViewById<TextView>(R.id.textView_message_error_password).text = null
             }
         })
 

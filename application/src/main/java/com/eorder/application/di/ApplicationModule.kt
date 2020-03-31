@@ -43,5 +43,5 @@ val applicationModule = module {
     } bind IConfigurationManager::class
     single { JwtTokenService(get()) } bind IJwtTokenService::class
     single { ManageException() } bind IManageException::class
-    single { SharedPreferencesService() } bind ISharedPreferencesService::class
+    single { SharedPreferencesService(get()) } bind ISharedPreferencesService::class
 }

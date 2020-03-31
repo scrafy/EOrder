@@ -30,19 +30,29 @@ class OrderRepository(
         TODO()
     }
 
-    override fun getOrderTotalsSummary(order:Order): ServerResponse<Order>{
+    override fun getOrderTotalsSummary(order: Order): ServerResponse<Order> {
 
         order.products.forEach { p ->
 
-            p.totalBase = (p.amount * p.price).round(2)
-            p.totalTaxes = ((p.totalBase * p.rate)/100).round(2)
-            p.total = (p.totalBase + p.totalTaxes).round(2)
-            order.totalBase += p.totalBase.round(2)
-            order.totalTaxes += p.totalTaxes.round(2)
-            order.total += p.total.round(2)
+            p.totalBase = (p.amount * p.price)
+            p.totalTaxes = ((p.totalBase * p.rate) / 100)
+            p.total = (p.totalBase + p.totalTaxes)
+            order.totalBase += p.totalBase
+            order.totalTaxes += p.totalTaxes
+            order.total += p.total
             order.totalProducts += p.amount
         }
-        return ServerResponse(200,null,ServerData(order,null))
+        order.total = order.total.round(2)
+        order.totalBase = order.totalBase.round(2)
+        order.totalTaxes = order.totalTaxes.round(2)
+        order.products.forEach { p ->
+
+            p.totalBase = p.totalBase.round(2)
+            p.totalTaxes = p.totalTaxes.round(2)
+            p.total = p.total.round(2)
+        }
+
+        return ServerResponse(200, null, ServerData(order, null))
     }
 
 }

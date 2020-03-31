@@ -53,7 +53,8 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
                 items.forEach { item ->
 
-                    this.orders.find { o -> o.centerId == item.id }?.imageBase64 = item.imageBase64
+                    this.orders.filter { o -> o.center.centerId == item.id }
+                        .forEach { o -> o.center.imageBase64 = item.imageBase64 }
                 }
                 adapter.notifyDataSetChanged()
             })
@@ -66,13 +67,14 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
             orders = it.serverData?.data ?: listOf()
             adapter.orders = orders.sortedByDescending { o -> o.createdAt }
             adapter.notifyDataSetChanged()
-            loadImages(orders.filter { o -> o.centerImageUrl != null }.map { o ->
+            val items = orders.filter { o -> o.center.centerImageUrl != null }.map { o ->
                 UrlLoadedImage(
-                    o.centerId!!,
+                    o.center.centerId!!,
                     null,
-                    o.centerImageUrl!!
+                    o.center.centerImageUrl!!
                 )
-            })
+            }
+            loadImages(items.distinct())
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -143,7 +145,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
         val order = model as Order
         view.findViewById<TextView>(R.id.textView_order_done_list_provider_name).text =
-            order.sellerName
+            order.seller.sellerName
         view.findViewById<TextView>(R.id.textView_order_list_total_amount).text =
             order.total.toString() + "€"
         view.findViewById<LinearLayout>(R.id.linearLayout_order_done_list_product_list_container)
@@ -160,19 +162,19 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
                 .addView(textView)
         }
 
-        if (order.imageBase64 == null) {
+        if (order.center.imageBase64 == null) {
 
             try {
                 view.findViewById<ImageView>(R.id.textView_order_done_list_center_image)
                     .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
             } catch (ex: Exception) {
-
+                var t = ex
             }
 
 
         } else {
             view.findViewById<ImageView>(R.id.textView_order_done_list_center_image)
-                .setImageBitmap(order.imageBase64?.toBitmap())
+                .setImageBitmap(order.center.imageBase64?.toBitmap())
         }
 
     }

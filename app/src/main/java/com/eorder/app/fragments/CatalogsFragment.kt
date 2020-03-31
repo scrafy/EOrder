@@ -67,23 +67,24 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
         val catalog = (model as Catalog)
 
         view.findViewById<TextView>(R.id.textView_catalogs_list_catalog_name).text = catalog.name
-        view.findViewById<TextView>(R.id.textView_catalogs_list_total_products).text = resources.getString(R.string.catalog_fragment_number_of_products).format(catalog.totalProducts)
+        view.findViewById<TextView>(R.id.textView_catalogs_list_total_products).text =
+            resources.getString(R.string.catalog_fragment_number_of_products)
+                .format(catalog.totalProducts)
 
         view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
-            .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
+            .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
 
-        if (catalog.imageBase64 == null){
+        if (catalog.imageBase64 == null) {
 
             try {
                 view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
-                    .setImageDrawable(GifDrawable( context?.resources!!, R.drawable.loading ))
-            }
-            catch(ex: Exception){
+                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+            } catch (ex: Exception) {
 
             }
 
 
-        }else{
+        } else {
             view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
                 .setImageBitmap(catalog.imageBase64?.toBitmap())
         }
@@ -108,6 +109,19 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun loadImages(items: List<UrlLoadedImage>) {
+
+        model.loadImages(items)
+            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
+
+                items.forEach { item ->
+
+                    this.catalogs.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
+                }
+                adapter.notifyDataSetChanged()
+            })
+    }
+
     fun setObservers() {
 
         model.getCatalogBySellersObservable()
@@ -116,31 +130,28 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
                 catalogs = it.serverData?.data ?: mutableListOf()
                 adapter.catalogs = catalogs
                 adapter.notifyDataSetChanged()
-                var items = catalogs.filter{p -> p.imageUrl != null}.map { p ->
+                var items =
+                    catalogs.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
 
-                    UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
-                }
-
-                model.loadImages(items).observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                    items.forEach { item ->
-
-                        this.catalogs.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
+                        UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
                     }
-                    adapter.notifyDataSetChanged()
-                })
+
+                loadImages(items)
+
             })
 
-        model.getErrorObservable().observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
+        model.getErrorObservable()
+            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-            model.manageExceptionService.manageException(this.context!!, ex)
+                model.manageExceptionService.manageException(this.context!!, ex)
 
-        })
+            })
 
-        model.getLoadImageErrorObservable().observe(this.activity as LifecycleOwner, Observer { ex ->
+        model.getLoadImageErrorObservable()
+            .observe(this.activity as LifecycleOwner, Observer { ex ->
 
-            model.manageExceptionService.manageException(this.context!!, ex)
-        })
+                model.manageExceptionService.manageException(this.context!!, ex)
+            })
     }
 
     private fun init() {

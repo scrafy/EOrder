@@ -7,6 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.eorder.app.com.eorder.app.di.appModule
 import com.eorder.application.di.applicationModule
+import com.eorder.application.extensions.clone
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.interfaces.IJwtTokenService
@@ -42,7 +43,7 @@ class Main : Application(), LifecycleObserver {
 
         sharedPreferencesService.writeToSharedPreferences(
             this@Main,
-            shopService.getOrder(),
+            shopService.getOrder().clone(),
             "shop_order",
             Order::class.java
         )

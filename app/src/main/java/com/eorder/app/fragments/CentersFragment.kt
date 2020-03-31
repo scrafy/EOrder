@@ -34,7 +34,8 @@ import java.io.*
 import java.lang.Exception
 
 
-class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel, ISetAdapterListener {
+class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel,
+    ISetAdapterListener {
 
     private lateinit var model: CentersViewModel
     private var recyclerView: RecyclerView? = null
@@ -99,6 +100,20 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
 
     }
 
+    private fun loadImages(items: List<UrlLoadedImage>) {
+
+        model.loadImages(items)
+            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
+
+                items.forEach { item ->
+
+                    this.centers.find { c -> c.id == item.id }?.imageBase64 =
+                        item.imageBase64
+                }
+                adapter.notifyDataSetChanged()
+            })
+    }
+
     fun setObservers() {
 
         model.getCentersResultObservable().observe(
@@ -108,21 +123,13 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
                 centers = it.serverData?.data ?: mutableListOf()
                 adapter.centers = centers
                 adapter.notifyDataSetChanged()
-                var items = centers.filter { p -> p.imageUrl != null && p.id != null }.map { p ->
+                var items =
+                    centers.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
 
-                    UrlLoadedImage(p.id!!, p.imageBase64, p.imageUrl!!)
-                }
+                        UrlLoadedImage(p.id!!, null, p.imageUrl!!)
+                    }
+                loadImages(items)
 
-                model.loadImages(items)
-                    .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                        items.forEach { item ->
-
-                            this.centers.find { c -> c.id == item.id }?.imageBase64 =
-                                item.imageBase64
-                        }
-                        adapter.notifyDataSetChanged()
-                    })
             })
 
         model.getErrorObservable()

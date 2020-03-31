@@ -10,40 +10,43 @@ import com.eorder.domain.models.Center
 import com.eorder.domain.models.Seller
 
 
-
 class OrderViewModel(
     private val shopService: IShopService,
     jwtTokenService: IJwtTokenService,
     sharedPreferencesService: ISharedPreferencesService,
     manageExceptionService: IManageException
-)  : BaseMainMenuActionsViewModel(jwtTokenService, sharedPreferencesService, manageExceptionService) {
+) : BaseMainMenuActionsViewModel(
+    jwtTokenService,
+    sharedPreferencesService,
+    manageExceptionService
+) {
 
 
     fun getProductsFromShop() = shopService.getOrder().products
 
-    fun addCenterToOrder( centerId:Int, centerName: String, centerImageUrl:String? ) {
+    fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?) {
 
-        shopService.getOrder().centerId = centerId
-        shopService.getOrder().centerName = centerName
-        shopService.getOrder().centerImageUrl = centerImageUrl
+        shopService.getOrder().center.centerId = centerId
+        shopService.getOrder().center.centerName = centerName
+        shopService.getOrder().center.centerImageUrl = centerImageUrl
     }
 
-    fun addSellerToOrder( sellerId:Int, sellerName: String ) {
+    fun addSellerToOrder(sellerId: Int, sellerName: String) {
 
-        shopService.getOrder().sellerId = sellerId
-        shopService.getOrder().sellerName = sellerName
+        shopService.getOrder().seller.sellerId = sellerId
+        shopService.getOrder().seller.sellerName = sellerName
     }
 
     fun cleanShop() = shopService.cleanShop()
 
     fun isPossibleChangeSeller(seller: Seller): Boolean =
-        !(shopService.getOrder().sellerId != null && shopService.getOrder().sellerId != seller.id && shopService.getOrder().products.isNotEmpty())
+        !(shopService.getOrder().seller.sellerId != null && shopService.getOrder().seller.sellerId != seller.id && shopService.getOrder().products.isNotEmpty())
 
     fun isPossibleChangeCenter(center: Center): Boolean =
-        !(shopService.getOrder().centerId != null && shopService.getOrder().centerId != center.id && shopService.getOrder().products.isNotEmpty())
+        !(shopService.getOrder().center.centerId != null && shopService.getOrder().center.centerId != center.id && shopService.getOrder().products.isNotEmpty())
 
-    fun getCurrentOrderCenterName() = shopService.getOrder().centerName
+    fun getCurrentOrderCenterName() = shopService.getOrder().center.centerName
 
-    fun getCurrentOrderSellerName() = shopService.getOrder().sellerName
+    fun getCurrentOrderSellerName() = shopService.getOrder().seller.sellerName
 
 }
