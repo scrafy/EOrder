@@ -1,34 +1,22 @@
 package com.eorder.app.viewmodels.fragments
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.interfaces.IGetProductsByCatalogUseCase
-import com.eorder.application.interfaces.ILoadImagesService
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.application.interfaces.IShopService
+import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
 
 
-class ProductsViewModel(
-
-    private val getProductsByCatalogUseCase: IGetProductsByCatalogUseCase,
-    private val loadImageService: ILoadImagesService,
-    private val shopService: IShopService,
-    private val sharedPreferencesService: ISharedPreferencesService,
-    jwtTokenService: IJwtTokenService,
-    manageExceptionService: IManageException
-
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class ProductsViewModel: BaseViewModel() {
 
     private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> =
         MutableLiveData()
@@ -40,36 +28,43 @@ class ProductsViewModel(
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = getProductsByCatalogUseCase.getProductsByCatalog(catalogId)
+            var result =
+                unitOfWorkUseCase.getProductsByCatalogUseCase().getProductsByCatalog(catalogId)
             getProductsByCatalogResult.postValue(result)
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) = loadImageService.loadImages(list)
-    fun addProductToShop(product: Product) = shopService.addProductToShop(product)
-    fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
-    fun existProduct(productId: Int) = shopService.existProduct(productId)
-    fun cleanProducts() = shopService.cleanProducts()
-    fun getProductsFromShop() = shopService.getOrder().products
+    fun loadImages(list: List<UrlLoadedImage>) =
+        unitOfWorkService.getLoadImageService().loadImages(list)
+
+    fun addProductToShop(product: Product) =
+        unitOfWorkService.getShopService().addProductToShop(product)
+
+    fun removeProductFromShop(product: Product) =
+        unitOfWorkService.getShopService().removeProductFromShop(product)
+
+    fun existProduct(productId: Int) = unitOfWorkService.getShopService().existProduct(productId)
+    fun cleanProducts() = unitOfWorkService.getShopService().cleanProducts()
+    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
     fun setProductsToShop(products: MutableList<Product>) {
-        shopService.getOrder().products = products
+        unitOfWorkService.getShopService().getOrder().products = products
     }
 
     fun writeProductsFavorites(context: Context?, products: List<Int>) {
 
-        sharedPreferencesService.writeToSharedPreferences(
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             context,
             products,
-            "favorite_products",
+            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
             products.javaClass
         )
     }
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {
 
-        return sharedPreferencesService.loadFromSharedPreferences<List<Int>>(
+        return unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<List<Int>>(
             context,
-            "favorite_products",
+            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
             List::class.java
         )?.map { p -> p.toInt() }
 

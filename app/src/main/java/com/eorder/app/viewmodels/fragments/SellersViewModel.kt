@@ -1,26 +1,19 @@
 package com.eorder.app.viewmodels.fragments
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.interfaces.IGetSellersByCenterUseCase
-import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SellersViewModel(
-    private val getSellersByCenterUseCase: IGetSellersByCenterUseCase,
-    private val loadImageService: ILoadImagesService,
-    jwtTokenService: IJwtTokenService,
-    manageExceptionService: IManageException
-
-) : BaseViewModel(jwtTokenService,manageExceptionService ) {
+@RequiresApi(Build.VERSION_CODES.O)
+class SellersViewModel: BaseViewModel() {
 
     private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> =
         MutableLiveData()
@@ -34,12 +27,15 @@ class SellersViewModel(
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = getSellersByCenterUseCase.getSellersByCenter(centerId)
+            var result = unitOfWorkUseCase.getSellersByCenterUseCase().getSellersByCenter(centerId)
             getSellersByCenterResult.postValue(result)
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) = loadImageService.loadImages(list)
-    fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
+    fun loadImages(list: List<UrlLoadedImage>) =
+        unitOfWorkService.getLoadImageService().loadImages(list)
+
+    fun getLoadImageErrorObservable() =
+        unitOfWorkService.getLoadImageService().returnsloadImageErrorObservable()
 }
 

@@ -1,19 +1,20 @@
 package com.eorder.application.usecases
 
-import com.eorder.application.interfaces.IGetProductsByCatalogUseCase
-import com.eorder.domain.interfaces.IProductRepository
+import com.eorder.application.interfaces.IProductsByCatalogUseCase
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
+import com.eorder.infrastructure.di.UnitOfWorkRepository
 
 
 class ProductsByCatalogUseCase(
-    private val productRepository: IProductRepository
+
+    private val unitOfWorkRepository: UnitOfWorkRepository
 
 ) :
-    IGetProductsByCatalogUseCase {
+    IProductsByCatalogUseCase {
 
     override fun getProductsByCatalog(catalogId: Int): ServerResponse<List<Product>> {
 
-        return productRepository.getProductsByCatalog(catalogId)
+        return unitOfWorkRepository.getProductRepository().getProductsByCatalog(catalogId)
     }
 }

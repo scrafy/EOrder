@@ -1,16 +1,17 @@
 package com.eorder.app
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.eorder.app.com.eorder.app.di.appModule
+import com.eorder.application.di.UnitOfWorkService
 import com.eorder.application.di.applicationModule
+import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.extensions.clone
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.application.interfaces.IShopService
-import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.models.Order
 import com.eorder.infrastructure.di.infrastructureModule
 import org.koin.android.ext.android.inject
@@ -21,50 +22,66 @@ import org.koin.core.context.startKoin
 
 class Main : Application(), LifecycleObserver {
 
-    private lateinit var sharedPreferencesService: ISharedPreferencesService
-    private lateinit var shopService: IShopService
-    private lateinit var jwtTokenService: IJwtTokenService
+    private lateinit var unitOfWorkService: UnitOfWorkService
+
 
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            modules(listOf(applicationModule, infrastructureModule, appModule))
+            modules(
+                listOf(
+                    applicationModule,
+                    infrastructureModule,
+                    appModule
+                )
+            )
             androidLogger()
             androidContext(this@Main)
         }
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-        this.sharedPreferencesService = inject<ISharedPreferencesService>().value
-        this.shopService = inject<IShopService>().value
-        this.jwtTokenService = inject<IJwtTokenService>().value
+        unitOfWorkService = inject<UnitOfWorkService>().value
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
 
-        sharedPreferencesService.writeToSharedPreferences(
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             this@Main,
-            shopService.getOrder().clone(),
-            "shop_order",
+            unitOfWorkService.getShopService().getOrder().clone(),
+            SharedPreferenceKeyEnum.SHOP_ORDER.key,
             Order::class.java
         )
-        sharedPreferencesService.writeToSharedPreferences(
+
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             this@Main,
-            jwtTokenService.getToken(),
-            "user_session",
+            unitOfWorkService.getJwtTokenService().getToken(),
+            SharedPreferenceKeyEnum.USER_SESSION.key,
             String::class.java
         )
+
+        val t =
+            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<String>(
+                this@Main,
+                SharedPreferenceKeyEnum.USER_SESSION.key,
+                String::class.java
+            )
+
+        val f = t
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
 
-        val order = sharedPreferencesService.loadFromSharedPreferences<Order>(
-            this@Main,
-            "shop_order",
-            Order::class.java
-        )
+        val order =
+            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<Order>(
+                this@Main,
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
+            )
         if (order != null)
-            shopService.setOrder(order)
+            unitOfWorkService.getShopService().setOrder(order)
     }
 
 }

@@ -2,25 +2,29 @@ package com.eorder.app.activities
 
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.dialogs.AlertDialogOk
-import com.eorder.domain.interfaces.IManageFormErrors
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IManageFormErrors
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors,
+@RequiresApi(Build.VERSION_CODES.O)
+class RecoverPasswordActivity : AppCompatActivity(),
+    IManageFormErrors,
     IShowSnackBarMessage {
 
     private lateinit var model: RecoverPasswordViewModel
@@ -51,7 +55,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IManageFormErrors,
 
         model.getErrorObservable().observe(this, Observer<Throwable>{ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.getManagerExceptionService().manageException(this, ex)
 
         })
 

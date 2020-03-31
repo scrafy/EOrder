@@ -1,21 +1,20 @@
 package com.eorder.application.usecases
 
-import com.eorder.application.interfaces.IGetSellersByCenterUseCase
+import com.eorder.application.interfaces.ISellersByCenterUseCase
 import com.eorder.domain.interfaces.ISellerRepository
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
+import com.eorder.infrastructure.di.UnitOfWorkRepository
 
 
-class SellersByCenterUseCase(private val sellerRepository: ISellerRepository):
-    IGetSellersByCenterUseCase {
+class SellersByCenterUseCase( private val unitOfWorkRepository: UnitOfWorkRepository ) :
+    ISellersByCenterUseCase {
 
 
-    override fun getSellersByCenter(centerId:Int): ServerResponse<List<Seller>>{
+    override fun getSellersByCenter(centerId: Int): ServerResponse<List<Seller>> {
 
-        /* if (!sessionStorage.isSessionValid())
-          throw UserSessionExpiredException*/
 
-        return sellerRepository.getSellersByCenter(centerId)
+        return unitOfWorkRepository.getSellerRepository().getSellersByCenter(centerId)
 
     }
 

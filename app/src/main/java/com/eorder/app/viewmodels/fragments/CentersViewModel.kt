@@ -1,24 +1,17 @@
 package com.eorder.app.viewmodels.fragments
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.interfaces.IGetCentersUseCase
-import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.*
 
-
-class CentersViewModel(
-    private val getCentersUseCase: IGetCentersUseCase,
-    private val loadImageService: ILoadImagesService,
-    jwtTokenService: IJwtTokenService,
-    manageExceptionService: IManageException
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class CentersViewModel : BaseViewModel() {
 
     private val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
 
@@ -28,11 +21,14 @@ class CentersViewModel(
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = getCentersUseCase.getCenters()
+            var result = unitOfWorkUseCase.getCentersUseCase().getCenters()
             getCentersResult.postValue(result)
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) = loadImageService.loadImages(list)
-    fun getLoadImageErrorObservable() = loadImageService.returnsloadImageErrorObservable()
+    fun loadImages(list: List<UrlLoadedImage>) =
+        unitOfWorkService.getLoadImageService().loadImages(list)
+
+    fun getLoadImageErrorObservable() =
+        unitOfWorkService.getLoadImageService().returnsloadImageErrorObservable()
 }

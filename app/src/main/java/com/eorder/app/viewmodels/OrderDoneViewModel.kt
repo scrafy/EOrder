@@ -1,53 +1,43 @@
 package com.eorder.app.com.eorder.app.viewmodels
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseMainMenuActionsViewModel
-import com.eorder.application.interfaces.ILoadImagesService
-import com.eorder.application.interfaces.IOrderDoneUseCase
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.application.interfaces.IShopService
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class OrderDoneViewModel(
-
-    tokenService: IJwtTokenService,
-    private val shopService: IShopService,
-    sharedPreferencesService: ISharedPreferencesService,
-    manageExceptionService: IManageException,
-    private val orderDoneUseCase: IOrderDoneUseCase,
-    private val loadImagesService: ILoadImagesService
-
-) : BaseMainMenuActionsViewModel(tokenService, sharedPreferencesService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class OrderDoneViewModel : BaseMainMenuActionsViewModel() {
 
     private val ordersDoneResult: MutableLiveData<ServerResponse<List<Order>>> = MutableLiveData()
 
 
     fun getOrdersDoneResultObservable(): LiveData<ServerResponse<List<Order>>> = ordersDoneResult
 
-    fun getProductsFromShop() = shopService.getOrder().products
+    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
 
     fun getOrdersDoneByUser(context: Context) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            val orders = orderDoneUseCase.getOrdersDoneByUser(context)
+            val orders = unitOfWorkUseCase.getOrderDoneUseCase().getOrdersDoneByUser(context)
             ordersDoneResult.postValue(orders)
 
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) = loadImagesService.loadImages(list)
-    fun isShopEmpty(): Boolean = shopService.isShopEmpty()
+    fun loadImages(list: List<UrlLoadedImage>) =
+        unitOfWorkService.getLoadImageService().loadImages(list)
+
+    fun isShopEmpty(): Boolean = unitOfWorkService.getShopService().isShopEmpty()
     fun setOrder(order: Order) {
-        shopService.setOrder(order)
+        unitOfWorkService.getShopService().setOrder(order)
     }
 }

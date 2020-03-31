@@ -2,15 +2,17 @@ package com.eorder.app.activities
 
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.dialogs.AlertDialogOk
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
 
     private lateinit var model: MainViewModel
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             ) { d, i -> }.show()
 
     }
+
 
     private fun init() {
 

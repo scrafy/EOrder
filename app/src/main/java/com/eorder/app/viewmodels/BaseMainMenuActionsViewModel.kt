@@ -3,27 +3,24 @@ package com.eorder.app.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.eorder.app.activities.LandingActivity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.app.activities.MainActivity
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
+import com.eorder.application.enums.SharedPreferenceKeyEnum
+import org.koin.core.KoinComponent
 
 
-abstract class BaseMainMenuActionsViewModel(
+@RequiresApi(Build.VERSION_CODES.O)
+abstract class BaseMainMenuActionsViewModel() : BaseViewModel(), KoinComponent {
 
-    private val jwtTokenService: IJwtTokenService,
-    private val sharedPreferencesService: ISharedPreferencesService,
-    manageExceptionService: IManageException
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
 
     fun signOutApp(context: Context) {
 
-        jwtTokenService.cleanToken()
-        sharedPreferencesService.writeToSharedPreferences(
+        unitOfWorkService.getJwtTokenService().cleanToken()
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             context,
             null,
-            "user_session",
+            SharedPreferenceKeyEnum.USER_SESSION.key,
             String.javaClass
         )
         (context as Activity).navigateUpTo(Intent(context, MainActivity::class.java))

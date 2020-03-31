@@ -1,6 +1,7 @@
 package com.eorder.app.fragments
 
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -17,13 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
-import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
-import com.eorder.app.com.eorder.app.fragments.BaseFragment
 import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
@@ -33,8 +33,9 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
-
-class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel,
+@RequiresApi(Build.VERSION_CODES.O)
+class CatalogsFragment : BaseFloatingButtonFragment(),
+    IShowSnackBarMessage, IRepaintModel,
     ISetAdapterListener {
 
 
@@ -122,6 +123,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
             })
     }
 
+
     fun setObservers() {
 
         model.getCatalogBySellersObservable()
@@ -143,14 +145,14 @@ class CatalogsFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRe
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this.context!!, ex)
+                model.getManagerExceptionService().manageException(this.context!!, ex)
 
             })
 
         model.getLoadImageErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer { ex ->
 
-                model.manageExceptionService.manageException(this.context!!, ex)
+                model.getManagerExceptionService().manageException(this.context!!, ex)
             })
     }
 

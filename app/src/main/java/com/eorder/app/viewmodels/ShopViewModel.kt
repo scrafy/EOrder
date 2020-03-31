@@ -5,13 +5,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.extensions.clone
-import com.eorder.application.interfaces.*
 import com.eorder.application.models.OrdersWrapper
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.application.services.LoadImagesService
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -21,16 +18,8 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.*
 
-
-class ShopViewModel(
-    private val confirmOrderUseCase: IConfirmOrderUseCase,
-    private val shopService: IShopService,
-    private val sharedPreferencesService: ISharedPreferencesService,
-    private val orderSummaryTotalsUseCase: IOrderSummaryTotalsUseCase,
-    private val loadImagesService: ILoadImagesService,
-    jwtTokenService: IJwtTokenService,
-    manageExceptionService: IManageException
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class ShopViewModel: BaseViewModel() {
 
     private val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
     private val summaryTotalsOrderResult: MutableLiveData<ServerResponse<Order>> = MutableLiveData()
@@ -40,22 +29,27 @@ class ShopViewModel(
         summaryTotalsOrderResult
 
     fun getConfirmOrderResultObservable(): LiveData<ServerResponse<Int>> = confirmOrderResult
-    fun getTotalTaxBaseAmount(): Float? = shopService.getTotalTaxBaseAmount()
-    fun getTotalTaxesAmount(): Float? = shopService.getTotalTaxesAmount()
-    fun getTotalAmount(): Float? = shopService.getTotalAmount()
-    fun getProducts(): List<Product> = shopService.getOrder().products
-    fun getAmountOfProducts(): Int = shopService.getAmountOfProducts()
-    fun removeProductFromShop(product: Product) = shopService.removeProductFromShop(product)
-    fun getSellerName() = shopService.getOrder().seller.sellerName
-    fun cleanShop(){
-        shopService.cleanShop()
+    fun getTotalTaxBaseAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxBaseAmount()
+    fun getTotalTaxesAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxesAmount()
+    fun getTotalAmount(): Float? = unitOfWorkService.getShopService().getTotalAmount()
+    fun getProducts(): List<Product> = unitOfWorkService.getShopService().getOrder().products
+    fun getAmountOfProducts(): Int = unitOfWorkService.getShopService().getAmountOfProducts()
+    fun removeProductFromShop(product: Product) =
+        unitOfWorkService.getShopService().removeProductFromShop(product)
+
+    fun getSellerName() = unitOfWorkService.getShopService().getOrder().seller.sellerName
+    fun cleanShop() {
+        unitOfWorkService.getShopService().cleanShop()
     }
-    fun getCenterName() = shopService.getOrder().center.centerName
+
+    fun getCenterName() = unitOfWorkService.getShopService().getOrder().center.centerName
+
     fun confirmOrder() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            val result = confirmOrderUseCase.confirmOrder(shopService.getOrder())
+            val result = unitOfWorkUseCase.getConfirmOrderUseCase()
+                .confirmOrder(unitOfWorkService.getShopService().getOrder())
             confirmOrderResult.postValue(result)
         }
     }
@@ -64,7 +58,7 @@ class ShopViewModel(
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            val result = orderSummaryTotalsUseCase.getOrderTotalsSummary()
+            val result = unitOfWorkUseCase.getOrderSummaryTotalsUseCase().getOrderTotalsSummary()
             summaryTotalsOrderResult.postValue(result)
         }
     }
@@ -73,39 +67,43 @@ class ShopViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveOrder(context: Context) {
 
-        val orders = (sharedPreferencesService.loadFromSharedPreferences<OrdersWrapper>(
-            context,
-            "orders_done",
-            OrdersWrapper::class.java
-        )) ?: OrdersWrapper(mutableListOf())
+        val orders =
+            (unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<OrdersWrapper>(
+                context,
+                SharedPreferenceKeyEnum.ORDERS_DONE.key,
+                OrdersWrapper::class.java
+            )) ?: OrdersWrapper(mutableListOf())
 
-        var order = shopService.getOrder().clone()
+        var order = unitOfWorkService.getShopService().getOrder().clone()
         order.createdAt = Date.from(Instant.now())
         orders.orders.add(order)
 
-        sharedPreferencesService.writeToSharedPreferences(
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             context,
             orders,
-            "orders_done",
+            SharedPreferenceKeyEnum.ORDERS_DONE.key,
             OrdersWrapper::class.java
         )
     }
-    fun loadImages(list: List<UrlLoadedImage>) = loadImagesService.loadImages(list)
+
+    fun loadImages(list: List<UrlLoadedImage>) =
+        unitOfWorkService.getLoadImageService().loadImages(list)
+
     fun writeProductsFavorites(context: Context?, products: List<Int>) {
 
-        sharedPreferencesService.writeToSharedPreferences(
+        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
             context,
             products,
-            "favorite_products",
+            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
             products.javaClass
         )
     }
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {
 
-        return sharedPreferencesService.loadFromSharedPreferences<List<Int>>(
+        return unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<List<Int>>(
             context,
-            "favorite_products",
+            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
             List::class.java
         )?.map { p -> p.toInt() }
 

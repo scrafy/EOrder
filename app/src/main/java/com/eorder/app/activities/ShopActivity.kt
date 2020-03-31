@@ -17,7 +17,7 @@ import com.eorder.app.R
 import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
 import com.eorder.app.interfaces.IRepaintModel
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Order
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_shop.*
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class ShopActivity : BaseActivity(), IRepaintModel,
     IShowSnackBarMessage {
 
@@ -140,7 +140,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.getManagerExceptionService().manageException(this, ex)
 
         })
     }

@@ -1,31 +1,38 @@
 package com.eorder.application.usecases
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.eorder.application.di.UnitOfWorkService
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.ModelValidationException
-import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.application.interfaces.IRecoverPasswordUseCase
-import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
+import com.eorder.infrastructure.di.UnitOfWorkRepository
 
 
-class RecoverPasswordUseCase(override val loginService: IUserRepository,
-                             override val validationModelService: IValidationModelService
+@RequiresApi(Build.VERSION_CODES.O)
+class RecoverPasswordUseCase(
+    private val unitOfWorkService: UnitOfWorkService,
+    private val unitOfWorkRepository: UnitOfWorkRepository
 ) : IRecoverPasswordUseCase {
 
 
     override fun recoverPassword(recoverPassword: RecoverPassword): ServerResponse<String> {
 
-        var validationErrors: List<ValidationError> = this.validationModelService.validate(recoverPassword)
+        var validationErrors: List<ValidationError> =
+            unitOfWorkService.getValidationModelService().validate(recoverPassword)
 
         if (validationErrors.isNotEmpty())
-            throw ModelValidationException(ErrorCode.VALIDATION_ERROR, "Exists validation errors", validationErrors)
+            throw ModelValidationException(
+                ErrorCode.VALIDATION_ERROR,
+                "Exists validation errors",
+                validationErrors
+            )
 
-        var response =  this.loginService.recoverPassword( recoverPassword )
 
-
-        return response
+        return unitOfWorkRepository.getUserRepository().recoverPassword(recoverPassword)
     }
 }

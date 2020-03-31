@@ -1,16 +1,13 @@
 package com.eorder.app.viewmodels
 
-import com.eorder.application.interfaces.IShopService
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
+import android.os.Build
+import androidx.annotation.RequiresApi
 
-class CartBreakdownModelView(
-    private val shopService: IShopService,
-    jwtTokenService: IJwtTokenService,
-    manageExceptionService: IManageException
 
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class CartBreakdownModelView: BaseViewModel() {
 
-    fun getOrder() = shopService.getOrder()
+
+    fun getOrder() = unitOfWorkService.getShopService().getOrder()
 
 }

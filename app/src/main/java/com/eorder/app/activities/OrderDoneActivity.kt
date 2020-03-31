@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,7 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -79,7 +78,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.getManagerExceptionService().manageException(this, ex)
 
         })
     }

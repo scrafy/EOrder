@@ -1,30 +1,31 @@
 package com.eorder.app.com.eorder.app.viewmodels
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.interfaces.ISharedPreferencesService
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
+import com.eorder.application.enums.SharedPreferenceKeyEnum
+
 import java.lang.Exception
 
-class MainViewModel(
-    private val jwtTokenService: IJwtTokenService,
-    private val sharedPreferencesService: ISharedPreferencesService,
-    manageExceptionService: IManageException
-) : BaseViewModel(jwtTokenService, manageExceptionService) {
+@RequiresApi(Build.VERSION_CODES.O)
+class MainViewModel: BaseViewModel() {
 
-    fun isLogged(): Boolean = jwtTokenService.isValidToken()
+    fun isLogged(): Boolean = unitOfWorkService.getJwtTokenService().isValidToken()
+
 
     fun loadSessionToken(context: Context) {
 
-        val token = sharedPreferencesService.loadFromSharedPreferences<String>(
-            context,
-            "user_session",
-            String::class.java
-        )
+        val token =
+            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<String>(
+                context,
+                SharedPreferenceKeyEnum.USER_SESSION.key,
+                String::class.java
+            )
+
         if (token != null) {
             try {
-                jwtTokenService.addToken(token)
+                unitOfWorkService.getJwtTokenService().addToken(token)
             } catch (ex: Exception) {
 
             }

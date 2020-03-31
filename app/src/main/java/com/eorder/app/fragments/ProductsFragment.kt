@@ -1,10 +1,12 @@
 package com.eorder.app.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -24,10 +26,10 @@ import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.fragments.BaseFragment
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import java.lang.Exception
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage,
     IToolbarSearch {
@@ -280,6 +282,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 })
     }
 
+
     fun setObservers() {
 
 
@@ -305,7 +308,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this.context!!, ex)
+                model.getManagerExceptionService().manageException(this.context!!, ex)
             })
     }
 

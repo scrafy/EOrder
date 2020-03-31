@@ -1,5 +1,6 @@
 package com.eorder.app.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -17,7 +19,7 @@ import com.eorder.app.adapters.fragments.CentersAdapter
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CentersViewModel
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
@@ -26,15 +28,12 @@ import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
-import android.graphics.Bitmap
-import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
-import com.eorder.app.com.eorder.app.fragments.BaseFragment
-import java.io.*
 import java.lang.Exception
 
-
-class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRepaintModel,
+@RequiresApi(Build.VERSION_CODES.O)
+class CentersFragment : BaseFloatingButtonFragment(),
+    IShowSnackBarMessage, IRepaintModel,
     ISetAdapterListener {
 
     private lateinit var model: CentersViewModel
@@ -135,13 +134,13 @@ class CentersFragment : BaseFloatingButtonFragment(), IShowSnackBarMessage, IRep
         model.getErrorObservable()
             ?.observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this.context!!, ex)
+                model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
         model.getLoadImageErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                model.manageExceptionService.manageException(this.context!!, ex)
+                model.getManagerExceptionService().manageException(this.context!!, ex)
             })
     }
 

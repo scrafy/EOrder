@@ -3,21 +3,26 @@ package com.eorder.app.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NavUtils.navigateUpTo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.eorder.app.R
 import com.eorder.app.activities.MainActivity
-import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.interfaces.IManageException
+import com.eorder.application.di.UnitOfWorkService
+import com.eorder.application.di.UnitOfWorkUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
+@RequiresApi(Build.VERSION_CODES.O)
+abstract class BaseViewModel() : ViewModel(), KoinComponent {
 
-abstract class BaseViewModel(
-    private val tokenService: IJwtTokenService,
-    val manageExceptionService: IManageException
-) : ViewModel() {
+    protected var unitOfWorkService: UnitOfWorkService = inject<UnitOfWorkService>().value
+    protected var unitOfWorkUseCase: UnitOfWorkUseCase = inject<UnitOfWorkUseCase>().value
+
 
     protected open val error: MutableLiveData<Throwable> = MutableLiveData()
 
@@ -32,7 +37,7 @@ abstract class BaseViewModel(
 
     fun checkValidSession(context: Context) {
 
-        if (!tokenService.isValidToken()) {
+        if (!unitOfWorkService.getJwtTokenService().isValidToken()) {
             var intent = Intent(context, MainActivity::class.java)
             intent.putExtra(
                 "session_expired",
@@ -41,4 +46,6 @@ abstract class BaseViewModel(
             navigateUpTo(context as Activity, intent)
         }
     }
+
+    fun getManagerExceptionService() = unitOfWorkService.getManagerException()
 }

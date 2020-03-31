@@ -2,10 +2,12 @@ package com.eorder.app.activities
 
 import FavoriteViewModel
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +29,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     IOnFloatinButtonShopClicked {
 
@@ -59,7 +63,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
-            model.manageExceptionService.manageException(this, ex)
+            model.getManagerExceptionService().manageException(this, ex)
 
         })
     }

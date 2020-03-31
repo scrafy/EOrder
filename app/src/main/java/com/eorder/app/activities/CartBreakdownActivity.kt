@@ -7,14 +7,16 @@ import com.eorder.app.com.eorder.app.activities.BaseActivity
 import com.eorder.app.viewmodels.CartBreakdownModelView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.graphics.Typeface
+import android.os.Build
 import android.text.Layout
 import android.view.Gravity
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.eorder.app.com.eorder.app.extensions.convertDpToPixel
 import com.eorder.domain.models.Order
 import kotlinx.android.synthetic.main.activity_cart_breakdown.*
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class CartBreakdownActivity : BaseActivity() {
 
     private lateinit var model: CartBreakdownModelView
@@ -27,6 +29,7 @@ class CartBreakdownActivity : BaseActivity() {
         init()
 
     }
+
 
     override fun checkValidSession() {
         model.checkValidSession(this)

@@ -20,7 +20,7 @@ import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.IOnShopIconClicked
 import com.eorder.app.interfaces.IToolbarSearch
-import com.eorder.domain.interfaces.IShowSnackBarMessage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
