@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.adapters.fragments.CentersAdapter
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
@@ -28,7 +29,6 @@ import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
 import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -40,6 +40,7 @@ class CentersFragment : BaseFloatingButtonFragment(),
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: CentersAdapter
     private lateinit var centers: List<Center>
+    private lateinit var refreshLayout:SwipeRefreshLayout
 
 
     override fun onCreateView(
@@ -48,7 +49,6 @@ class CentersFragment : BaseFloatingButtonFragment(),
     ): View? {
 
         return inflater.inflate(R.layout.centers_fragment, container, false)
-
     }
 
     override fun showMessage(message: String) {
@@ -110,6 +110,7 @@ class CentersFragment : BaseFloatingButtonFragment(),
                         item.imageBase64
                 }
                 adapter.notifyDataSetChanged()
+                refreshLayout.isRefreshing = false
             })
     }
 
@@ -134,6 +135,7 @@ class CentersFragment : BaseFloatingButtonFragment(),
         model.getErrorObservable()
             ?.observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
+                refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
@@ -154,6 +156,14 @@ class CentersFragment : BaseFloatingButtonFragment(),
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layout
         recyclerView?.itemAnimator = DefaultItemAnimator()
+
+        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_centers_fragment)!!
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+        refreshLayout.setOnRefreshListener {
+
+            model.getCenters()
+        }
+
     }
 
 }

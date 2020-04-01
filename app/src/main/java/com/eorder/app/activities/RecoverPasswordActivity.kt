@@ -11,12 +11,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.RecoverPasswordViewModel
+import com.eorder.app.widgets.*
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
@@ -38,14 +39,25 @@ class RecoverPasswordActivity : AppCompatActivity(),
     }
 
     override fun showMessage(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        SnackBar(
+            this,
+            findViewById<DrawerLayout>(R.id.relativeLayout_recover_password_activity_root),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     fun setObservers() {
 
         model.getRecoverPasswordObservable().observe(this, Observer<ServerResponse<String>> { it ->
 
-           var dialog = AlertDialogOk(this, resources.getString(R.string.recover_password_activity_alert_dialog_title), resources.getString(R.string.recover_password_activity_alert_dialog_message),"OK") { _, _->
+           var dialog = AlertDialogOk(
+               this,
+               resources.getString(R.string.recover_password_activity_alert_dialog_title),
+               resources.getString(R.string.recover_password_activity_alert_dialog_message),
+               "OK"
+           ) { _, _ ->
 
                val intent = Intent(this, LoginActivity::class.java)
                startActivity(intent)

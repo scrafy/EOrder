@@ -41,7 +41,7 @@ class UnitOfWorkService(private val jwtTokenService: IJwtTokenService, private v
     fun getSharedPreferencesService(): ISharedPreferencesService {
 
         if (sharedPreferencesService == null)
-            sharedPreferencesService = SharedPreferencesService(getJwtTokenService())
+            sharedPreferencesService = SharedPreferencesService(jwtTokenService)
 
         return sharedPreferencesService as ISharedPreferencesService
     }

@@ -8,8 +8,8 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.viewmodels.MainViewModel
-import com.eorder.app.dialogs.AlertDialogOk
+import com.eorder.app.viewmodels.MainViewModel
+import com.eorder.app.widgets.AlertDialogOk
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)

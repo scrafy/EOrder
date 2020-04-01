@@ -6,17 +6,16 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
+import com.eorder.app.widgets.SnackBar
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
@@ -68,7 +67,13 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        SnackBar(
+            this,
+            findViewById<LinearLayout>(R.id.relativeLayout_login_activity_root),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     override fun clearEditTextAndFocus() {

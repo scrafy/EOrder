@@ -1,9 +1,10 @@
+package com.eorder.app.viewmodels
+
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.app.viewmodels.BaseMainMenuActionsViewModel
 import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product

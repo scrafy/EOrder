@@ -11,6 +11,7 @@ import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
+import java.lang.Exception
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -21,6 +22,7 @@ class RecoverPasswordUseCase(
 
 
     override fun recoverPassword(recoverPassword: RecoverPassword): ServerResponse<String> {
+
 
         var validationErrors: List<ValidationError> =
             unitOfWorkService.getValidationModelService().validate(recoverPassword)

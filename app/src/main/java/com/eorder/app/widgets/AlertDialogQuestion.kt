@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.dialogs
+package com.eorder.app.widgets
 
 import android.content.Context
 import android.content.DialogInterface

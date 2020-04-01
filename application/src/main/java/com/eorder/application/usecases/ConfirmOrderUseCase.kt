@@ -9,6 +9,7 @@ import com.eorder.domain.exceptions.ShopEmptyException
 import com.eorder.domain.models.Order
 import com.eorder.infrastructure.di.UnitOfWorkRepository
 import com.eorder.application.di.UnitOfWorkService
+import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ConfirmOrderUseCase(
@@ -17,6 +18,7 @@ class ConfirmOrderUseCase(
 ) : IConfirmOrderUseCase {
 
     override fun confirmOrder(order: Order): ServerResponse<Int> {
+
 
         if (unitOfWorkService.getShopService().isShopEmpty())
             throw ShopEmptyException(

@@ -1,10 +1,8 @@
-package com.eorder.app.com.eorder.app.activities
+package com.eorder.app.activities
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.view.View
-import com.eorder.app.activities.ShopActivity
-import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
+import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 

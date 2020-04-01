@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.dialogs
+package com.eorder.app.widgets
 
 
 import androidx.appcompat.app.AlertDialog

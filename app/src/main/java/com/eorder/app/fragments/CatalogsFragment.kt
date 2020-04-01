@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
-import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
-import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
+import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.interfaces.IShowSnackBarMessage
@@ -43,6 +43,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(),
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: CatalogsAdapter
     private lateinit var catalogs: List<Catalog>
+    private lateinit var refreshLayout: SwipeRefreshLayout
 
 
     override fun onCreateView(
@@ -120,6 +121,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(),
                     this.catalogs.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
                 }
                 adapter.notifyDataSetChanged()
+                refreshLayout.isRefreshing = false
             })
     }
 
@@ -128,6 +130,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(),
 
         model.getCatalogBySellersObservable()
             .observe((context as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> { it ->
+
 
                 catalogs = it.serverData?.data ?: mutableListOf()
                 adapter.catalogs = catalogs
@@ -145,6 +148,7 @@ class CatalogsFragment : BaseFloatingButtonFragment(),
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
+                refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
 
             })
@@ -168,7 +172,14 @@ class CatalogsFragment : BaseFloatingButtonFragment(),
         recyclerView?.adapter = adapter
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layout
-        recyclerView?.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator?
+        recyclerView?.itemAnimator = DefaultItemAnimator()
+
+        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_catalogs_fragment)!!
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+        refreshLayout.setOnRefreshListener {
+
+            model.getCatalogBySeller( arguments?.getInt("sellerId")!!)
+        }
     }
 
 }

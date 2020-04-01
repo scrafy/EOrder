@@ -8,7 +8,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.app.interfaces.IOnShopIconClicked

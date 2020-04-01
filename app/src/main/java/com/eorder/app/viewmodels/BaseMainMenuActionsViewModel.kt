@@ -11,17 +11,16 @@ import org.koin.core.KoinComponent
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-abstract class BaseMainMenuActionsViewModel() : BaseViewModel(), KoinComponent {
+abstract class BaseMainMenuActionsViewModel : BaseViewModel(), KoinComponent {
 
 
     fun signOutApp(context: Context) {
 
         unitOfWorkService.getJwtTokenService().cleanToken()
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
+        unitOfWorkService.getSharedPreferencesService().writeSession(
             context,
             null,
-            SharedPreferenceKeyEnum.USER_SESSION.key,
-            String.javaClass
+            SharedPreferenceKeyEnum.USER_SESSION.key
         )
         (context as Activity).navigateUpTo(Intent(context, MainActivity::class.java))
     }

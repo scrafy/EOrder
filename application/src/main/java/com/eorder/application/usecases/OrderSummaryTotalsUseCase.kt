@@ -7,6 +7,7 @@ import com.eorder.application.interfaces.IOrderSummaryTotalsUseCase
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
+import java.lang.Exception
 
 
 @RequiresApi(Build.VERSION_CODES.O)

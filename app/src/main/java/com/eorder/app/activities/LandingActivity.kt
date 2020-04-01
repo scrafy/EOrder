@@ -4,8 +4,8 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Bundle
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
-import com.eorder.app.com.eorder.app.viewmodels.LandingViewModel
+import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
+import com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel

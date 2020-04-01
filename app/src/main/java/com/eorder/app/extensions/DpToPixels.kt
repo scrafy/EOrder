@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.extensions
+package com.eorder.app.extensions
 
 import android.content.res.Resources
 import kotlin.math.roundToInt

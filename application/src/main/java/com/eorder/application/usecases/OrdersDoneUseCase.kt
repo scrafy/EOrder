@@ -13,6 +13,7 @@ import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
+import java.lang.Exception
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,6 +32,7 @@ class OrdersDoneUseCase(
     //devolver los pedidos realizados
 
     override fun getOrdersDoneByUser(context: Context): ServerResponse<List<Order>> {
+
 
         val orders =
             unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<OrdersWrapper>(

@@ -224,7 +224,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 )
             )
 
-        if (loguinRequest.username == "fran")
+        else if (loguinRequest.username == "fran")
 
             response = ServerResponse(
                 200,
@@ -233,6 +233,13 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODU1OTQ2MTQsImV4cCI6MTYxNzEzMTkxMiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjEyNCJ9.IIK36DwnOoauXfK0lrQdaEmQUPX9VnRSYNmimaIeRbk",
                     null
                 )
+            )
+
+        else
+            response = ServerResponse(
+                500,
+                ServerError("An unexpected error has happened",500,null,null)
+
             )
 
         checkServerErrorInResponse(response!!)

@@ -2,6 +2,7 @@
 
     <!--COMMON-->
     <string name="enabled">Enabled</string>
+    <string name="close">Close</string>
     <string name="disabled">Disabled</string>
     <string name="shop">Shop</string>
     <string name="title">PedidoE</string>

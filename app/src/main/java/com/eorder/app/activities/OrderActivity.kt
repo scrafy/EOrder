@@ -1,18 +1,20 @@
 package com.eorder.app.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
-import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
-import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
-import com.eorder.app.com.eorder.app.interfaces.ISelectCatalog
-import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
-import com.eorder.app.com.eorder.app.viewmodels.OrderViewModel
-import com.eorder.app.dialogs.AlertDialogOk
+import com.eorder.app.widgets.*
+import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
+import com.eorder.app.interfaces.IRepaintShopIcon
+import com.eorder.app.interfaces.ISelectCatalog
+import com.eorder.app.interfaces.ISelectSeller
+import com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.fragments.CatalogsFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
@@ -26,7 +28,7 @@ import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
     IShowSnackBarMessage, IToolbarSearch, ISelectSeller, IOnShopIconClicked, IOnFloatinButtonShopClicked {
 
@@ -39,6 +41,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         init()
         setMenuToolbar()
     }
+
 
     override fun repaintShopIcon() {
 
@@ -202,7 +205,13 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        SnackBar(
+            this,
+            findViewById<DrawerLayout>(R.id.dwrLayout_drawerlayout),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     private fun loadSellersFragment(center: Center) {

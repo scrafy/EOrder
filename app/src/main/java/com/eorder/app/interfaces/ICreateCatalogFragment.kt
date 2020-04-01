@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.interfaces
+package com.eorder.app.interfaces
 
 import androidx.fragment.app.Fragment
 

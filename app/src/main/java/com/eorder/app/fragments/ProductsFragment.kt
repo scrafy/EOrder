@@ -12,8 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.adapters.fragments.ProductAdapter
-import com.eorder.app.com.eorder.app.interfaces.IRepaintShopIcon
+import com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.extensions.toBitmap
@@ -24,8 +25,7 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseFloatingButtonActivity
-import com.eorder.app.com.eorder.app.fragments.BaseFragment
+import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import java.lang.Exception
 
@@ -38,6 +38,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
     private var products: List<Product> = listOf()
+    private lateinit var refreshLayout: SwipeRefreshLayout
 
 
     override fun onCreateView(
@@ -279,6 +280,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                             item.imageBase64
                     }
                     adapter.notifyDataSetChanged()
+                    refreshLayout.isRefreshing = false
                 })
     }
 
@@ -289,6 +291,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model.getProductsByCatalogObservable().observe(
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> { it ->
+
 
                 products = (it.serverData?.data ?: listOf())
                 adapter.products = products
@@ -308,6 +311,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
+                refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
     }
@@ -328,6 +332,15 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
+
+        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_products_fragment)!!
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+        refreshLayout.setOnRefreshListener {
+
+            model.getProductsByCatalog(arguments?.getInt("catalogId")!!)
+        }
+
+
     }
 
 

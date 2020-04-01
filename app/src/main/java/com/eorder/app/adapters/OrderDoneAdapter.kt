@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.adapters
+package com.eorder.app.adapters
 
 
 import android.content.Context

@@ -1,13 +1,8 @@
-package com.eorder.app.dialogs
+package com.eorder.app.widgets
 
 import android.content.Context
 import android.content.DialogInterface
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import com.eorder.app.R
-import com.eorder.app.com.eorder.app.dialogs.Dialog
 
 
 class AlertDialogOk

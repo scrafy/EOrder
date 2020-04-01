@@ -15,6 +15,7 @@ import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
 import com.eorder.infrastructure.repositories.UserRepository
+import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class LoginUseCase(

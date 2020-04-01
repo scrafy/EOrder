@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.viewmodels
+package com.eorder.app.viewmodels
 
 import android.os.Build
 import androidx.annotation.RequiresApi

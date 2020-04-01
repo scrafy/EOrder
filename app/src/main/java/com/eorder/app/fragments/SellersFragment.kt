@@ -15,10 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.SellerAdapter
-import com.eorder.app.com.eorder.app.fragments.BaseFloatingButtonFragment
-import com.eorder.app.com.eorder.app.interfaces.ISelectSeller
+import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.interfaces.IShowSnackBarMessage
@@ -41,6 +41,8 @@ class SellersFragment : BaseFloatingButtonFragment(),
     private var recyclerView: RecyclerView? = null
     private lateinit var adapter: SellerAdapter
     private lateinit var sellers: List<Seller>
+    private lateinit var refreshLayout: SwipeRefreshLayout
+
 
 
     private lateinit var viewModel: CatalogsViewModel
@@ -64,7 +66,7 @@ class SellersFragment : BaseFloatingButtonFragment(),
         model = getViewModel()
         init()
         setObservers()
-        var centerId = arguments?.getInt("centerId")
+        val centerId = arguments?.getInt("centerId")
         if (centerId != null)
 
             model.getSellersByCenter(centerId)
@@ -118,6 +120,7 @@ class SellersFragment : BaseFloatingButtonFragment(),
                         item.imageBase64
                 }
                 adapter.notifyDataSetChanged()
+                refreshLayout.isRefreshing = false
             })
     }
 
@@ -143,6 +146,7 @@ class SellersFragment : BaseFloatingButtonFragment(),
         model.getErrorObservable()
             ?.observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
+                refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
@@ -163,6 +167,13 @@ class SellersFragment : BaseFloatingButtonFragment(),
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layout
         recyclerView?.itemAnimator = DefaultItemAnimator()
+
+        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_sellers_fragment)!!
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+        refreshLayout.setOnRefreshListener {
+
+            model.getSellersByCenter(arguments?.getInt("centerId")!!)
+        }
     }
 
 }

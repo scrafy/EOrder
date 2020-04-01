@@ -11,6 +11,7 @@ class Product(
     var amount: Int = 0,
     var price:Float = 0F,
     val description: String,
+    val sellerId: Int,
     val name: String,
     val category: String,
     var imageUrl: String? = null,

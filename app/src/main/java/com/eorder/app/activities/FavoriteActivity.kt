@@ -1,6 +1,5 @@
 package com.eorder.app.activities
 
-import FavoriteViewModel
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -8,19 +7,22 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.FavoriteProductsAdapter
-import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
-import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
-import com.eorder.app.dialogs.AlertDialogOk
+import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
+import com.eorder.app.widgets.SnackBar
 import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.viewmodels.FavoriteViewModel
+import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.application.extensions.toBitmap
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -32,6 +34,7 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
+    IShowSnackBarMessage,
     IOnFloatinButtonShopClicked {
 
     private lateinit var model: FavoriteViewModel
@@ -66,6 +69,16 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
             model.getManagerExceptionService().manageException(this, ex)
 
         })
+    }
+
+    override fun showMessage(message: String) {
+
+        SnackBar(
+            this,
+            findViewById<DrawerLayout>(R.id.dwrLayout_drawerlayout),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     override fun setMenuToolbar() {

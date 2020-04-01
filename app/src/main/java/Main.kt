@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.eorder.app.com.eorder.app.di.appModule
+import com.eorder.app.di.appModule
 import com.eorder.application.di.UnitOfWorkService
 import com.eorder.application.di.applicationModule
 import com.eorder.application.enums.SharedPreferenceKeyEnum
@@ -46,28 +46,21 @@ class Main : Application(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
 
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-            this@Main,
-            unitOfWorkService.getShopService().getOrder().clone(),
-            SharedPreferenceKeyEnum.SHOP_ORDER.key,
-            Order::class.java
-        )
-
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-            this@Main,
-            unitOfWorkService.getJwtTokenService().getToken(),
-            SharedPreferenceKeyEnum.USER_SESSION.key,
-            String::class.java
-        )
-
-        val t =
-            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<String>(
+        if (unitOfWorkService.getShopService().getOrder().products.isNotEmpty())
+            unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
                 this@Main,
-                SharedPreferenceKeyEnum.USER_SESSION.key,
-                String::class.java
+                unitOfWorkService.getShopService().getOrder().clone(),
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
             )
 
-        val f = t
+        if (unitOfWorkService.getJwtTokenService().isValidToken())
+            unitOfWorkService.getSharedPreferencesService().writeSession(
+                this@Main,
+                unitOfWorkService.getJwtTokenService().getToken(),
+                SharedPreferenceKeyEnum.USER_SESSION.key
+            )
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

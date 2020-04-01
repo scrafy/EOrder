@@ -6,17 +6,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.eorder.app.adapters.ShopAdapter
-import com.eorder.app.dialogs.AlertDialogOk
 import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import android.widget.ExpandableListView
 import androidx.annotation.RequiresApi
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.activities.BaseActivity
-import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.app.widgets.*
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.models.UrlLoadedImage
@@ -48,7 +48,13 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        SnackBar(
+            this,
+            findViewById<FrameLayout>(R.id.frameLayout_activity_shop_main_container),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     override fun checkValidSession() {

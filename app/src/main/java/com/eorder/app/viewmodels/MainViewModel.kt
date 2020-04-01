@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.viewmodels
+package com.eorder.app.viewmodels
 
 import android.content.Context
 import android.os.Build
@@ -9,7 +9,7 @@ import com.eorder.application.enums.SharedPreferenceKeyEnum
 import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
-class MainViewModel: BaseViewModel() {
+class MainViewModel : BaseViewModel() {
 
     fun isLogged(): Boolean = unitOfWorkService.getJwtTokenService().isValidToken()
 
@@ -17,10 +17,9 @@ class MainViewModel: BaseViewModel() {
     fun loadSessionToken(context: Context) {
 
         val token =
-            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<String>(
+            unitOfWorkService.getSharedPreferencesService().loadSession(
                 context,
-                SharedPreferenceKeyEnum.USER_SESSION.key,
-                String::class.java
+                SharedPreferenceKeyEnum.USER_SESSION.key
             )
 
         if (token != null) {

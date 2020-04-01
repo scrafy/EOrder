@@ -15,15 +15,42 @@ class SharedPreferencesService(
 ) : ISharedPreferencesService {
 
 
+    override fun loadSession(context: Context?, key: String): String? {
+
+        val preferences =
+            context?.getSharedPreferences("SESSION", MODE_PRIVATE)
+        val stringJson = preferences?.getString(key, null) ?: return null
+
+        return Gson().fromJson(
+            stringJson,
+            String::class.java
+        )
+    }
+
+    override fun writeSession(
+        context: Context?,
+        token: String?,
+        key: String
+    ) {
+
+        val preferences =
+            context?.getSharedPreferences("SESSION", MODE_PRIVATE)
+        preferences?.edit()?.putString(key, Gson().toJson(token, String::class.java))
+            ?.commit()
+
+
+    }
+
     override fun <T> loadFromSharedPreferences(
         context: Context?,
         key: String,
         type: Type
     ): T? {
 
-        val userId = jwtTokenService.getClaimFromToken("userId")
+        val userId = jwtTokenService.getClaimFromToken("userId") ?: return null
+
         val preferences =
-            context?.getSharedPreferences("SHARED_PREFERENCES_${userId}", MODE_PRIVATE)
+            context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
         val stringJson = preferences?.getString(key, null) ?: return null
 
         return Gson().fromJson(
@@ -41,13 +68,11 @@ class SharedPreferencesService(
 
         val userId = jwtTokenService.getClaimFromToken("userId")
         val preferences =
-            context?.getSharedPreferences("SHARED_PREFERENCES_${userId}", MODE_PRIVATE)
-        if (obj == null) {
-            preferences?.edit()?.putString(key, null)?.commit()
-        } else {
+            context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
+        if (obj != null) {
             preferences?.edit()?.putString(key, Gson().toJson(obj, type))
                 ?.commit()
         }
-    }
 
+    }
 }

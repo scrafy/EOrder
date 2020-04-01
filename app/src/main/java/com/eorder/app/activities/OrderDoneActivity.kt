@@ -1,18 +1,21 @@
 package com.eorder.app.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.adapters.OrderDoneAdapter
-import com.eorder.app.com.eorder.app.dialogs.AlertDialogQuestion
-import com.eorder.app.com.eorder.app.interfaces.IOnFloatinButtonShopClicked
-import com.eorder.app.com.eorder.app.viewmodels.OrderDoneViewModel
+import com.eorder.app.adapters.OrderDoneAdapter
+import com.eorder.app.widgets.*
+import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
+import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.extensions.toBitmap
@@ -26,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage, IOnFloatinButtonShopClicked {
 
@@ -44,6 +47,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         init()
 
     }
+
 
     private fun loadImages(items: List<UrlLoadedImage>) =
 
@@ -137,7 +141,13 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+        SnackBar(
+            this,
+            findViewById<DrawerLayout>(R.id.frameLayout_order_done_activity_root),
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     override fun repaintModel(view: View, model: Any?) {

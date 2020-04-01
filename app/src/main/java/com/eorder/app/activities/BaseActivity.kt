@@ -1,4 +1,4 @@
-package com.eorder.app.com.eorder.app.activities
+package com.eorder.app.activities
 
 import androidx.appcompat.app.AppCompatActivity
 

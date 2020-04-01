@@ -5,6 +5,7 @@ import com.eorder.domain.interfaces.ISellerRepository
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
+import java.lang.Exception
 
 
 class SellersByCenterUseCase( private val unitOfWorkRepository: UnitOfWorkRepository ) :
