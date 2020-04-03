@@ -3,21 +3,20 @@ package com.eorder.application.usecases
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.application.di.UnitOfWorkService
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.ModelValidationException
 import com.eorder.application.interfaces.IRecoverPasswordUseCase
+import com.eorder.domain.interfaces.IUserRepository
+import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.RecoverPassword
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.di.UnitOfWorkRepository
-import java.lang.Exception
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class RecoverPasswordUseCase(
-    private val unitOfWorkService: UnitOfWorkService,
-    private val unitOfWorkRepository: UnitOfWorkRepository
+    private val validationModelService: IValidationModelService,
+    private val userRepository: IUserRepository
 ) : IRecoverPasswordUseCase {
 
 
@@ -25,7 +24,7 @@ class RecoverPasswordUseCase(
 
 
         var validationErrors: List<ValidationError> =
-            unitOfWorkService.getValidationModelService().validate(recoverPassword)
+            validationModelService.validate(recoverPassword)
 
         if (validationErrors.isNotEmpty())
             throw ModelValidationException(
@@ -35,6 +34,6 @@ class RecoverPasswordUseCase(
             )
 
 
-        return unitOfWorkRepository.getUserRepository().recoverPassword(recoverPassword)
+        return userRepository.recoverPassword(recoverPassword)
     }
 }

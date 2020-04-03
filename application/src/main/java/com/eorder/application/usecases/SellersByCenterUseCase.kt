@@ -5,17 +5,18 @@ import com.eorder.domain.interfaces.ISellerRepository
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.di.UnitOfWorkRepository
+import com.eorder.infrastructure.repositories.SellerRepository
 import java.lang.Exception
 
 
-class SellersByCenterUseCase( private val unitOfWorkRepository: UnitOfWorkRepository ) :
+class SellersByCenterUseCase(private val sellerRepository: ISellerRepository) :
     ISellersByCenterUseCase {
 
 
     override fun getSellersByCenter(centerId: Int): ServerResponse<List<Seller>> {
 
 
-        return unitOfWorkRepository.getSellerRepository().getSellersByCenter(centerId)
+        return sellerRepository.getSellersByCenter(centerId)
 
     }
 

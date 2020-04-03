@@ -7,27 +7,27 @@ import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.models.ServerResponse
 import com.eorder.domain.exceptions.ShopEmptyException
 import com.eorder.domain.models.Order
-import com.eorder.infrastructure.di.UnitOfWorkRepository
-import com.eorder.application.di.UnitOfWorkService
-import java.lang.Exception
+import com.eorder.application.interfaces.IShopService
+import com.eorder.domain.interfaces.IOrderRepository
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ConfirmOrderUseCase(
-    private val unitOfWorkService: UnitOfWorkService,
-    private val unitOfWorkRepository: UnitOfWorkRepository
+    private val shopService: IShopService,
+    private val orderRepository: IOrderRepository
 ) : IConfirmOrderUseCase {
 
     override fun confirmOrder(order: Order): ServerResponse<Int> {
 
 
-        if (unitOfWorkService.getShopService().isShopEmpty())
+        if (shopService.isShopEmpty())
             throw ShopEmptyException(
                 ErrorCode.SHOP_EMPTY,
                 "The shop is empty, is not possible to confirm the order"
             )
 
-        var result = unitOfWorkRepository.getOrderRepository().confirmOrder(order)
-        unitOfWorkService.getShopService().cleanShop()
+        var result = orderRepository.confirmOrder(order)
+        shopService.cleanShop()
         return result
     }
 }

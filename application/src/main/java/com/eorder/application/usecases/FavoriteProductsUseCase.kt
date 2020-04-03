@@ -3,19 +3,18 @@ package com.eorder.application.usecases
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.application.di.UnitOfWorkService
 import com.eorder.application.interfaces.IFavoriteProductsUseCase
+import com.eorder.application.interfaces.IFavoritesService
+import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.di.UnitOfWorkRepository
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class FavoriteProductsUseCase(
 
-    private val unitOfWorkService: UnitOfWorkService,
-    private val unitOfWorkRepository: UnitOfWorkRepository
+    private val favoritesService: IFavoritesService,
+    private val userRepository: IUserRepository
 
 ) : IFavoriteProductsUseCase {
 
@@ -24,10 +23,10 @@ class FavoriteProductsUseCase(
 
 
         var list =
-            unitOfWorkService.getFavoritesService().loadFavoriteProducts(context) ?: return null
+            favoritesService.loadFavoriteProducts(context) ?: return null
 
 
-        return unitOfWorkRepository.getUserRepository()
+        return userRepository
             .getFavoriteProducts(list.map { i -> i.toInt() })
 
     }

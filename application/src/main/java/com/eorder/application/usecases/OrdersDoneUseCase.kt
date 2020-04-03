@@ -3,7 +3,6 @@ package com.eorder.application.usecases
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.application.di.UnitOfWorkService
 import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.interfaces.IOrdersDoneUseCase
 import com.eorder.application.interfaces.ISharedPreferencesService
@@ -12,20 +11,19 @@ import com.eorder.domain.interfaces.IOrderRepository
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.di.UnitOfWorkRepository
-import java.lang.Exception
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrdersDoneUseCase(
-    private val unitOfWorkService: UnitOfWorkService,
-    private val unitOfWorkRepository: UnitOfWorkRepository
+    private val sharedPreferencesService: ISharedPreferencesService,
+    private val orderRepository: IOrderRepository
 ) : IOrdersDoneUseCase {
 
 
     override fun getOrdersDoneByUser(): ServerResponse<List<Order>> {
 
-        return unitOfWorkRepository.getOrderRepository().getOrdersDone()
+        return orderRepository.getOrdersDone()
     }
 
     //este metodo hay que eliminarlo cuando en el backend esté preparado el método de
@@ -35,7 +33,7 @@ class OrdersDoneUseCase(
 
 
         val orders =
-            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<OrdersWrapper>(
+            sharedPreferencesService.loadFromSharedPreferences<OrdersWrapper>(
                 context,
                 SharedPreferenceKeyEnum.ORDERS_DONE.key,
                 OrdersWrapper::class.java

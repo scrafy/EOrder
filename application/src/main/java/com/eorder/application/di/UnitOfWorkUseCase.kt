@@ -1,11 +1,12 @@
 package com.eorder.application.di
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.*
 import com.eorder.application.usecases.*
 import com.eorder.infrastructure.di.UnitOfWorkRepository
 
-
-
+@RequiresApi(Build.VERSION_CODES.O)
 class UnitOfWorkUseCase(
 
     private val unitOfWorkService: UnitOfWorkService,
@@ -30,7 +31,7 @@ class UnitOfWorkUseCase(
 
         if (centersUseCase == null)
             return UserCentersUseCase(
-                unitOfWorkRepository
+                unitOfWorkRepository.getCenterRepository()
             )
 
         return centersUseCase as IUserCentersUseCase
@@ -40,7 +41,7 @@ class UnitOfWorkUseCase(
 
         if (sellersByCenterUseCase == null)
             sellersByCenterUseCase = SellersByCenterUseCase(
-                unitOfWorkRepository
+                unitOfWorkRepository.getSellerRepository()
             )
 
         return sellersByCenterUseCase as ISellersByCenterUseCase
@@ -50,7 +51,7 @@ class UnitOfWorkUseCase(
 
         if (sellerUseCase == null)
             sellerUseCase = GetSellerUseCase(
-                unitOfWorkRepository
+                unitOfWorkRepository.getSellerRepository()
             )
 
         return sellerUseCase as IGetSellerUseCase
@@ -60,8 +61,9 @@ class UnitOfWorkUseCase(
 
         if (loginUseCase == null)
             loginUseCase = LoginUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getJwtTokenService(),
+                unitOfWorkRepository.getUserRepository(),
+                unitOfWorkService.getValidationModelService()
 
             )
 
@@ -72,7 +74,7 @@ class UnitOfWorkUseCase(
 
         if (catalogsBySellerUseCase == null)
             catalogsBySellerUseCase = CatalogsBySellerUseCase(
-                unitOfWorkRepository
+                unitOfWorkRepository.getCatalogRepository()
             )
 
         return catalogsBySellerUseCase as ICatalogsBySellerUseCase
@@ -82,8 +84,8 @@ class UnitOfWorkUseCase(
 
         if (confirmOrderUseCase == null)
             confirmOrderUseCase = ConfirmOrderUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getShopService(),
+                unitOfWorkRepository.getOrderRepository()
             )
 
         return confirmOrderUseCase as IConfirmOrderUseCase
@@ -93,8 +95,8 @@ class UnitOfWorkUseCase(
 
         if (favoriteProductsUseCase == null)
             favoriteProductsUseCase = FavoriteProductsUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getFavoritesService(),
+                unitOfWorkRepository.getUserRepository()
 
             )
 
@@ -105,8 +107,8 @@ class UnitOfWorkUseCase(
 
         if (orderDoneUseCase == null)
             orderDoneUseCase = OrdersDoneUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getSharedPreferencesService(),
+                unitOfWorkRepository.getOrderRepository()
 
 
             )
@@ -118,8 +120,8 @@ class UnitOfWorkUseCase(
 
         if (orderSummaryTotalsUseCase == null)
             orderSummaryTotalsUseCase = OrderSummaryTotalsUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getShopService(),
+                unitOfWorkRepository.getOrderRepository()
             )
 
         return orderSummaryTotalsUseCase as IOrderSummaryTotalsUseCase
@@ -129,18 +131,19 @@ class UnitOfWorkUseCase(
 
         if (productsByCatalogUseCase == null)
             productsByCatalogUseCase = ProductsByCatalogUseCase(
-                unitOfWorkRepository
+                unitOfWorkRepository.getProductRepository()
             )
 
         return productsByCatalogUseCase as IProductsByCatalogUseCase
     }
 
+
     fun getRecoverPasswordUseCase(): IRecoverPasswordUseCase {
 
         if (recoverPasswordUseCase == null)
             recoverPasswordUseCase = RecoverPasswordUseCase(
-                unitOfWorkService,
-                unitOfWorkRepository
+                unitOfWorkService.getValidationModelService(),
+                unitOfWorkRepository.getUserRepository()
 
             )
 
