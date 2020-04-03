@@ -185,7 +185,8 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             adapter.notifyDataSetChanged()
             model.writeProductsFavorites(
                 this,
-                model.getProducts().filter { p -> p.favorite }.map { p -> p.id })
+                product.id
+            )
 
         }
     }

@@ -2,20 +2,26 @@ package com.eorder.domain.models
 
 class Product(
 
-    val id:Int,
+    // cambiar al val cuando se recuperen los datos del backend
+    var id:Int,
+    // cambiar al val cuando se recuperen los datos del backend
+    var sellerId: Int,
     var totalTaxes:Float = 0F,
     var totalBase:Float = 0F,
     var total:Float = 0F,
     val rate:Float = 0F,
-    val tax: String?,
+    val tax: String? = null,
     var amount: Int = 0,
-    var price:Float = 0F,
-    val description: String,
-    val sellerId: Int,
+    val price:Float = 0F,
+    val description: String? = null,
     val name: String,
     val category: String,
-    var imageUrl: String? = null,
+    val imageUrl: String? = null,
     var imageBase64: String? = null,
-    var favorite:Boolean = false
+    var favorite:Boolean = false,
+    // cambiar al val cuando se recuperen los datos del backend
+    var catallogId:Int? = null,
+    var sellerName:String? = null
+
 
 )

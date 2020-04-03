@@ -2,7 +2,7 @@ package com.eorder.domain.models
 
 class ServerResponse<T>(
 
-    var statusCode: Int? = null,
+    val statusCode: Int,
     var serverError: ServerError? = null,
     var serverData: ServerData<T>? = null
 

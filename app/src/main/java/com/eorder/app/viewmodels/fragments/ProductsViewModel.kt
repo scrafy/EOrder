@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ProductsViewModel: BaseViewModel() {
+class ProductsViewModel : BaseViewModel() {
 
     private val getProductsByCatalogResult: MutableLiveData<ServerResponse<List<Product>>> =
         MutableLiveData()
@@ -44,20 +44,11 @@ class ProductsViewModel: BaseViewModel() {
         unitOfWorkService.getShopService().removeProductFromShop(product)
 
     fun existProduct(productId: Int) = unitOfWorkService.getShopService().existProduct(productId)
-    fun cleanProducts() = unitOfWorkService.getShopService().cleanProducts()
     fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
-    fun setProductsToShop(products: MutableList<Product>) {
-        unitOfWorkService.getShopService().getOrder().products = products
-    }
 
-    fun writeProductsFavorites(context: Context?, products: List<Int>) {
+    fun writeProductsFavorites(context: Context, productId: Int) {
 
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-            context,
-            products,
-            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
-            products.javaClass
-        )
+        unitOfWorkService.getFavoritesService().addProductToFavorites(context, productId)
     }
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {

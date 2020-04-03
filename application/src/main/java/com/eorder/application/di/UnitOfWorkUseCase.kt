@@ -1,13 +1,11 @@
 package com.eorder.application.di
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.*
 import com.eorder.application.usecases.*
 import com.eorder.infrastructure.di.UnitOfWorkRepository
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 class UnitOfWorkUseCase(
 
     private val unitOfWorkService: UnitOfWorkService,
@@ -25,6 +23,7 @@ class UnitOfWorkUseCase(
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
     private var sellersByCenterUseCase: ISellersByCenterUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
+    private var sellerUseCase: IGetSellerUseCase? = null
 
 
     fun getCentersUseCase(): IUserCentersUseCase {
@@ -45,6 +44,16 @@ class UnitOfWorkUseCase(
             )
 
         return sellersByCenterUseCase as ISellersByCenterUseCase
+    }
+
+    fun getSellerUseCase(): IGetSellerUseCase {
+
+        if (sellerUseCase == null)
+            sellerUseCase = GetSellerUseCase(
+                unitOfWorkRepository
+            )
+
+        return sellerUseCase as IGetSellerUseCase
     }
 
     fun getLoginUseCase(): ILoginUseCase {

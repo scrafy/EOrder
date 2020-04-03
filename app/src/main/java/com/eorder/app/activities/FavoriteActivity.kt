@@ -1,12 +1,10 @@
 package com.eorder.app.activities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -32,7 +30,6 @@ import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage,
     IOnFloatinButtonShopClicked {
@@ -49,7 +46,6 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         setMenuToolbar()
         init()
         setObservers()
-
     }
 
     private fun setObservers() {
@@ -67,6 +63,12 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
             model.getManagerExceptionService().manageException(this, ex)
+
+        })
+
+        model.getaddFavoriteProductObservable().observe(this, Observer<Any> {
+
+            this.showFloatingButton()
 
         })
     }
@@ -128,6 +130,16 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                     { _, _ -> }
                 ).show()
             }
+
+        view.findViewById<ImageView>(R.id.imgView_favorite_list_cart).setOnClickListener {
+
+            model.addProductToShop(this, obj)
+        }
+
+        view.findViewById<TextView>(R.id.textView_favorite_list_add).setOnClickListener {
+
+            model.addProductToShop(this, obj)
+        }
     }
 
     override fun onResume() {
@@ -139,6 +151,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         val product = (model as Product)
         view.findViewById<TextView>(R.id.textView_favorite_list_product_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_favorite_list_price).text = "${product.price}€"
         view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
         if (product.imageBase64 == null) {

@@ -29,7 +29,7 @@ class CentersAdapter(private val fragment: Fragment, var centers: List<Center>) 
 
     override fun onBindViewHolder(holder: CenterViewHolder, position: Int) {
 
-        holder.setData(centers.get(position))
+        holder.setData(centers[position])
     }
 
 

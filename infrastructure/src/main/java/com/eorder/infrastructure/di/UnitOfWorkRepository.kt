@@ -17,6 +17,18 @@ class UnitOfWorkRepository(
     private var productRepository: IProductRepository? = null
     private var sellerRepository: ISellerRepository? = null
 
+    //borrar cuando conectemos con backend, se usa para obtener una instancia en ProductService
+    init {
+
+        UnitOfWorkRepository.self = this
+    }
+
+    //borrar cuando conectemos con backend, se usa para obtener una instancia en ProductService
+    companion object {
+        var self: UnitOfWorkRepository? = null
+    }
+
+
     fun getUserRepository(): IUserRepository {
 
         if (userRepository == null)

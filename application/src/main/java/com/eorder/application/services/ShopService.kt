@@ -79,6 +79,6 @@ class ShopService : IShopService {
 
     override fun getAmountOfProducts(): Int {
 
-        return order.products.sumBy { p -> p.amount }
+        return order.totalProducts
     }
 }

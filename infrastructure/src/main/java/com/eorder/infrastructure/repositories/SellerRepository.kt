@@ -8,9 +8,44 @@ import com.eorder.infrastructure.interfaces.IHttpClient
 
 class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), ISellerRepository {
 
-    override fun getSellersByCenter(centerId:Int) : ServerResponse<List<Seller>> {
+
+    override fun getSeller(sellerId: Int): ServerResponse<Seller> {
+
+        val seller = getSellers().first { f -> f.id == sellerId }
+
+        var response: ServerResponse<Seller> =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    seller,
+                    null
+                )
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
+
+    override fun getSellersByCenter(centerId: Int): ServerResponse<List<Seller>> {
 
         //TODO make a backend call
+
+        var response: ServerResponse<List<Seller>> =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    getSellers(),
+                    null
+                )
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
+
+    private fun getSellers(): List<Seller> {
 
         var sellers = mutableListOf<Seller>()
 
@@ -83,18 +118,6 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "https://cdns3-2.primor.eu/img/m/316.jpg"
             )
         )
-
-        var response: ServerResponse<List<Seller>> =
-            ServerResponse(
-                200,
-                null,
-                ServerData(
-                    sellers as List<Seller>,
-                    null
-                )
-            )
-        checkServerErrorInResponse(response)
-
-        return response
+        return sellers
     }
 }

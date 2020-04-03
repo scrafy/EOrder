@@ -37,7 +37,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
-    private var products: List<Product> = listOf()
+    private lateinit var products: MutableList<Product>
     private lateinit var refreshLayout: SwipeRefreshLayout
 
 
@@ -163,8 +163,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             adapter.notifyDataSetChanged()
 
             model.writeProductsFavorites(
-                context,
-                products.filter { p -> p.favorite }.map { p -> p.id })
+                this.context!!,
+                product.id
+            )
 
         }
     }
@@ -293,7 +294,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             Observer<ServerResponse<List<Product>>> { it ->
 
 
-                products = (it.serverData?.data ?: listOf())
+                products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
                 adapter.products = products
                 setItemsSpinner()
                 setProductCurrentState()
@@ -340,13 +341,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             model.getProductsByCatalog(arguments?.getInt("catalogId")!!)
         }
 
-
     }
 
 
     private fun setProductCurrentState() {
-
-        var aux = mutableListOf<Product>()
 
         if (model.getProductsFromShop().isNotEmpty()) {
 
@@ -358,12 +356,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                     p.amount = found.amount
                     p.favorite = found.favorite
-                    aux.add(p)
+                    model.removeProductFromShop(found)
+                    model.addProductToShop(p)
+
                 }
 
             }
-            model.cleanProducts()
-            model.setProductsToShop(aux)
         }
 
         val favorites = model.loadFavoritesProducts(context)

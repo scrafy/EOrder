@@ -26,7 +26,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "center1@gmail.com",
                 "S/C de Tenerife",
                 "Horeca",
-                "Tarifa1",
                 "https://erfinternational.es/img/local-comercial-nueva-construccion-torrevieja-centro_923_lg.jpg"
 
             )
@@ -43,7 +42,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "center1@gmail.com",
                 "S/C de Tenerife",
                 "Farmaceútico",
-                "Tarifa2",
                 "https://s1.eestatic.com/2019/09/28/economia/empresas/Farmacias-Observatorio_de_la_Sanidad-Industria_Farmaceutica-Empresas_432716751_134537270_1706x1280.jpg"
 
             )
@@ -60,7 +58,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "center1@gmail.com",
                 "S/C de Tenerife",
                 "Horeca",
-                "Tarifa3",
                 "https://media-cdn.tripadvisor.com/media/photo-s/14/b3/3e/cf/restaurante-ispal.jpg"
 
             )
@@ -77,7 +74,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "center1@gmail.com",
                 "S/C de Tenerife",
                 "Horeca",
-                "Tarifa4",
                 "https://restaurantemarkina.com/wp-content/uploads/comedor-superior-01-restaurante-markina.jpg"
 
             )

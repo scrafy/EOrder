@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 abstract class BaseViewModel() : ViewModel(), KoinComponent {
 
     protected var unitOfWorkService: UnitOfWorkService = inject<UnitOfWorkService>().value

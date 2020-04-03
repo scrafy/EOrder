@@ -19,7 +19,7 @@ import java.time.Instant
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ShopViewModel: BaseViewModel() {
+class ShopViewModel : BaseViewModel() {
 
     private val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
     private val summaryTotalsOrderResult: MutableLiveData<ServerResponse<Order>> = MutableLiveData()
@@ -89,23 +89,14 @@ class ShopViewModel: BaseViewModel() {
     fun loadImages(list: List<UrlLoadedImage>) =
         unitOfWorkService.getLoadImageService().loadImages(list)
 
-    fun writeProductsFavorites(context: Context?, products: List<Int>) {
+    fun writeProductsFavorites(context: Context, productId: Int) {
 
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-            context,
-            products,
-            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
-            products.javaClass
-        )
+        unitOfWorkService.getFavoritesService().addProductToFavorites(context, productId)
     }
 
-    fun loadFavoritesProducts(context: Context?): List<Int>? {
+    fun loadFavoritesProducts(context: Context): List<Int>? {
 
-        return unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<List<Int>>(
-            context,
-            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
-            List::class.java
-        )?.map { p -> p.toInt() }
+        return unitOfWorkService.getFavoritesService().loadFavoriteProducts(context)
 
     }
 
