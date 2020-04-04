@@ -2,6 +2,7 @@ package com.eorder.application.services
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.R
@@ -10,7 +11,6 @@ import com.eorder.application.interfaces.IShopService
 import com.eorder.application.interfaces.IUserCentersUseCase
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
-import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -60,12 +60,11 @@ class AddProductToShopService(
             shopService.addProductToShop(product)
             productAdded.value = null
             d.dismiss()
-            AlertDialog.Builder(context)
-                .setTitle(context.resources.getString(R.string.product_to_shop_service_product))
-                .setMessage(context.resources.getString(R.string.product_to_shop_service_product_added))
-                .setPositiveButton("OK") { d, i ->
-                    d.dismiss()
-                }.create().show()
+            showOkDialog(
+                context,
+                context.resources.getString(R.string.product_to_shop_service_product),
+                context.resources.getString(R.string.product_to_shop_service_product_added)
+            )
 
         }.show()
 
@@ -83,13 +82,11 @@ class AddProductToShopService(
     private fun isProductRepeated(context: Context, product: Product): Boolean {
 
         if (shopService.getOrder().products.firstOrNull { p -> p.id == product.id } != null) {
-
-            AlertDialog.Builder(context)
-                .setTitle(context.resources.getString(R.string.product_to_shop_service_product))
-                .setMessage(context.resources.getString(R.string.product_to_shop_service_product_exists))
-                .setPositiveButton("OK") { d, i ->
-                    d.dismiss()
-                }.create().show()
+            showOkDialog(
+                context,
+                context.resources.getString(R.string.product_to_shop_service_product),
+                context.resources.getString(R.string.product_to_shop_service_product_exists)
+            )
             return true
         }
         return false
@@ -98,26 +95,51 @@ class AddProductToShopService(
     private fun checkSeller(context: Context, product: Product) {
 
         if (shopService.getOrder().seller.sellerId != product.sellerId) {
-            AlertDialog.Builder(context)
-                .setTitle(context.resources.getString(R.string.product_to_shop_service_product))
-                .setMessage(R.string.product_to_shop_service_product_different_seller)
-                .setNegativeButton(context.resources.getString(R.string.no)) { d, i ->
-                    d.dismiss()
-                }
-                .setPositiveButton(context.resources.getString(R.string.yes)) { d, i ->
-                    shopService.cleanShop()
-                    addProductToShop(context, product)
-                }.create().show()
+            showQuestionDialog(
+                context,
+                context.resources.getString(R.string.product_to_shop_service_product),
+                context.resources.getString(R.string.product_to_shop_service_product_different_seller)
+
+            ) { d, i ->
+                shopService.cleanShop()
+                addProductToShop(context, product)
+            }
         } else {
             product.amount++
             shopService.addProductToShop(product)
-            AlertDialog.Builder(context)
-                .setTitle(context.resources.getString(R.string.product_to_shop_service_product))
-                .setMessage(context.resources.getString(R.string.product_to_shop_service_product_added))
-                .setPositiveButton("OK") { d, i ->
-                    d.dismiss()
-                }.create().show()
+            showOkDialog(
+                context,
+                context.resources.getString(R.string.product_to_shop_service_product),
+                context.resources.getString(R.string.product_to_shop_service_product_added)
+            )
         }
+    }
+
+    private fun showOkDialog(context: Context, title: String, message: String) {
+
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { d, i ->
+                d.dismiss()
+            }.create().show()
+    }
+
+    private fun showQuestionDialog(
+        context: Context,
+        title: String,
+        message: String,
+        positiveCallback: (DialogInterface, Int) -> Unit
+    ) {
+
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setNegativeButton(context.resources.getString(R.string.no)) { d, i ->
+                d.dismiss()
+            }
+            .setPositiveButton(context.resources.getString(R.string.yes), positiveCallback).create()
+            .show()
     }
 
 }

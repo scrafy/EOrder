@@ -47,6 +47,10 @@ class LandingActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked {
 
             startActivity(Intent(this, OrderDoneActivity::class.java))
         }
+
+        textView_product.setOnClickListener{
+            startActivity(Intent(this, ProductActivity::class.java))
+        }
     }
 
     override fun onBackPressed() {

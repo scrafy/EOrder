@@ -18,7 +18,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 
-abstract class BaseViewModel() : ViewModel(), KoinComponent {
+abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     protected var unitOfWorkService: UnitOfWorkService = inject<UnitOfWorkService>().value
     protected var unitOfWorkUseCase: UnitOfWorkUseCase = inject<UnitOfWorkUseCase>().value

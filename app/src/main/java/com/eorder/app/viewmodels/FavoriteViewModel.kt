@@ -17,10 +17,10 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
         MutableLiveData()
 
 
-    fun getfavoriteProductsResultObservable(): LiveData<ServerResponse<List<Product>>> =
+    fun getFavoriteProductsResultObservable(): LiveData<ServerResponse<List<Product>>> =
         favoriteProductsResult
 
-    fun getaddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
+    fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
 
     fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
     fun loadImages(list: List<UrlLoadedImage>) =

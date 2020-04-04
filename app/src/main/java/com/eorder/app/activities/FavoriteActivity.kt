@@ -50,7 +50,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
     private fun setObservers() {
 
-        model.getfavoriteProductsResultObservable()
+        model.getFavoriteProductsResultObservable()
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 this.products = it?.serverData?.data?.toMutableList() ?: mutableListOf()
@@ -66,7 +66,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         })
 
-        model.getaddFavoriteProductObservable().observe(this, Observer<Any> {
+        model.getAddFavoriteProductObservable().observe(this, Observer<Any> {
 
             this.showFloatingButton()
 
