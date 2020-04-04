@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.OrderDoneAdapter
 import com.eorder.app.widgets.*
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -31,7 +30,7 @@ import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
-    IShowSnackBarMessage, IOnFloatinButtonShopClicked {
+    IShowSnackBarMessage {
 
     private lateinit var model: OrderDoneViewModel
     private lateinit var recyclerView: RecyclerView
@@ -98,10 +97,6 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
     override fun setMenuToolbar() {
         currentToolBarMenu["main_menu"] = R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
-    }
-
-    override fun onFloatingButtonClicked() {
-        startActivity(Intent(this, ShopActivity::class.java))
     }
 
     override fun signOutApp() {

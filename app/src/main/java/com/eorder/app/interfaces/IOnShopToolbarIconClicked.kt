@@ -1,6 +1,6 @@
 package com.eorder.app.interfaces
 
-interface IOnShopIconClicked {
+interface IOnShopToolbarIconClicked {
 
     fun onShopIconClicked()
 }

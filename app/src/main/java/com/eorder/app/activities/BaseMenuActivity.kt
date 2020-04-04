@@ -10,7 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.interfaces.ISetActionBar
-import com.eorder.app.interfaces.IOnShopIconClicked
+import com.eorder.app.interfaces.IOnShopToolbarIconClicked
 
 
 abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
@@ -42,7 +42,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
                     override fun onMenuItemClick(item: MenuItem?): Boolean {
 
-                        (getContext() as IOnShopIconClicked).onShopIconClicked()
+                        (getContext() as IOnShopToolbarIconClicked).onShopIconClicked()
                         return true
                     }
 

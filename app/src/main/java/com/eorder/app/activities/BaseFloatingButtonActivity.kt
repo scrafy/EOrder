@@ -1,8 +1,8 @@
 package com.eorder.app.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.View
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 
@@ -20,6 +20,12 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
+    fun hideFloatingButton() {
+        cart_floating_button.visibility = View.INVISIBLE
+
+    }
+
     override fun onStart() {
         this.showFloatingButton()
         setListeners()
@@ -30,15 +36,13 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
 
         cart_floating_button.setOnClickListener {
 
-            (this as IOnFloatinButtonShopClicked).onFloatingButtonClicked()
-
+            onFloatingButtonClicked()
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    fun hideFloatingButton() {
-        cart_floating_button.visibility = View.INVISIBLE
-
+    protected fun onFloatingButtonClicked(){
+        var intent = Intent(this, ShopActivity::class.java)
+        startActivity(intent)
     }
 
 }

@@ -4,14 +4,13 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Bundle
 import com.eorder.app.R
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.viewmodels.LandingViewModel
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class LandingActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked {
+class LandingActivity : BaseMenuActivity() {
 
     private lateinit var model: LandingViewModel
 
@@ -23,11 +22,6 @@ class LandingActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked {
         setListeners()
         setMenuToolbar()
 
-    }
-
-    override fun onFloatingButtonClicked() {
-        var intent = Intent(this, ShopActivity::class.java)
-        startActivity(intent)
     }
 
     private fun setListeners() {

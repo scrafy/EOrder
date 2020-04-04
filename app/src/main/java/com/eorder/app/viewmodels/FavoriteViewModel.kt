@@ -22,7 +22,6 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
 
     fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
 
-    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
     fun loadImages(list: List<UrlLoadedImage>) =
         unitOfWorkService.getLoadImageService().loadImages(list)
 

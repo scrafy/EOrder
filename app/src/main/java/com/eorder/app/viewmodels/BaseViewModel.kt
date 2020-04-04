@@ -3,8 +3,6 @@ package com.eorder.app.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NavUtils.navigateUpTo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

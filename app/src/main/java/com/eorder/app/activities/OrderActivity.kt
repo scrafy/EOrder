@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
 import com.eorder.app.widgets.*
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.ISelectSeller
@@ -20,7 +18,7 @@ import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectCenter
-import com.eorder.app.interfaces.IOnShopIconClicked
+import com.eorder.app.interfaces.IOnShopToolbarIconClicked
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Center
@@ -30,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
-    IShowSnackBarMessage, IToolbarSearch, ISelectSeller, IOnShopIconClicked, IOnFloatinButtonShopClicked {
+    IShowSnackBarMessage, IToolbarSearch, ISelectSeller, IOnShopToolbarIconClicked {
 
     private lateinit var model: OrderViewModel
 
@@ -91,14 +89,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         startActivity(intent)
     }
 
-    override fun onFloatingButtonClicked() {
-        var intent = Intent(this, ShopActivity::class.java)
-        intent.putExtra(
-            "activity_name",
-            "order"
-        )
-        startActivity(intent)
-    }
 
     override fun checkValidSession() {
 

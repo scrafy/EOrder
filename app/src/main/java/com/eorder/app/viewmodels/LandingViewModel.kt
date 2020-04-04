@@ -6,8 +6,4 @@ import com.eorder.app.viewmodels.BaseMainMenuActionsViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class LandingViewModel: BaseMainMenuActionsViewModel() {
-
-
-    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
-}
+class LandingViewModel: BaseMainMenuActionsViewModel()

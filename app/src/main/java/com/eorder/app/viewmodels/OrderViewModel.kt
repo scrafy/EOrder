@@ -11,8 +11,6 @@ import com.eorder.domain.models.Seller
 class OrderViewModel : BaseMainMenuActionsViewModel() {
 
 
-    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
-
     fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?) {
 
         unitOfWorkService.getShopService().getOrder().center.centerId = centerId

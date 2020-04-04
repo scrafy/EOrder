@@ -22,4 +22,6 @@ abstract class BaseMainMenuActionsViewModel : BaseViewModel(), KoinComponent {
         (context as Activity).navigateUpTo(Intent(context, MainActivity::class.java))
     }
 
+    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
+
 }

@@ -21,8 +21,6 @@ class OrderDoneViewModel : BaseMainMenuActionsViewModel() {
 
     fun getOrdersDoneResultObservable(): LiveData<ServerResponse<List<Order>>> = ordersDoneResult
 
-    fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
-
     fun getOrdersDoneByUser(context: Context) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {

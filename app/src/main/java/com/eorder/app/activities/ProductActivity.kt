@@ -1,19 +1,16 @@
 package com.eorder.app.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.viewmodels.ProductViewModel
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class ProductActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked, IShowSnackBarMessage,
+class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     IRepaintModel, ISetAdapterListener {
 
     private lateinit var model: ProductViewModel
@@ -36,11 +33,6 @@ class ProductActivity : BaseMenuActivity(), IOnFloatinButtonShopClicked, IShowSn
     override fun setMenuToolbar() {
         currentToolBarMenu["main_menu"] = R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
-    }
-
-    override fun onFloatingButtonClicked() {
-        var intent = Intent(this, ShopActivity::class.java)
-        startActivity(intent)
     }
 
     override fun signOutApp() {

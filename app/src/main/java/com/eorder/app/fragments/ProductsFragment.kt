@@ -76,7 +76,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
         view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
-            if (product.price == 0F) "N/A" else product.price.toString()
+            if (product.price == 0F) "N/A" else product.price.toString()+ "€"
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
 

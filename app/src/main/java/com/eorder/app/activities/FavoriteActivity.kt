@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.FavoriteProductsAdapter
-import com.eorder.app.interfaces.IOnFloatinButtonShopClicked
 import com.eorder.app.widgets.SnackBar
 import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.interfaces.IRepaintModel
@@ -31,8 +30,8 @@ import java.lang.Exception
 
 
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
-    IShowSnackBarMessage,
-    IOnFloatinButtonShopClicked {
+    IShowSnackBarMessage
+     {
 
     private lateinit var model: FavoriteViewModel
     private lateinit var recyclerView: RecyclerView
@@ -90,11 +89,6 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()
-    }
-
-    override fun onFloatingButtonClicked() {
-        var intent = Intent(this, ShopActivity::class.java)
-        startActivity(intent)
     }
 
     override fun signOutApp() {

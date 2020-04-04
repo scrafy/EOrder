@@ -53,6 +53,13 @@ class Main : Application(), LifecycleObserver {
                 SharedPreferenceKeyEnum.SHOP_ORDER.key,
                 Order::class.java
             )
+        else
+            unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
+                this@Main,
+               null,
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
+            )
 
         if (unitOfWorkService.getJwtTokenService().isValidToken())
             unitOfWorkService.getSharedPreferencesService().writeSession(

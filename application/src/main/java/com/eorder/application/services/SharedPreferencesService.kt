@@ -69,10 +69,8 @@ class SharedPreferencesService(
         val userId = jwtTokenService.getClaimFromToken("userId")
         val preferences =
             context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
-        if (obj != null) {
-            preferences?.edit()?.putString(key, Gson().toJson(obj, type))
-                ?.commit()
-        }
+        preferences?.edit()?.putString(key, Gson().toJson(obj, type))
+            ?.commit()
 
     }
 }
