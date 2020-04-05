@@ -17,7 +17,7 @@ class FavoriteProductsAdapter(var products: List<Product>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.favorite_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
 
         return FavoritesViewHolder(
             view,

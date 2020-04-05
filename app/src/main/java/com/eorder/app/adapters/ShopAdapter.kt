@@ -14,7 +14,7 @@ class ShopAdapter(private val products: List<Product>, private val context: Cont
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
-        var v = LayoutInflater.from(context).inflate(R.layout.products_list, null)
+        var v = LayoutInflater.from(context).inflate(R.layout.order_products_list, null)
         (context as IRepaintModel).repaintModel(v, products[position])
         return v
     }

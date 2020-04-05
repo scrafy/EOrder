@@ -7,4 +7,5 @@ interface ISellerRepository {
 
     fun getSellersByCenter(centerId:Int) : ServerResponse<List<Seller>>
     fun getSeller(sellerId:Int) : ServerResponse<Seller>
+    fun getSellers(): ServerResponse<List<Seller>>
 }

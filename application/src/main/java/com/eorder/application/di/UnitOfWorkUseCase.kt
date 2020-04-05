@@ -24,7 +24,9 @@ class UnitOfWorkUseCase(
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
     private var sellersByCenterUseCase: ISellersByCenterUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
-    private var sellerUseCase: IGetSellerUseCase? = null
+    private var sellerUseCase: ISellerUseCase? = null
+    private var sellersUseCase: ISellersUseCase? = null
+    private var productsBySellerUseCase: IProductsBySellerUseCase? = null
 
 
     fun getCentersUseCase(): IUserCentersUseCase {
@@ -47,14 +49,34 @@ class UnitOfWorkUseCase(
         return sellersByCenterUseCase as ISellersByCenterUseCase
     }
 
-    fun getSellerUseCase(): IGetSellerUseCase {
+    fun getProductsBySellerUseCase(): IProductsBySellerUseCase {
+
+        if (productsBySellerUseCase == null)
+            productsBySellerUseCase = ProductsBySellerUseCase(
+                unitOfWorkRepository.getProductRepository()
+            )
+
+        return productsBySellerUseCase as IProductsBySellerUseCase
+    }
+
+    fun getSellerUseCase(): ISellerUseCase {
 
         if (sellerUseCase == null)
-            sellerUseCase = GetSellerUseCase(
+            sellerUseCase = SellerUseCase(
                 unitOfWorkRepository.getSellerRepository()
             )
 
-        return sellerUseCase as IGetSellerUseCase
+        return sellerUseCase as ISellerUseCase
+    }
+
+    fun getSellersUseCase(): ISellersUseCase {
+
+        if (sellersUseCase == null)
+            sellersUseCase = SellersUseCase(
+                unitOfWorkRepository.getSellerRepository()
+            )
+
+        return sellersUseCase as ISellersUseCase
     }
 
     fun getLoginUseCase(): ILoginUseCase {

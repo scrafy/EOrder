@@ -11,7 +11,7 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
 
     override fun getSeller(sellerId: Int): ServerResponse<Seller> {
 
-        val seller = getSellers().first { f -> f.id == sellerId }
+        val seller = _getSellers().first { f -> f.id == sellerId }
 
         var response: ServerResponse<Seller> =
             ServerResponse(
@@ -36,7 +36,7 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 200,
                 null,
                 ServerData(
-                    getSellers(),
+                    _getSellers(),
                     null
                 )
             )
@@ -45,7 +45,25 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
         return response
     }
 
-    private fun getSellers(): List<Seller> {
+    override fun getSellers(): ServerResponse<List<Seller>> {
+
+        //TODO make a backend call
+
+        var response: ServerResponse<List<Seller>> =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    _getSellers(),
+                    null
+                )
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
+
+    private fun _getSellers(): List<Seller> {
 
         var sellers = mutableListOf<Seller>()
 

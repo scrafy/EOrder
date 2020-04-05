@@ -22,7 +22,28 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 200,
                 null,
                 ServerData(
-                    products as List<Product>,
+                    products,
+                    null
+                )
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
+
+    override fun getProductsBySeller(sellerId: Int): ServerResponse<List<Product>> {
+
+        //TODO make a backend call
+
+        var products  = ProductsService.getProducts().filter { p -> p.sellerId == sellerId }
+
+
+        var response: ServerResponse<List<Product>> =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    products,
                     null
                 )
             )

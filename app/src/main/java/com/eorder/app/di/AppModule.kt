@@ -2,7 +2,6 @@ package com.eorder.app.di
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.app.com.eorder.app.viewmodels.ProductViewModel
 import com.eorder.app.viewmodels.*
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.CentersViewModel

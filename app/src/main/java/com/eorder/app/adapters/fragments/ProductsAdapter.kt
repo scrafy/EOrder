@@ -18,7 +18,7 @@ class ProductAdapter(var products: List<Product>, private val fragment: Products
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
 
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.products_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.order_products_list, parent, false)
         return ProductViewHolder(
             view,
             fragment
