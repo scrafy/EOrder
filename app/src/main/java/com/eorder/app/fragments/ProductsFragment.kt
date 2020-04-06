@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.eorder.app.adapters.fragments.ProductAdapter
 import com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
@@ -26,6 +25,8 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.activities.BaseFloatingButtonActivity
+import com.eorder.app.adapters.fragments.OrderProductAdapter
+import com.eorder.app.helpers.ProductSpinners
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import java.lang.Exception
 
@@ -36,10 +37,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ProductAdapter
+    private lateinit var adapter: OrderProductAdapter
     private lateinit var products: MutableList<Product>
     private lateinit var refreshLayout: SwipeRefreshLayout
-
+    private lateinit var productSpinners:ProductSpinners
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,9 +62,14 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun getSearchFromToolbar(search: String) {
-        adapter.products =
-            products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
-        adapter.notifyDataSetChanged()
+        if ( search == "" ){
+            productSpinners.filterBySelectedCategory()
+        }else{
+            productSpinners.productsFiltered = productSpinners.productsFiltered.filter { p ->
+                p.name.toLowerCase().contains(search.toLowerCase())
+            }
+            productSpinners.orderBySelectedItem()
+        }
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -174,99 +180,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         super.onDestroy()
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
-        (context as ISetActionBar)?.setActionBar(map)
+        (context as ISetActionBar)?.setActionBar(map, false, true)
     }
 
-
-    private fun setItemsSpinner() {
-
-        lateinit var categories: MutableList<String>
-        lateinit var order: MutableList<String>
-
-        categories = mutableListOf()
-        categories.add(this.resources.getString(R.string.product_categories))
-        products.groupBy { p -> p.category }.keys.forEach { s -> categories.add(s) }
-
-        var categoriesAdapter = ArrayAdapter<String>(
-            context!!,
-            android.R.layout.simple_spinner_item,
-            categories
-        )
-        spinner_product_list_categories.adapter = categoriesAdapter
-
-        spinner_product_list_categories.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position == 0) {
-                        adapter.products = products
-                        adapter.notifyDataSetChanged()
-                    } else {
-                        adapter.products =
-                            products.filter { p -> p.category === categories[position] }
-                        adapter.notifyDataSetChanged()
-                    }
-
-                }
-
-            }
-        order = mutableListOf()
-        order.add("A-Z")
-        order.add("Z-A")
-        order.add(this.resources.getString(R.string.product_order_by_price_low))
-        order.add(this.resources.getString(R.string.product_order_by_price_high))
-
-        var orderAdapter = ArrayAdapter<String>(
-            context!!,
-            android.R.layout.simple_spinner_item,
-            order
-        )
-        spinner_product_list_order.adapter = orderAdapter
-        spinner_product_list_order.onItemSelectedListener = object :
-
-            AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                when (position) {
-
-                    0 -> {
-                        adapter.products =
-                            products.sortedBy { p -> p.name }; adapter.notifyDataSetChanged()
-                    }
-                    1 -> {
-                        adapter.products =
-                            products.sortedByDescending { p -> p.name }; adapter.notifyDataSetChanged()
-                    }
-                    2 -> {
-                        adapter.products =
-                            products.sortedBy { p -> p.price }; adapter.notifyDataSetChanged()
-                    }
-                    3 -> {
-                        adapter.products =
-                            products.sortedByDescending { p -> p.price }; adapter.notifyDataSetChanged()
-                    }
-                }
-            }
-
-        }
-    }
 
     private fun loadImages(items: List<UrlLoadedImage>) {
 
@@ -296,7 +212,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
                 adapter.products = products
-                setItemsSpinner()
+                productSpinners = ProductSpinners(context!!, products, adapter, spinner_product_list_categories, spinner_product_list_order)
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
                 var items =
@@ -319,12 +235,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun init() {
 
-        var map = mutableMapOf<String, Int>()
-        map["cart_menu"] = R.menu.cart_menu
-        (context as ISetActionBar)?.setActionBar(map)
+        var menu = mutableMapOf<String, Int>()
+        menu["cart_menu"] = R.menu.cart_menu
+        (context as ISetActionBar)?.setActionBar(menu, true, false)
 
         var layout = LinearLayoutManager(this.context)
-        adapter = ProductAdapter(
+        adapter = OrderProductAdapter(
             listOf(),
             this
         )

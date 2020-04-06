@@ -91,7 +91,7 @@ class ShopViewModel : BaseViewModel() {
 
     fun writeProductsFavorites(context: Context, productId: Int) {
 
-        unitOfWorkService.getFavoritesService().addProductToFavorites(context, productId)
+        unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
 
     fun loadFavoritesProducts(context: Context): List<Int>? {

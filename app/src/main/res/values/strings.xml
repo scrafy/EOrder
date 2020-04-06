@@ -39,7 +39,7 @@
     <string name="card_view_catalog_center_list_view_seller">View seller</string>
 
     <!--SPINNERS-->
-    <string name="product_categories">Select a category</string>
+    <string name="product_categories">All categories</string>
     <string name="product_order_by_price_high">Price from high to low</string>
     <string name="product_order_by_price_low">Price from low to high</string>
 

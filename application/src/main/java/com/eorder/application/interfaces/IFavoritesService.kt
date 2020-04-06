@@ -4,6 +4,6 @@ import android.content.Context
 
 interface IFavoritesService {
 
-    fun addProductToFavorites(context: Context, productId: Int)
+    fun writeProductToFavorites(context: Context, productId: Int)
     fun loadFavoriteProducts(context: Context): List<Int>?
 }

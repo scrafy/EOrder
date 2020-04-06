@@ -26,7 +26,7 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
         unitOfWorkService.getLoadImageService().loadImages(list)
 
     fun removeProductFromFavorites(context: Context, productId: Int) {
-        unitOfWorkService.getFavoritesService().addProductToFavorites(context, productId)
+        unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
 
     fun loadFavoriteProducts(context: Context) {

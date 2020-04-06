@@ -17,11 +17,11 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
 
     private val sellersResult: MutableLiveData<ServerResponse<List<Seller>>> = MutableLiveData()
     private val productsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
-    private val favoriteProductsResult: MutableLiveData<ServerResponse<List<Product>>> =
-        MutableLiveData()
+
 
     fun getSellersResultObservable(): LiveData<ServerResponse<List<Seller>>> = sellersResult
     fun getProductsResultObservable(): LiveData<ServerResponse<List<Product>>> = productsResult
+    fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
 
     fun getSellers() {
 
@@ -48,27 +48,10 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
     fun loadImagesProducts(list: List<UrlLoadedImage>) =
         unitOfWorkService.getLoadImageService().loadImages(list)
 
-    fun getFavoriteProductsResultObservable(): LiveData<ServerResponse<List<Product>>> =
-        favoriteProductsResult
-
-    fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
-
 
     fun writeProductsFavorites(context: Context, productId: Int) {
 
-        unitOfWorkService.getFavoritesService().addProductToFavorites(context, productId)
-    }
-
-    fun loadFavoriteProducts(context: Context) {
-
-        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-            favoriteProductsResult.postValue(
-                unitOfWorkUseCase.getFavoriteProductsUseCase().getFavoriteProducts(
-                    context
-                )
-            )
-        }
-
+        unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
 
     fun addProductToShop(context: Context, product: Product) {

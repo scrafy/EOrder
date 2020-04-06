@@ -92,6 +92,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun checkValidSession() {
 
+
         model.checkValidSession(this)
     }
 

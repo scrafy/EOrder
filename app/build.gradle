@@ -46,6 +46,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
 
     implementation project(path: ':domain')

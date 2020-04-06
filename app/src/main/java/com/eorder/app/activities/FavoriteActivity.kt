@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.adapters.FavoriteProductsAdapter
+import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.widgets.SnackBar
-import com.eorder.app.helpers.GridLayoutItemDecoration
+import com.eorder.app.extensions.GridLayoutItemDecoration
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.viewmodels.FavoriteViewModel
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.application.extensions.toBitmap
@@ -30,12 +31,11 @@ import java.lang.Exception
 
 
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
-    IShowSnackBarMessage
-     {
+    IShowSnackBarMessage, IToolbarSearch {
 
     private lateinit var model: FavoriteViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FavoriteProductsAdapter
+    private lateinit var adapter: ProductsAdapter
     private var products: MutableList<Product> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,9 +82,16 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         ).show()
     }
 
+    override fun getSearchFromToolbar(search: String) {
+        adapter.products =
+            products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
+        adapter.notifyDataSetChanged()
+    }
+
+
     override fun setMenuToolbar() {
-        currentToolBarMenu["main_menu"] = R.menu.main_menu
-        setToolbarAndLateralMenu(currentToolBarMenu)
+        currentToolBarMenu["search_menu"] = R.menu.search_menu
+        setActionBar(currentToolBarMenu, true, false)
     }
 
     override fun getProductsFromShop(): List<Product> {
@@ -103,7 +110,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         var product = (obj as Product)
 
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setOnClickListener { v ->
 
                 AlertDialogQuestion(
@@ -125,12 +132,12 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                 ).show()
             }
 
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_cart).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
 
             model.addProductToShop(this, obj)
         }
 
-        view.findViewById<TextView>(R.id.textView_favorite_list_add).setOnClickListener {
+        view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
 
             model.addProductToShop(this, obj)
         }
@@ -144,30 +151,30 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     override fun repaintModel(view: View, model: Any?) {
 
         val product = (model as Product)
-        view.findViewById<TextView>(R.id.textView_favorite_list_product_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_favorite_list_price).text = "${product.price}€"
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+        view.findViewById<TextView>(R.id.textView_products_list_product_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_products_list_price).text = "${product.price}€"
+        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
         if (product.imageBase64 == null) {
 
             try {
-                view.findViewById<ImageView>(R.id.imgView_favorite_list_image_product)
+                view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
                     .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
             } catch (ex: Exception) {
 
             }
 
         } else {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_product)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
                 .setImageBitmap(product.imageBase64?.toBitmap())
         }
 
         if (product.favorite) {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
                 .setBackgroundResource(R.drawable.ic_corazon)
 
         } else {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
                 .setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
@@ -196,7 +203,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     private fun init() {
 
         var layout = GridLayoutManager(this, 2)
-        adapter = FavoriteProductsAdapter(
+        adapter = ProductsAdapter(
 
             listOf()
         )
@@ -204,7 +211,13 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.addItemDecoration(GridLayoutItemDecoration(2, 50, true))
+        recyclerView.addItemDecoration(
+            GridLayoutItemDecoration(
+                2,
+                50,
+                true
+            )
+        )
 
     }
 }

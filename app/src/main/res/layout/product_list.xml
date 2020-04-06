@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView_center_list_item"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp"
@@ -16,82 +16,91 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingTop="10dp">
 
 
         <ImageView
-            android:id="@+id/imgView_favorite_list_image_product"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:id="@+id/imgView_products_list_image_product"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
             android:scaleType="fitCenter"></ImageView>
-
-        <TextView
-            android:id="@+id/textView_favorite_list_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp"
-            android:singleLine="false"
-            android:text="35.57€"
-            android:textAlignment="textStart"
-            android:textColor="@color/primaryText"
-            android:textSize="15dp"
-            android:textStyle="bold"></TextView>
-        <TextView
-            android:id="@+id/textView_favorite_list_product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:singleLine="false"
-            android:text="asdasdasdasdasdasdasdsad asdasdasdasdasdasdadad"
-            android:textColor="@color/primaryText"
-            android:textSize="13dp"
-            android:textStyle="bold"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView_products_list_price"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:singleLine="false"
+                android:text="35.57€"
+                android:textAlignment="textStart"
+                android:textColor="@color/primaryText"
+                android:textSize="15dp"
+                android:textStyle="bold"></TextView>
 
-                >
-
-                <ImageView
-                    android:id="@+id/imgView_favorite_list_cart"
-                    android:layout_width="90px"
-                    android:layout_height="90px"
-                    android:background="@drawable/ic_grey_order"></ImageView>
-
-                <TextView
-                    android:id="@+id/textView_favorite_list_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center"
-                    android:text="@string/add"
-                    android:textSize="15dp"></TextView>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textView_products_list_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:singleLine="false"
+                android:text="Product"
+                android:textColor="@color/primaryText"
+                android:textSize="13dp"
+                android:textStyle="bold"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/imgView_favorite_list_image_heart"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
-                    android:background="@drawable/ic_corazon"></ImageView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <ImageView
+                        android:id="@+id/imgView_products_list_cart"
+                        android:layout_width="90px"
+                        android:layout_height="90px"
+                        android:background="@drawable/ic_grey_order"></ImageView>
+
+                    <TextView
+                        android:id="@+id/textView_products_list_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="@string/add"
+                        android:textSize="15dp"></TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgView_products_list_image_heart"
+                        android:layout_width="80px"
+                        android:layout_height="80px"
+                        android:background="@drawable/ic_corazon"></ImageView>
+                </LinearLayout>
+
             </LinearLayout>
-
         </LinearLayout>
-
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

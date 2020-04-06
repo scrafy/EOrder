@@ -11,7 +11,7 @@ class FavoritesService(
 
 ) : IFavoritesService {
 
-    override fun addProductToFavorites(context: Context, productId: Int) {
+    override fun writeProductToFavorites(context: Context, productId: Int) {
 
         var products = loadFavoriteProducts(context)?.toMutableList() ?: mutableListOf()
 

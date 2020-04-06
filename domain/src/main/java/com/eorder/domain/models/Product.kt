@@ -21,6 +21,7 @@ class Product(
     var favorite:Boolean = false,
     // cambiar al val cuando se recuperen los datos del backend
     var catallogId:Int? = null,
+    // cambiar al val cuando se recuperen los datos del backend
     var sellerName:String? = null
 
 

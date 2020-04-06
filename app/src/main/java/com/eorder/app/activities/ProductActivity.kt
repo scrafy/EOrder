@@ -1,9 +1,10 @@
 package com.eorder.app.activities
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -11,12 +12,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.eorder.app.R
-import com.eorder.app.adapters.FavoriteProductsAdapter
+import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.com.eorder.app.adapters.ProductSellerListAdapter
-import com.eorder.app.helpers.GridLayoutItemDecoration
+import com.eorder.app.extensions.GridLayoutItemDecoration
+import com.eorder.app.helpers.ProductSpinners
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
+import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.viewmodels.ProductViewModel
+import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.extensions.toBitmap
 import com.eorder.application.interfaces.IShowSnackBarMessage
@@ -24,20 +28,24 @@ import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.products_fragment.spinner_product_list_categories
+import kotlinx.android.synthetic.main.products_fragment.spinner_product_list_order
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
 class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
-    IRepaintModel, ISetAdapterListener {
+    IRepaintModel, ISetAdapterListener, IToolbarSearch {
 
     private lateinit var model: ProductViewModel
     private lateinit var viewPager: ViewPager
     private lateinit var recyclerView: RecyclerView
     private lateinit var sellerAdapter: ProductSellerListAdapter
-    private lateinit var productsAdapter: FavoriteProductsAdapter
+    private lateinit var productsAdapter: ProductsAdapter
     private lateinit var sellers: List<Seller>
     private var products: List<Product> = listOf()
+    private var sellerSelected: Int = 0
+    private lateinit var productSpinners: ProductSpinners
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,8 +78,20 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     }
 
     override fun setMenuToolbar() {
-        currentToolBarMenu["main_menu"] = R.menu.main_menu
-        setToolbarAndLateralMenu(currentToolBarMenu)
+        currentToolBarMenu["search_menu"] = R.menu.search_menu
+        setActionBar(currentToolBarMenu, true, false)
+    }
+
+    override fun getSearchFromToolbar(search: String) {
+
+        if ( search == "" ){
+            productSpinners.filterBySelectedCategory()
+        }else{
+            productSpinners.productsFiltered = productSpinners.productsFiltered.filter { p ->
+                p.name.toLowerCase().contains(search.toLowerCase())
+            }
+            productSpinners.orderBySelectedItem()
+        }
     }
 
     override fun signOutApp() {
@@ -101,7 +121,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         var product = (obj as Product)
 
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setOnClickListener {
 
                 product.favorite = !product.favorite
@@ -113,12 +133,12 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 )
             }
 
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_cart).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
 
             model.addProductToShop(this, obj)
         }
 
-        view.findViewById<TextView>(R.id.textView_favorite_list_add).setOnClickListener {
+        view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
 
             model.addProductToShop(this, obj)
         }
@@ -146,44 +166,61 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private fun repaintProductList(view: View, obj: Any?) {
 
         val product = (obj as Product)
-        view.findViewById<TextView>(R.id.textView_favorite_list_product_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_favorite_list_price).text = "${product.price}€"
-        view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+        view.findViewById<TextView>(R.id.textView_products_list_product_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_products_list_price).text = "${product.price}€"
+        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
         if (product.imageBase64 == null) {
 
             try {
-                view.findViewById<ImageView>(R.id.imgView_favorite_list_image_product)
+                view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
                     .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
             } catch (ex: Exception) {
 
             }
 
         } else {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_product)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
                 .setImageBitmap(product.imageBase64?.toBitmap())
         }
 
         if (product.favorite) {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
                 .setBackgroundResource(R.drawable.ic_corazon)
 
         } else {
-            view.findViewById<ImageView>(R.id.imgView_favorite_list_image_heart)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
                 .setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
     }
 
     private fun init() {
+
         viewPager = findViewById(R.id.viewPager_product_activity)
         recyclerView = findViewById(R.id.recView_product_activity_product_list)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.addItemDecoration(GridLayoutItemDecoration(2, 50, true))
-        productsAdapter = FavoriteProductsAdapter(listOf())
+        recyclerView.addItemDecoration(
+            GridLayoutItemDecoration(
+                2,
+                50,
+                true
+            )
+        )
+        productsAdapter = ProductsAdapter(listOf())
         recyclerView.adapter = productsAdapter
+    }
 
+    private fun addDots(size: Int) {
+
+        for (i in 0 until size) {
+            val txt = TextView(this)
+            txt.text = Html.fromHtml("&#8226;")
+            txt.textSize = 35F
+            txt.setTextColor(resources.getColor(R.color.color_transparent))
+            findViewById<LinearLayout>(R.id.linearLayout_product_activity_dots).addView(txt)
+        }
     }
 
     private fun setListeners() {
@@ -203,7 +240,15 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             }
 
             override fun onPageSelected(position: Int) {
+
+                findViewById<LinearLayout>(R.id.linearLayout_product_activity_dots).children.iterator()
+                    .forEach { v -> (v as TextView).setTextColor(resources.getColor(R.color.color_transparent)) }
+
+                (findViewById<LinearLayout>(R.id.linearLayout_product_activity_dots).getChildAt(
+                    position
+                ) as TextView).setTextColor(resources.getColor(R.color.primaryText))
                 model.getProductsBySeller(sellers[position].id)
+                sellerSelected = sellers[position].id
             }
 
         })
@@ -252,15 +297,27 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Seller>>> {
 
                 sellers = it.serverData?.data ?: listOf()
-                //chequear si hay sellers, sino, salir actividad
-                model.getProductsBySeller(sellers[0].id)
-                loadImagesSellers(sellers.filter { s -> s.imageUrl != null }.map { s ->
-                    UrlLoadedImage(
-                        s.id,
-                        null,
-                        s.imageUrl!!
-                    )
-                })
+                if (sellers.isEmpty()) {
+
+                    AlertDialogOk(this, "Sellers", "Any seller has been found", "OK") { d, i ->
+                        this.onBackPressed()
+                    }.show()
+
+                } else {
+                    addDots(sellers.size)
+                    sellerSelected = sellers[0].id
+                    (findViewById<LinearLayout>(R.id.linearLayout_product_activity_dots).getChildAt(
+                        0
+                    ) as TextView).setTextColor(resources.getColor(R.color.primaryText))
+                    model.getProductsBySeller(sellers[0].id)
+                    loadImagesSellers(sellers.filter { s -> s.imageUrl != null }.map { s ->
+                        UrlLoadedImage(
+                            s.id,
+                            null,
+                            s.imageUrl!!
+                        )
+                    })
+                }
             })
 
         model.getProductsResultObservable()
@@ -268,6 +325,13 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                 products = it.serverData?.data ?: listOf()
                 setFavorites()
+                productSpinners = ProductSpinners(
+                    this,
+                    products,
+                    productsAdapter,
+                    spinner_product_list_categories,
+                    spinner_product_list_order
+                )
                 productsAdapter.products = products
                 productsAdapter.notifyDataSetChanged()
                 loadImagesProducts(products.filter { s -> s.imageUrl != null }.map { s ->
@@ -288,15 +352,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getAddFavoriteProductObservable().observe(this, Observer<Any> {
 
             this.showFloatingButton()
-
         })
 
-        model.getFavoriteProductsResultObservable()
-            .observe(this, Observer<ServerResponse<List<Product>>> {
-
-                val products = it.serverData?.data ?: listOf()
-                this.products.filter { p -> p.id in products.map { p -> p.id } }
-                    .forEach { p -> p.favorite = true }
-            })
     }
+
 }
