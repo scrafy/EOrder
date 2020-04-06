@@ -15,7 +15,7 @@ import com.eorder.app.R
 import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.com.eorder.app.adapters.ProductSellerListAdapter
 import com.eorder.app.extensions.GridLayoutItemDecoration
-import com.eorder.app.helpers.ProductSpinners
+import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IToolbarSearch
@@ -45,7 +45,15 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var sellers: List<Seller>
     private var products: List<Product> = listOf()
     private var sellerSelected: Int = 0
-    private lateinit var productSpinners: ProductSpinners
+    private lateinit var productSpinners: FilterProductSpinners
+    private var filters: MutableMap<String, String?> = mutableMapOf()
+
+    init {
+
+        filters["category"] = null
+        filters["order"] = null
+        filters["search"] = null
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,14 +92,13 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     override fun getSearchFromToolbar(search: String) {
 
-        if ( search == "" ){
-            productSpinners.filterBySelectedCategory()
-        }else{
-            productSpinners.productsFiltered = productSpinners.productsFiltered.filter { p ->
-                p.name.toLowerCase().contains(search.toLowerCase())
-            }
-            productSpinners.orderBySelectedItem()
-        }
+        if (search != "")
+            filters["search"] = search
+        else
+            filters["search"] = null
+
+        applyFilters()
+
     }
 
     override fun signOutApp() {
@@ -325,12 +332,19 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                 products = it.serverData?.data ?: listOf()
                 setFavorites()
-                productSpinners = ProductSpinners(
+                productSpinners = FilterProductSpinners(
                     this,
                     products,
-                    productsAdapter,
                     spinner_product_list_categories,
-                    spinner_product_list_order
+                    spinner_product_list_order,
+                    { pos ->
+
+                        onSelectedCategory(pos)
+                    },
+                    { pos ->
+
+                        onSelectedOrder(pos)
+                    }
                 )
                 productsAdapter.products = products
                 productsAdapter.notifyDataSetChanged()
@@ -356,4 +370,68 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     }
 
+    private fun applyFilters() {
+
+        var filtered: List<Product> = listOf()
+
+        if (filters["category"] != null) {
+
+            if (filters["category"] != null && filters["category"]?.toInt() == 0) {
+
+                filtered = products
+            }
+            if (filters["category"]?.toInt()!! > 0) {
+
+                filtered =
+                    products.filter { p -> p.category === productSpinners.getCategories()[filters["category"]?.toInt()!!] }
+            }
+
+        }
+
+        if (filters["search"] != null) {
+
+            filtered = filtered.filter { p ->
+                p.name.toLowerCase().contains(filters["search"]?.toLowerCase()!!)
+
+            }
+
+        }
+
+
+        if (filters["order"] != null) {
+
+            when (filters["order"]?.toInt()!!) {
+
+                0 -> {
+                    filtered = filtered.sortedBy { p -> p.name }
+
+                }
+                1 -> {
+                    filtered = filtered.sortedByDescending { p -> p.name }
+
+                }
+                2 -> {
+                    filtered = filtered.sortedBy { p -> p.price }
+                }
+                3 -> {
+                    filtered = filtered.sortedByDescending { p -> p.price }
+                }
+            }
+        }
+
+        productsAdapter.products = filtered
+        productsAdapter.notifyDataSetChanged()
+    }
+
+    private fun onSelectedCategory(position: Int) {
+
+        filters["category"] = position.toString()
+        applyFilters()
+    }
+
+    private fun onSelectedOrder(position: Int) {
+
+        filters["order"] = position.toString()
+        applyFilters()
+    }
 }

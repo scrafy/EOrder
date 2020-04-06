@@ -26,7 +26,7 @@ import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
-import com.eorder.app.helpers.ProductSpinners
+import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import java.lang.Exception
 
@@ -40,7 +40,16 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var adapter: OrderProductAdapter
     private lateinit var products: MutableList<Product>
     private lateinit var refreshLayout: SwipeRefreshLayout
-    private lateinit var productSpinners:ProductSpinners
+    private lateinit var productSpinners: FilterProductSpinners
+    private var filters: MutableMap<String, String?> = mutableMapOf()
+
+
+    init {
+
+        filters["category"] = null
+        filters["order"] = null
+        filters["search"] = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,14 +71,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun getSearchFromToolbar(search: String) {
-        if ( search == "" ){
-            productSpinners.filterBySelectedCategory()
-        }else{
-            productSpinners.productsFiltered = productSpinners.productsFiltered.filter { p ->
-                p.name.toLowerCase().contains(search.toLowerCase())
-            }
-            productSpinners.orderBySelectedItem()
-        }
+        if (search != "")
+            filters["search"] = search
+        else
+            filters["search"] = null
+
+        applyFilters()
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -82,7 +89,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
         view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
-            if (product.price == 0F) "N/A" else product.price.toString()+ "€"
+            if (product.price == 0F) "N/A" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_product_list_amount).text =
             product.amount.toString()
 
@@ -212,7 +219,20 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
                 adapter.products = products
-                productSpinners = ProductSpinners(context!!, products, adapter, spinner_product_list_categories, spinner_product_list_order)
+                productSpinners = FilterProductSpinners(
+                    context!!,
+                    products,
+                    spinner_product_list_categories,
+                    spinner_product_list_order,
+                    { pos ->
+
+                        onSelectedCategory(pos)
+                    },
+                    { pos ->
+
+                        onSelectedOrder(pos)
+                    }
+                )
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
                 var items =
@@ -286,5 +306,70 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this.products.filter { p ->
                 p.id in favorites
             }.forEach { p -> p.favorite = true }
+    }
+
+    private fun applyFilters() {
+
+        var filtered: List<Product> = listOf()
+
+        if (filters["category"] != null) {
+
+            if (filters["category"] != null && filters["category"]?.toInt() == 0) {
+
+                filtered = products
+            }
+            if (filters["category"]?.toInt()!! > 0) {
+
+                filtered =
+                    products.filter { p -> p.category === productSpinners.getCategories()[filters["category"]?.toInt()!!] }
+            }
+
+        }
+
+        if (filters["search"] != null) {
+
+            filtered = filtered.filter { p ->
+                p.name.toLowerCase().contains(filters["search"]?.toLowerCase()!!)
+
+            }
+
+        }
+
+
+        if (filters["order"] != null) {
+
+            when (filters["order"]?.toInt()!!) {
+
+                0 -> {
+                    filtered = filtered.sortedBy { p -> p.name }
+
+                }
+                1 -> {
+                    filtered = filtered.sortedByDescending { p -> p.name }
+
+                }
+                2 -> {
+                    filtered = filtered.sortedBy { p -> p.price }
+                }
+                3 -> {
+                    filtered = filtered.sortedByDescending { p -> p.price }
+                }
+            }
+        }
+
+        adapter.products = filtered
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun onSelectedCategory(position: Int) {
+
+        filters["category"] = position.toString()
+        applyFilters()
+    }
+
+    private fun onSelectedOrder(position: Int) {
+
+        filters["order"] = position.toString()
+        applyFilters()
     }
 }
