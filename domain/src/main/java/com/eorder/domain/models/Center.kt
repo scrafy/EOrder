@@ -1,5 +1,7 @@
 package com.eorder.domain.models
 
+import java.io.Serializable
+
 class Center(
 
     val id: Int,
@@ -13,5 +15,6 @@ class Center(
     val sector: String,
     val imageUrl: String?,
     var imageBase64: String? = null
-)
+
+): Serializable
 

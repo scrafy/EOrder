@@ -33,7 +33,7 @@ import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
-class SellersFragment : BaseFloatingButtonFragment(),
+class SellersFragment : BaseFragment(),
     IShowSnackBarMessage, IRepaintModel,
     ISetAdapterListener {
 

@@ -86,7 +86,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
 
 
-        view.findViewById<TextView>(R.id.textView_product_list_name).setText(product.name)
+        view.findViewById<TextView>(R.id.textView_product_list_name).text = product.name
         view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
         view.findViewById<TextView>(R.id.textView_product_list_price).text =
             if (product.price == 0F) "N/A" else product.price.toString() + "€"

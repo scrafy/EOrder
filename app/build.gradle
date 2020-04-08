@@ -52,6 +52,7 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':application')
     implementation project(path: ':infrastructure')
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 
 
 }

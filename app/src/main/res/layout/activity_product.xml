@@ -27,14 +27,14 @@
             android:paddingRight="20dp"
             android:paddingBottom="10dp">
 
-            <com.eorder.app.extensions.SpinnerExtension
+            <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_categories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 />
 
-            <com.eorder.app.extensions.SpinnerExtension
+            <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

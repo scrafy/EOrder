@@ -14,8 +14,8 @@ import androidx.viewpager.widget.ViewPager
 import com.eorder.app.R
 import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.com.eorder.app.adapters.ProductSellerListAdapter
-import com.eorder.app.extensions.GridLayoutItemDecoration
 import com.eorder.app.helpers.FilterProductSpinners
+import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IToolbarSearch

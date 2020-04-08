@@ -32,7 +32,7 @@ import com.eorder.app.R
 import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CentersFragment : BaseFloatingButtonFragment(),
+class CentersFragment : BaseFragment(),
     IShowSnackBarMessage, IRepaintModel,
     ISetAdapterListener {
 

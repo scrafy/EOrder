@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.application.interfaces.IManageFormErrors
@@ -19,6 +18,7 @@ import com.eorder.app.widgets.SnackBar
 import com.eorder.domain.models.Login
 import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
     fun setObservers() {
 
-        model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> { it ->
+        model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> {
 
             val intent = Intent(this, LandingActivity::class.java)
             startActivity(intent)
@@ -57,12 +57,13 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
 
-        findViewById<TextView>(R.id.textView_message_error_username).text =
-            errors?.firstOrNull { it -> it.fieldName.equals("username") }?.errorMessage
+        findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_username).error =
+            errors?.firstOrNull { it -> it.fieldName == "username" }?.errorMessage
 
 
-        findViewById<TextView>(R.id.textView_message_error_password).text =
-            errors?.firstOrNull { it -> it.fieldName.equals("password") }?.errorMessage
+
+        findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_password).error =
+            errors?.firstOrNull { it -> it.fieldName == "password" }?.errorMessage
 
     }
 
@@ -70,15 +71,15 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
         SnackBar(
             this,
-            findViewById<LinearLayout>(R.id.relativeLayout_login_activity_root),
+            findViewById<LinearLayout>(R.id.linearLayout_login_activity_root),
             resources.getString(R.string.close),
             message
         ).show()
     }
 
     override fun clearEditTextAndFocus() {
-        findViewById<EditText>(R.id.editText_username).getText().clear()
-        findViewById<EditText>(R.id.editText_password).getText().clear()
+        findViewById<EditText>(R.id.editText_username).text.clear()
+        findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
     }
 
@@ -103,7 +104,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextView>(R.id.textView_message_error_username).text = null
+                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_username).error = null
             }
         })
 
@@ -116,7 +117,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextView>(R.id.textView_message_error_password).text = null
+                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_password).error = null
             }
         })
 

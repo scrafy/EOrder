@@ -1,4 +1,4 @@
-package com.eorder.app.extensions
+package com.eorder.app.helpers
 
 import android.content.Context
 import android.util.AttributeSet

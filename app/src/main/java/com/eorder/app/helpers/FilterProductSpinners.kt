@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.eorder.app.R
-import com.eorder.app.extensions.SpinnerExtension
 import com.eorder.domain.models.Product
 
 

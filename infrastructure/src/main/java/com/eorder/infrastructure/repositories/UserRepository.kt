@@ -75,7 +75,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
         else
             response = ServerResponse(
                 500,
-                ServerError("An unexpected error has happened", 500, null, null)
+                ServerError("The users does not exists", 500, null, null)
 
             )
 
