@@ -13,22 +13,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
-class SellersViewModel: BaseViewModel() {
+class SellersViewModel : BaseViewModel() {
 
-    private val getSellersByCenterResult: MutableLiveData<ServerResponse<List<Seller>>> =
+    private val getSellersResult: MutableLiveData<ServerResponse<List<Seller>>> =
         MutableLiveData()
 
-    fun getSellersByCenterResultObservable(): LiveData<ServerResponse<List<Seller>>> {
+    fun getSellersResultObservable(): LiveData<ServerResponse<List<Seller>>> {
 
-        return getSellersByCenterResult
+        return getSellersResult
     }
 
-    fun getSellersByCenter(centerId: Int) {
+    fun getSellers() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = unitOfWorkUseCase.getSellersByCenterUseCase().getSellersByCenter(centerId)
-            getSellersByCenterResult.postValue(result)
+            var result = unitOfWorkUseCase.getSellersUseCase().sellers()
+            getSellersResult.postValue(result)
         }
     }
 

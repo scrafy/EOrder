@@ -49,6 +49,10 @@ class LandingActivity : BaseMenuActivity() {
         textView_center.setOnClickListener{
             startActivity(Intent(this, CenterActivity::class.java))
         }
+
+        textView_seller.setOnClickListener{
+            startActivity(Intent(this, SellerActivity::class.java))
+        }
     }
 
     override fun onBackPressed() {

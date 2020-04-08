@@ -2,7 +2,6 @@ package com.eorder.app.di
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.app.com.eorder.app.viewmodels.CenterActivityViewModel
 import com.eorder.app.viewmodels.*
 import com.eorder.app.viewmodels.fragments.*
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +27,8 @@ val appModule = module {
     viewModel { ProductViewModel() }
     viewModel { CenterInfoFragmentViewModel() }
     viewModel { CenterActivityViewModel() }
+    viewModel { SellerActivityViewModel() }
+    viewModel { SellerInfoFragmentViewModel() }
 
 
 }

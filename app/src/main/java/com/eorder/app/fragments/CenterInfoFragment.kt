@@ -67,7 +67,7 @@ class CenterInfoFragment : BaseFragment() {
 
         paintEditTextUnderLines(
             this.context!!,
-            linearLayout_fragment_center_info_container_edittext
+            linearLayout_fragment_center_info_fields_container
         )
     }
 

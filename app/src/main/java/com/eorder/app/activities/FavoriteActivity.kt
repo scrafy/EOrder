@@ -4,6 +4,7 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -151,8 +152,9 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     override fun repaintModel(view: View, model: Any?) {
 
         val product = (model as Product)
+        view.findViewById<LinearLayout>(R.id.linearLayout_product_list_info_container).removeView(view.findViewById<TextView>(R.id.textView_products_list_price))
         view.findViewById<TextView>(R.id.textView_products_list_product_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_products_list_price).text = "${product.price}€"
+        view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
         if (product.imageBase64 == null) {

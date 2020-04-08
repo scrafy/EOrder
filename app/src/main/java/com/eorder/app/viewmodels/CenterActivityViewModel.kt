@@ -1,6 +1,3 @@
-package com.eorder.app.com.eorder.app.viewmodels
-
-import com.eorder.app.viewmodels.BaseMainMenuActionsViewModel
-
+package com.eorder.app.viewmodels
 
 class CenterActivityViewModel : BaseMainMenuActionsViewModel()

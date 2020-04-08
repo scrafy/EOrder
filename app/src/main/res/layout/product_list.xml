@@ -30,16 +30,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:id="@+id/linearLayout_product_list_info_container"
+            >
 
             <TextView
-                android:id="@+id/textView_products_list_price"
+                android:id="@+id/textView_products_list_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="5dp"
                 android:singleLine="false"
-                android:text="35.57€"
+                android:text="Alimentacion"
+                android:textAlignment="textStart"
+                android:textColor="@color/secondaryText"
+                android:textSize="13dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/textView_products_list_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:singleLine="false"
                 android:textAlignment="textStart"
                 android:textColor="@color/primaryText"
                 android:textSize="15dp"
@@ -50,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
                 android:singleLine="false"
                 android:text="Product"
                 android:textColor="@color/primaryText"

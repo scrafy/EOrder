@@ -66,13 +66,7 @@ class SellersFragment : BaseFragment(),
         model = getViewModel()
         init()
         setObservers()
-        val centerId = arguments?.getInt("centerId")
-        if (centerId != null)
-
-            model.getSellersByCenter(centerId)
-        else {
-            //TODO show snackbar showing message error
-        }
+        model.getSellers()
 
     }
 
@@ -127,7 +121,7 @@ class SellersFragment : BaseFragment(),
 
     fun setObservers() {
 
-        model.getSellersByCenterResultObservable().observe(
+        model.getSellersResultObservable().observe(
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Seller>>> { it ->
 
@@ -172,7 +166,7 @@ class SellersFragment : BaseFragment(),
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getSellersByCenter(arguments?.getInt("centerId")!!)
+            model.getSellers()
         }
     }
 

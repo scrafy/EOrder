@@ -3,10 +3,10 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.widget.LinearLayout
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.viewmodels.CenterActivityViewModel
 import com.eorder.app.fragments.CenterInfoFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.interfaces.ISelectCenter
+import com.eorder.app.viewmodels.CenterActivityViewModel
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel

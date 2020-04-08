@@ -1,5 +1,7 @@
 package com.eorder.domain.models
 
+import java.io.Serializable
+
 class Seller (
 
     val id: Int,
@@ -16,4 +18,4 @@ class Seller (
     val sector: String,
     val imageUrl: String? = null,
     var imageBase64: String? = null
-)
+): Serializable

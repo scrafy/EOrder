@@ -30,7 +30,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_marginTop="20dp"
-        android:id="@+id/linearLayout_fragment_center_info_container_edittext"
+        android:id="@+id/linearLayout_fragment_center_info_fields_container"
         >
 
         <LinearLayout
@@ -90,7 +90,7 @@
                 android:text="afdasd ad fas fasdf"
                 android:textColor="@color/secondaryText"
                 android:textSize="15dp"
-
+                android:singleLine="false"
                 ></EditText>
 
         </LinearLayout>
