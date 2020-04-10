@@ -1,30 +1,37 @@
 package com.eorder.application.services
 
-
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
+import android.widget.ImageView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.extensions.toBase64
 import com.eorder.application.interfaces.ILoadImagesService
 import com.eorder.application.models.UrlLoadedImage
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.KoinComponent
 
 
-class LoadImagesService(
-    private val picasso: Picasso
-) : ILoadImagesService {
+class LoadImagesService : KoinComponent, ILoadImagesService {
 
-    private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> = MutableLiveData()
+    private var picasso: Picasso =
+        Picasso.Builder(getKoin().rootScope.androidContext()).build()
 
-    private val errorLoadImageObservable: MutableLiveData<Throwable> = MutableLiveData()
+
+    private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> =
+        MutableLiveData()
 
     override fun loadImages(list: List<UrlLoadedImage>): LiveData<List<UrlLoadedImage>> {
 
 
-        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+        CoroutineScope(Dispatchers.IO).launch {
 
             list.filter { item -> item.imageUrl != null }.forEach { item ->
 
@@ -33,21 +40,48 @@ class LoadImagesService(
                 } catch (ex: Exception) {
 
                 }
-
             }
             resultImageBase64Observable.postValue(list)
         }
         return resultImageBase64Observable
     }
 
-    override fun returnsloadImageErrorObservable(): LiveData<Throwable> {
-        return errorLoadImageObservable
-    }
+    override fun loadImage(img: ImageView, default: Drawable, url: String, isCircle: Boolean) {
 
-    private fun handleError(): CoroutineExceptionHandler {
+        var bitMap: Bitmap? = null
+        val mainThreadHandler = Handler(Looper.getMainLooper())
 
-        return CoroutineExceptionHandler { _, ex ->
-            errorLoadImageObservable.postValue(ex)
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                bitMap = picasso.load(url).get()
+            } catch (ex: Exception) {
+                bitMap = null
+            }
+
+            mainThreadHandler.post {
+
+                if (bitMap != null) {
+
+                    if (isCircle) {
+
+                        val roundedBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(
+                                getKoin().rootScope.androidContext().resources,
+                                bitMap
+                            )
+                        roundedBitmapDrawable.isCircular = true
+                        img.setImageDrawable(roundedBitmapDrawable)
+                    } else {
+                        img.setImageBitmap(bitMap)
+                    }
+                } else {
+                    img.setImageDrawable(default)
+                }
+            }
+
         }
+
     }
+
 }

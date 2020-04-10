@@ -1,7 +1,9 @@
 package com.eorder.app.fragments
 
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -29,6 +33,8 @@ import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
+import com.eorder.app.helpers.GridLayoutItemDecoration
+import kotlinx.android.synthetic.main.fragment_center_info.*
 import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -93,8 +99,9 @@ class CentersFragment : BaseFragment(),
             }
 
         } else {
-            view.findViewById<ImageView>(com.eorder.app.R.id.imgView_center_list_img_center)
-                .setImageBitmap(center.imageBase64?.toBitmap())
+
+            if ( center.imageBase64 != null )
+                setImage(center.imageBase64!!, view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
         }
 
     }
@@ -139,16 +146,12 @@ class CentersFragment : BaseFragment(),
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
-        model.getLoadImageErrorObservable()
-            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                model.getManagerExceptionService().manageException(this.context!!, ex)
-            })
     }
 
     private fun init() {
 
-        val layout = LinearLayoutManager(this.context)
+        val layout = GridLayoutManager(context, 2)
 
         adapter = CentersAdapter(this, mutableListOf())
         recyclerView = this.view?.findViewById(R.id.recView_centers_fragment)
@@ -163,6 +166,31 @@ class CentersFragment : BaseFragment(),
 
             model.getCenters()
         }
+
+        recyclerView?.addItemDecoration(
+            GridLayoutItemDecoration(
+                2,
+                50,
+                true
+            )
+        )
+
+    }
+
+    private fun setImage(imageBase64: String, img:ImageView) {
+
+        val bitmap = BitmapFactory.decodeByteArray(
+            Base64.decode(imageBase64, 0),
+            0,
+            Base64.decode(imageBase64, 0).size
+        )
+        val roundedBitmapDrawable =
+            RoundedBitmapDrawableFactory.create(
+                context?.resources!!,
+                bitmap
+            )
+        roundedBitmapDrawable.isCircular = true
+        img.setImageDrawable(roundedBitmapDrawable)
 
     }
 

@@ -29,6 +29,4 @@ class CentersViewModel : BaseViewModel() {
     fun loadImages(list: List<UrlLoadedImage>) =
         unitOfWorkService.getLoadImageService().loadImages(list)
 
-    fun getLoadImageErrorObservable() =
-        unitOfWorkService.getLoadImageService().returnsloadImageErrorObservable()
-}
+ }

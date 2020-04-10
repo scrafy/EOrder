@@ -10,7 +10,7 @@ class ProductsBySellerUseCase(
     private val productRepository: IProductRepository
 ) : IProductsBySellerUseCase {
 
-    override fun getProductsBySeller(sellerId: Int): ServerResponse<List<Product>> {
-        return productRepository.getProductsBySeller(sellerId)
+    override fun getProductsBySeller(centerId:Int, sellerId: Int): ServerResponse<List<Product>> {
+        return productRepository.getProductsBySeller(centerId, sellerId)
     }
 }

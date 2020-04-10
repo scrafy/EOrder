@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.SellerActivity"></activity>
         <activity android:name=".activities.CenterActivity" />
-        <activity android:name=".activities.ProductActivity" />
+        <activity android:name=".activities.SellerProductActivity" />
         <activity android:name=".activities.CartBreakdownActivity" />
         <activity android:name=".activities.OrderDoneActivity" />
         <activity android:name=".activities.FavoriteActivity" />

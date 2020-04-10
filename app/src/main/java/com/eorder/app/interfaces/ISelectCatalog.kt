@@ -1,6 +1,8 @@
 package com.eorder.app.interfaces
 
+import com.eorder.domain.models.Catalog
+
 interface ISelectCatalog {
 
-    fun selectCatalog(catalogId:Int)
+    fun selectCatalog(catalog: Catalog)
 }

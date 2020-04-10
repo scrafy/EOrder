@@ -5,5 +5,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface ICatalogRepository {
 
-    fun getSellerCatalogs(sellerId:Int) : ServerResponse<List<Catalog>>
+    fun getCenterCatalogs(centerId:Int): ServerResponse<List<Catalog>>
 }

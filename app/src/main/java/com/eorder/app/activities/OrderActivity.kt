@@ -8,27 +8,23 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.widgets.*
-import com.eorder.app.interfaces.IRepaintShopIcon
-import com.eorder.app.interfaces.ISelectCatalog
-import com.eorder.app.interfaces.ISelectSeller
-import com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.fragments.CatalogsFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
-import com.eorder.app.fragments.SellersFragment
-import com.eorder.app.interfaces.ISelectCenter
-import com.eorder.app.interfaces.IOnShopToolbarIconClicked
-import com.eorder.app.interfaces.IToolbarSearch
+import com.eorder.app.interfaces.*
+import com.eorder.app.viewmodels.OrderViewModel
+import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.app.widgets.AlertDialogQuestion
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
-import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
-    IShowSnackBarMessage, IToolbarSearch, ISelectSeller, IOnShopToolbarIconClicked {
+    IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked {
 
     private lateinit var model: OrderViewModel
 
@@ -120,7 +116,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
         if (model.isPossibleChangeCenter(center)) {
 
-            loadSellersFragment(center)
+            loadCatalogsFragment(center)
             model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
 
         } else {
@@ -136,7 +132,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                 { d, i ->
 
                     model.cleanShop()
-                    loadSellersFragment(center)
+                    loadCatalogsFragment(center)
 
                 },
                 { d, i ->
@@ -147,12 +143,12 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    override fun selectSeller(seller: Seller) {
+    override fun selectCatalog(catalog: Catalog) {
 
-        if (model.isPossibleChangeSeller(seller)) {
+        if (model.isPossibleChangeCatalog(catalog.sellerId)) {
 
-            loadCatalogsFragment(seller)
-            model.addSellerToOrder(seller.id!!, seller.companyName!!)
+            model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+            loadProductsFragment(catalog)
 
         } else {
             AlertDialogQuestion(
@@ -160,14 +156,15 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                 "Shop",
                 getString(R.string.alert_dialog_order_activity_change_seller).format(
                     model.getCurrentOrderSellerName(),
-                    seller.companyName
+                    catalog.sellerName
                 ),
-                resources.getString(R.string.alert_dialog_order_activity_change_seller_button_confirm),
+                resources.getString(R.string.alert_dialog_order_activity_change_center_button_confirm),
                 resources.getString(R.string.alert_dialog_order_activity_button_deny),
-                { d, i ->
+                { _, _ ->
 
-                    model.cleanShop()
-                    loadCatalogsFragment(seller)
+                    model.cleanProducts()
+                    model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+                    loadProductsFragment(catalog)
 
                 },
                 { d, i ->
@@ -175,18 +172,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
                 }).show()
         }
-
-    }
-
-    override fun selectCatalog(catalogId: Int) {
-
-        var args = Bundle()
-        var fragment = ProductsFragment()
-        args.putInt("catalogId", catalogId)
-        fragment.arguments = args
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linear_layout_center_fragment_container, fragment)
-            .addToBackStack(null).commit()
     }
 
     private fun init() {
@@ -205,11 +190,12 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         ).show()
     }
 
-    private fun loadSellersFragment(center: Center) {
+    private fun loadCatalogsFragment(center: Center) {
 
-        var fragment = SellersFragment()
+        var fragment = CatalogsFragment()
         var args = Bundle()
-        args.putInt("centerId", center.id!!)
+
+        args.putInt("centerId", center.id)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linear_layout_center_fragment_container, fragment)
@@ -217,18 +203,15 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    private fun loadCatalogsFragment(seller: Seller) {
+    private fun loadProductsFragment(catalog: Catalog) {
 
-        var fragment = CatalogsFragment()
         var args = Bundle()
-
-        args.putInt("sellerId", seller.id!!)
+        var fragment = ProductsFragment()
+        args.putInt("catalogId", catalog.id)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linear_layout_center_fragment_container, fragment)
             .addToBackStack(null).commit()
-
-
     }
 
 }

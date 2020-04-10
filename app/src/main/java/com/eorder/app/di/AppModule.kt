@@ -24,7 +24,7 @@ val appModule = module {
     viewModel { FavoriteViewModel() }
     viewModel { OrderDoneViewModel() }
     viewModel { CartBreakdownModelView() }
-    viewModel { ProductViewModel() }
+    viewModel { SellerProductViewModel() }
     viewModel { CenterInfoFragmentViewModel() }
     viewModel { CenterActivityViewModel() }
     viewModel { SellerActivityViewModel() }

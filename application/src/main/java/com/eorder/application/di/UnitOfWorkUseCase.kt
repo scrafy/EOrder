@@ -15,7 +15,7 @@ class UnitOfWorkUseCase(
 ) {
 
     private var loginUseCase: ILoginUseCase? = null
-    private var catalogsBySellerUseCase: ICatalogsBySellerUseCase? = null
+    private var catalogsByCenterUseCase: ICatalogsByCenterUseCase? = null
     private var confirmOrderUseCase: IConfirmOrderUseCase? = null
     private var favoriteProductsUseCase: IFavoriteProductsUseCase? = null
     private var orderDoneUseCase: IOrdersDoneUseCase? = null
@@ -92,14 +92,14 @@ class UnitOfWorkUseCase(
         return loginUseCase as ILoginUseCase
     }
 
-    fun getCatalogsBySellerUseCase(): ICatalogsBySellerUseCase {
+    fun getCatalogsBySellerUseCase(): ICatalogsByCenterUseCase {
 
-        if (catalogsBySellerUseCase == null)
-            catalogsBySellerUseCase = CatalogsBySellerUseCase(
+        if (catalogsByCenterUseCase == null)
+            catalogsByCenterUseCase = CatalogsBySellerUseCase(
                 unitOfWorkRepository.getCatalogRepository()
             )
 
-        return catalogsBySellerUseCase as ICatalogsBySellerUseCase
+        return catalogsByCenterUseCase as ICatalogsByCenterUseCase
     }
 
     fun getConfirmOrderUseCase(): IConfirmOrderUseCase {

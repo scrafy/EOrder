@@ -47,7 +47,7 @@
             android:background="@drawable/shape_boton_rounded"
             android:text="facebook"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/text_icons"
+            android:textColor="@android:color/white"
             />
 
     </LinearLayout>

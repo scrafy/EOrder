@@ -5,26 +5,24 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.eorder.app.adapters.ShopAdapter
-import com.eorder.app.viewmodels.ShopViewModel
-import com.eorder.domain.models.Product
-import org.koin.androidx.viewmodel.ext.android.getViewModel
-import android.widget.ExpandableListView
 import androidx.annotation.RequiresApi
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.eorder.app.R
+import com.eorder.app.adapters.ShopAdapter
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.app.widgets.AlertDialogOk
-import com.eorder.app.widgets.*
-import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.app.widgets.AlertDialogQuestion
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.extensions.toBitmap
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Order
+import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
-import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ShopActivity : BaseActivity(), IRepaintModel,

@@ -14,26 +14,25 @@ import kotlinx.coroutines.*
 @RequiresApi(Build.VERSION_CODES.O)
 class CatalogsViewModel: BaseViewModel() {
 
-    private val getCatalogBySellersResult: MutableLiveData<ServerResponse<List<Catalog>>> =
+    private val getCatalogByCenterResult: MutableLiveData<ServerResponse<List<Catalog>>> =
         MutableLiveData()
 
 
     fun getCatalogBySellersObservable(): LiveData<ServerResponse<List<Catalog>>> =
-        getCatalogBySellersResult
+        getCatalogByCenterResult
 
-    fun getCatalogBySeller(sellerId: Int) {
+    fun getCatalogByCenter(centerId: Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             var result =
-                unitOfWorkUseCase.getCatalogsBySellerUseCase().getrCatalogsBySeller(sellerId)
-            getCatalogBySellersResult.postValue(result)
+                unitOfWorkUseCase.getCatalogsBySellerUseCase().getrCatalogsByCenter(centerId)
+            getCatalogByCenterResult.postValue(result)
         }
     }
 
     fun loadImages(list: List<UrlLoadedImage>) =
         unitOfWorkService.getLoadImageService().loadImages(list)
 
-    fun getLoadImageErrorObservable() =
-        unitOfWorkService.getLoadImageService().returnsloadImageErrorObservable()
+
 }

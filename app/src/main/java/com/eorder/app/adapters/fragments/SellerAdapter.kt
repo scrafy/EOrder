@@ -17,7 +17,7 @@ class SellerAdapter(private val fragment: Fragment, var sellers: List<Seller>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.sellers_fragment_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.sellers_list, parent, false)
 
         return SellerViewHolder(
             view,

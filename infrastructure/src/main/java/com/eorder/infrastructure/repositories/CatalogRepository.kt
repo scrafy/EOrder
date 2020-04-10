@@ -6,32 +6,35 @@ import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 
-class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(), ICatalogRepository {
+class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
+    ICatalogRepository {
 
 
-    override fun getSellerCatalogs(sellerId:Int): ServerResponse<List<Catalog>> {
+    override fun getCenterCatalogs(centerId: Int): ServerResponse<List<Catalog>> {
         //TODO make a backend call
-
 
 
         var catalogs = mutableListOf<Catalog>()
 
-        if (sellerId == 1)
-        {
+        if (centerId == 1) {
             catalogs.add(
-            Catalog(
-                1,
-                "Catalog1",
-                10,
-                "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
+                Catalog(
+                    1,
+                    "Catalog1",
+                    10,
+                    1,
+                    "MercaBarna",
+                    "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
 
+                )
             )
-        )
             catalogs.add(
                 Catalog(
                     2,
                     "Catalog2",
                     10,
+                    2,
+                    "Coca Cola",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -40,6 +43,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     3,
                     "Catalog3",
                     10,
+                    3,
+                    "Cofarma",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -48,19 +53,23 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     4,
                     "Catalog4",
                     10,
+                    4,
+                    "Durex",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
         }
 
-        if (sellerId == 2)
-        {
+        if (centerId == 2) {
             catalogs.add(
                 Catalog(
                     5,
                     "Catalog5",
                     10,
+                    1,
+                    "MercaBarna",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
+
                 )
             )
             catalogs.add(
@@ -68,6 +77,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     6,
                     "Catalog6",
                     10,
+                    2,
+                    "Coca Cola",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -76,6 +87,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     7,
                     "Catalog7",
                     10,
+                    3,
+                    "Cofarma",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -84,19 +97,23 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     8,
                     "Catalog8",
                     10,
+                    4,
+                    "Durex",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
         }
 
-        if (sellerId == 3)
-        {
+        if (centerId == 3) {
             catalogs.add(
                 Catalog(
                     9,
                     "Catalog9",
                     10,
+                    1,
+                    "MercaBarna",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
+
                 )
             )
             catalogs.add(
@@ -104,6 +121,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     10,
                     "Catalog10",
                     10,
+                    2,
+                    "Coca Cola",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -112,6 +131,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     11,
                     "Catalog11",
                     10,
+                    3,
+                    "Cofarma",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
@@ -120,49 +141,56 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     12,
                     "Catalog12",
                     10,
+                    4,
+                    "Durex",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
         }
 
-        if (sellerId == 4)
-        {
+        if (centerId == 4) {
             catalogs.add(
                 Catalog(
                     13,
                     "Catalog13",
                     10,
-                    "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
-                )
-            )
-            catalogs.add(
-                Catalog(
-                    14,
-                    "Catalog13",
-                    10,
+                    1,
+                    "MercaBarna",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
 
                 )
             )
             catalogs.add(
                 Catalog(
-                    15,
+                    14,
                     "Catalog14",
                     10,
+                    2,
+                    "Coca Cola",
+                    "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
+                )
+            )
+            catalogs.add(
+                Catalog(
+                    15,
+                    "Catalog15",
+                    10,
+                    3,
+                    "Cofarma",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
             catalogs.add(
                 Catalog(
                     16,
-                    "Catalog15",
+                    "Catalog16",
                     10,
+                    4,
+                    "Durex",
                     "https://ssuhua.com/wp-content/uploads/2011/09/Icon1-product-catalogue.jpg"
                 )
             )
         }
-
-
 
 
         var response: ServerResponse<List<Catalog>> =
@@ -174,7 +202,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     null
                 )
             )
-         checkServerErrorInResponse(response)
+        checkServerErrorInResponse(response)
 
         return response
     }

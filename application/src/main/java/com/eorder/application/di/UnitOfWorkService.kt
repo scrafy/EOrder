@@ -88,6 +88,6 @@ class UnitOfWorkService(
 
     fun getLoadImageService(): ILoadImagesService {
 
-        return LoadImagesService(Picasso.get())
+        return LoadImagesService()
     }
 }

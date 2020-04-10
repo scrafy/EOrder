@@ -5,5 +5,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IProductsBySellerUseCase {
 
-    fun getProductsBySeller(sellerId: Int) : ServerResponse<List<Product>>
+    fun getProductsBySeller(centerId:Int, sellerId: Int) : ServerResponse<List<Product>>
 }

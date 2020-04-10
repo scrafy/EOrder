@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
+import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -60,7 +61,7 @@ class CatalogsFragment : BaseFragment(),
 
         view.findViewById<CardView>(R.id.cardView_catalog_list_item).setOnClickListener { v ->
 
-            (context as ISelectCatalog).selectCatalog(catalog.id)
+            (context as ISelectCatalog).selectCatalog(catalog)
         }
     }
 
@@ -68,18 +69,17 @@ class CatalogsFragment : BaseFragment(),
 
         val catalog = (model as Catalog)
 
-        view.findViewById<TextView>(R.id.textView_catalogs_list_catalog_name).text = catalog.name
+        view.findViewById<TextView>(R.id.textView_products_list_category).text = catalog.sellerName
         view.findViewById<TextView>(R.id.textView_catalogs_list_total_products).text =
             resources.getString(R.string.catalog_fragment_number_of_products)
                 .format(catalog.totalProducts)
 
-        view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
-            .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+        view.findViewById<ImageView>(R.id.imgView_catalog_list_img).setImageDrawable(resources.getDrawable(R.drawable.catalog_logo, null))
 
-        if (catalog.imageBase64 == null) {
+        /*if (catalog.imageBase64 == null) {
 
             try {
-                view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
+                view.findViewById<ImageView>(R.id.imgView_catalog_list_img)
                     .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
             } catch (ex: Exception) {
 
@@ -89,7 +89,7 @@ class CatalogsFragment : BaseFragment(),
         } else {
             view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
                 .setImageBitmap(catalog.imageBase64?.toBitmap())
-        }
+        }*/
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -98,10 +98,10 @@ class CatalogsFragment : BaseFragment(),
         model = getViewModel()
         init()
         setObservers()
-        var sellerId = arguments?.getInt("sellerId")
-        if (sellerId != null)
+        var centerId = arguments?.getInt("centerId")
+        if (centerId != null)
 
-            model.getCatalogBySeller(sellerId ?: 0)
+            model.getCatalogByCenter(centerId)
         else {
             //TODO show snackbar showing message error
         }
@@ -153,11 +153,7 @@ class CatalogsFragment : BaseFragment(),
 
             })
 
-        model.getLoadImageErrorObservable()
-            .observe(this.activity as LifecycleOwner, Observer { ex ->
 
-                model.getManagerExceptionService().manageException(this.context!!, ex)
-            })
     }
 
     private fun init() {
@@ -178,8 +174,16 @@ class CatalogsFragment : BaseFragment(),
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getCatalogBySeller( arguments?.getInt("sellerId")!!)
+            model.getCatalogByCenter( arguments?.getInt("centerId")!!)
         }
+
+        recyclerView?.addItemDecoration(
+            GridLayoutItemDecoration(
+                2,
+                50,
+                true
+            )
+        )
     }
 
 }

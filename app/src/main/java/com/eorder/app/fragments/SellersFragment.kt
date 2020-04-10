@@ -1,5 +1,6 @@
 package com.eorder.app.fragments
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,24 +14,26 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
+import com.eorder.app.activities.SellerProductActivity
 import com.eorder.app.adapters.fragments.SellerAdapter
-import com.eorder.app.interfaces.ISelectSeller
+import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.SellersViewModel
 import com.eorder.application.extensions.toBitmap
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
-import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class SellersFragment : BaseFragment(),
@@ -42,7 +45,6 @@ class SellersFragment : BaseFragment(),
     private lateinit var adapter: SellerAdapter
     private lateinit var sellers: List<Seller>
     private lateinit var refreshLayout: SwipeRefreshLayout
-
 
 
     private lateinit var viewModel: CatalogsViewModel
@@ -80,25 +82,32 @@ class SellersFragment : BaseFragment(),
                 (context as ISelectSeller).selectSeller(seller)
             }
 
+        view.findViewById<TextView>(R.id.textView_sellers_list_view_products).setOnClickListener {
+
+            val intent = Intent(context, SellerProductActivity::class.java)
+            intent.putExtra("sellerId", seller.id)
+            startActivity(intent)
+        }
 
     }
 
     override fun repaintModel(view: View, model: Any?) {
 
         val seller = (model as Seller)
-        view.findViewById<TextView>(R.id.textView_sellers_list_name).text = seller.companyName
+        view.findViewById<TextView>(R.id.textView_sellers_list_seller_name).text =
+            seller.companyName
 
         if (seller.imageBase64 == null) {
 
             try {
-                view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
+                view.findViewById<ImageView>(R.id.imgView_seller_list_img)
                     .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
             } catch (ex: Exception) {
 
             }
 
         } else {
-            view.findViewById<ImageView>(R.id.imgView_seller_list_img_product)
+            view.findViewById<ImageView>(R.id.imgView_seller_list_img)
                 .setImageBitmap(seller.imageBase64?.toBitmap())
         }
     }
@@ -144,16 +153,11 @@ class SellersFragment : BaseFragment(),
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
-        model.getLoadImageErrorObservable()
-            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
-
-                model.getManagerExceptionService().manageException(this.context!!, ex)
-            })
     }
 
     private fun init() {
 
-        val layout = LinearLayoutManager(this.context)
+        val layout = GridLayoutManager(this.context, 2)
 
         adapter = SellerAdapter(this, mutableListOf())
         recyclerView = this.view?.findViewById<RecyclerView>(R.id.recView_sellers_fragment)
@@ -168,6 +172,14 @@ class SellersFragment : BaseFragment(),
 
             model.getSellers()
         }
+
+        recyclerView?.addItemDecoration(
+            GridLayoutItemDecoration(
+                2,
+                50,
+                true
+            )
+        )
     }
 
 }
