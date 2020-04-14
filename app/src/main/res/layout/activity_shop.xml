@@ -230,17 +230,8 @@
                 <com.eorder.app.Views.ExpandedListView
                     android:id="@+id/listView_activity_shop_product_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="20dp" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="60dp">
-
-                </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp" />
 
             </LinearLayout>
 

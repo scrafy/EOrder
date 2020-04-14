@@ -28,6 +28,57 @@ class ProductsService{
                     21.00F,
                     "IVA",
                     0,
+                    13.56F,
+                    "Paquete 24 latas cerveza San Miguel 33ml",
+                    "Paquete 24 latas cerveza San Miguel 33ml",
+                    "Alimentacion",
+                    "https://images-na.ssl-images-amazon.com/images/I/81w%2B3eCQW5L._AC_SX679_.jpg"
+                )
+            )
+            aux.add(
+                Product(
+                    2,
+                    1,
+                    0F,
+                    0F,
+                    0F,
+                    21.00F,
+                    "IVA",
+                    0,
+                    8.56F,
+                    "Paquete de 24 latas Coca Cola",
+                    "Paquete de 24 latas Coca Cola 33cl",
+                    "Alimentacion",
+                    "https://images-na.ssl-images-amazon.com/images/I/61rDPfZ0ReL._AC_SX679_.jpg"
+                )
+            )
+            aux.add(
+                Product(
+                    3,
+                    1,
+                    0F,
+                    0F,
+                    0F,
+                    21.00F,
+                    "IVA",
+                    0,
+                    5.45F,
+                    "Caja 24 botellas Fontbella 50cl",
+                    "Caja 24 botellas Fontbella 50cl",
+                    "Alimentacion",
+                    "https://m.media-amazon.com/images/I/41KMEyI8ebL.jpg"
+                )
+            )
+           /* aux.add(
+                Product(
+                    4,
+                    1,
+                    0F,
+                    0F,
+                    0F,
+                    21.00F,
+                    "IVA",
+                    0,
                     10.56F,
                     "Paquete cigarros 20 unidades",
                     "Cajetilla Marlboro 20 pitillos",
@@ -38,7 +89,7 @@ class ProductsService{
             )
             aux.add(
                 Product(
-                    2,
+                    5,
                     1,
                     0F,
                     0F,
@@ -55,41 +106,7 @@ class ProductsService{
             )
             aux.add(
                 Product(
-                    3,
-                    1,
-                    0F,
-                    0F,
-                    0F,
-                    21.00F,
-                    "IVA",
-                    0,
-                    15.56F,
-                    "Lubricante durex 20 ml",
-                    "Lubricante durex 20ml",
-                    "Ocio",
-                    "https://www.farmaciatedin.es/431-thickbox_default/durex-play-gel-lubricante-original-50ml.jpg"
-                )
-            )
-            aux.add(
-                Product(
-                    4,
-                    1,
-                    0F,
-                    0F,
-                    0F,
-                    21.00F,
-                    "IVA",
-                    0,
-                    8.56F,
-                    "Paquete pan de molde",
-                    "Paquete pan de molde",
-                    "Alimentacion",
-                    "https://s3.eu-west-2.amazonaws.com/mentta/producto/pan-de-molde-de-trigo-integral-bio-400g.jpg"
-                )
-            )
-            aux.add(
-                Product(
-                    5,
+                    6,
                     1,
                     0F,
                     0F,
@@ -106,7 +123,7 @@ class ProductsService{
             )
             aux.add(
                 Product(
-                    6,
+                    7,
                     1,
                     0F,
                     0F,
@@ -121,23 +138,7 @@ class ProductsService{
                     "https://bonduelle.es/media/zoo/images/patata_781da11b65e9c08ff1fa4c25079f5fdb.jpg"
                 )
             )
-            aux.add(
-                Product(
-                    7,
-                    1,
-                    0F,
-                    0F,
-                    0F,
-                    21.00F,
-                    "IVA",
-                    0,
-                    100.56F,
-                    "Sierra mécanica para madera",
-                    "Sierra mécanica para madera",
-                    "Herramientas",
-                    "https://www.colecplan.com/assets/uploads/files/5fddb-motosierra-sierra-mecanica-gasolina-rk-5200-colecplan-p-1.jpg"
-                )
-            )
+
             aux.add(
                 Product(
                     8,
@@ -165,11 +166,11 @@ class ProductsService{
                     21.00F,
                     "IVA",
                     0,
-                    12.96F,
-                    "Caja 12 preservativos durex",
-                    "Caja 12 preservativos durex",
-                    "Salud e Higiene",
-                    "https://www.dosfarma.com/39717-large_default/preservativos-durex-natural-plus-12usensitivo-contacto-total-3u-gratis.jpg"
+                    6.96F,
+                    "Paquete 3 baguettes para horno",
+                    "Paquete 3 baguettes para horno",
+                    "Alimentacion",
+                    "https://cdn-pi.niceshops.com/upload/image/product/large/default/molde-de-horno-para-baguettes-634819-es.jpg"
                 )
             )
             aux.add(
@@ -189,6 +190,23 @@ class ProductsService{
                     "https://yourspanishcorner.com/2274-thickbox_default/jamon-serrano-curado.jpg"
                 )
             )
+            aux.add(
+                Product(
+                    11,
+                    1,
+                    0F,
+                    0F,
+                    0F,
+                    21.00F,
+                    "IVA",
+                    0,
+                    18.32F,
+                    "Queso manchego 1.5Kg",
+                    "Queso manchego 1.5Kg",
+                    "Alimentacion",
+                    "https://cadenaser00.epimg.net/ser/imagenes/2019/04/02/ser_ciudad_real/1554203477_864568_1554203890_noticia_normal_recorte1.jpg"
+                )
+            )*/
 
             return aux
         }

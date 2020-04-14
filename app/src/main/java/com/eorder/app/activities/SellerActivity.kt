@@ -11,7 +11,6 @@ import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-
 class SellerActivity : BaseMenuActivity(), ISelectSeller {
 
     private lateinit var model: SellerActivityViewModel
@@ -23,8 +22,6 @@ class SellerActivity : BaseMenuActivity(), ISelectSeller {
         model = getViewModel()
         setMenuToolbar()
         init()
-
-
     }
 
 
@@ -49,7 +46,7 @@ class SellerActivity : BaseMenuActivity(), ISelectSeller {
 
         var fragment = SellerInfoFragment()
         var args = Bundle()
-        args.putSerializable("seller", seller as java.io.Serializable )
+        args.putSerializable("seller", seller as java.io.Serializable)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linearLayout_activity_seller_container, fragment)
