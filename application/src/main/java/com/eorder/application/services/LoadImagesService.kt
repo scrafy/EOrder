@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.extensions.toBase64
 import com.eorder.application.interfaces.ILoadImagesService
+import com.eorder.domain.interfaces.ILoadImageFields
 import com.eorder.application.models.UrlLoadedImage
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +28,10 @@ class LoadImagesService : KoinComponent, ILoadImagesService {
 
     private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> =
         MutableLiveData()
+
+    private val resultImageObservable: MutableLiveData<Any> =
+        MutableLiveData()
+
 
     override fun loadImages(list: List<UrlLoadedImage>): LiveData<List<UrlLoadedImage>> {
 
@@ -46,10 +51,12 @@ class LoadImagesService : KoinComponent, ILoadImagesService {
         return resultImageBase64Observable
     }
 
-    override fun loadImage(img: ImageView, default: Drawable, url: String, isCircle: Boolean) {
+    override fun loadImage(img: ImageView, default: Drawable?, url: String, isCircle: Boolean) {
 
         var bitMap: Bitmap? = null
         val mainThreadHandler = Handler(Looper.getMainLooper())
+        val picasso: Picasso =
+            Picasso.Builder(getKoin().rootScope.androidContext()).build()
 
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -81,6 +88,33 @@ class LoadImagesService : KoinComponent, ILoadImagesService {
             }
 
         }
+
+    }
+
+    override fun loadImage(obj: ILoadImageFields): LiveData<Any> {
+
+        var bitMap: Bitmap? = null
+        val picasso: Picasso =
+            Picasso.Builder(getKoin().rootScope.androidContext()).build()
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            try {
+                if (obj.imageUrl == null)
+                    resultImageObservable.postValue(null)
+                else {
+                    bitMap = picasso.load(obj.imageUrl).get()
+                    obj.image = bitMap as Bitmap
+                    resultImageObservable.postValue(obj)
+                }
+
+            } catch (ex: Exception) {
+                bitMap = null
+                resultImageObservable.postValue(null)
+            }
+
+        }
+        return resultImageObservable
 
     }
 

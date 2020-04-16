@@ -14,8 +14,8 @@ class ProductsByCatalogUseCase(
 ) :
     IProductsByCatalogUseCase {
 
-    override fun getProductsByCatalog(catalogId: Int): ServerResponse<List<Product>> {
+    override fun getProductsByCatalog(centerId: Int, catalogId: Int): ServerResponse<List<Product>> {
 
-        return productRepository.getProductsByCatalog(catalogId)
+        return productRepository.getProductsByCatalog(centerId, catalogId)
     }
 }

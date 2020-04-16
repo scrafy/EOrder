@@ -5,7 +5,7 @@ import com.eorder.domain.models.ServerResponse
 
 interface IProductRepository {
 
-    fun getProductsByCatalog(catalogId: Int): ServerResponse<List<Product>>
+    fun getProductsByCatalog(centerId: Int, catalogId: Int): ServerResponse<List<Product>>
     fun getProductsBySeller(centerId:Int, sellerId: Int): ServerResponse<List<Product>>
 
 }

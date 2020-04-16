@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,21 +15,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.helpers.GridLayoutItemDecoration
-import com.eorder.app.widgets.SnackBar
+import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.viewmodels.FavoriteViewModel
 import com.eorder.app.widgets.AlertDialogQuestion
-import com.eorder.application.extensions.toBitmap
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_favorites.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
-import java.lang.Exception
 
 
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
@@ -57,7 +55,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                 this.products.map { p -> p.favorite = true }
                 adapter.products = this.products
                 adapter.notifyDataSetChanged()
-                loadProductImages()
+                loadImages()
             })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -152,24 +150,13 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     override fun repaintModel(view: View, model: Any?) {
 
         val product = (model as Product)
-        view.findViewById<LinearLayout>(R.id.linearLayout_product_list_info_container).removeView(view.findViewById<TextView>(R.id.textView_products_list_price))
+        view.findViewById<LinearLayout>(R.id.linearLayout_product_list_info_container)
+            .removeView(view.findViewById<TextView>(R.id.textView_products_list_price))
         view.findViewById<TextView>(R.id.textView_products_list_product_name).text = product.name
         view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
-        if (product.imageBase64 == null) {
 
-            try {
-                view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
-                    .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
-            } catch (ex: Exception) {
-
-            }
-
-        } else {
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product)
-                .setImageBitmap(product.imageBase64?.toBitmap())
-        }
 
         if (product.favorite) {
             view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
@@ -181,25 +168,22 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         }
 
+        if ( product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(product.image)
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+
     }
 
-    private fun loadProductImages() {
+    private fun loadImages() {
 
-        var items = products.filter { p -> p.imageUrl != null }.map { p ->
+        products.forEach { p->
 
-            UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
-        }
+            LoadImageHelper().loadImage(p).observe(this as LifecycleOwner, Observer<Any> {
 
-        model.loadImages(items)
-            .observe(this, Observer<List<UrlLoadedImage>> { items ->
-
-                items.forEach { item ->
-
-                    this.products.find { c -> c.id == item.id }?.imageBase64 =
-                        item.imageBase64
-                }
                 adapter.notifyDataSetChanged()
             })
+        }
     }
 
     private fun init() {

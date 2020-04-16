@@ -92,10 +92,10 @@ class UnitOfWorkUseCase(
         return loginUseCase as ILoginUseCase
     }
 
-    fun getCatalogsBySellerUseCase(): ICatalogsByCenterUseCase {
+    fun getCatalogsByCenterUseCase(): ICatalogsByCenterUseCase {
 
         if (catalogsByCenterUseCase == null)
-            catalogsByCenterUseCase = CatalogsBySellerUseCase(
+            catalogsByCenterUseCase = CatalogsByCenterrUseCase(
                 unitOfWorkRepository.getCatalogRepository()
             )
 

@@ -42,7 +42,7 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "center1@gmail.com",
                 "S/C de Tenerife",
                 "Farmaceútico",
-                "https://s1.eestatic.com/2019/09/28/economia/empresas/Farmacias-Observatorio_de_la_Sanidad-Industria_Farmaceutica-Empresas_432716751_134537270_1706x1280.jpg"
+                "https://diariodealicante.net/wp-content/uploads/2019/11/fachada-de-farmacia-33-1068x801.jpg"
 
             )
         )

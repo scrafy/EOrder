@@ -1,9 +1,13 @@
 package com.eorder.app.helpers
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.widget.ImageView
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.lifecycle.LiveData
 import com.eorder.app.R
 import com.eorder.application.di.UnitOfWorkService
+import com.eorder.domain.interfaces.ILoadImageFields
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -15,6 +19,7 @@ class LoadImageHelper : KoinComponent {
     private val loadImageService = inject<UnitOfWorkService>().value.getLoadImageService()
     private val context: Context = getKoin().rootScope.androidContext()
 
+
     fun loadImage(
         url: String?,
         img: ImageView,
@@ -22,9 +27,9 @@ class LoadImageHelper : KoinComponent {
     ) {
 
         if (url != null)
-            loadImageService?.loadImage(
+            loadImageService.loadImage(
                 img,
-                GifDrawable(context?.resources!!, R.drawable.loading),
+                GifDrawable(context.resources!!, R.drawable.loading),
                 url,
                 isCircle
             )
@@ -34,11 +39,32 @@ class LoadImageHelper : KoinComponent {
 
     }
 
-    private fun setGifLoading(img: ImageView) {
+    fun loadImage(
+        obj: ILoadImageFields
+    ): LiveData<Any> {
+
+
+        return loadImageService.loadImage(obj)
+
+    }
+
+
+    fun setGifLoading(img: ImageView) {
         try {
-            img.setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
+            img.setImageDrawable(GifDrawable(context.resources!!, R.drawable.loading))
         } catch (ex: Exception) {
 
         }
+    }
+
+    fun setImageAsCircle(img: ImageView, bitMap: Bitmap) {
+
+        val roundedBitmapDrawable =
+            RoundedBitmapDrawableFactory.create(
+                getKoin().rootScope.androidContext().resources,
+                bitMap
+            )
+        roundedBitmapDrawable.isCircular = true
+        img.setImageDrawable(roundedBitmapDrawable)
     }
 }

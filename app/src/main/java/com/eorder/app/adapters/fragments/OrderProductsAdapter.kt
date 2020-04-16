@@ -18,7 +18,7 @@ class OrderProductAdapter(override var products: List<Product>, private val frag
 
 
     override fun notifyDataChanged() {
-        this.notifyDataSetChanged()
+        //this.notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -37,7 +37,7 @@ class OrderProductAdapter(override var products: List<Product>, private val frag
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
 
-        holder.setData(products.get(position))
+        holder.setData(products[position])
     }
 
 

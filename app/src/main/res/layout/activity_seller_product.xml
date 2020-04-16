@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frameLayout_activity_seller_product_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -40,41 +41,95 @@
 
         </LinearLayout>
 
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager_activity_seller_product_sellers"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/shape_blue_borders_rectangle"
-
-            />
-
-        <LinearLayout
-            android:id="@+id/linearLayout_activity_seller_product_dots_sellers"
+        <TextView
+            android:id="@+id/textView_activity_seller_product_select_seller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"></LinearLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager_activity_seller_product_centers"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/shape_blue_borders_rectangle" />
+            android:layout_marginTop="5dp"
+            android:text="Select a seller ▲"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17dp"></TextView>
 
-        <LinearLayout
-            android:id="@+id/linearLayout_activity_seller_product_dots_centers"
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"></LinearLayout>
+            app:ael_duration="500"
+            app:ael_expanded="true"
+            app:ael_interpolator="bounce"
+            app:ael_orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:orientation="vertical">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager_activity_seller_product_sellers"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/shape_blue_borders_rectangle"
+
+                    />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_activity_seller_product_dots_sellers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"></LinearLayout>
+            </LinearLayout>
+
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+        <TextView
+            android:id="@+id/textView_activity_seller_product_select_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="Select a center ▼"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17dp" />
+
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:id="@+id/expandableLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ael_duration="500"
+            app:ael_expanded="false"
+            app:ael_interpolator="bounce"
+            app:ael_orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:orientation="vertical">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager_activity_seller_product_centers"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/shape_blue_borders_rectangle" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_activity_seller_product_dots_centers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"></LinearLayout>
+
+            </LinearLayout>
+
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recView_product_activity_product_list"

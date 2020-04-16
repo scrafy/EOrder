@@ -1,9 +1,9 @@
 package com.eorder.app.fragments
 
-import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -26,16 +25,13 @@ import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CentersViewModel
-import com.eorder.application.extensions.toBitmap
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.helpers.GridLayoutItemDecoration
-import kotlinx.android.synthetic.main.fragment_center_info.*
-import java.lang.Exception
+import com.eorder.app.helpers.LoadImageHelper
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CentersFragment : BaseFragment(),
@@ -80,7 +76,6 @@ class CentersFragment : BaseFragment(),
 
                 (context as ISelectCenter).selectCenter(center)
             }
-
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -89,36 +84,11 @@ class CentersFragment : BaseFragment(),
 
         view.findViewById<TextView>(R.id.textView_center_name).text = center.center_name
 
+        if ( center.image != null)
+            LoadImageHelper().setImageAsCircle(view.findViewById<ImageView>(R.id.imgView_center_list_img_center), center.image as Bitmap)
 
-        if (center.imageBase64 == null) {
-            try {
-                view.findViewById<ImageView>(R.id.imgView_center_list_img_center)
-                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
-            } catch (ex: Exception) {
-
-            }
-
-        } else {
-
-            if ( center.imageBase64 != null )
-                setImage(center.imageBase64!!, view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
-        }
-
-    }
-
-    private fun loadImages(items: List<UrlLoadedImage>) {
-
-        model.loadImages(items)
-            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                items.forEach { item ->
-
-                    this.centers.find { c -> c.id == item.id }?.imageBase64 =
-                        item.imageBase64
-                }
-                adapter.notifyDataSetChanged()
-                refreshLayout.isRefreshing = false
-            })
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
     }
 
     fun setObservers() {
@@ -130,13 +100,8 @@ class CentersFragment : BaseFragment(),
                 centers = it.serverData?.data ?: mutableListOf()
                 adapter.centers = centers
                 adapter.notifyDataSetChanged()
-                var items =
-                    centers.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
-
-                        UrlLoadedImage(p.id!!, null, p.imageUrl!!)
-                    }
-                loadImages(items)
-
+                refreshLayout.isRefreshing = false
+                loadImages()
             })
 
         model.getErrorObservable()
@@ -147,6 +112,17 @@ class CentersFragment : BaseFragment(),
             })
 
 
+    }
+
+    private fun loadImages() {
+
+        centers.forEach { p->
+
+            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
+
+                adapter.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun init() {
@@ -174,23 +150,6 @@ class CentersFragment : BaseFragment(),
                 true
             )
         )
-
-    }
-
-    private fun setImage(imageBase64: String, img:ImageView) {
-
-        val bitmap = BitmapFactory.decodeByteArray(
-            Base64.decode(imageBase64, 0),
-            0,
-            Base64.decode(imageBase64, 0).size
-        )
-        val roundedBitmapDrawable =
-            RoundedBitmapDrawableFactory.create(
-                context?.resources!!,
-                bitmap
-            )
-        roundedBitmapDrawable.isCircular = true
-        img.setImageDrawable(roundedBitmapDrawable)
 
     }
 

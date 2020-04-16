@@ -47,6 +47,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "com.github.aakira:expandable-layout:1.6.0@aar"
 
 
     implementation project(path: ':domain')

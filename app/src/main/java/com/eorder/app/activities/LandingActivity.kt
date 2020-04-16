@@ -43,7 +43,7 @@ class LandingActivity : BaseMenuActivity() {
         }
 
         textView_product.setOnClickListener{
-            startActivity(Intent(this, SellerProductActivity::class.java))
+            startActivity(Intent(this, ProductActivity::class.java))
         }
 
         textView_center.setOnClickListener{

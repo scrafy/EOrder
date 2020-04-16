@@ -24,12 +24,12 @@ class ProductsViewModel : BaseViewModel() {
     fun getProductsByCatalogObservable(): LiveData<ServerResponse<List<Product>>> =
         getProductsByCatalogResult
 
-    fun getProductsByCatalog(catalogId: Int) {
+    fun getProductsByCatalog(centerId:Int, catalogId: Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             var result =
-                unitOfWorkUseCase.getProductsByCatalogUseCase().getProductsByCatalog(catalogId)
+                unitOfWorkUseCase.getProductsByCatalogUseCase().getProductsByCatalog(centerId, catalogId)
             getProductsByCatalogResult.postValue(result)
         }
     }

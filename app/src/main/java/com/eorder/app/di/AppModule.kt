@@ -29,6 +29,7 @@ val appModule = module {
     viewModel { CenterActivityViewModel() }
     viewModel { SellerActivityViewModel() }
     viewModel { SellerInfoFragmentViewModel() }
+    viewModel { ProductViewModel() }
 
 
 }

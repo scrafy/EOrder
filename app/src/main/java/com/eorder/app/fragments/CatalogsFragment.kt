@@ -21,18 +21,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
 import com.eorder.app.helpers.GridLayoutItemDecoration
-import com.eorder.app.interfaces.ISelectCatalog
+import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
+import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
-import com.eorder.application.extensions.toBitmap
-import com.eorder.application.models.UrlLoadedImage
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
-import java.lang.Exception
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CatalogsFragment : BaseFragment(),
@@ -74,22 +71,12 @@ class CatalogsFragment : BaseFragment(),
             resources.getString(R.string.catalog_fragment_number_of_products)
                 .format(catalog.totalProducts)
 
-        view.findViewById<ImageView>(R.id.imgView_catalog_list_img).setImageDrawable(resources.getDrawable(R.drawable.catalog_logo, null))
 
-        /*if (catalog.imageBase64 == null) {
+        if ( catalog.image != null)
+            view.findViewById<ImageView>(R.id.imgView_catalog_list_img).setImageBitmap(catalog.image)
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_catalog_list_img))
 
-            try {
-                view.findViewById<ImageView>(R.id.imgView_catalog_list_img)
-                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
-            } catch (ex: Exception) {
-
-            }
-
-
-        } else {
-            view.findViewById<ImageView>(R.id.imgView_catalog_list_img_product)
-                .setImageBitmap(catalog.imageBase64?.toBitmap())
-        }*/
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -111,21 +98,6 @@ class CatalogsFragment : BaseFragment(),
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun loadImages(items: List<UrlLoadedImage>) {
-
-        model.loadImages(items)
-            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                items.forEach { item ->
-
-                    this.catalogs.find { c -> c.id == item.id }?.imageBase64 = item.imageBase64
-                }
-                adapter.notifyDataSetChanged()
-                refreshLayout.isRefreshing = false
-            })
-    }
-
-
     fun setObservers() {
 
         model.getCatalogBySellersObservable()
@@ -135,14 +107,8 @@ class CatalogsFragment : BaseFragment(),
                 catalogs = it.serverData?.data ?: mutableListOf()
                 adapter.catalogs = catalogs
                 adapter.notifyDataSetChanged()
-                var items =
-                    catalogs.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
-
-                        UrlLoadedImage(p.id, p.imageBase64, p.imageUrl!!)
-                    }
-
-                loadImages(items)
-
+                refreshLayout.isRefreshing = false
+                loadImages()
             })
 
         model.getErrorObservable()
@@ -154,6 +120,17 @@ class CatalogsFragment : BaseFragment(),
             })
 
 
+    }
+
+    private fun loadImages() {
+
+        catalogs.forEach { p->
+
+            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
+
+                adapter.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun init() {
@@ -174,7 +151,7 @@ class CatalogsFragment : BaseFragment(),
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getCatalogByCenter( arguments?.getInt("centerId")!!)
+            model.getCatalogByCenter(arguments?.getInt("centerId")!!)
         }
 
         recyclerView?.addItemDecoration(

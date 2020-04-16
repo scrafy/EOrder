@@ -1,9 +1,7 @@
 <resources>
 
     <!--COMMON-->
-    <string name="enabled">Enabled</string>
     <string name="close">Close</string>
-    <string name="disabled">Disabled</string>
     <string name="shop">Shop</string>
     <string name="title">PedidoE</string>
     <string name="yes">Yes</string>
@@ -36,7 +34,6 @@
 
 
     <!--CARD VIEW CATALOG CENTER-->
-    <string name="card_view_catalog_center_list_view_seller">View seller</string>
 
     <!--SPINNERS-->
     <string name="product_categories">All categories</string>
@@ -76,7 +73,6 @@
     <!--ORDER ACTIVITY-->
     <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
     <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
-    <string name="alert_dialog_order_activity_change_seller_button_confirm">Change seller</string>
     <string name="alert_dialog_order_activity_button_deny">No change</string>
     <string name="alert_dialog_order_activity_change_center_button_confirm">Change center</string>
 
@@ -125,10 +121,8 @@
     <string name="center_fragment_choose_center">Select a center</string>
 
     <!--SELLERS FRAGMENT-->
-    <string name="seller_fragment_choose_seller">Select a seller</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

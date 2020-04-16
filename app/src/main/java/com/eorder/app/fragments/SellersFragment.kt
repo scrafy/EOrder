@@ -22,6 +22,7 @@ import com.eorder.app.R
 import com.eorder.app.activities.SellerProductActivity
 import com.eorder.app.adapters.fragments.SellerAdapter
 import com.eorder.app.helpers.GridLayoutItemDecoration
+import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.ISetAdapterListener
@@ -97,34 +98,12 @@ class SellersFragment : BaseFragment(),
         view.findViewById<TextView>(R.id.textView_sellers_list_seller_name).text =
             seller.companyName
 
-        if (seller.imageBase64 == null) {
 
-            try {
-                view.findViewById<ImageView>(R.id.imgView_seller_list_img)
-                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
-            } catch (ex: Exception) {
+        if ( seller.image != null)
+            view.findViewById<ImageView>(R.id.imgView_seller_list_img).setImageBitmap(seller.image)
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_seller_list_img))
 
-            }
-
-        } else {
-            view.findViewById<ImageView>(R.id.imgView_seller_list_img)
-                .setImageBitmap(seller.imageBase64?.toBitmap())
-        }
-    }
-
-    private fun loadImages(items: List<UrlLoadedImage>) {
-
-        model.loadImages(items)
-            .observe(this.activity as LifecycleOwner, Observer<List<UrlLoadedImage>> { items ->
-
-                items.forEach { item ->
-
-                    this.sellers.find { c -> c.id == item.id }?.imageBase64 =
-                        item.imageBase64
-                }
-                adapter.notifyDataSetChanged()
-                refreshLayout.isRefreshing = false
-            })
     }
 
 
@@ -137,12 +116,7 @@ class SellersFragment : BaseFragment(),
                 sellers = it.serverData?.data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
-                var items =
-                    sellers.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
-
-                        UrlLoadedImage(p.id!!, null, p.imageUrl!!)
-                    }
-                loadImages(items)
+                loadImages()
 
             })
 
@@ -153,6 +127,17 @@ class SellersFragment : BaseFragment(),
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
+    }
+
+    private fun loadImages() {
+
+        sellers.forEach { p->
+
+            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
+
+                adapter.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun init() {

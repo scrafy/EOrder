@@ -27,6 +27,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked {
 
     private lateinit var model: OrderViewModel
+    private lateinit var center:Center
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +115,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun selectCenter(center: Center) {
 
+        this.center = center
         if (model.isPossibleChangeCenter(center)) {
 
             loadCatalogsFragment(center)
@@ -208,6 +210,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         var args = Bundle()
         var fragment = ProductsFragment()
         args.putInt("catalogId", catalog.id)
+        args.putInt("centerId", this.center.id)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linear_layout_center_fragment_container, fragment)

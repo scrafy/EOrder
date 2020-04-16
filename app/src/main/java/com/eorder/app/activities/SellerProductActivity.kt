@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -162,7 +163,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         LoadImageHelper().loadImage(
             (obj as Seller).imageUrl,
-            view.findViewById(R.id.imgView_sellers_product_seller_list_image),
+            view.findViewById(R.id.imgView_seller_list_image),
             false
         )
 
@@ -172,7 +173,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         LoadImageHelper().loadImage(
             (obj as Center).imageUrl,
-            view.findViewById(R.id.imgView_sellers_product_center_list_image),
+            view.findViewById(R.id.imgView_center_list_image),
             true
         )
 
@@ -186,11 +187,10 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
 
-        LoadImageHelper().loadImage(
-            product.imageUrl,
-            view.findViewById(R.id.imgView_products_list_image_product),
-            false
-        )
+        if ( product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(product.image)
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
 
         if (product.favorite) {
             view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
@@ -200,6 +200,17 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
                 .setBackgroundResource(R.drawable.ic_corazon_outline)
 
+        }
+    }
+
+    private fun loadImages() {
+
+        products.forEach { p->
+
+            LoadImageHelper().loadImage(p).observe(this as LifecycleOwner, Observer<Any> {
+
+                productsAdapter.notifyDataSetChanged()
+            })
         }
     }
 
@@ -233,10 +244,46 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 txt
             )
         }
-
     }
 
     private fun setListeners() {
+
+        textView_activity_seller_product_select_seller.setOnClickListener {
+
+            expandableLayout.toggle()
+
+            if (expandableLayout.isExpanded) {
+                textView_activity_seller_product_select_seller.text =
+                    "${textView_activity_seller_product_select_seller.text.substring(
+                        0,
+                        textView_activity_seller_product_select_seller.text.length - 1
+                    )}▼"
+            } else {
+                textView_activity_seller_product_select_seller.text =
+                    "${textView_activity_seller_product_select_seller.text.substring(
+                        0,
+                        textView_activity_seller_product_select_seller.text.length - 1
+                    )}▲"
+            }
+        }
+
+        textView_activity_seller_product_select_center.setOnClickListener {
+
+            expandableLayout2.toggle()
+            if (expandableLayout2.isExpanded) {
+                textView_activity_seller_product_select_center.text =
+                    "${textView_activity_seller_product_select_center.text.substring(
+                        0,
+                        textView_activity_seller_product_select_center.text.length - 1
+                    )}▼"
+            } else {
+                textView_activity_seller_product_select_center.text =
+                    "${textView_activity_seller_product_select_center.text.substring(
+                        0,
+                        textView_activity_seller_product_select_center.text.length - 1
+                    )}▲"
+            }
+        }
 
         sellerViewPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
@@ -344,7 +391,6 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                 model.getCenters()
 
-
             })
 
         model.getCentersResultObservable()
@@ -365,6 +411,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 products = it.serverData?.data ?: listOf()
+                Thread.sleep(300)
                 if (products.isEmpty()) {
                     AlertDialogOk(
                         this,
@@ -372,8 +419,9 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any product from seller ${sellers.find { s -> s.id == sellerSelected }?.companyName}",
                         "OK"
 
-                    ) { d, i ->}.show()
+                    ) { d, i -> }.show()
                 } else {
+
 
                     setFavorites()
                     productSpinners = FilterProductSpinners(
@@ -390,10 +438,12 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                             onSelectedOrder(pos)
                         }
                     )
+                    productsAdapter.products = products
+                    productsAdapter.notifyDataSetChanged()
+                    loadImages()
 
                 }
-                productsAdapter.products = products
-                productsAdapter.notifyDataSetChanged()
+
 
 
             })
@@ -476,3 +526,4 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         applyFilters()
     }
 }
+

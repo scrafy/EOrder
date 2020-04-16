@@ -69,7 +69,7 @@ class ProductsService{
                     "https://m.media-amazon.com/images/I/41KMEyI8ebL.jpg"
                 )
             )
-           /* aux.add(
+            aux.add(
                 Product(
                     4,
                     1,
@@ -98,7 +98,7 @@ class ProductsService{
                     "IVA",
                     0,
                     30.56F,
-                    "Juego de sartenes",
+                    "Juego de dos sartenes",
                     "Juego de dos sartenes",
                     "Menaje y cocina",
                     "https://teletiendatelevision.com/6686-large_default/pack-2-sartenes-cobre-titanium-copper-28cm.jpg"
@@ -153,7 +153,7 @@ class ProductsService{
                     "Tupper ensalada preparada",
                     "Tupper ensalada preparada",
                     "Alimentacion",
-                    "https://www.alcampo.es/media/he3/h45/9322202234910.jpg"
+                    "https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/201802/09/00118170302493____1__600x600.jpg"
                 )
             )
             aux.add(
@@ -185,7 +185,7 @@ class ProductsService{
                     0,
                     200.89F,
                     "Jamon serrano El Pozo 5kg",
-                    "Jamon serrano El Pozo",
+                    "Jamon serrano El Pozo Kg",
                     "Alimentacion",
                     "https://yourspanishcorner.com/2274-thickbox_default/jamon-serrano-curado.jpg"
                 )
@@ -206,7 +206,7 @@ class ProductsService{
                     "Alimentacion",
                     "https://cadenaser00.epimg.net/ser/imagenes/2019/04/02/ser_ciudad_real/1554203477_864568_1554203890_noticia_normal_recorte1.jpg"
                 )
-            )*/
+            )
 
             return aux
         }

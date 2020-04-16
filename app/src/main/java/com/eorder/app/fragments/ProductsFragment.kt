@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -13,22 +16,22 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.eorder.app.interfaces.IRepaintShopIcon
-import com.eorder.app.interfaces.*
-import com.eorder.app.viewmodels.fragments.ProductsViewModel
-import com.eorder.application.extensions.toBitmap
-import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.models.Product
-import com.eorder.domain.models.ServerResponse
-import kotlinx.android.synthetic.main.products_fragment.*
-import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
 import com.eorder.app.R
 import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
 import com.eorder.app.helpers.FilterProductSpinners
+import com.eorder.app.helpers.LoadImageHelper
+import com.eorder.app.interfaces.*
+import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import java.lang.Exception
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.products_fragment.*
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+
+
+
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
@@ -37,7 +40,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: OrderProductAdapter
+    private var adapter: OrderProductAdapter = OrderProductAdapter(listOf(), this)
     private lateinit var products: MutableList<Product>
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var productSpinners: FilterProductSpinners
@@ -61,7 +64,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     override fun onStart() {
         super.onStart()
-        adapter.notifyDataSetChanged()
+        if (adapter.products.isNotEmpty())
+            adapter.notifyDataSetChanged()
         (context as IRepaintShopIcon).repaintShopIcon()
         (context as BaseFloatingButtonActivity).hideFloatingButton()
     }
@@ -94,21 +98,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             product.amount.toString()
 
 
-        if (product.imageBase64 == null) {
-
-            try {
-                view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
-                    .setImageDrawable(GifDrawable(context?.resources!!, R.drawable.loading))
-            } catch (ex: Exception) {
-
-            }
-
-        } else {
-            view.findViewById<ImageView>(R.id.imgView_product_list_img_product)
-                .setImageBitmap(product.imageBase64?.toBitmap())
-        }
-
-
         if (product.amount == 0) {
             amountView.background =
                 context?.getDrawable(R.drawable.shape_amount_zero_products)
@@ -123,7 +112,15 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             heart.setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
-        amountView.setText(product.amount.toString())
+        amountView.text = product.amount.toString()
+
+
+        if ( product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(product.image)
+        else
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_product_list_img_product))
+
+
 
     }
 
@@ -136,8 +133,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         setObservers()
 
         val catalogId = arguments?.getInt("catalogId")
-        if (catalogId != null)
-            model.getProductsByCatalog(catalogId)
+        val centerId = arguments?.getInt("centerId")
+        if (catalogId != null && centerId != null)
+            model.getProductsByCatalog(centerId, catalogId)
         else {
             //TODO show snackbar showing message error
         }
@@ -190,32 +188,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         (context as ISetActionBar)?.setActionBar(map, false, true)
     }
 
-
-    private fun loadImages(items: List<UrlLoadedImage>) {
-
-        model.loadImages(items)
-            .observe(
-                this.activity as LifecycleOwner,
-                Observer<List<UrlLoadedImage>> { items ->
-
-                    items.forEach { item ->
-
-                        this.products.find { c -> c.id == item.id }?.imageBase64 =
-                            item.imageBase64
-                    }
-                    adapter.notifyDataSetChanged()
-                    refreshLayout.isRefreshing = false
-                })
-    }
-
-
     fun setObservers() {
-
 
         model.getProductsByCatalogObservable().observe(
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> { it ->
-
 
                 products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
                 adapter.products = products
@@ -235,13 +212,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 )
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
-                var items =
-                    products.filter { p -> p.imageUrl != null && p.imageBase64 == null }.map { p ->
+                refreshLayout.isRefreshing = false
+                loadImages()
 
-                        UrlLoadedImage(p.id, null, p.imageUrl!!)
-                    }
-
-                loadImages(items)
 
             })
 
@@ -251,6 +224,18 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
+
+    }
+
+    private fun loadImages() {
+
+        products.forEach { p->
+
+            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
+
+                adapter.notifyDataSetChanged()
+            })
+        }
     }
 
     private fun init() {
@@ -258,27 +243,28 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var menu = mutableMapOf<String, Int>()
         menu["cart_menu"] = R.menu.cart_menu
         (context as ISetActionBar)?.setActionBar(menu, true, false)
-
         var layout = LinearLayoutManager(this.context)
+        layout.orientation = LinearLayoutManager.VERTICAL
+        recyclerView = this.view!!.findViewById(R.id.recView_product_list_fragment)
+        recyclerView.layoutManager = layout
+        recyclerView.itemAnimator = DefaultItemAnimator()
         adapter = OrderProductAdapter(
             listOf(),
             this
         )
-        recyclerView = this.view!!.findViewById(R.id.recView_product_list_fragment)
         recyclerView.adapter = adapter
-        layout.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = layout
-        recyclerView.itemAnimator = DefaultItemAnimator()
 
         refreshLayout = this.view?.findViewById(R.id.swipeRefresh_products_fragment)!!
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getProductsByCatalog(arguments?.getInt("catalogId")!!)
+            model.getProductsByCatalog(
+                arguments?.getInt("centerId")!!,
+                arguments?.getInt("catalogId")!!
+            )
         }
 
     }
-
 
     private fun setProductCurrentState() {
 

@@ -26,7 +26,7 @@ class SellerProductCenterListAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.seller_product_list_centers, container, false)
+        val view = layoutInflater.inflate(R.layout.viewpager_center_list, container, false)
         container.addView(view)
         (context as IRepaintModel).repaintModel(view, centers[position])
         return view

@@ -1,5 +1,8 @@
 package com.eorder.domain.models
 
+import android.graphics.Bitmap
+import com.eorder.domain.interfaces.ILoadImageFields
+
 class Product(
 
     // cambiar al val cuando se recuperen los datos del backend
@@ -16,8 +19,8 @@ class Product(
     val description: String? = null,
     val name: String,
     val category: String,
-    val imageUrl: String? = null,
-    var imageBase64: String? = null,
+    override val imageUrl: String? = null,
+    override var image: Bitmap? = null,
     var favorite:Boolean = false,
     // cambiar al val cuando se recuperen los datos del backend
     var catallogId:Int? = null,
@@ -25,4 +28,4 @@ class Product(
     var sellerName:String? = null
 
 
-)
+) : ILoadImageFields

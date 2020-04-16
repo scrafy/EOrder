@@ -1,8 +1,10 @@
 package com.eorder.domain.models
 
+import android.graphics.Bitmap
+import com.eorder.domain.interfaces.ILoadImageFields
 import java.io.Serializable
 
-class Seller (
+class Seller(
 
     val id: Int,
     val gln: Long,
@@ -16,6 +18,7 @@ class Seller (
     val email: String,
     val province: String,
     val sector: String,
-    val imageUrl: String? = null,
-    var imageBase64: String? = null
-): Serializable
+    override val imageUrl: String? = null,
+    override var image: Bitmap? = null
+
+) : Serializable, ILoadImageFields

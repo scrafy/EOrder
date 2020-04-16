@@ -26,7 +26,7 @@ class CatalogsViewModel: BaseViewModel() {
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             var result =
-                unitOfWorkUseCase.getCatalogsBySellerUseCase().getrCatalogsByCenter(centerId)
+                unitOfWorkUseCase.getCatalogsByCenterUseCase().getCatalogsByCenter(centerId)
             getCatalogByCenterResult.postValue(result)
         }
     }

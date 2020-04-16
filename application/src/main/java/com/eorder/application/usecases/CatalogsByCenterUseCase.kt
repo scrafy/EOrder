@@ -7,10 +7,10 @@ import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
 
 
-class CatalogsBySellerUseCase( private val catalogRepository: ICatalogRepository):
+class CatalogsByCenterrUseCase( private val catalogRepository: ICatalogRepository):
     ICatalogsByCenterUseCase {
 
-    override fun getrCatalogsByCenter(centerId: Int): ServerResponse<List<Catalog>> {
+    override fun getCatalogsByCenter(centerId: Int): ServerResponse<List<Catalog>> {
 
         return catalogRepository.getCenterCatalogs(centerId)
     }

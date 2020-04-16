@@ -5,5 +5,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IProductsByCatalogUseCase {
 
-    fun getProductsByCatalog(catalogId:Int) : ServerResponse<List<Product>>
+    fun getProductsByCatalog(centerId:Int, catalogId:Int) : ServerResponse<List<Product>>
 }

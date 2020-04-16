@@ -10,7 +10,7 @@ import com.eorder.infrastructure.services.ProductsService
 class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
     IProductRepository {
 
-    override fun getProductsByCatalog(catalogId: Int): ServerResponse<List<Product>> {
+    override fun getProductsByCatalog(centerId:Int, catalogId: Int): ServerResponse<List<Product>> {
 
         //TODO make a backend call
 

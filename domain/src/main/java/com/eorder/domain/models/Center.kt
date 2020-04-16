@@ -1,5 +1,7 @@
 package com.eorder.domain.models
 
+import android.graphics.Bitmap
+import com.eorder.domain.interfaces.ILoadImageFields
 import java.io.Serializable
 
 class Center(
@@ -13,8 +15,8 @@ class Center(
     val email: String,
     val province: String,
     val sector: String,
-    val imageUrl: String?,
-    var imageBase64: String? = null
+    override val imageUrl: String? = null,
+    override var image: Bitmap? = null
 
-): Serializable
+    ): Serializable, ILoadImageFields
 
