@@ -3,6 +3,7 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -166,7 +167,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             view.findViewById(R.id.imgView_seller_list_image),
             false
         )
-
+        view.findViewById<TextView>(R.id.textView_sellers_list_sellers_name).text = obj.companyName
     }
 
     private fun repaintCenterList(view: View, obj: Any?) {
@@ -176,7 +177,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             view.findViewById(R.id.imgView_center_list_image),
             true
         )
-
+        view.findViewById<TextView>(R.id.textView_center_list_center_name).text = obj.center_name
     }
 
     private fun repaintProductList(view: View, obj: Any?) {
@@ -187,8 +188,10 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
 
-        if ( product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(product.image)
+        if (product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
+                product.image
+            )
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
 
@@ -205,20 +208,15 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     private fun loadImages() {
 
-        products.forEach { p->
-
-            LoadImageHelper().loadImage(p).observe(this as LifecycleOwner, Observer<Any> {
-
-                productsAdapter.notifyDataSetChanged()
-            })
-        }
+        LoadImageHelper().loadImage(products).observe(this as LifecycleOwner, Observer<Any> {
+            productsAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun init() {
 
         sellerViewPager = findViewById(R.id.viewPager_activity_seller_product_sellers)
         centerViewPager = findViewById(R.id.viewPager_activity_seller_product_centers)
-
         recyclerView = findViewById(R.id.recView_product_activity_product_list)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -411,7 +409,6 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 products = it.serverData?.data ?: listOf()
-                Thread.sleep(300)
                 if (products.isEmpty()) {
                     AlertDialogOk(
                         this,
@@ -419,7 +416,11 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any product from seller ${sellers.find { s -> s.id == sellerSelected }?.companyName}",
                         "OK"
 
-                    ) { d, i -> }.show()
+                    ) { d, i ->
+
+                    }.show()
+                    productsAdapter.products = products
+                    productsAdapter.notifyDataSetChanged()
                 } else {
 
 
@@ -439,11 +440,9 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         }
                     )
                     productsAdapter.products = products
-                    productsAdapter.notifyDataSetChanged()
                     loadImages()
 
                 }
-
 
 
             })

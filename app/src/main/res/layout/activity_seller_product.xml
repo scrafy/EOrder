@@ -63,7 +63,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/shape_blue_borders_rectangle"
+                >
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager_activity_seller_product_sellers"
@@ -71,10 +73,7 @@
                     android:layout_height="120dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/shape_blue_borders_rectangle"
-
-                    />
+                    android:layout_marginRight="20dp"/>
 
                 <LinearLayout
                     android:id="@+id/linearLayout_activity_seller_product_dots_sellers"
@@ -108,17 +107,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/shape_blue_borders_rectangle">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager_activity_seller_product_centers"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/shape_blue_borders_rectangle" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"/>
 
                 <LinearLayout
                     android:id="@+id/linearLayout_activity_seller_product_dots_centers"

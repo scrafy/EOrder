@@ -178,8 +178,14 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     private fun init() {
 
+        var fragment = CentersFragment()
+        var args = Bundle()
+
+        args.putBoolean("showViewProductsLink", true)
+        fragment.arguments = args
+
         supportFragmentManager.beginTransaction()
-            .add(R.id.linear_layout_center_fragment_container, CentersFragment()).commit()
+            .add(R.id.linear_layout_center_fragment_container, fragment).commit()
     }
 
     override fun showMessage(message: String) {

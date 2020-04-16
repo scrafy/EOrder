@@ -121,8 +121,7 @@
     <string name="center_fragment_choose_center">Select a center</string>
 
     <!--SELLERS FRAGMENT-->
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="seller_fragment_choose_seller">Select a seller</string>
 
 
 </resources>

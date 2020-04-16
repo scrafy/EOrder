@@ -229,13 +229,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun loadImages() {
 
-        products.forEach { p->
+        LoadImageHelper().loadImage(products).observe(this.activity as LifecycleOwner, Observer<Any> {
 
-            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
-        }
+            adapter.notifyDataSetChanged()
+        })
     }
 
     private fun init() {

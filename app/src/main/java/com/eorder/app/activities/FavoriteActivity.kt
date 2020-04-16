@@ -177,13 +177,10 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
     private fun loadImages() {
 
-        products.forEach { p->
+        LoadImageHelper().loadImage(products).observe(this as LifecycleOwner, Observer<Any> {
 
-            LoadImageHelper().loadImage(p).observe(this as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
-        }
+            adapter.notifyDataSetChanged()
+        })
     }
 
     private fun init() {

@@ -178,23 +178,26 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     private fun repaintCenterList(view: View, obj: Any?) {
 
+        val center = obj as Center
+
         LoadImageHelper().loadImage(
-            (obj as Center).imageUrl,
+            center.imageUrl,
             view.findViewById(R.id.imgView_center_list_image),
             true
         )
+
+        view.findViewById<TextView>(R.id.textView_center_list_center_name).text =
+            center.center_name
 
     }
 
     private fun loadImages() {
 
-        products.forEach { p->
-
-            LoadImageHelper().loadImage(p).observe(this as LifecycleOwner, Observer<Any> {
+        LoadImageHelper().loadImage(products.filter { p -> p.image == null })
+            .observe(this as LifecycleOwner, Observer<Any> {
 
                 productsAdapter.notifyDataSetChanged()
             })
-        }
     }
 
 
@@ -206,8 +209,10 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
 
-        if ( product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(product.image)
+        if (product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
+                product.image
+            )
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
 
@@ -239,6 +244,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         )
         productsAdapter = ProductsAdapter(listOf())
         recyclerView.adapter = productsAdapter
+
+
     }
 
     private fun addDots(size: Int, v: LinearLayout) {
@@ -384,13 +391,22 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
                 centers = it.serverData?.data ?: listOf()
+                centerSelected = intent.getIntExtra("centerId", 0)
                 centerViewPager.adapter = ProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
                 addDots(centers.size, linearLayout_activity_product_dots_centers)
                 (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                     0
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
-                centerSelected = centers[0].id
+                val index = centers.indexOf(centers.firstOrNull { s -> s.id == centerSelected } ?: centers[0])
+                if (index == 0) {
+                    (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
+                        0
+                    ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
+
+                } else
+                    centerViewPager.currentItem = index
+
                 model.getCatalogByCenter(centers[0].id)
 
 
@@ -441,10 +457,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     }
                 )
                 productsAdapter.products = products
-                productsAdapter.notifyDataSetChanged()
                 loadImages()
-
-
             })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->

@@ -71,7 +71,7 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager_activity_product_centers"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="120dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
@@ -110,7 +110,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="180dp"
                 android:orientation="vertical"
                 android:background="@drawable/shape_blue_borders_rectangle"
                 >
@@ -118,10 +118,9 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager_activity_product_catalogs"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_gravity="center"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                      />
 

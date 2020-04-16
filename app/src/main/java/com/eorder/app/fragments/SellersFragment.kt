@@ -131,13 +131,10 @@ class SellersFragment : BaseFragment(),
 
     private fun loadImages() {
 
-        sellers.forEach { p->
+        LoadImageHelper().loadImage(sellers).observe(this.activity as LifecycleOwner, Observer<Any> {
 
-            LoadImageHelper().loadImage(p).observe(this.activity as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
-        }
+            adapter.notifyDataSetChanged()
+        })
     }
 
     private fun init() {

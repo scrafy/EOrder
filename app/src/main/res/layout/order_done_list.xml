@@ -24,8 +24,7 @@
                 android:id="@+id/textView_order_done_list_center_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                 />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,9 +59,53 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="39.59€"
-                    android:textStyle="bold"
                     android:textColor="@color/primaryText"
-                    android:textSize="15dp"></TextView>
+                    android:textSize="15dp"
+                    android:textStyle="bold"></TextView>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ref. 563985421"
+                    android:textColor="@color/secondaryText"
+                    android:textStyle="bold"
+                    android:id="@+id/textView_order_done_list_ref"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/04/2020 13:45:00 UTC"
+                    android:textColor="@color/secondaryText"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold"
+                    android:id="@+id/textView_order_done_list_date"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/button_order_list_repeat"
@@ -72,10 +115,9 @@
                     android:background="@color/colorPrimary"
                     android:text="@string/button_order_list_repeat"
                     android:textColor="@android:color/white"></Button>
-
             </LinearLayout>
+
+
         </LinearLayout>
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

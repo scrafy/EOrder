@@ -17,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.*
+import kotlin.math.abs
+import kotlin.random.Random.Default.nextInt
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ShopViewModel : BaseViewModel() {
@@ -76,6 +78,7 @@ class ShopViewModel : BaseViewModel() {
 
         var order = unitOfWorkService.getShopService().getOrder().clone()
         order.createdAt = Date.from(Instant.now())
+        order.id = abs(nextInt())
         orders.orders.add(order)
 
         unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(

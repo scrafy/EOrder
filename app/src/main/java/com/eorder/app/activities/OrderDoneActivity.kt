@@ -17,7 +17,7 @@ import com.eorder.app.widgets.*
 import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.application.extensions.toBitmap
+import com.eorder.application.extensions.*
 import com.eorder.application.models.UrlLoadedImage
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
@@ -27,6 +27,9 @@ import kotlinx.android.synthetic.main.activity_order_done.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import pl.droidsonroids.gif.GifDrawable
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
@@ -180,6 +183,9 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
             view.findViewById<ImageView>(R.id.textView_order_done_list_center_image)
                 .setImageBitmap(order.center.imageBase64?.toBitmap())
         }
+
+        view.findViewById<TextView>(R.id.textView_order_done_list_ref).text = "Ref. ${order.id}"
+        view.findViewById<TextView>(R.id.textView_order_done_list_date).text = order.createdAt.toCustomDateFormatString("dd/MM/yyyy HH:mm:ss")
 
     }
 

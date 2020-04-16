@@ -40,6 +40,15 @@ class LoadImageHelper : KoinComponent {
     }
 
     fun loadImage(
+        obj: List<ILoadImageFields>
+    ): LiveData<Any> {
+
+
+        return loadImageService.loadImage(obj)
+
+    }
+
+    fun loadImage(
         obj: ILoadImageFields
     ): LiveData<Any> {
 

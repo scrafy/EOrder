@@ -10,8 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.extensions.toBase64
 import com.eorder.application.interfaces.ILoadImagesService
-import com.eorder.domain.interfaces.ILoadImageFields
 import com.eorder.application.models.UrlLoadedImage
+import com.eorder.domain.interfaces.ILoadImageFields
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,28 +91,50 @@ class LoadImagesService : KoinComponent, ILoadImagesService {
 
     }
 
-    override fun loadImage(obj: ILoadImageFields): LiveData<Any> {
+    override fun loadImage(list: List<ILoadImageFields>): LiveData<Any> {
 
-        var bitMap: Bitmap? = null
+        var bitMap: Bitmap
         val picasso: Picasso =
             Picasso.Builder(getKoin().rootScope.androidContext()).build()
+
+        if ( list.isEmpty())
+            return resultImageObservable
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            list.filter { p -> p.imageUrl != null }.forEach { p ->
+
+                try {
+                    bitMap = picasso.load(p.imageUrl).get()
+                    p.image = bitMap
+
+                } catch (ex: Exception) {
+                    p.image = null
+                }
+            }
+            resultImageObservable.postValue(null)
+        }
+        return resultImageObservable
+
+    }
+
+    override fun loadImage(obj: ILoadImageFields): LiveData<Any> {
+
+        var bitMap: Bitmap
+        val picasso: Picasso =
+            Picasso.Builder(getKoin().rootScope.androidContext()).build()
+
 
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
-                if (obj.imageUrl == null)
-                    resultImageObservable.postValue(null)
-                else {
-                    bitMap = picasso.load(obj.imageUrl).get()
-                    obj.image = bitMap as Bitmap
-                    resultImageObservable.postValue(obj)
-                }
+                bitMap = picasso.load(obj.imageUrl).get()
+                obj.image = bitMap
 
             } catch (ex: Exception) {
-                bitMap = null
-                resultImageObservable.postValue(null)
+                obj.image = null
             }
-
+            resultImageObservable.postValue(null)
         }
         return resultImageObservable
 
