@@ -40,7 +40,7 @@ class RecoverPasswordActivity : AppCompatActivity(),
     }
 
     override fun showMessage(message: String) {
-
+        clearEditTextAndFocus()
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_recover_password_activity_root),
@@ -149,7 +149,7 @@ class RecoverPasswordActivity : AppCompatActivity(),
 
     }
 
-    override fun clearEditTextAndFocus() {
+     fun clearEditTextAndFocus() {
 
         findViewById<EditText>(R.id.editText_recover_password_activity_confirm_password).text.clear()
         findViewById<EditText>(R.id.editText_recover_password_activity_new_password).text.clear()

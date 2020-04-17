@@ -3,6 +3,7 @@ package com.eorder.infrastructure.repositories
 import com.eorder.domain.interfaces.ICenterRepository
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerData
+import com.eorder.domain.models.ServerError
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
 

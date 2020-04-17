@@ -6,18 +6,21 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.application.interfaces.IManageFormErrors
-import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.LoginViewModel
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.IManageFormErrors
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Login
-import com.eorder.domain.models.ValidationError
 import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.ValidationError
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -68,7 +71,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
     }
 
     override fun showMessage(message: String) {
-
+        clearEditTextAndFocus()
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_login_activity_root),
@@ -77,7 +80,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         ).show()
     }
 
-    override fun clearEditTextAndFocus() {
+    fun clearEditTextAndFocus() {
         findViewById<EditText>(R.id.editText_username).text.clear()
         findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
@@ -104,7 +107,8 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_username).error = null
+                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_username).error =
+                    null
             }
         })
 
@@ -117,7 +121,8 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_password).error = null
+                findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_password).error =
+                    null
             }
         })
 

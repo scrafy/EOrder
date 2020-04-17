@@ -38,7 +38,7 @@ class MainViewModel : BaseViewModel() {
 
     fun activateCenter(code: String) {
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
             activateCenterResult.postValue(unitOfWorkUseCase.getActivateCenterUseCase().activateCenter(code))
         }
 

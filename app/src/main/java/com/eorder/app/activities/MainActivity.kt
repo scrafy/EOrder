@@ -4,8 +4,9 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +19,6 @@ import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.ValidationError
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -37,16 +37,13 @@ class MainActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormError
         init()
     }
 
-    override fun clearEditTextAndFocus() {
-        button_activity_main_code_input.text.clear()
-    }
-
     override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_main_error_validation_message.text =
             errors?.firstOrNull { it -> it.fieldName == "centerCode" }?.errorMessage
     }
 
     override fun showMessage(message: String) {
+        button_activity_main_code_input.text.clear()
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_activity_main_conatiner),
@@ -59,7 +56,24 @@ class MainActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormError
 
         model.activateCenterResult.observe(this as LifecycleOwner, Observer<Any> {
 
-            AlertDialogOk(this, "Center activated", "The center has been activated correctly", "OK") { d, i ->}.show()
+            button_activity_main_code_input.text.clear()
+
+            AlertDialogOk(
+                this,
+                "Center activated",
+                "The center has been activated correctly",
+                "OK"
+            ) { d, i ->
+                startActivity(Intent(this, LoginActivity::class.java))
+            }.show()
+
+
+        })
+
+        model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
+
+            model.getManagerExceptionService().manageException(this, ex)
+
         })
     }
 
@@ -74,6 +88,22 @@ class MainActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormError
 
             model.activateCenter(button_activity_main_code_input.text.toString())
         }
+
+        button_activity_main_code_input.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                textView_activity_main_error_validation_message.text = ""
+            }
+
+        })
 
     }
 

@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/red"
+            android:textColor="@android:color/holo_red_dark"
             android:id="@+id/textView_activity_main_error_validation_message"
             android:layout_marginTop="5dp"
             ></TextView>
