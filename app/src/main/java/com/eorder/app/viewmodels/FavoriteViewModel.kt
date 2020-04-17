@@ -3,7 +3,6 @@ package com.eorder.app.viewmodels
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -22,9 +21,6 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
 
     fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
 
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
-
     fun removeProductFromFavorites(context: Context, productId: Int) {
         unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
@@ -41,7 +37,4 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
 
     }
 
-    fun addProductToShop(context: Context, product: Product) {
-        unitOfWorkService.getAddProductToShopService().addProductToShop(context, product)
-    }
 }

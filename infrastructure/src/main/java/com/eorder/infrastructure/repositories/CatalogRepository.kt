@@ -45,7 +45,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     10,
                     3,
                     "Cofarma",
-                    "https://scontent.ftfn1-1.fna.fbcdn.net/v/t1.0-9/13332828_1039276322793124_4089080411421114817_n.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=sy4PpKjbQ4sAX8FM-2o&_nc_ht=scontent.ftfn1-1.fna&oh=4584ecca6b1731b42bca209a6f555f0a&oe=5E98C446"
+                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
                 )
             )
             catalogs.add(
@@ -89,7 +89,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     10,
                     3,
                     "Cofarma",
-                    "https://scontent.ftfn1-1.fna.fbcdn.net/v/t1.0-9/13332828_1039276322793124_4089080411421114817_n.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=sy4PpKjbQ4sAX8FM-2o&_nc_ht=scontent.ftfn1-1.fna&oh=4584ecca6b1731b42bca209a6f555f0a&oe=5E98C446"
+                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
                 )
             )
             catalogs.add(
@@ -133,7 +133,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     10,
                     3,
                     "Cofarma",
-                    "https://scontent.ftfn1-1.fna.fbcdn.net/v/t1.0-9/13332828_1039276322793124_4089080411421114817_n.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=sy4PpKjbQ4sAX8FM-2o&_nc_ht=scontent.ftfn1-1.fna&oh=4584ecca6b1731b42bca209a6f555f0a&oe=5E98C446"
+                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
                 )
             )
             catalogs.add(
@@ -177,7 +177,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     10,
                     3,
                     "Cofarma",
-                    "https://scontent.ftfn1-1.fna.fbcdn.net/v/t1.0-9/13332828_1039276322793124_4089080411421114817_n.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=sy4PpKjbQ4sAX8FM-2o&_nc_ht=scontent.ftfn1-1.fna&oh=4584ecca6b1731b42bca209a6f555f0a&oe=5E98C446"
+                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
                 )
             )
             catalogs.add(

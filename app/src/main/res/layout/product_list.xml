@@ -30,7 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:id="@+id/linearLayout_product_list_info_container"
             >
 
@@ -38,7 +40,6 @@
                 android:id="@+id/textView_products_list_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="5dp"
                 android:singleLine="false"
                 android:text="Alimentacion"
@@ -71,16 +72,19 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:id="@+id/linearLayout_product_list_add_container"
+                >
 
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-
+                    android:id="@+id/linearLayout_product_list_add_container_icons"
                     >
 
                     <ImageView

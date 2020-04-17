@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -130,16 +131,6 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                     { _, _ -> }
                 ).show()
             }
-
-        view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
-
-            model.addProductToShop(this, obj)
-        }
-
-        view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
-
-            model.addProductToShop(this, obj)
-        }
     }
 
     override fun onResume() {
@@ -168,10 +159,15 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        if ( product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(product.image)
+        if (product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
+                product.image
+            )
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+
+        view.findViewById<LinearLayout>(R.id.linearLayout_product_list_add_container)
+            .removeView(view.findViewById<LinearLayout>(R.id.linearLayout_product_list_add_container_icons))
 
     }
 

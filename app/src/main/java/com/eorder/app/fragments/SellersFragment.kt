@@ -28,13 +28,10 @@ import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.SellersViewModel
-import com.eorder.application.extensions.toBitmap
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
 
 @RequiresApi(Build.VERSION_CODES.O)
 class SellersFragment : BaseFragment(),

@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.application.enums.SharedPreferenceKeyEnum
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -34,8 +33,6 @@ class ProductsViewModel : BaseViewModel() {
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
 
     fun addProductToShop(product: Product) =
         unitOfWorkService.getShopService().addProductToShop(product)

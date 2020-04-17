@@ -8,9 +8,7 @@ import android.widget.ImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.extensions.toBase64
 import com.eorder.application.interfaces.ILoadImagesService
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.interfaces.ILoadImageFields
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -22,34 +20,10 @@ import org.koin.core.KoinComponent
 
 class LoadImagesService : KoinComponent, ILoadImagesService {
 
-    private var picasso: Picasso =
-        Picasso.Builder(getKoin().rootScope.androidContext()).build()
-
-
-    private val resultImageBase64Observable: MutableLiveData<List<UrlLoadedImage>> =
-        MutableLiveData()
 
     private val resultImageObservable: MutableLiveData<Any> =
         MutableLiveData()
 
-
-    override fun loadImages(list: List<UrlLoadedImage>): LiveData<List<UrlLoadedImage>> {
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            list.filter { item -> item.imageUrl != null }.forEach { item ->
-
-                try {
-                    item.imageBase64 = picasso.load(item.imageUrl).get().toBase64()
-                } catch (ex: Exception) {
-
-                }
-            }
-            resultImageBase64Observable.postValue(list)
-        }
-        return resultImageBase64Observable
-    }
 
     override fun loadImage(img: ImageView, default: Drawable?, url: String, isCircle: Boolean) {
 

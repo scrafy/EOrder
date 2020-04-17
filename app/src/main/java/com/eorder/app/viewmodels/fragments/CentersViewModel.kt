@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.*
@@ -25,8 +24,5 @@ class CentersViewModel : BaseViewModel() {
             getCentersResult.postValue(result)
         }
     }
-
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
 
  }

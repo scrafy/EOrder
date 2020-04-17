@@ -1,26 +1,16 @@
 package com.eorder.app.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.helpers.paintEditTextUnderLines
 import com.eorder.app.viewmodels.fragments.SellerInfoFragmentViewModel
-import com.eorder.application.models.UrlLoadedImage
-import com.eorder.domain.models.Center
 import com.eorder.domain.models.Seller
-import kotlinx.android.synthetic.main.fragment_center_info.*
-import kotlinx.android.synthetic.main.fragment_seller_info.*
 import kotlinx.android.synthetic.main.fragment_seller_info.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
 
 
 class SellerInfoFragment : BaseFragment() {
@@ -62,7 +52,7 @@ class SellerInfoFragment : BaseFragment() {
         LoadImageHelper().loadImage(
             seller.imageUrl,
             imgView_fragment_seller_seller_image,
-            true
+            false
         )
 
         paintEditTextUnderLines(

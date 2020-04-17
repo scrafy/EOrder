@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.adapters.ShopAdapter
@@ -184,6 +185,13 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private fun init() {
 
         products = model.getProducts()
+        if (products.filter { p -> p.image == null }.isNotEmpty())
+            LoadImageHelper().loadImage(products.filter { p -> p.image == null }).observe(
+                this as LifecycleOwner,
+                Observer {
+
+                    adapter.notifyDataSetChanged()
+                })
         setProductsFavoriteState(products)
         adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)

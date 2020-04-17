@@ -1,5 +1,6 @@
 package com.eorder.app.activities
 
+
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import com.eorder.app.R
@@ -23,9 +24,13 @@ class CartBreakdownActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_breakdown)
         model = getViewModel()
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         init()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 
 

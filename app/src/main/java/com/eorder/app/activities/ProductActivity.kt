@@ -225,6 +225,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 .setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
+
+        view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
     }
 
     private fun init() {

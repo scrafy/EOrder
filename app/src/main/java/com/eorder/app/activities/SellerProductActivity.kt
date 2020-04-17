@@ -3,7 +3,6 @@ package com.eorder.app.activities
 import android.os.Bundle
 import android.text.Html
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -47,7 +46,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var recyclerView: RecyclerView
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var sellers: List<Seller>
-    private lateinit var centers: List<Center>
+    private var centers: List<Center> = listOf()
     private var products: List<Product> = listOf()
     private var sellerSelected: Int = 0
     private var centerSelected: Int = 0
@@ -204,6 +203,8 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 .setBackgroundResource(R.drawable.ic_corazon_outline)
 
         }
+
+        view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
     }
 
     private fun loadImages() {
@@ -314,7 +315,8 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
                 sellerSelected = sellers[position].id
-                model.getProductsBySeller(centerSelected, sellerSelected)
+                if (centerSelected != 0)
+                    model.getProductsBySeller(centerSelected, sellerSelected)
 
             }
 
@@ -373,6 +375,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getSellersResultObservable()
             .observe(this, Observer<ServerResponse<List<Seller>>> {
 
+
                 sellers = it.serverData?.data ?: listOf()
                 sellerSelected = intent.getIntExtra("sellerId", 0)
                 sellerViewPager.adapter = SellerProducSellertListAdapter(this, sellers)
@@ -409,42 +412,54 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 products = it.serverData?.data ?: listOf()
-                if (products.isEmpty()) {
+
+                if (centers.isEmpty()) {
+
                     AlertDialogOk(
                         this,
-                        "No products",
-                        "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any product from seller ${sellers.find { s -> s.id == sellerSelected }?.companyName}",
+                        "No centers",
+                        "There was a problem trying to load centers",
                         "OK"
 
                     ) { d, i ->
 
                     }.show()
-                    productsAdapter.products = products
-                    productsAdapter.notifyDataSetChanged()
                 } else {
+                    if (products.isEmpty()) {
+                        AlertDialogOk(
+                            this,
+                            "No products",
+                            "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any product from seller ${sellers.find { s -> s.id == sellerSelected }?.companyName}",
+                            "OK"
+
+                        ) { d, i ->
+
+                        }.show()
+                        productsAdapter.products = products
+                        productsAdapter.notifyDataSetChanged()
+                    } else {
 
 
-                    setFavorites()
-                    productSpinners = FilterProductSpinners(
-                        this,
-                        products,
-                        spinner_product_list_categories,
-                        spinner_product_list_order,
-                        { pos ->
+                        setFavorites()
+                        productSpinners = FilterProductSpinners(
+                            this,
+                            products,
+                            spinner_product_list_categories,
+                            spinner_product_list_order,
+                            { pos ->
 
-                            onSelectedCategory(pos)
-                        },
-                        { pos ->
+                                onSelectedCategory(pos)
+                            },
+                            { pos ->
 
-                            onSelectedOrder(pos)
-                        }
-                    )
-                    productsAdapter.products = products
-                    loadImages()
+                                onSelectedOrder(pos)
+                            }
+                        )
+                        productsAdapter.products = products
+                        loadImages()
 
+                    }
                 }
-
-
             })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->

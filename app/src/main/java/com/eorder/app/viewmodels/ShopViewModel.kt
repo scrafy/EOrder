@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.extensions.clone
 import com.eorder.application.models.OrdersWrapper
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -89,8 +88,6 @@ class ShopViewModel : BaseViewModel() {
         )
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
 
     fun writeProductsFavorites(context: Context, productId: Int) {
 

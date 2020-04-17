@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -30,8 +29,6 @@ class OrderDoneViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
 
     fun isShopEmpty(): Boolean = unitOfWorkService.getShopService().isShopEmpty()
     fun setOrder(order: Order) {

@@ -13,22 +13,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.adapters.OrderDoneAdapter
+import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.widgets.*
 import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.application.extensions.*
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_order_done.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import pl.droidsonroids.gif.GifDrawable
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -50,21 +46,6 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
     }
 
-
-    private fun loadImages(items: List<UrlLoadedImage>) =
-
-        model.loadImages(items)
-            .observe(this, Observer<List<UrlLoadedImage>> { items ->
-
-                items.forEach { item ->
-
-                    this.orders.filter { o -> o.center.centerId == item.id }
-                        .forEach { o -> o.center.imageBase64 = item.imageBase64 }
-                }
-                adapter.notifyDataSetChanged()
-            })
-
-
     private fun setObservers() {
 
         model.getOrdersDoneResultObservable().observe(this, Observer<ServerResponse<List<Order>>> {
@@ -72,14 +53,6 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
             orders = it.serverData?.data ?: listOf()
             adapter.orders = orders.sortedByDescending { o -> o.createdAt }
             adapter.notifyDataSetChanged()
-            val items = orders.filter { o -> o.center.centerImageUrl != null }.map { o ->
-                UrlLoadedImage(
-                    o.center.centerId!!,
-                    null,
-                    o.center.centerImageUrl!!
-                )
-            }
-            loadImages(items.distinct())
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -169,24 +142,10 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
                 .addView(textView)
         }
 
-        if (order.center.imageBase64 == null) {
-
-            try {
-                view.findViewById<ImageView>(R.id.textView_order_done_list_center_image)
-                    .setImageDrawable(GifDrawable(this.resources, R.drawable.loading))
-            } catch (ex: Exception) {
-                var t = ex
-            }
-
-
-        } else {
-            view.findViewById<ImageView>(R.id.textView_order_done_list_center_image)
-                .setImageBitmap(order.center.imageBase64?.toBitmap())
-        }
-
         view.findViewById<TextView>(R.id.textView_order_done_list_ref).text = "Ref. ${order.id}"
         view.findViewById<TextView>(R.id.textView_order_done_list_date).text = order.createdAt.toCustomDateFormatString("dd/MM/yyyy HH:mm:ss")
 
+        LoadImageHelper().loadImage(order.center.imageUrl, view.findViewById(R.id.textView_order_done_list_center_image), true )
     }
 
     private fun init() {

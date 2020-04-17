@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
-import com.eorder.application.models.UrlLoadedImage
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -31,9 +30,6 @@ class SellersViewModel : BaseViewModel() {
             getSellersResult.postValue(result)
         }
     }
-
-    fun loadImages(list: List<UrlLoadedImage>) =
-        unitOfWorkService.getLoadImageService().loadImages(list)
 
 }
 

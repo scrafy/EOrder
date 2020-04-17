@@ -24,7 +24,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -231,7 +231,10 @@
                     android:id="@+id/listView_activity_shop_product_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="50dp" />
+                    android:scrollbars="none"
+                    android:padding="0px"
+                    android:layout_marginBottom="70dp"
+                    />
 
             </LinearLayout>
 

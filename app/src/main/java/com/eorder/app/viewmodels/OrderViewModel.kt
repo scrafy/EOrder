@@ -13,7 +13,7 @@ class OrderViewModel : BaseMainMenuActionsViewModel() {
 
         unitOfWorkService.getShopService().getOrder().center.centerId = centerId
         unitOfWorkService.getShopService().getOrder().center.centerName = centerName
-        unitOfWorkService.getShopService().getOrder().center.centerImageUrl = centerImageUrl
+        unitOfWorkService.getShopService().getOrder().center.imageUrl = centerImageUrl
     }
 
     fun addSellerToOrder(sellerId: Int, sellerName: String) {

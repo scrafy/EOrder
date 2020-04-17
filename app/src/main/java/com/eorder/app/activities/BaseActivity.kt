@@ -1,5 +1,6 @@
 package com.eorder.app.activities
 
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -11,5 +12,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onStart() {
         this.checkValidSession()
         super.onStart()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }

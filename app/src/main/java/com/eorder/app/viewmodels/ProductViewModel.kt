@@ -60,8 +60,6 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
-    fun loadImage(img: ImageView, default: Drawable, url: String, isCircle: Boolean) =
-        unitOfWorkService.getLoadImageService().loadImage(img, default, url, isCircle)
 
     fun writeProductsFavorites(context: Context, productId: Int) {
 
