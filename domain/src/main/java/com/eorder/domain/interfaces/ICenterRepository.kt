@@ -6,5 +6,6 @@ import com.eorder.domain.models.ServerResponse
 interface ICenterRepository {
 
     fun getUserCenters() : ServerResponse<List<Center>>
+    fun activateCenter(code:String) : ServerResponse<Any>
 
 }

@@ -3,13 +3,17 @@ package com.eorder.app.viewmodels
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.app.viewmodels.BaseViewModel
+import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
-
-import java.lang.Exception
+import com.eorder.domain.models.ServerResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel : BaseViewModel() {
+
+    val activateCenterResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
 
     fun isLogged(): Boolean = unitOfWorkService.getJwtTokenService().isValidToken()
 
@@ -30,5 +34,13 @@ class MainViewModel : BaseViewModel() {
             }
 
         }
+    }
+
+    fun activateCenter(code: String) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            activateCenterResult.postValue(unitOfWorkUseCase.getActivateCenterUseCase().activateCenter(code))
+        }
+
     }
 }

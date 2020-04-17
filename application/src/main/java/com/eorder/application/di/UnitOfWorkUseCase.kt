@@ -22,11 +22,11 @@ class UnitOfWorkUseCase(
     private var orderSummaryTotalsUseCase: IOrderSummaryTotalsUseCase? = null
     private var productsByCatalogUseCase: IProductsByCatalogUseCase? = null
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
-    private var sellersByCenterUseCase: ISellersByCenterUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
     private var sellerUseCase: ISellerUseCase? = null
     private var sellersUseCase: ISellersUseCase? = null
     private var productsBySellerUseCase: IProductsBySellerUseCase? = null
+    private var activateCenterUseCase: IActivateCenterUseCase? = null
 
 
     fun getCentersUseCase(): IUserCentersUseCase {
@@ -39,15 +39,16 @@ class UnitOfWorkUseCase(
         return centersUseCase as IUserCentersUseCase
     }
 
-    fun getSellersByCenterUseCase(): ISellersByCenterUseCase {
+    fun getActivateCenterUseCase(): IActivateCenterUseCase {
 
-        if (sellersByCenterUseCase == null)
-            sellersByCenterUseCase = SellersByCenterUseCase(
-                unitOfWorkRepository.getSellerRepository()
+        if (activateCenterUseCase == null)
+            activateCenterUseCase = ActivateCenterUseCase(
+                unitOfWorkRepository.getCenterRepository()
             )
 
-        return sellersByCenterUseCase as ISellersByCenterUseCase
+        return activateCenterUseCase as IActivateCenterUseCase
     }
+
 
     fun getProductsBySellerUseCase(): IProductsBySellerUseCase {
 

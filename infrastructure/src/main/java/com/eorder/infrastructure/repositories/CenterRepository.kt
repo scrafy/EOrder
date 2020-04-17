@@ -5,9 +5,23 @@ import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.google.gson.Gson
 
 class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
+
+
+    override fun activateCenter(code: String):  ServerResponse<Any> {
+
+        var response: ServerResponse<Any> =
+            ServerResponse(
+                200,
+                null,
+                null
+
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
 
     override fun getUserCenters(): ServerResponse<List<Center>> {
 
