@@ -27,7 +27,7 @@ class LandingActivity : BaseMenuActivity() {
     private fun setListeners() {
 
 
-        textView_landing_activity_make_order.setOnClickListener {
+       /* textView_landing_activity_make_order.setOnClickListener {
 
             startActivity(Intent(this, OrderActivity::class.java))
         }
@@ -52,7 +52,7 @@ class LandingActivity : BaseMenuActivity() {
 
         textView_seller.setOnClickListener{
             startActivity(Intent(this, SellerActivity::class.java))
-        }
+        }*/
     }
 
     override fun onBackPressed() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/dwrLayout_drawerlayout"
@@ -25,135 +25,381 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent">
 
-                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="@drawable/shape_landing_background"></RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/textView_seller"
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/shape_landing_card"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="20dp"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_landing_card"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="20dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_center"></ImageView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:text="My centers"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"></TextView>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_marginTop="60dp"
-                        android:layout_marginEnd="48dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_servicio"
-                        android:gravity="center"
-                        android:padding="20dp"
-                        android:text="Providers"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="MissingConstraints"></TextView>
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/shape_landing_card"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp"
+                        app:layout_constraintEnd_toEndOf="parent">
 
-                    <TextView
-                        android:id="@+id/textView_landing_activity_orders_done"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="44dp"
-                        android:layout_marginEnd="48dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_folleto"
-                        android:gravity="center"
-                        android:padding="20dp"
-                        android:text="Orders done"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_seller"
-                        tools:ignore="MissingConstraints"></TextView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/shape_landing_card"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
 
-                    <TextView
-                        android:id="@+id/textView_center"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginTop="60dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_centros"
-                        android:gravity="center"
-                        android:padding="20dp"
-                        android:text="Centers"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="MissingConstraints"
+                            >
 
-                        ></TextView>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="20dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_seller"></ImageView>
 
-                    <TextView
-                        android:id="@+id/textView_product"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginTop="44dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_producto"
-                        android:gravity="center"
-                        android:padding="20dp"
-                        android:text="Products"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_center"
-                        tools:ignore="MissingConstraints"></TextView>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:text="Sellers"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="18dp"
+                                android:textStyle="bold"></TextView>
 
-                    <TextView
-                        android:id="@+id/textView_landing_page_favorite_products"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="48dp"
-                        android:layout_marginTop="60dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_heart"
-                        android:gravity="center"
-                        android:padding="20dp"
-                        android:text="@string/landing_activity_favorties"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_product"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:ignore="MissingConstraints"></TextView>
+                        </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textView_landing_activity_make_order"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="60dp"
-                        android:layout_marginEnd="48dp"
-                        android:background="@drawable/shape_burbles_landing_page"
-                        android:drawableTop="@drawable/ic_comprar"
-                        android:gravity="center"
-                        android:padding="15dp"
-                        android:text="Make a order"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView_landing_activity_orders_done"
-                        app:layout_constraintVertical_bias="0.005"
-                        tools:ignore="MissingConstraints"></TextView>
+                    </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/shape_landing_card"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_landing_card"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="20dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_seller"></ImageView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:text="Sellers"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"></TextView>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/shape_landing_card"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_landing_card"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="20dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_catalogs"></ImageView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:text="Catalogs"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"></TextView>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/shape_landing_card"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="3dp"
+                                android:background="@drawable/shape_landing_card"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="20dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_orden"></ImageView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:text="Orders placed"
+                                    android:singleLine="false"
+                                    android:maxLines="2"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"></TextView>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/shape_landing_card"
+                            app:cardCornerRadius="10dp"
+                            app:cardElevation="10dp"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="3dp"
+                                android:background="@drawable/shape_landing_card"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="20dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_make_order"></ImageView>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15dp"
+                                    android:text="Make order"
+                                    android:singleLine="false"
+                                    android:maxLines="2"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold"></TextView>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <!--  <TextView
+                              android:id="@+id/textView_seller"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginTop="60dp"
+                              android:layout_marginEnd="48dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_servicio"
+                              android:gravity="center"
+                              android:padding="20dp"
+                              android:text="Providers"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintEnd_toEndOf="parent"
+                              app:layout_constraintTop_toTopOf="parent"
+                              tools:ignore="MissingConstraints"></TextView>
+
+                          <TextView
+                              android:id="@+id/textView_landing_activity_orders_done"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginTop="44dp"
+                              android:layout_marginEnd="48dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_folleto"
+                              android:gravity="center"
+                              android:padding="20dp"
+                              android:text="Orders done"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintEnd_toEndOf="parent"
+                              app:layout_constraintTop_toBottomOf="@+id/textView_seller"
+                              tools:ignore="MissingConstraints"></TextView>
+
+                          <TextView
+                              android:id="@+id/textView_center"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginStart="48dp"
+                              android:layout_marginTop="68dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_centros"
+                              android:gravity="center"
+                              android:padding="20dp"
+                              android:text="Centers"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintStart_toStartOf="parent"
+                              app:layout_constraintTop_toTopOf="parent"
+
+                              tools:ignore="MissingConstraints"></TextView>
+
+                          <TextView
+                              android:id="@+id/textView_product"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginStart="48dp"
+                              android:layout_marginTop="44dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_producto"
+                              android:gravity="center"
+                              android:padding="20dp"
+                              android:text="Products"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintStart_toStartOf="parent"
+                              app:layout_constraintTop_toBottomOf="@+id/textView_center"
+                              tools:ignore="MissingConstraints"></TextView>
+
+                          <TextView
+                              android:id="@+id/textView_landing_page_favorite_products"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginStart="48dp"
+                              android:layout_marginTop="60dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_heart"
+                              android:gravity="center"
+                              android:padding="20dp"
+                              android:text="@string/landing_activity_favorties"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintBottom_toBottomOf="parent"
+                              app:layout_constraintStart_toStartOf="parent"
+                              app:layout_constraintTop_toBottomOf="@+id/textView_product"
+                              app:layout_constraintVertical_bias="0.0"
+                              tools:ignore="MissingConstraints"></TextView>
+
+                          <TextView
+                              android:id="@+id/textView_landing_activity_make_order"
+                              android:layout_width="120dp"
+                              android:layout_height="120dp"
+                              android:layout_marginTop="60dp"
+                              android:layout_marginEnd="48dp"
+                              android:background="@drawable/shape_burbles_landing_page"
+                              android:drawableTop="@drawable/ic_comprar"
+                              android:gravity="center"
+                              android:padding="15dp"
+                              android:text="Make a order"
+                              android:textAlignment="center"
+                              android:textColor="@android:color/black"
+                              android:textStyle="bold"
+                              app:layout_constraintBottom_toBottomOf="parent"
+                              app:layout_constraintEnd_toEndOf="parent"
+                              app:layout_constraintTop_toBottomOf="@+id/textView_landing_activity_orders_done"
+                              app:layout_constraintVertical_bias="0.005"
+                              tools:ignore="MissingConstraints"></TextView>-->
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
 
         </LinearLayout>
 
@@ -167,14 +413,14 @@
             app:menu="@menu/navigation_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cart_floating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_full_cart_white"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:elevation="15dp"
-        android:layout_gravity="bottom|end"
-        android:id="@+id/cart_floating_button"
-        />
+        android:src="@drawable/ic_full_cart_white" />
 </FrameLayout>
 
