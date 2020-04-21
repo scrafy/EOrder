@@ -4,5 +4,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IActivateCenterUseCase {
 
-    fun activateCenter(code:String): ServerResponse<Any>
+    fun activateCenter(code:String, email: String): ServerResponse<Boolean>
 }

@@ -1,6 +1,5 @@
 package com.eorder.infrastructure.repositories
 
-
 import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.models.*
 import com.eorder.infrastructure.interfaces.IHttpClient
@@ -10,6 +9,18 @@ import com.eorder.infrastructure.services.ProductsService
 class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
     IUserRepository {
 
+
+    override fun createAccount(account: Account): ServerResponse<Any> {
+
+        val response = ServerResponse<Any>(
+            200,
+            null,
+            null
+        )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
 
     override fun getFavoriteProducts(favorites: List<Int>): ServerResponse<List<Product>> {
 

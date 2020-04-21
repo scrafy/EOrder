@@ -112,7 +112,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/shape_boton_rounded"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="@string/button_order_list_repeat"
                     android:textColor="@android:color/white"></Button>
             </LinearLayout>

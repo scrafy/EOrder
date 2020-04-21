@@ -27,32 +27,32 @@ class LandingActivity : BaseMenuActivity() {
     private fun setListeners() {
 
 
-       /* textView_landing_activity_make_order.setOnClickListener {
+        cardView_activity_landing_make_order.setOnClickListener {
 
             startActivity(Intent(this, OrderActivity::class.java))
         }
 
-        textView_landing_page_favorite_products.setOnClickListener {
+        cardView_activity_landing_favorites.setOnClickListener {
 
             startActivity(Intent(this, FavoriteActivity::class.java))
         }
 
-        textView_landing_activity_orders_done.setOnClickListener {
+        cardView_activity_landing_orders.setOnClickListener {
 
             startActivity(Intent(this, OrderDoneActivity::class.java))
         }
 
-        textView_product.setOnClickListener{
+        cardView_activity_landing_catalogs.setOnClickListener{
             startActivity(Intent(this, ProductActivity::class.java))
         }
 
-        textView_center.setOnClickListener{
+        cardView_activity_landing_centers.setOnClickListener{
             startActivity(Intent(this, CenterActivity::class.java))
         }
 
-        textView_seller.setOnClickListener{
+        cardView_activity_landing_sellers.setOnClickListener{
             startActivity(Intent(this, SellerActivity::class.java))
-        }*/
+        }
     }
 
     override fun onBackPressed() {

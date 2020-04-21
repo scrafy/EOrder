@@ -59,7 +59,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_blue_borders_rectangle"
             android:hint="Code..."
-            android:id="@+id/button_activity_main_code_input"
+            android:id="@+id/editText_activity_main_code_input"
             android:padding="12dp" />
 
         <TextView
@@ -75,6 +75,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/shape_boton_rounded"
             android:backgroundTint="@color/colorPrimary"
             android:text="Activate center"
             android:textColor="@android:color/white"

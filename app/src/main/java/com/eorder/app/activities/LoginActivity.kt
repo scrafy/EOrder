@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         ).show()
     }
 
-    fun clearEditTextAndFocus() {
+    private fun clearEditTextAndFocus() {
         findViewById<EditText>(R.id.editText_username).text.clear()
         findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()

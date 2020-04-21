@@ -60,10 +60,9 @@ class RecoverPasswordActivity : AppCompatActivity(),
                 "OK"
             ) { _, _ ->
 
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-
+                this.onBackPressed()
             }.show()
+
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -149,7 +148,7 @@ class RecoverPasswordActivity : AppCompatActivity(),
 
     }
 
-     fun clearEditTextAndFocus() {
+    private fun clearEditTextAndFocus() {
 
         findViewById<EditText>(R.id.editText_recover_password_activity_confirm_password).text.clear()
         findViewById<EditText>(R.id.editText_recover_password_activity_new_password).text.clear()

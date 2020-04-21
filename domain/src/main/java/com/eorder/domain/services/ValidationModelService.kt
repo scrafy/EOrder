@@ -1,9 +1,11 @@
 package com.eorder.domain.services
 
+import com.eorder.domain.attributes.RegexFormatValidation
 import com.eorder.domain.attributes.FieldEqualToOtherValidation
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.ValidationError
+import java.util.regex.Pattern
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
@@ -20,7 +22,7 @@ class ValidationModelService : IValidationModelService {
             .forEach { member ->
 
                 val value: Any? = member.get(model)
-                member.annotations.sortedBy { annotation -> (getValuesFromAnnotation(annotation)["executionOrder"])?.toInt() }
+                member.annotations.sortedBy { annotation -> annotation.javaClass.kotlin.memberProperties.find { it.name == "order" }?.get(annotation) as Int }
                     .forEach { annotation ->
 
                         if (annotation is NullOrEmptyStringValidation) {
@@ -29,8 +31,8 @@ class ValidationModelService : IValidationModelService {
 
                                 result.add(
                                     ValidationError(
-                                        getValuesFromAnnotation(annotation)["message"] ?: "",
-                                        member.name,
+                                        annotation.message ?: "",
+                                        annotation.name,
                                         model::class.simpleName ?: "",
                                         value.toString()
                                     )
@@ -40,12 +42,11 @@ class ValidationModelService : IValidationModelService {
 
                         } else if (annotation is FieldEqualToOtherValidation) {
 
-                            var anotationValues = getValuesFromAnnotation(annotation)
                             var memberToCompare =
                                 model.javaClass.kotlin.memberProperties.filter { member ->
 
                                     member.visibility == KVisibility.PUBLIC && member.name.equals(
-                                        anotationValues["fieldName"]
+                                        annotation.compareWith
                                     )
                                 }.first()
 
@@ -53,30 +54,31 @@ class ValidationModelService : IValidationModelService {
 
                                 result.add(
                                     ValidationError(
-                                        anotationValues["message"] ?: "",
-                                        member.name,
+                                        annotation.message ?: "",
+                                        annotation.name,
                                         model::class.simpleName ?: "",
                                         value.toString()
                                     )
                                 )
                             }
+                        } else if (annotation is RegexFormatValidation) {
+
+                            if (!Pattern.compile(annotation.pattern).matcher(value.toString()).matches()) {
+
+                                result.add(
+                                    ValidationError(
+                                        annotation.message,
+                                        annotation.name,
+                                        model::class.simpleName ?: "",
+                                        value.toString()
+                                    )
+                                )
+                            }
+
                         }
                     }
             }
         return result
     }
 
-    private fun getValuesFromAnnotation(annotation: Annotation): Map<String, String> {
-
-        val result: MutableMap<String, String> = mutableMapOf()
-        annotation.toString().split("(")[1].substring(
-            0,
-            annotation.toString().split("(")[1].length - 1
-        ).split(",").forEach { it ->
-
-            result[it.split("=")[0].trim()] = it.split("=")[1].trim()
-        }
-
-        return result
-    }
 }

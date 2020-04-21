@@ -1,10 +1,7 @@
 package com.eorder.infrastructure.repositories
 
 import com.eorder.domain.interfaces.ICenterRepository
-import com.eorder.domain.models.Center
-import com.eorder.domain.models.ServerData
-import com.eorder.domain.models.ServerError
-import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.*
 import com.eorder.infrastructure.interfaces.IHttpClient
 
 class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
@@ -22,6 +19,22 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
         checkServerErrorInResponse(response)
 
         return response
+    }
+
+    override fun activateCenter(code:CenterCode, email: Email): ServerResponse<Boolean> {
+
+        val response = ServerResponse(
+            200,
+            null,
+            ServerData(
+                false,
+                null
+            )
+        )
+        checkServerErrorInResponse(response)
+
+        return response
+
     }
 
     override fun getUserCenters(): ServerResponse<List<Center>> {

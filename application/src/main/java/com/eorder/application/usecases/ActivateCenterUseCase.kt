@@ -4,32 +4,32 @@ import com.eorder.application.interfaces.IActivateCenterUseCase
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.ModelValidationException
 import com.eorder.domain.interfaces.ICenterRepository
+import com.eorder.domain.interfaces.IValidationModelService
+import com.eorder.domain.models.CenterCode
+import com.eorder.domain.models.Email
 import com.eorder.domain.models.ServerResponse
-import com.eorder.domain.models.ValidationError
+
 
 class ActivateCenterUseCase(
 
-    private val centerRepository: ICenterRepository
+    private val centerRepository: ICenterRepository,
+    private val validationModelService: IValidationModelService
+
 ) : IActivateCenterUseCase {
 
-    override fun activateCenter(code: String): ServerResponse<Any> {
+    override fun activateCenter(code: String, email: String): ServerResponse<Boolean> {
 
-        if (code.isNullOrEmpty()) {
-            val errors = mutableListOf<ValidationError>()
-            errors.add(
-                ValidationError(
-                    "The center code can not be null or empty",
-                    "centerCode",
-                    null,
-                    code
-                )
-            )
+        val errors = validationModelService.validate(Email(email))
+
+        if (errors.isNotEmpty()) {
+
             throw ModelValidationException(
                 ErrorCode.VALIDATION_ERROR,
                 "Exists validation errors",
                 errors
             )
         }
-        return centerRepository.activateCenter(code)
+
+        return centerRepository.activateCenter(CenterCode(code), Email(email))
     }
 }

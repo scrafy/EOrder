@@ -135,7 +135,7 @@ class ProductsService{
                     "Saco Patatas 20kg",
                     "Saco Patatas 20kg",
                     "Hortalizas",
-                    "https://bonduelle.es/media/zoo/images/patata_781da11b65e9c08ff1fa4c25079f5fdb.jpg"
+                    "https://www.comprarpormalaga.com/Files/Images/References/2015/10/3a938dfb-a4b2-4743-b760-a792cb9f2a10/ebf90415-7bc2-419c-97e0-09e6ca69f6b6.jpeg"
                 )
             )
 

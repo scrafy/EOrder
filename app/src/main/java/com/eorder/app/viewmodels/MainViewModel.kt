@@ -5,10 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
+import com.eorder.domain.models.CenterCode
 import com.eorder.domain.models.ServerResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.eorder.domain.models.ValidationError
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel : BaseViewModel() {
@@ -36,11 +35,11 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
-    fun activateCenter(code: String) {
+    fun validateModel(code: String): List<ValidationError>? {
 
-        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-            activateCenterResult.postValue(unitOfWorkUseCase.getActivateCenterUseCase().activateCenter(code))
+        if (!unitOfWorkService.getValidationModelService().isModelValid(CenterCode(code))) {
+            return unitOfWorkService.getValidationModelService().validate(CenterCode(code))
         }
-
+        return null
     }
 }

@@ -21,6 +21,7 @@ import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
+import kotlinx.android.synthetic.main.header_navigation_view.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 

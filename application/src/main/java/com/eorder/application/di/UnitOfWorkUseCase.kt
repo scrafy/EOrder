@@ -27,6 +27,7 @@ class UnitOfWorkUseCase(
     private var sellersUseCase: ISellersUseCase? = null
     private var productsBySellerUseCase: IProductsBySellerUseCase? = null
     private var activateCenterUseCase: IActivateCenterUseCase? = null
+    private var createAccountUseCase: ICreateAccountUseCase? = null
 
 
     fun getCentersUseCase(): IUserCentersUseCase {
@@ -39,11 +40,23 @@ class UnitOfWorkUseCase(
         return centersUseCase as IUserCentersUseCase
     }
 
+    fun getCreateAccountUseCase(): ICreateAccountUseCase {
+
+        if (createAccountUseCase == null)
+            return CreateAccountUseCase(
+                unitOfWorkService.getValidationModelService(),
+                unitOfWorkRepository.getUserRepository()
+            )
+
+        return createAccountUseCase as ICreateAccountUseCase
+    }
+
     fun getActivateCenterUseCase(): IActivateCenterUseCase {
 
         if (activateCenterUseCase == null)
             activateCenterUseCase = ActivateCenterUseCase(
-                unitOfWorkRepository.getCenterRepository()
+                unitOfWorkRepository.getCenterRepository(),
+                unitOfWorkService.getValidationModelService()
             )
 
         return activateCenterUseCase as IActivateCenterUseCase

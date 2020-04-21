@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/toolbar"
-    android:background="?attr/colorPrimary"
+    android:background="@drawable/shape_blue_line"
     android:theme="@style/toolbar"
     android:minHeight="?attr/actionBarSize"
-    android:elevation="10dp"
+    android:elevation="50dp"
     app:popupTheme="@style/popupMenu"
-    app:title="@string/title"
-
-    >
+    app:title="@string/title">
 </androidx.appcompat.widget.Toolbar>
