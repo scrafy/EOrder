@@ -27,7 +27,7 @@ class SellerProductViewModel : BaseMainMenuActionsViewModel() {
     fun getProductsResultObservable(): LiveData<ServerResponse<List<Product>>> = productsResult
 
 
-    fun getAddFavoriteProductObservable(): LiveData<Any> =
+    fun getAddProductToCartObservable(): LiveData<Any> =
         unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
 
     fun getSellers() {
@@ -63,8 +63,8 @@ class SellerProductViewModel : BaseMainMenuActionsViewModel() {
         unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
 
-    fun addProductToShop(context: Context, product: Product) {
-        unitOfWorkService.getAddProductToShopService().addProductToShop(context, product)
+    fun addProductToShop(context: Context, product: Product, center:Center) {
+        unitOfWorkService.getAddProductToShopService().addProductToShop(context, product, center)
     }
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {

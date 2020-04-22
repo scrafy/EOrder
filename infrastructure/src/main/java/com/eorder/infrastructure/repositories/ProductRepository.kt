@@ -37,7 +37,7 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         var response: ServerResponse<List<Product>>
         var products = ProductsService.getProducts().filter { p -> p.sellerId == sellerId }
 
-        if ( centerId == 1){
+        /*if ( centerId == 1){
              response =
                 ServerResponse(
                     200,
@@ -54,7 +54,16 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     null,
                     null
                 )
-        }
+        }*/
+        response =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    products,
+                    null
+                )
+            )
 
         checkServerErrorInResponse(response)
 

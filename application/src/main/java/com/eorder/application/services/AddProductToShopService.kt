@@ -8,75 +8,50 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.application.R
 import com.eorder.application.interfaces.IAddProductToShopService
 import com.eorder.application.interfaces.IShopService
-import com.eorder.application.interfaces.IUserCentersUseCase
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+
 
 
 class AddProductToShopService(
-    private val shopService: IShopService,
-    private val userCentersUseCase: IUserCentersUseCase
+    private val shopService: IShopService
 ) : IAddProductToShopService {
-
 
     private val productAdded: MutableLiveData<Any> = MutableLiveData()
 
 
     override fun getproductAddedObservable(): LiveData<Any> = productAdded
 
-    override fun addProductToShop(context: Context, product: Product) {
+    override fun addProductToShop(context: Context, product: Product, center:Center) {
 
         if (shopService.isShopEmpty()) {
-            addProduct(context, product)
+            addProduct(context, product, center)
         } else {
 
             if (!isProductRepeated(context, product)) {
-                checkSeller(context, product)
+                checkSeller(context, product, center)
             }
 
         }
     }
 
-    private fun addProduct(context: Context, product: Product) {
+    private fun addProduct(context: Context, product: Product, center:Center) {
 
-        val centers = getUserCenters()!!
-        val builder = AlertDialog.Builder(context)
+        val order = shopService.getOrder()
+        order.center.centerId = center.id
+        order.center.centerName = center.center_name
+        order.center.imageUrl = center.imageUrl
+        order.seller.sellerId = product.sellerId
+        order.seller.sellerName = product.sellerName
+        product.amount++
+        shopService.addProductToShop(product)
+        productAdded.value = null
+        showOkDialog(
+            context,
+            context.resources.getString(R.string.product_to_shop_service_product),
+            context.resources.getString(R.string.product_to_shop_service_product_added)
+        )
 
-        builder.setTitle(context.resources.getString(R.string.product_to_shop_service_choose_center))
-        builder.setSingleChoiceItems(
-            centers.map { c -> c.center_name }.toTypedArray(),
-            -1
-        ) { d, i ->
-
-            val order = shopService.getOrder()
-            order.center.centerId = centers[i].id
-            order.center.centerName = centers[i].center_name
-            order.center.imageUrl = centers[i].imageUrl
-            order.seller.sellerId = product.sellerId
-            order.seller.sellerName = product.sellerName
-            product.amount++
-            shopService.addProductToShop(product)
-            productAdded.value = null
-            d.dismiss()
-            showOkDialog(
-                context,
-                context.resources.getString(R.string.product_to_shop_service_product),
-                context.resources.getString(R.string.product_to_shop_service_product_added)
-            )
-
-        }.show()
-
-    }
-
-    private fun getUserCenters(): List<Center>? {
-
-        var centers: List<Center>? = null
-        runBlocking(Dispatchers.IO) {
-            centers = userCentersUseCase.getCenters().serverData?.data
-        }
-        return centers
     }
 
     private fun isProductRepeated(context: Context, product: Product): Boolean {
@@ -92,7 +67,7 @@ class AddProductToShopService(
         return false
     }
 
-    private fun checkSeller(context: Context, product: Product) {
+    private fun checkSeller(context: Context, product: Product, center:Center) {
 
         if (shopService.getOrder().seller.sellerId != product.sellerId) {
             showQuestionDialog(
@@ -102,7 +77,24 @@ class AddProductToShopService(
 
             ) { d, i ->
                 shopService.cleanShop()
-                addProductToShop(context, product)
+                addProductToShop(context, product, center)
+            }
+        } else {
+            checkCenter(context, product, center)
+        }
+    }
+
+    private fun checkCenter(context: Context, product: Product, center: Center) {
+
+        if (shopService.getOrder().center.centerId != center.id) {
+            showQuestionDialog(
+                context,
+                context.resources.getString(R.string.product_to_shop_service_product),
+                context.resources.getString(R.string.product_to_shop_service_product_different_center)
+
+            ) { d, i ->
+                shopService.cleanShop()
+                addProductToShop(context, product, center)
             }
         } else {
             product.amount++

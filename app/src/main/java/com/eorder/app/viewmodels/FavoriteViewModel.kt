@@ -19,8 +19,6 @@ class FavoriteViewModel: BaseMainMenuActionsViewModel() {
     fun getFavoriteProductsResultObservable(): LiveData<ServerResponse<List<Product>>> =
         favoriteProductsResult
 
-    fun getAddFavoriteProductObservable(): LiveData<Any> = unitOfWorkService.getAddProductToShopService().getproductAddedObservable()
-
     fun removeProductFromFavorites(context: Context, productId: Int) {
         unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }

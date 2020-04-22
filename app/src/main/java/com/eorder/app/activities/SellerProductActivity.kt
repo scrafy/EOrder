@@ -149,12 +149,12 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
 
-            model.addProductToShop(this, obj)
+            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
         }
 
         view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
 
-            model.addProductToShop(this, obj)
+            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
         }
     }
 
@@ -468,7 +468,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         })
 
-        model.getAddFavoriteProductObservable().observe(this, Observer<Any> {
+        model.getAddProductToCartObservable().observe(this, Observer<Any> {
 
             this.showFloatingButton()
         })

@@ -54,8 +54,7 @@ class UnitOfWorkService(
 
         if (addProductToShopService == null)
             addProductToShopService = AddProductToShopService(
-                getShopService(),
-                inject<UnitOfWorkUseCase>().value.getCentersUseCase()
+                getShopService()
 
             )
 

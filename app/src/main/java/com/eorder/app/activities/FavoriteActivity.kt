@@ -65,11 +65,6 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         })
 
-        model.getAddFavoriteProductObservable().observe(this, Observer<Any> {
-
-            this.showFloatingButton()
-
-        })
     }
 
     override fun showMessage(message: String) {

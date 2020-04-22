@@ -151,12 +151,12 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
 
-            model.addProductToShop(this, obj)
+            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
         }
 
         view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
 
-            model.addProductToShop(this, obj)
+            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
         }
     }
 
@@ -370,8 +370,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
                 centerSelected = centers[position].id
-                model.getProductsByCatalog(centerSelected, catalogSelected)
-
+                model.getCatalogByCenter(centerSelected)
             }
 
         })
@@ -405,11 +404,11 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                         0
                     ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
+                    model.getCatalogByCenter(centers[0].id)
 
                 } else
                     centerViewPager.currentItem = index
 
-                model.getCatalogByCenter(centers[0].id)
 
 
             })
@@ -427,6 +426,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                     ) { d, i -> }.show()
                 } else {
+                    linearLayout_activity_product_dots_catalogs.removeAllViews()
                     addDots(catalogs.size, linearLayout_activity_product_dots_catalogs)
                     catalogViewPager.adapter = ProductCatalogListAdapter(this, catalogs)
                     catalogViewPager.adapter?.notifyDataSetChanged()
@@ -468,7 +468,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         })
 
-        model.getAddFavoriteProductObservable().observe(this, Observer<Any> {
+        model.getAddProductToCartObservable().observe(this, Observer<Any> {
 
             this.showFloatingButton()
         })

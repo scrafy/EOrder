@@ -7,9 +7,10 @@
     <!--ADD PRODUCT TO SHOP SERVICE-->
     <string name="product_to_shop_service_product">Product</string>
     <string name="product_to_shop_service_choose_center">Choose a center</string>
-    <string name="product_to_shop_service_product_exists">This product already had been addded to order</string>
+    <string name="product_to_shop_service_product_exists">This product already had been added to order</string>
     <string name="product_to_shop_service_product_added">The product has been added to order correctly</string>
     <string name="product_to_shop_service_product_different_seller"> If you add this product, the current order will be deleted.\nIt´s not possible to mix products from different sellers.\n¿Do you wish add the product anyway?</string>
+    <string name="product_to_shop_service_product_different_center"> If you add this product, the current order will be deleted.\nIt´s not possible to mix products from different centers.\n¿Do you wish add the product anyway?</string>
 </resources>
 
 
