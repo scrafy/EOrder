@@ -30,9 +30,6 @@ import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-
-
-
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage,

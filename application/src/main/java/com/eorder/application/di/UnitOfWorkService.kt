@@ -1,16 +1,17 @@
 package com.eorder.application.di
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.*
 import com.eorder.application.services.*
 import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.services.ValidationModelService
-import com.squareup.picasso.Picasso
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 class UnitOfWorkService(
     private val jwtTokenService: IJwtTokenService,
     private val configurationManager: IConfigurationManager
@@ -22,6 +23,7 @@ class UnitOfWorkService(
     private var shopService: IShopService? = null
     private var addProductToShopService: IAddProductToShopService? = null
     private var favoritesService: IFavoritesService? = null
+    private var calendarService: ICalendarService? = null
 
 
     fun getJwtTokenService(): IJwtTokenService {
@@ -32,6 +34,11 @@ class UnitOfWorkService(
     fun getConfigurationManager(): IConfigurationManager {
 
         return configurationManager
+    }
+
+    fun getCalendarService(): ICalendarService {
+
+        return CalendarService()
     }
 
     fun getManagerException(): IManagerException {
