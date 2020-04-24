@@ -12,7 +12,7 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.O)
 class CalendarService : ICalendarService {
 
-    override val currentDate: Date = Date.from(Instant.now())
+    override val currentDate: LocalDate = LocalDate.now()
 
     override fun getCurrentMonthNumDays(): Int {
 
@@ -24,6 +24,15 @@ class CalendarService : ICalendarService {
         return LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, 1).lengthOfMonth()
     }
 
+    override fun getMonthDays(month: Int): List<LocalDate> {
+
+        val days: MutableList<LocalDate> = mutableListOf()
+        for (i in 1..getMonthNumDays(month)) {
+            days.add(LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, i))
+        }
+        return days
+    }
+
     override fun getMonthCurrentDay(): Int {
 
         return LocalDate.now().get(ChronoField.DAY_OF_MONTH)
@@ -31,10 +40,10 @@ class CalendarService : ICalendarService {
 
     override fun getCurrentMonth(): Int {
 
-        return LocalDate.now().get(ChronoField.DAY_OF_MONTH)
+        return LocalDate.now().get(ChronoField.MONTH_OF_YEAR)
     }
 
-    override fun getOrderWeek(): List<LocalDate> {
+    override fun getOrderWeek(month:Int): List<LocalDate> {
 
         var dates: MutableList<LocalDate> = mutableListOf()
         var date = LocalDate.now().plusWeeks(1)
@@ -47,6 +56,49 @@ class CalendarService : ICalendarService {
             dates.add(date)
             date = date.plusDays(1)
         }
-        return dates
+        return dates//.filter { it.get(ChronoField.MONTH_OF_YEAR) == month }
+    }
+
+    override fun getDayName(day:Int): String {
+
+        return when(day){
+
+            1 -> "Monday"
+            2 -> "Tuesday"
+            3 -> "Wenesday"
+            4 -> "Thursday"
+            5 -> "Friday"
+            6 -> "Saturday"
+            7 -> "Sunday"
+            else -> "Monday"
+        }
+    }
+
+    override fun getMotnhs(): Array<String> {
+
+        return Array(12) { i ->
+
+            when (i) {
+
+                0 -> "January"
+                1 -> "February"
+                2 -> "March"
+                3 -> "April"
+                4 -> "May"
+                5 -> "June"
+                6 -> "July"
+                7 -> "August"
+                8 -> "September"
+                9 -> "October"
+                10 -> "November"
+                11 -> "December"
+                else -> "January"
+            }
+        }
+    }
+
+    override fun isDateLessOrEqualCurrentDate(date:LocalDate): Boolean{
+
+        return date <= LocalDate.now()
     }
 }

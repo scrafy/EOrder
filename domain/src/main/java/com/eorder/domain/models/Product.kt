@@ -2,6 +2,7 @@ package com.eorder.domain.models
 
 import android.graphics.Bitmap
 import com.eorder.domain.interfaces.ILoadImageFields
+import java.io.Serializable
 
 class Product(
 
@@ -25,7 +26,7 @@ class Product(
     // cambiar al val cuando se recuperen los datos del backend
     var catallogId:Int? = null,
     // cambiar al val cuando se recuperen los datos del backend
-    var sellerName:String? = null
+    var sellerName:String? = null,
+    var amountsByDay: MutableList<ProductAmountByDay>? = null
 
-
-) : ILoadImageFields
+) : ILoadImageFields, Serializable

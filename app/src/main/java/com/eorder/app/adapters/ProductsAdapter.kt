@@ -7,18 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IProductSpinnerAdapter
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.domain.models.Product
 
-class ProductsAdapter(override var products: List<Product>) :
-    RecyclerView.Adapter<ProductsAdapter.FavoritesViewHolder>(), IProductSpinnerAdapter {
-
-    override fun notifyDataChanged() {
-
-        this.notifyDataSetChanged()
-    }
+class ProductsAdapter(var products: List<Product>) :
+    RecyclerView.Adapter<ProductsAdapter.FavoritesViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {

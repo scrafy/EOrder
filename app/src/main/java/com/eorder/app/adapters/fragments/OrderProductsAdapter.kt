@@ -6,20 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.interfaces.IProductSpinnerAdapter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.models.Product
 
 
-class OrderProductAdapter(override var products: List<Product>, private val fragment: ProductsFragment) :
-    RecyclerView.Adapter<OrderProductAdapter.ProductViewHolder>(), IProductSpinnerAdapter {
+class OrderProductAdapter(var products: List<Product>, private val fragment: ProductsFragment) :
+    RecyclerView.Adapter<OrderProductAdapter.ProductViewHolder>() {
 
 
-    override fun notifyDataChanged() {
-        //this.notifyDataSetChanged()
-    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
 

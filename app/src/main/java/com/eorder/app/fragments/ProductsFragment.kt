@@ -3,6 +3,7 @@ package com.eorder.app.fragments
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -19,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
+import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.*
@@ -112,11 +114,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         amountView.text = product.amount.toString()
 
 
-        if ( product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(product.image)
+        if (product.image != null)
+            view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(
+                product.image
+            )
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_product_list_img_product))
-
 
 
     }
@@ -156,7 +159,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener {
 
-            product.amount++
+           product.amount++
 
             if (!model.existProduct(product.id))
                 model.addProductToShop(product)
@@ -165,6 +168,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             (context as IRepaintShopIcon).repaintShopIcon()
 
         }
+
+
 
         view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
@@ -175,6 +180,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 product.id
             )
 
+        }
+
+        view.findViewById<TextView>(R.id.textView_order_product_list_calendar).setOnClickListener {
+
+            (context as IOpenProductCalendar).openProductCalendar(product)
         }
     }
 
@@ -212,7 +222,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 refreshLayout.isRefreshing = false
                 loadImages()
 
-
             })
 
         model.getErrorObservable()
@@ -226,10 +235,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun loadImages() {
 
-        LoadImageHelper().loadImage(products).observe(this.activity as LifecycleOwner, Observer<Any> {
+        LoadImageHelper().loadImage(products)
+            .observe(this.activity as LifecycleOwner, Observer<Any> {
 
-            adapter.notifyDataSetChanged()
-        })
+                adapter.notifyDataSetChanged()
+            })
     }
 
     private fun init() {
@@ -272,6 +282,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                     p.amount = found.amount
                     p.favorite = found.favorite
+                    p.amountsByDay = found.amountsByDay
                     model.removeProductFromShop(found)
                     model.addProductToShop(p)
 
