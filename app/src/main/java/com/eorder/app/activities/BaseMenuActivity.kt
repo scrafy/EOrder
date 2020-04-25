@@ -20,7 +20,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
 
     protected var currentToolBarMenu: MutableMap<String, Int> = mutableMapOf()
     protected fun getContext() = this
-    protected var showLateralMenu: Boolean = true
+    private var showLateralMenu: Boolean = true
 
 
     override fun setActionBar(

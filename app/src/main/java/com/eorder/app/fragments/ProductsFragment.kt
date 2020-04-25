@@ -3,7 +3,6 @@ package com.eorder.app.fragments
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -85,15 +84,15 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     override fun repaintModel(view: View, model: Any?) {
 
         var product = model as Product
-        var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
-        var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
+        var amountView = view.findViewById<TextView>(R.id.textView_order_product_list_amount)
+        var heart = view.findViewById<ImageView>(R.id.imgView_order_product_list_heart)
 
 
-        view.findViewById<TextView>(R.id.textView_product_list_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_product_list_category).text = product.category
-        view.findViewById<TextView>(R.id.textView_product_list_price).text =
+        view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_order_product_list_category).text = product.category
+        view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "N/A" else product.price.toString() + "€"
-        view.findViewById<TextView>(R.id.textView_product_list_amount).text =
+        view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
             product.amount.toString()
 
 
@@ -115,11 +114,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
 
         if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(
+            view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
                 product.image
             )
         else
-            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_product_list_img_product))
+            LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
 
 
     }
@@ -144,7 +143,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     override fun setAdapterListeners(view: View, obj: Any?) {
 
         var product = obj as Product
-        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener {
+        view.findViewById<Button>(R.id.button_order_product_list_remove).setOnClickListener {
 
             if (product.amount > 0)
                 product.amount--
@@ -157,7 +156,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener {
+        view.findViewById<Button>(R.id.button_order_product_list_add).setOnClickListener {
 
            product.amount++
 
@@ -170,8 +169,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         }
 
 
-
-        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
 
@@ -182,7 +180,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        view.findViewById<TextView>(R.id.textView_order_product_list_calendar).setOnClickListener {
+        view.findViewById<TextView>(R.id.textView_order_order_product_list_calendar).setOnClickListener {
 
             (context as IOpenProductCalendar).openProductCalendar(product)
         }
@@ -195,7 +193,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         (context as ISetActionBar)?.setActionBar(map, false, true)
     }
 
-    fun setObservers() {
+    private fun setObservers() {
 
         model.getProductsByCatalogObservable().observe(
             this.activity as LifecycleOwner,
@@ -206,8 +204,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 productSpinners = FilterProductSpinners(
                     context!!,
                     products,
-                    spinner_product_list_categories,
-                    spinner_product_list_order,
+                    spinner_products_fragment_list_categories,
+                    spinner_product_products_fragment_list_order,
                     { pos ->
 
                         onSelectedCategory(pos)
@@ -246,10 +244,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         var menu = mutableMapOf<String, Int>()
         menu["cart_menu"] = R.menu.cart_menu
-        (context as ISetActionBar)?.setActionBar(menu, true, false)
+        (context as ISetActionBar)?.setActionBar(menu, false, true)
         var layout = LinearLayoutManager(this.context)
         layout.orientation = LinearLayoutManager.VERTICAL
-        recyclerView = this.view!!.findViewById(R.id.recView_product_list_fragment)
+        recyclerView = this.view!!.findViewById(R.id.recView_products_fragment_product_list)
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
         adapter = OrderProductAdapter(

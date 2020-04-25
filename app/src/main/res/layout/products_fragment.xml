@@ -31,21 +31,21 @@
                     >
 
                     <com.eorder.app.helpers.SpinnerExtension
-                        android:id="@+id/spinner_product_list_categories"
+                        android:id="@+id/spinner_products_fragment_list_categories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
                         />
 
                     <com.eorder.app.helpers.SpinnerExtension
-                        android:id="@+id/spinner_product_list_order"
+                        android:id="@+id/spinner_product_products_fragment_list_order"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recView_product_list_fragment"
+                    android:id="@+id/recView_products_fragment_product_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

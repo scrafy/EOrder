@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="@drawable/shape_landing_background" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/white"
+                            android:text="Select a month"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            ></TextView>
+
+                        <com.eorder.app.helpers.SpinnerExtension
+                            android:id="@+id/spinner_activity_product_calendar_months"
+                            style="@style/Widget.AppCompat.Spinner"
+                            android:layout_width="200dp"
+                            android:layout_height="?attr/dropdownListPreferredItemHeight"
+                            android:background="@drawable/spinner_bg"
+                            android:dropDownWidth="150dp"
+                            android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                            android:paddingRight="14dp"
+                            android:popupBackground="@android:color/white"
+                            android:popupElevation="3dp"
+                            android:stateListAnimator="@drawable/spinner_sla" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+                            android:id="@+id/textView_activity_product_calendar_product_name"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:maxLines="2"
+                            android:singleLine="false"
+                            android:text="Albondigas caseras"
+                            android:textColor="@android:color/white"
+                            android:textSize="20dp"
+                            android:textStyle="bold"></TextView>
+
+                        <TextView
+                            android:id="@+id/textView_activity_product_calendar_total_units"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="200"
+                            android:layout_marginTop="20dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="20dp"
+                            android:textStyle="bold"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center|center_horizontal"
+                        android:layout_marginBottom="40dp"
+                        >
+
+                        <Button
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Confirm"
+                            android:background="@drawable/shape_boton_rounded_solid_white"
+                            android:textStyle="bold"
+                            android:elevation="20dp"
+                            android:singleLine="false"
+                            android:maxLines="2"
+                            android:textColor="@color/colorPrimary"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:id="@+id/button_activity_product_calendar_confirm"
+                            ></Button>
+
+                        <Button
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Clean"
+                            android:elevation="10dp"
+                            android:background="@drawable/shape_boton_rounded_solid_white"
+                            android:textStyle="bold"
+                            android:singleLine="false"
+                            android:maxLines="2"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="@color/colorPrimary"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:id="@+id/button_activity_product_calendar_clean"
+                            ></Button>
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycleView_activity_product_calendar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

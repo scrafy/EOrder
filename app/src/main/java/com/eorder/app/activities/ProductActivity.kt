@@ -35,8 +35,6 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout2
-import kotlinx.android.synthetic.main.products_fragment.spinner_product_list_categories
-import kotlinx.android.synthetic.main.products_fragment.spinner_product_list_order
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,

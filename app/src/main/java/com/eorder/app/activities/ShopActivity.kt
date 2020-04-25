@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.eorder.app.R
@@ -20,8 +21,9 @@ import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_product_calendar.*
 import kotlinx.android.synthetic.main.activity_shop.*
-import kotlinx.android.synthetic.main.header_navigation_view.view.*
+import kotlinx.android.synthetic.main.activity_shop.toolbar
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -44,6 +46,22 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         setListeners()
         isShopEmpty()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isShopEmpty()
+        adapter.notifyDataSetChanged()
+        model.getOrderTotalsSummary()
+        this.setSupportActionBar(toolbar as Toolbar)
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        this.supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        super.onSupportNavigateUp()
+        this.onBackPressed()
+        return true
     }
 
     override fun showMessage(message: String) {
@@ -69,26 +87,26 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     ) {
 
         var product = (model as Product)
-        var amountView = view.findViewById<TextView>(R.id.textView_product_list_amount)
-        var heart = view.findViewById<ImageView>(R.id.imgView_product_list_heart)
+        var amountView = view.findViewById<TextView>(R.id.textView_order_product_list_amount)
+        var heart = view.findViewById<ImageView>(R.id.imgView_order_product_list_heart)
 
 
         if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_product_list_img_product).setImageBitmap(
+            view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
                 product.image
             )
         else
-            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_product_list_img_product))
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
 
 
-        view.findViewById<TextView>(R.id.textView_product_list_amount).text =
+        view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
             product.amount.toString()
-        view.findViewById<TextView>(R.id.textView_product_list_price).text =
+        view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "N/A" else product.price.toString() + "€"
 
-        view.findViewById<TextView>(R.id.textView_product_list_category).text =
+        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
             product.category
-        view.findViewById<TextView>(R.id.textView_product_list_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
         this.setAdapterListeners(
             view,
             product
@@ -146,7 +164,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private fun setAdapterListeners(view: View, obj: Any?) {
 
         var product = obj as Product
-        view.findViewById<Button>(R.id.button_product_list_remove).setOnClickListener {
+        view.findViewById<Button>(R.id.button_order_product_list_remove).setOnClickListener {
 
             if (product.amount > 0)
                 product.amount--
@@ -164,7 +182,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         }
 
-        view.findViewById<Button>(R.id.button_product_list_add).setOnClickListener {
+        view.findViewById<Button>(R.id.button_order_product_list_add).setOnClickListener {
 
             product.amount++
             adapter.notifyDataSetChanged()
@@ -172,7 +190,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         }
 
-        view.findViewById<ImageView>(R.id.imgView_product_list_heart).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
             model.writeProductsFavorites(
@@ -180,6 +198,13 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 product.id
             )
 
+        }
+
+        view.findViewById<TextView>(R.id.textView_order_order_product_list_calendar).setOnClickListener {
+
+            ProductCalendarActivity.product = product
+            var intent = Intent(this, ProductCalendarActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -234,18 +259,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         if (model.getProducts().isEmpty()) {
 
-            var dialog = AlertDialogOk(
-                this,
-                "Shop",
-                "The shop is empty. Please add a product...",
-                "OK"
-
-            ) { _, _ ->
-
-                this.onBackPressed()
-
-            }
-            dialog.show()
+            this.onBackPressed()
         } else
             init()
     }

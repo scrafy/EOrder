@@ -38,13 +38,13 @@ class ShopService : IShopService {
 
 
     override fun getTotalTaxesAmount(): Float? {
-       return order.totalTaxes
+        return order.totalTaxes
     }
 
 
     override fun getTotalTaxBaseAmount(): Float? {
 
-       return order.totalBase
+        return order.totalBase
     }
 
 
@@ -54,11 +54,14 @@ class ShopService : IShopService {
     }
 
     override fun addProductToShop(product: Product) {
-        order.products.add(product)
+        if (this.order.products != null && this.order.products.firstOrNull { p -> p.id == product.id } == null)
+            order.products.add(product)
     }
 
     override fun removeProductFromShop(product: Product) {
-        order.products.remove(product)
+
+        if (this.order.products != null && this.order.products.firstOrNull { p -> p.id == product.id } != null)
+            order.products.remove(product)
     }
 
     override fun addAmountOfProduct(productId: Int) {

@@ -1,11 +1,11 @@
 package com.eorder.app.adapters.fragments
 
+import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
 import com.eorder.app.interfaces.IRepaintModel
@@ -15,8 +15,7 @@ import com.eorder.domain.models.ProductAmountByDay
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductCalendarAdapter(
-    var days: List<ProductAmountByDay>,
-    private val fragment: Fragment
+    var days: List<ProductAmountByDay>
 ) : RecyclerView.Adapter<ProductCalendarAdapter.ProductCatalogViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCatalogViewHolder {
@@ -26,7 +25,7 @@ class ProductCalendarAdapter(
                 .inflate(R.layout.calendar_product_day, parent, false)
         return ProductCatalogViewHolder(
             view,
-            fragment
+            parent.context
         )
     }
 
@@ -39,13 +38,13 @@ class ProductCalendarAdapter(
     }
 
 
-    class ProductCatalogViewHolder(private val view: View, private val fragment: Fragment) :
+    class ProductCatalogViewHolder(private val view: View, private val context: Context) :
         RecyclerView.ViewHolder(view) {
 
         fun setModel(day: ProductAmountByDay) {
 
-            (fragment as IRepaintModel).repaintModel(view, day)
-            (fragment as ISetAdapterListener).setAdapterListeners(view, day)
+            (context as IRepaintModel).repaintModel(view, day)
+            (context as ISetAdapterListener).setAdapterListeners(view, day)
         }
     }
 }

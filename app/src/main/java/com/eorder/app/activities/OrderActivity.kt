@@ -11,7 +11,6 @@ import com.eorder.app.R
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.fragments.CatalogsFragment
 import com.eorder.app.fragments.CentersFragment
-import com.eorder.app.fragments.ProductCalendarFragment
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.OrderViewModel
@@ -22,8 +21,8 @@ import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
-import com.eorder.domain.models.ProductAmountByDay
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
@@ -150,15 +149,9 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun openProductCalendar(product: Product) {
 
-        val fragment = ProductCalendarFragment()
-        var args = Bundle()
-        args.putSerializable("product", product)
-        fragment.arguments = args
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linear_layout_center_fragment_container, fragment)
-            .addToBackStack(null).commit()
-
-
+        ProductCalendarActivity.product = product
+        var intent = Intent(this, ProductCalendarActivity::class.java)
+        startActivity(intent)
     }
 
     override fun selectCatalog(catalog: Catalog) {

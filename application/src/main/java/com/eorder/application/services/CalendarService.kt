@@ -30,7 +30,7 @@ class CalendarService : ICalendarService {
         for (i in 1..getMonthNumDays(month)) {
             days.add(LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, i))
         }
-        return days
+        return days.filter { it >= currentDate }
     }
 
     override fun getMonthCurrentDay(): Int {
@@ -76,7 +76,9 @@ class CalendarService : ICalendarService {
 
     override fun getMotnhs(): Array<String> {
 
-        return Array(12) { i ->
+
+
+        return  Array(12) { i ->
 
             when (i) {
 
@@ -95,6 +97,7 @@ class CalendarService : ICalendarService {
                 else -> "January"
             }
         }
+
     }
 
     override fun isDateLessOrEqualCurrentDate(date:LocalDate): Boolean{

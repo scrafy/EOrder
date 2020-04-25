@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.eorder.app.com.eorder.app.viewmodels.CheckEmailActivityModel
 import com.eorder.app.com.eorder.app.viewmodels.CreateProfileViewModel
-import com.eorder.app.com.eorder.app.viewmodels.fragments.ProductCalendarFragmentViewModel
 import com.eorder.app.viewmodels.*
 import com.eorder.app.viewmodels.fragments.*
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -35,7 +34,7 @@ val appModule = module {
     viewModel { ProductViewModel() }
     viewModel { CheckEmailActivityModel() }
     viewModel { CreateProfileViewModel() }
-    viewModel { ProductCalendarFragmentViewModel() }
+    viewModel { ProductCalendarActivityViewModel() }
 
 
 }
