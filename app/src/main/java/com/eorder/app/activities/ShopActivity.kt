@@ -200,7 +200,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         }
 
-        view.findViewById<TextView>(R.id.textView_order_order_product_list_calendar).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar).setOnClickListener {
 
             ProductCalendarActivity.product = product
             var intent = Intent(this, ProductCalendarActivity::class.java)

@@ -40,7 +40,7 @@ class ProductsViewModel : BaseViewModel() {
     fun removeProductFromShop(product: Product) =
         unitOfWorkService.getShopService().removeProductFromShop(product)
 
-    fun existProduct(productId: Int) = unitOfWorkService.getShopService().existProduct(productId)
+
     fun getProductsFromShop() = unitOfWorkService.getShopService().getOrder().products
 
     fun writeProductsFavorites(context: Context, productId: Int) {

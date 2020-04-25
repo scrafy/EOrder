@@ -24,6 +24,8 @@ import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
+import com.eorder.app.widgets.AlertDialogInput
+import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -89,7 +91,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
 
         view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_order_product_list_category).text = product.category
+        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
+            product.category
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "N/A" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
@@ -120,6 +123,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         else
             LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
 
+        if (!product.amountsByDay.isNullOrEmpty()) {
+
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar).setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
+        }
+
 
     }
 
@@ -145,28 +153,45 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var product = obj as Product
         view.findViewById<Button>(R.id.button_order_product_list_remove).setOnClickListener {
 
-            if (product.amount > 0)
-                product.amount--
+            if (!product.amountsByDay.isNullOrEmpty()) {
 
-            if (product.amount == 0)
-                model.removeProductFromShop(product)
+                AlertDialogQuestion(
+                    context!!,
+                    "Calendar",
+                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
+                    "Modify",
+                    "Cancel",
+                    { d, i ->
 
-            adapter.notifyDataSetChanged()
-            (context as IRepaintShopIcon).repaintShopIcon()
-
+                        decrementProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                decrementProduct(product)
+            }
         }
 
         view.findViewById<Button>(R.id.button_order_product_list_add).setOnClickListener {
 
-           product.amount++
+            if (!product.amountsByDay.isNullOrEmpty()) {
+                AlertDialogQuestion(
+                    context!!,
+                    "Calendar",
+                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
+                    "Modify",
+                    "Cancel",
+                    { d, i ->
 
-            if (!model.existProduct(product.id))
-                model.addProductToShop(product)
-
-            adapter.notifyDataSetChanged()
-            (context as IRepaintShopIcon).repaintShopIcon()
-
+                        incrementProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                incrementProduct(product)
+            }
         }
+
 
 
         view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
@@ -180,9 +205,31 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        view.findViewById<TextView>(R.id.textView_order_order_product_list_calendar).setOnClickListener {
+        view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+            .setOnClickListener {
 
-            (context as IOpenProductCalendar).openProductCalendar(product)
+                (context as IOpenProductCalendar).openProductCalendar(product)
+            }
+
+        view.findViewById<TextView>(R.id.textView_order_product_list_amount).setOnClickListener {
+
+            if (!product.amountsByDay.isNullOrEmpty()) {
+
+                AlertDialogQuestion(
+                    context!!,
+                    "Calendar",
+                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
+                    "Modify",
+                    "Cancel",
+                    { d, i ->
+
+                        modifyAmountOfProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                modifyAmountOfProduct(product)
+            }
         }
     }
 
@@ -191,6 +238,50 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
         (context as ISetActionBar)?.setActionBar(map, false, true)
+    }
+
+    private fun decrementProduct(product: Product) {
+        if (product.amount > 0)
+            product.amount--
+
+        if (product.amount == 0)
+            model.removeProductFromShop(product)
+
+        adapter.notifyDataSetChanged()
+        product.amountsByDay = null
+        (context as IRepaintShopIcon).repaintShopIcon()
+    }
+
+    private fun incrementProduct(product: Product) {
+
+        product.amount++
+        model.addProductToShop(product)
+        adapter.notifyDataSetChanged()
+        product.amountsByDay = null
+        (context as IRepaintShopIcon).repaintShopIcon()
+    }
+
+    private fun modifyAmountOfProduct(product: Product) {
+
+        var dialog: AlertDialogInput? = null
+        dialog = AlertDialogInput(context!!, "", "", "ADD", "CANCEL", { d, i ->
+
+
+            if (dialog?.input?.text.isNullOrEmpty()) {
+                product.amount = 0
+            } else {
+                product.amount = Integer(dialog?.input?.text.toString()).toInt()
+            }
+            if (product.amount == 0)
+                model.removeProductFromShop(product)
+            else
+                model.addProductToShop(product)
+
+            product.amountsByDay = null
+            (context as IRepaintShopIcon).repaintShopIcon()
+            adapter.notifyDataSetChanged()
+        }, { d, i -> })
+        dialog.show()
     }
 
     private fun setObservers() {

@@ -58,26 +58,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    >
 
                     <ImageView
                         android:id="@+id/imgView_order_product_list_heart"
                         android:layout_width="80px"
                         android:layout_height="80px"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/ic_corazon_outline" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="30dp"
+                        android:gravity="end"
+                        >
 
-                        <TextView
-                            android:id="@+id/textView_order_order_product_list_calendar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="bottom|right"
-                            android:text="View calendar"
-                            android:textSize="17dp"></TextView>
+                        <ImageView
+                            android:id="@+id/imgView_order_order_product_list_calendar"
+                            android:layout_width="100px"
+                            android:layout_height="100px"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_calendario"
+                            ></ImageView>
                     </LinearLayout>
                 </LinearLayout>
 

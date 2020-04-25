@@ -205,7 +205,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
     private fun setDayAmount(day: ProductAmountByDay) {
 
-        if ( daysWithAmount.isNullOrEmpty() && day.amount == 0 && product.amountsByDay.isNullOrEmpty()) return
+        if (daysWithAmount.isNullOrEmpty() && day.amount == 0 && product.amountsByDay.isNullOrEmpty()) return
 
         if (daysWithAmount.firstOrNull { it.day == day.day } == null) {
 
@@ -230,8 +230,13 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
     private fun confirmAmountsByDays() {
 
 
-        if ( daysWithAmount.isNullOrEmpty() ){
-            AlertDialogOk(this, "Confirm calendar", "There are not days to confirm", "OK") { d, i->}.show()
+        if (daysWithAmount.isNullOrEmpty()) {
+            AlertDialogOk(
+                this,
+                "Confirm calendar",
+                "There are not days to confirm",
+                "OK"
+            ) { d, i -> }.show()
             return
         }
 
