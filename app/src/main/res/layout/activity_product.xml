@@ -51,9 +51,9 @@
             android:text="Select a center ▲"
             android:paddingTop="5dp"
             android:paddingLeft="20dp"
+            android:background="@drawable/shape_landing_card_center_square_no_rounded"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp"
-            android:background="@drawable/shape_landing_card_center_square_no_rounded"
             ></TextView>
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -97,7 +97,6 @@
             android:id="@+id/textView_activity_product_select_catalogs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:paddingTop="5dp"
             android:paddingLeft="20dp"
             android:background="@drawable/shape_landing_card_center_square_no_rounded"

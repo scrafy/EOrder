@@ -47,8 +47,9 @@
             android:id="@+id/textView_activity_seller_product_select_seller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="20dp"
+            android:background="@drawable/shape_landing_card_center_square_no_rounded"
             android:text="Select a seller ▲"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp"></TextView>
@@ -91,8 +92,9 @@
             android:id="@+id/textView_activity_seller_product_select_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="20dp"
+            android:background="@drawable/shape_landing_card_center_square_no_rounded"
             android:text="Select a center ▼"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp" />
