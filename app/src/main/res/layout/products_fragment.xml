@@ -34,13 +34,15 @@
                         android:id="@+id/spinner_products_fragment_list_categories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:backgroundTint="@android:color/white"
                         />
 
                     <com.eorder.app.helpers.SpinnerExtension
                         android:id="@+id/spinner_product_products_fragment_list_order"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/white"
+                        />
 
                 </LinearLayout>
 

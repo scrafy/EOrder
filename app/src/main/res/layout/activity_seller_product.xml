@@ -31,13 +31,15 @@
                 android:id="@+id/spinner_product_list_categories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:backgroundTint="@android:color/white"
                 />
 
             <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                />
 
         </LinearLayout>
 
@@ -133,7 +135,9 @@
             android:id="@+id/recView_product_activity_product_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_drawerlayout_background"
+            />
 
     </LinearLayout>
 

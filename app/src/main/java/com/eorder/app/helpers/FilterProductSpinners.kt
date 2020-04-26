@@ -36,11 +36,11 @@ class FilterProductSpinners(
 
         val categoriesAdapter = ArrayAdapter<String>(
             context,
-            android.R.layout.simple_spinner_item,
+            R.layout.simple_spinner_item_white,
             categories
         )
         SpinnerCategories.adapter = categoriesAdapter
-
+        categoriesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_text_color)
         SpinnerCategories.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
 
@@ -70,10 +70,11 @@ class FilterProductSpinners(
 
         val orderAdapter = ArrayAdapter<String>(
             context,
-            android.R.layout.simple_spinner_item,
+            R.layout.simple_spinner_item_white,
             order
         )
         SpinnerOrder.adapter = orderAdapter
+        orderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_text_color)
         SpinnerOrder.onItemSelectedListener = object :
 
             AdapterView.OnItemSelectedListener {
