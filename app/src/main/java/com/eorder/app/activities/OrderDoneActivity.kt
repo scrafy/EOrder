@@ -25,6 +25,7 @@ import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_order_done.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -143,7 +144,8 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         }
 
         view.findViewById<TextView>(R.id.textView_order_done_list_ref).text = "Ref. ${order.id}"
-        view.findViewById<TextView>(R.id.textView_order_done_list_date).text = order.createdAt.toCustomDateFormatString("dd/MM/yyyy HH:mm:ss")
+        view.findViewById<TextView>(R.id.textView_order_done_list_date).text = order.createdAt?.format(
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))
 
         LoadImageHelper().loadImage(order.center.imageUrl, view.findViewById(R.id.textView_order_done_list_center_image), true )
     }

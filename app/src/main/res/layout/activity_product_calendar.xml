@@ -25,7 +25,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:background="@drawable/shape_landing_background" />
+                    android:background="@drawable/shape_blue_gradient_rounded_background" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

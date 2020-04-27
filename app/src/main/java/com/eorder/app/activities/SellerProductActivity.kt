@@ -451,7 +451,8 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                             { pos ->
 
                                 onSelectedOrder(pos)
-                            }
+                            },
+                            R.layout.simple_spinner_item_white
                         )
                         productsAdapter.products = products
                         loadImages()

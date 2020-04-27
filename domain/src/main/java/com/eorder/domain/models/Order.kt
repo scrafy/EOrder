@@ -1,13 +1,13 @@
 package com.eorder.domain.models
 
-import java.util.*
+import java.time.LocalDateTime
 
 class Order {
 
     var id: Int? = null
     var center: OrderCenter = OrderCenter()
     var seller: SellerOrder = SellerOrder()
-    var createdAt: Date? = null
+    var createdAt: LocalDateTime? = null
     var totalBase: Float = 0F
     var totalTaxes: Float = 0F
     var totalProducts: Int = 0

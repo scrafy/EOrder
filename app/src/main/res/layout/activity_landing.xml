@@ -33,7 +33,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:background="@drawable/shape_landing_background">
+                    android:background="@drawable/shape_blue_gradient_rounded_background">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -287,7 +287,7 @@
                         <LinearLayout
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:background="@drawable/shape_landing_card_center_buble"
+                            android:background="@drawable/shape_silver_circle"
                             android:gravity="center_horizontal"
                             android:orientation="vertical"
                             android:padding="3dp"

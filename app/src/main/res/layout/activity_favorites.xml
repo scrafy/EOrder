@@ -27,7 +27,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:background="@drawable/shape_landing_background"></RelativeLayout>
+                    android:background="@drawable/shape_blue_gradient_rounded_background"></RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recicleView_favorites_activity"

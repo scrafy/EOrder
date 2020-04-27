@@ -21,12 +21,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_drawerlayout_background"
+            android:background="@drawable/shape_blue_gradient_background"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:paddingRight="20dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="5dp">
 
             <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_categories"
@@ -50,8 +50,9 @@
             android:layout_height="wrap_content"
             android:text="Select a center ▲"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="20dp"
-            android:background="@drawable/shape_landing_card_center_square_no_rounded"
+            android:background="@drawable/shape_silver_square_no_rounded"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp"
             ></TextView>
@@ -69,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:orientation="vertical"
-                android:background="@drawable/shape_blue_borders_rectangle"
+
                 >
 
                 <androidx.viewpager.widget.ViewPager
@@ -98,8 +99,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="20dp"
-            android:background="@drawable/shape_landing_card_center_square_no_rounded"
+            android:background="@drawable/shape_silver_square_no_rounded"
             android:text="Select a catalog ▼"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp" />
@@ -117,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:orientation="vertical"
-                android:background="@drawable/shape_blue_borders_rectangle"
+
                 >
 
                 <androidx.viewpager.widget.ViewPager
@@ -144,8 +146,7 @@
             android:id="@+id/recView_product_activity_product_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_drawerlayout_background"
+            android:background="@drawable/shape_blue_gradient_background"
             />
 
     </LinearLayout>

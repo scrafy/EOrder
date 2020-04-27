@@ -25,15 +25,27 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
 
-            <LinearLayout
-                android:id="@+id/linear_layout_center_fragment_container"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="match_parent">
 
-                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="@drawable/shape_blue_gradient_rounded_background"
+                    >
 
-            </LinearLayout>
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/linear_layout_center_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
+            </RelativeLayout>
+
+
+
 
         </LinearLayout>
 

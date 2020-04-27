@@ -288,7 +288,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         model.getProductsByCatalogObservable().observe(
             this.activity as LifecycleOwner,
-            Observer<ServerResponse<List<Product>>> { it ->
+            Observer<ServerResponse<List<Product>>> {
 
                 products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
                 adapter.products = products
@@ -304,7 +304,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     { pos ->
 
                         onSelectedOrder(pos)
-                    }
+                    },
+                    R.layout.simple_spinner_item
                 )
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()

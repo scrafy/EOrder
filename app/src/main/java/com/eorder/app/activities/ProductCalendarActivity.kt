@@ -97,7 +97,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         if (day.day in orderDays) {
 
             view.findViewById<LinearLayout>(R.id.linearLayout_calendar_product_day_container)
-                .background = resources.getDrawable(R.drawable.shape_drawerlayout_background)
+                .background = resources.getDrawable(R.drawable.shape_blue_gradient_background)
 
             view.findViewById<TextView>(R.id.textView_fragment_product_calendar_day).setTextColor(
                 Color.WHITE

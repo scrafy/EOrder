@@ -11,7 +11,7 @@
         android:id = "@+id/linearLayout_calendar_product_day_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_landing_card_center_square"
+        android:background="@drawable/shape_silver_square_borders_rounded"
         android:orientation="vertical"
         android:padding="5dp">
 

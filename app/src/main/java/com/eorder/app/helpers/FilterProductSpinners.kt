@@ -15,7 +15,8 @@ class FilterProductSpinners(
     private val SpinnerCategories: SpinnerExtension,
     private val SpinnerOrder: SpinnerExtension,
     private val onSelectedCategory: (position: Int) -> Unit,
-    private val onSelectedOrder: (position: Int) -> Unit
+    private val onSelectedOrder: (position: Int) -> Unit,
+    private val itemLayout:Int
 ) {
 
     private val categories:MutableList<String> = mutableListOf()
@@ -36,7 +37,7 @@ class FilterProductSpinners(
 
         val categoriesAdapter = ArrayAdapter<String>(
             context,
-            R.layout.simple_spinner_item_white,
+            itemLayout,
             categories
         )
         SpinnerCategories.adapter = categoriesAdapter
@@ -70,7 +71,7 @@ class FilterProductSpinners(
 
         val orderAdapter = ArrayAdapter<String>(
             context,
-            R.layout.simple_spinner_item_white,
+            itemLayout,
             order
         )
         SpinnerOrder.adapter = orderAdapter

@@ -19,32 +19,33 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_drawerlayout_background"
+                    android:background="@drawable/shape_silver_square_no_rounded"
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="10dp"
-                    >
+                    android:paddingRight="20dp">
 
                     <com.eorder.app.helpers.SpinnerExtension
                         android:id="@+id/spinner_products_fragment_list_categories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/white"
+                        android:backgroundTint="@color/colorPrimary"
+
                         />
 
                     <com.eorder.app.helpers.SpinnerExtension
                         android:id="@+id/spinner_product_products_fragment_list_order"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/white"
+                        android:backgroundTint="@color/colorPrimary"
+
                         />
 
                 </LinearLayout>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recView_products_fragment_product_list"
