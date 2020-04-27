@@ -1,7 +1,9 @@
 package com.eorder.app.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import com.eorder.app.R
 import com.eorder.app.fragments.CenterInfoFragment
 import com.eorder.app.fragments.CentersFragment
@@ -50,7 +52,7 @@ class CenterActivity : BaseMenuActivity(), ISelectCenter {
 
         var fragment = CenterInfoFragment()
         var args = Bundle()
-        args.putSerializable("center", center as Serializable )
+        args.putSerializable("center", center as Serializable)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linearLayout_activity_center_container, fragment)
@@ -60,10 +62,12 @@ class CenterActivity : BaseMenuActivity(), ISelectCenter {
 
     private fun init() {
 
-        var t = findViewById<LinearLayout>(R.id.linearLayout_activity_center_container)
 
+        val fragment = CentersFragment()
         supportFragmentManager.beginTransaction()
-            .add(R.id.linearLayout_activity_center_container, CentersFragment()).commit()
+            .add(R.id.linearLayout_activity_center_container, fragment).commit()
+
 
     }
+
 }

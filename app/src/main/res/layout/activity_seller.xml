@@ -22,21 +22,12 @@
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
 
-            <RelativeLayout
+
+            <LinearLayout
+                android:id="@+id/linearLayout_activity_seller_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:background="@drawable/shape_blue_gradient_rounded_background" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout_activity_seller_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" />
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
 
 
         </LinearLayout>

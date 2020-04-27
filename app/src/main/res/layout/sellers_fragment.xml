@@ -9,6 +9,14 @@
         android:layout_height="match_parent">
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@drawable/shape_blue_gradient_rounded_background" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -31,6 +39,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp" />
             </LinearLayout>
-
+        </RelativeLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
