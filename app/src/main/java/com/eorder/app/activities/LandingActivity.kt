@@ -26,32 +26,47 @@ class LandingActivity : BaseMenuActivity() {
 
     private fun setListeners() {
 
-
+        val intent = Intent()
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         cardView_activity_landing_make_order.setOnClickListener {
 
-            startActivity(Intent(this, OrderActivity::class.java))
+            intent.setClass(this, OrderActivity::class.java)
+            startActivity(intent)
+
         }
 
         cardView_activity_landing_favorites.setOnClickListener {
 
-            startActivity(Intent(this, FavoriteActivity::class.java))
+
+            intent.setClass(this, FavoriteActivity::class.java)
+            startActivity(intent)
         }
 
         cardView_activity_landing_orders.setOnClickListener {
 
-            startActivity(Intent(this, OrderDoneActivity::class.java))
+            intent.setClass(this, OrderDoneActivity::class.java)
+            startActivity(intent)
+
         }
 
-        cardView_activity_landing_catalogs.setOnClickListener{
-            startActivity(Intent(this, ProductActivity::class.java))
+        cardView_activity_landing_catalogs.setOnClickListener {
+
+            intent.setClass(this, ProductActivity::class.java)
+            startActivity(intent)
+
         }
 
-        cardView_activity_landing_centers.setOnClickListener{
-            startActivity(Intent(this, CenterActivity::class.java))
+        cardView_activity_landing_centers.setOnClickListener {
+
+            intent.setClass(this, CenterActivity::class.java)
+            startActivity(intent)
         }
 
-        cardView_activity_landing_sellers.setOnClickListener{
-            startActivity(Intent(this, SellerActivity::class.java))
+        cardView_activity_landing_sellers.setOnClickListener {
+
+            intent.setClass(this, SellerActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -96,7 +96,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 200,
                 null,
                 ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODU1OTQ2MTQsImV4cCI6MTYxNzEzMTkxMiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjEyMyJ9.OJyQ_OBeVljhiyoY_VoRMPIkuGJ-mtHbfDiV7PkhTv0",
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxODQ1NDIsImV4cCI6MTYxOTcyMDU0OSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiSm9zZSIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.Oa5KosJXMZlKpB5Hd8sMmaQXfooDxNtEE95xqdJ8xes",
                     null
                 )
             )
@@ -106,7 +106,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 200,
                 null,
                 ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODU1OTQ2MTQsImV4cCI6MTYxNzEzMTkxMiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJJZCI6IjEyNCJ9.IIK36DwnOoauXfK0lrQdaEmQUPX9VnRSYNmimaIeRbk",
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxODA0MTQsImV4cCI6MTYxOTcxNjUzNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiZnJhbiIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkifQ.ms54FQ7excROsb3z-H7ds8-IL2JS9NCReE_-yFLObFk",
                     null
                 )
             )

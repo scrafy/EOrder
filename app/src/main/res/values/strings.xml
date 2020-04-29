@@ -21,9 +21,7 @@
     <string name="lateral_nav_menu_mails">Messages</string>
     <string name="lateral_nav_menu_profile">Profile</string>
     <string name="lateral_nav_menu_centers">Centers</string>
-    <string name="lateral_nav_menu_categories">Categories</string>
-    <string name="lateral_nav_menu_providers">Providers</string>
-    <string name="lateral_nav_menu_catalogs">Catalogs</string>
+    <string name="lateral_nav_menu_providers">Sellers</string>
     <string name="lateral_nav_menu_products">Products</string>
     <string name="lateral_nav_menu_makeorder">Make a order</string>
 
@@ -48,9 +46,6 @@
     <!--ORDER LIST-->
     <string name="button_order_list_repeat">repeat</string>
 
-    <!--RECOVER PASSWORD ACTIVITY-->
-    <string name="recover_password_activity_alert_dialog_title">Password Recovery</string>
-    <string name="recover_password_activity_alert_dialog_message">The password has been changed correctly</string>
 
     <!--SHOP ACTIVITY-->
     <string name="textview_shop_total_products">Total of products</string>
@@ -80,12 +75,15 @@
     <string name="main_activity_session_expired">Session expired</string>
     <string name="main_activity_session_expired_message">The session has expired, please, login again</string>
     <string name="main_activity_login">LOGIN</string>
+    <string name="main_activity_create_account">CREATE ACCOUNT</string>
 
     <!--RECOVER PASSWORD ACTIVITY-->
-    <string name="editText_recover_password_activity_old_password">Old password</string>
-    <string name="editText_recover_password_activity_new_password">New password</string>
-    <string name="editText_recover_password_activity_confirm_password">Confirm password</string>
-    <string name="button_recover_password_activity_button">Recover password</string>
+    <string name="editText_change_password_activity_old_password">Old password</string>
+    <string name="editText_change_password_activity_new_password">New password</string>
+    <string name="editText_change_password_activity_confirm_password">Confirm password</string>
+    <string name="button_change_password_activity_button">Change password</string>
+    <string name="change_password_activity_alert_dialog_title">Change password</string>
+    <string name="change_password_activity_alert_dialog_message">The password has been changed correctly</string>
 
 
     <!--LOGIN ACTIVITY-->

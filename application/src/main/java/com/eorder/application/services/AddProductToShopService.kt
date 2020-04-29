@@ -110,6 +110,7 @@ class AddProductToShopService(
     private fun showOkDialog(context: Context, title: String, message: String) {
 
         AlertDialog.Builder(context)
+            .setCancelable(false)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("OK") { d, i ->
@@ -125,6 +126,7 @@ class AddProductToShopService(
     ) {
 
         AlertDialog.Builder(context)
+            .setCancelable(false)
             .setTitle(title)
             .setMessage(message)
             .setNegativeButton(context.resources.getString(R.string.no)) { d, i ->

@@ -69,7 +69,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
                }.show()
             } else {
                 this.finish()
-                val intent = Intent(this, CreateProfileActivity::class.java)
+                val intent = Intent(this, CreateAccountActivity::class.java)
                 intent.putExtra("email", editText_activity_check_email_mail_input.text.toString())
                 intent.putExtra("centerCode", centerCode)
                 startActivity(intent)

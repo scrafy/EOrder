@@ -11,20 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ChangePasswordViewModel : BaseViewModel() {
+class ChangePasswordViewModel : BaseMainMenuActionsViewModel() {
 
-    private val recoverPasswordResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
+     val changePasswordResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
 
 
-    fun getRecoverPasswordObservable(): LiveData<ServerResponse<Any>> = recoverPasswordResult
-
-    fun recoverPassword(changePasswordRequest: ChangePassword) {
+    fun changePassword(changePasswordRequest: ChangePassword) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             var result =
                 unitOfWorkUseCase.getChangePasswordUseCase().changePassword(changePasswordRequest)
-            recoverPasswordResult.postValue(result)
+            changePasswordResult.postValue(result)
         }
     }
 

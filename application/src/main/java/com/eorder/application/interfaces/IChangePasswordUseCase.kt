@@ -6,5 +6,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IChangePasswordUseCase {
 
-    fun changePassword(recoverPassword: ChangePassword) : ServerResponse<Any>
+    fun changePassword(changePassword: ChangePassword) : ServerResponse<Any>
 }

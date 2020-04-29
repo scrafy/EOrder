@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -26,6 +25,7 @@ import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_favorites.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -53,10 +53,16 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 this.products = it?.serverData?.data?.toMutableList() ?: mutableListOf()
-                this.products.map { p -> p.favorite = true }
-                adapter.products = this.products
-                adapter.notifyDataSetChanged()
-                loadImages()
+
+                if (this.products.isEmpty()) {
+                    showMessageFiniteTime("There are not any product on your favorite list yet")
+                } else {
+                    this.products.map { p -> p.favorite = true }
+                    adapter.products = this.products
+                    adapter.notifyDataSetChanged()
+                    loadImages()
+                }
+
             })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -68,13 +74,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun showMessage(message: String) {
-
-        SnackBar(
-            this,
-            findViewById<DrawerLayout>(R.id.dwrLayout_drawerlayout),
-            resources.getString(R.string.close),
-            message
-        ).show()
+        showMessage(message, Snackbar.LENGTH_INDEFINITE)
     }
 
     override fun getSearchFromToolbar(search: String) {
@@ -99,6 +99,23 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
     override fun checkValidSession() {
         model.checkValidSession(this)
+    }
+
+    private fun showMessage(message: String, duration: Int) {
+
+        SnackBar(
+            this,
+            findViewById<DrawerLayout>(R.id.dwrLayout_drawerlayout),
+            resources.getString(R.string.close),
+            message,
+            duration
+        ).show()
+    }
+
+
+    private fun showMessageFiniteTime(message: String) {
+
+        showMessage(message, Snackbar.LENGTH_LONG)
     }
 
     override fun setAdapterListeners(view: View, obj: Any?) {

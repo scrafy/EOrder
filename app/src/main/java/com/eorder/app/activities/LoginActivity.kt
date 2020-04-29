@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.viewmodels.LoginViewModel
+import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
@@ -39,13 +40,24 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         setListeners()
     }
 
-     fun setObservers() {
+    fun setObservers() {
 
         model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> {
 
-            val intent = Intent(this, LandingActivity::class.java)
-            startActivity(intent)
-            finish()
+            if (!model.userHasCenters()) {
+
+                AlertDialogOk(
+                    this,
+                    "Centers",
+                    "Your account has not any center associated",
+                    "OK"
+                ) { d, i -> clearEditTextAndFocus() }.show()
+            } else {
+                val intent = Intent(this, LandingActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
 
         })
 
@@ -83,6 +95,10 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         findViewById<EditText>(R.id.editText_username).text.clear()
         findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
+    }
+
+    private fun getCenters() {
+
     }
 
     fun setListeners() {

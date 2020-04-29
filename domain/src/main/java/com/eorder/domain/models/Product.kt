@@ -28,7 +28,7 @@ class Product(
     var sellerName: String? = null,
     var amountsByDay: MutableList<ProductAmountByDay>? = null
 
-) : ILoadImageFields, Serializable {
+) : ILoadImageFields {
     var amount: Int = 0
         set(value) {
             field = value

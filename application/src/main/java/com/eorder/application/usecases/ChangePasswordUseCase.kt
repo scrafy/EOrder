@@ -20,11 +20,11 @@ class ChangePasswordUseCase(
 ) : IChangePasswordUseCase {
 
 
-    override fun changePassword(recoverPassword: ChangePassword): ServerResponse<Any> {
+    override fun changePassword(changePassword: ChangePassword): ServerResponse<Any> {
 
 
         var validationErrors: List<ValidationError> =
-            validationModelService.validate(recoverPassword)
+            validationModelService.validate(changePassword)
 
         if (validationErrors.isNotEmpty())
             throw ModelValidationException(
@@ -34,6 +34,6 @@ class ChangePasswordUseCase(
             )
 
 
-        return userRepository.changePassword(recoverPassword)
+        return userRepository.changePassword(changePassword)
     }
 }

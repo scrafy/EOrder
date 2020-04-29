@@ -17,6 +17,11 @@ class CenterInfoFragment : BaseFragment() {
 
     private lateinit var model: CenterInfoFragmentViewModel
 
+
+    companion object{
+        lateinit var center:Center
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +39,7 @@ class CenterInfoFragment : BaseFragment() {
 
     private fun init() {
 
-        val center = arguments?.get("center") as Center
+        val center = CenterInfoFragment.center
 
         editText_fragment_center_info_center_name.setText(center.center_name)
         editText_fragment_center_info_address.setText(center.address)

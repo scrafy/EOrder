@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreateProfileViewModel : BaseViewModel() {
+class CreateAccountViewModel : BaseViewModel() {
 
     val createAccountResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
 

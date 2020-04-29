@@ -17,6 +17,9 @@ class Account(
     @NullOrEmptyStringValidation("The phone can not be empty or null", "phone",1)
     @RegexFormatValidation("The phone has to be 9 or more numeric digits", "phone","^[0-9]{9,}\$",1)
     val phone:String,
+    @NullOrEmptyStringValidation("The email can not be empty or null","email", 1)
+    @RegexFormatValidation("The email has not a correct format","email", "^[a-zA-Z0-9_!#\$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\$",2)
     val email:String,
+    @NullOrEmptyStringValidation("The center code can not be empty or null", "centerCode",1)
     val centerCode:String
 )

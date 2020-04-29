@@ -3,6 +3,7 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -10,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.eorder.app.R
-import com.eorder.app.com.eorder.app.viewmodels.CreateProfileViewModel
+import com.eorder.app.com.eorder.app.viewmodels.CreateAccountViewModel
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
@@ -21,9 +22,9 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_profile.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class CreateProfileActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormErrors {
+class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormErrors {
 
-    private lateinit var model: CreateProfileViewModel
+    private lateinit var model: CreateAccountViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,12 @@ class CreateProfileActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_phone).error =
             errors?.firstOrNull { it -> it.fieldName.equals("phone") }?.errorMessage
+
+        findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_email).error =
+            errors?.firstOrNull { it -> it.fieldName.equals("email") }?.errorMessage
+
+        findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_centerCode).error =
+            errors?.firstOrNull { it -> it.fieldName.equals("centerCode") }?.errorMessage
 
     }
 
@@ -173,7 +180,18 @@ class CreateProfileActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
     }
 
     private fun init() {
-        editText_create_profile_activity_email.setText(intent.getStringExtra("email").toString())
-        editText_create_profile_activity_centerCode.setText(intent.getStringExtra("centerCode").toString())
+
+        if (intent.getStringExtra("email") != null) {
+            editText_create_profile_activity_email.setText(intent.getStringExtra("email").toString())
+        } else {
+            editText_create_profile_activity_email.inputType = InputType.TYPE_NULL
+        }
+        if (intent.getStringExtra("centerCode") != null) {
+            editText_create_profile_activity_centerCode.setText(intent.getStringExtra("centerCode").toString())
+        } else {
+            editText_create_profile_activity_centerCode.inputType = InputType.TYPE_NULL
+        }
+
+
     }
 }

@@ -32,6 +32,11 @@ class OrderRepository(
 
     override fun getOrderTotalsSummary(order: Order): ServerResponse<Order> {
 
+        order.totalBase = 0F
+        order.totalTaxes = 0F
+        order.total = 0F
+        order.totalProducts = 0
+
         order.products.forEach { p ->
 
             p.totalBase = (p.amount * p.price)

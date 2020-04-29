@@ -28,4 +28,8 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
+    fun userHasCenters() : Boolean {
+        return (unitOfWorkService.getJwtTokenService().getClaimFromToken("userHasCenters") as String).toBoolean()
+    }
+
 }

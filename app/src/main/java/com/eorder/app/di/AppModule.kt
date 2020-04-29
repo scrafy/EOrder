@@ -3,7 +3,8 @@ package com.eorder.app.di
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.eorder.app.com.eorder.app.viewmodels.CheckEmailActivityModel
-import com.eorder.app.com.eorder.app.viewmodels.CreateProfileViewModel
+import com.eorder.app.com.eorder.app.viewmodels.CreateAccountViewModel
+import com.eorder.app.com.eorder.app.viewmodels.ProfileActivityViewModel
 import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.*
 import com.eorder.app.viewmodels.fragments.*
@@ -34,7 +35,8 @@ val appModule = module {
     viewModel { SellerInfoFragmentViewModel() }
     viewModel { ProductViewModel() }
     viewModel { CheckEmailActivityModel() }
-    viewModel { CreateProfileViewModel() }
+    viewModel { CreateAccountViewModel() }
     viewModel { ProductCalendarActivityViewModel() }
     viewModel { RecoverPasswordViewModel() }
+    viewModel { ProfileActivityViewModel() }
 }

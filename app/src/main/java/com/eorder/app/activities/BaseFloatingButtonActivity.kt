@@ -40,7 +40,7 @@ abstract class BaseFloatingButtonActivity : BaseActivity() {
         }
     }
 
-    protected fun onFloatingButtonClicked(){
+    private fun onFloatingButtonClicked() {
         var intent = Intent(this, ShopActivity::class.java)
         startActivity(intent)
     }

@@ -18,5 +18,5 @@ class Center(
     override val imageUrl: String? = null,
     override var image: Bitmap? = null
 
-    ): Serializable, ILoadImageFields
+    ):  ILoadImageFields
 

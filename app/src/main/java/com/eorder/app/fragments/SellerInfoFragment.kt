@@ -17,6 +17,12 @@ class SellerInfoFragment : BaseFragment() {
 
     private lateinit var model: SellerInfoFragmentViewModel
 
+
+    companion object{
+
+        lateinit var seller: Seller
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +40,7 @@ class SellerInfoFragment : BaseFragment() {
 
     private fun init() {
 
-        val seller = arguments?.get("seller") as Seller
+        val seller = seller
 
 
         editText_fragment_seller_info_seller_name.setText(seller.companyName)

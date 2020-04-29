@@ -1,6 +1,8 @@
 package com.eorder.app.activities
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import com.eorder.app.R
 import com.eorder.app.fragments.SellerInfoFragment
 import com.eorder.app.fragments.SellersFragment
@@ -44,16 +46,15 @@ class SellerActivity : BaseMenuActivity(), ISelectSeller {
 
     override fun selectSeller(seller: Seller) {
 
-        var fragment = SellerInfoFragment()
-        var args = Bundle()
-        args.putSerializable("seller", seller as java.io.Serializable)
-        fragment.arguments = args
+        SellerInfoFragment.seller = seller
+
         this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linearLayout_activity_seller_container, fragment)
+            .replace(R.id.linearLayout_activity_seller_container, SellerInfoFragment())
             .addToBackStack(null).commit()
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun init() {
 
         supportFragmentManager.beginTransaction()

@@ -1,5 +1,7 @@
 package com.eorder.app.activities
 
+import android.content.Intent
+import android.view.Gravity
 import android.view.Menu
 import android.widget.SearchView
 import android.widget.Toast
@@ -7,9 +9,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.interfaces.IToolbarSearch
-import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.app.interfaces.IOnShopToolbarIconClicked
+import com.eorder.app.interfaces.ISetActionBar
+import com.eorder.app.interfaces.IToolbarSearch
+import com.google.android.material.navigation.NavigationView
 
 
 abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
@@ -41,6 +44,11 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
         this.onBackPressed()
         return super.onSupportNavigateUp()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindEventsToLateralMenu()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,11 +109,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
             .setOnMenuItemClickListener { item ->
                 when (item?.itemId) {
 
-                    R.id.profile -> Toast.makeText(
-                        getContext(),
-                        "Profile",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    R.id.profile -> startActivity(Intent(this, ProfileActivity::class.java))
                     R.id.setting -> Toast.makeText(
                         getContext(),
                         "Settings",
@@ -140,6 +144,59 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
             }
 
         })
+
+    }
+
+    private fun bindEventsToLateralMenu() {
+
+        if (this.findViewById<NavigationView>(R.id.navView_naview) != null) {
+
+            val intent = Intent()
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+            this.findViewById<NavigationView>(R.id.navView_naview)
+                .setNavigationItemSelectedListener {
+
+                    this.findViewById<DrawerLayout>(R.id.dwrLayout_drawerlayout)
+                        .closeDrawer(Gravity.LEFT)
+
+                    when (it.itemId) {
+
+                        R.id.makeorder -> {
+                            intent.setClass(this, OrderActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.centers -> {
+                            intent.setClass(this, CenterActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.sellers -> {
+                            intent.setClass(this, SellerActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.orders_done -> {
+                            intent.setClass(this, OrderDoneActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.favourite_products -> {
+                            intent.setClass(this, FavoriteActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.profile ->  {
+                            intent.setClass(this, ProfileActivity::class.java)
+                            startActivity(intent)
+                        }
+                        R.id.products -> {
+                            intent.setClass(this, ProductActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+
+                    true
+                }
+        }
+
 
     }
 

@@ -10,8 +10,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     override fun onStart() {
-        this.checkValidSession()
         super.onStart()
+        this.checkValidSession()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 }

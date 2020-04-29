@@ -20,6 +20,7 @@ class AlertDialogOk
 
         this.dialog = AlertDialog.Builder(ctx)
 
+            .setCancelable(false)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(buttonText, callback)

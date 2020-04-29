@@ -22,6 +22,7 @@ class AlertDialogQuestion
 
         this.dialog = AlertDialog.Builder(ctx)
 
+            .setCancelable(false)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(buttonTextPositive, callbackPositive)

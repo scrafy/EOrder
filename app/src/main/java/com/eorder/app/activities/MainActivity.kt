@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -51,10 +50,13 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
 
     fun setListeners() {
 
-        val loginButton = findViewById<Button>(R.id.button_signIn)
-        loginButton.setOnClickListener {
+        button_activity_main_login.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
 
+        }
+
+        button_activity_main_create_account.setOnClickListener {
+            startActivity(Intent(this, CreateAccountActivity::class.java))
         }
 
         button_activity_main_activate_center.setOnClickListener {
