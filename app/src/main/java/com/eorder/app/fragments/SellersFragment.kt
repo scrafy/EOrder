@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
@@ -28,9 +27,12 @@ import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.viewmodels.fragments.SellersViewModel
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Seller
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.sellers_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -57,7 +59,13 @@ class SellersFragment : BaseFragment(),
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        editText_activity_main_code_input.text.clear()
+        SnackBar(
+            context!!,
+            swipeRefresh_sellers_fragment,
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -96,7 +104,7 @@ class SellersFragment : BaseFragment(),
             seller.companyName
 
 
-        if ( seller.image != null)
+        if (seller.image != null)
             view.findViewById<ImageView>(R.id.imgView_seller_list_img).setImageBitmap(seller.image)
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_seller_list_img))
@@ -128,10 +136,11 @@ class SellersFragment : BaseFragment(),
 
     private fun loadImages() {
 
-        LoadImageHelper().loadImage(sellers).observe(this.activity as LifecycleOwner, Observer<Any> {
+        LoadImageHelper().loadImage(sellers)
+            .observe(this.activity as LifecycleOwner, Observer<Any> {
 
-            adapter.notifyDataSetChanged()
-        })
+                adapter.notifyDataSetChanged()
+            })
     }
 
     private fun init() {

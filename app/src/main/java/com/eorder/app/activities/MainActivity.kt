@@ -7,17 +7,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
+import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.application.interfaces.IManageFormErrors
+import com.eorder.domain.models.ServerResponse
 import com.eorder.domain.models.ValidationError
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IManageFormErrors {
 
     private lateinit var model: MainViewModel
 
@@ -26,32 +30,36 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         model = getViewModel()
         setListeners()
+        setObservers()
         showSessionExpiredMessage()
         init()
     }
 
-    fun setValidationErrors(errors: List<ValidationError>?) {
+    override fun onResume() {
+        super.onResume()
+        this.findViewById<EditText>(R.id.editText_activity_main_code_input).setText("")
+
+
+    }
+
+
+    override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_main_error_validation_message.text =
             errors?.firstOrNull { it -> it.fieldName == "centerCode" }?.errorMessage
     }
 
+
     fun setListeners() {
 
         val loginButton = findViewById<Button>(R.id.button_signIn)
-        loginButton.setOnClickListener { v ->
+        loginButton.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
 
         }
+
         button_activity_main_activate_center.setOnClickListener {
 
-            val errors = model.validateModel(editText_activity_main_code_input.text.toString())
-            if (errors != null) {
-                setValidationErrors(errors)
-            } else {
-                val intent = Intent(this, CheckEmailActivity::class.java)
-                intent.putExtra("centerCode", editText_activity_main_code_input.text.toString())
-                startActivity(intent)
-            }
+            model.checkActivationCenterCode(editText_activity_main_code_input.text.toString())
         }
 
         editText_activity_main_code_input.addTextChangedListener(object : TextWatcher {
@@ -70,6 +78,35 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+    }
+
+    fun setObservers() {
+
+        model.checkCenterActivationCodeResult.observe(this, Observer<ServerResponse<Boolean>> {
+
+            val result = it.serverData?.data ?: false
+
+            if (result) {
+                editText_activity_main_code_input.setText("")
+                AlertDialogOk(
+                    this,
+                    "Center activation",
+                    "This center is active, please, check other activation code",
+                    "Ok"
+                ) { d, i -> }.show()
+
+            } else {
+                val intent = Intent(this, CheckEmailActivity::class.java)
+                intent.putExtra("centerCode", editText_activity_main_code_input.text.toString())
+                startActivity(intent)
+            }
+        })
+
+        model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
+
+            model.getManagerExceptionService().manageException(this, ex)
+
+        })
     }
 
     fun showSessionExpiredMessage() {

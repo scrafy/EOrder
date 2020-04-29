@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
@@ -26,9 +25,12 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.catalogs_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -95,7 +97,13 @@ class CatalogsFragment : BaseFragment(),
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        editText_activity_main_code_input.text.clear()
+        SnackBar(
+            context!!,
+            swipeRefresh_catalogs_fragment,
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
 
     fun setObservers() {

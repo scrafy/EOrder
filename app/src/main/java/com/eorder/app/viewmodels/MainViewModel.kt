@@ -7,12 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.domain.models.CenterCode
 import com.eorder.domain.models.ServerResponse
-import com.eorder.domain.models.ValidationError
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel : BaseViewModel() {
 
-    val activateCenterResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
+    val checkCenterActivationCodeResult: MutableLiveData<ServerResponse<Boolean>> =
+        MutableLiveData()
 
     fun isLogged(): Boolean = unitOfWorkService.getJwtTokenService().isValidToken()
 
@@ -35,11 +38,15 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
-    fun validateModel(code: String): List<ValidationError>? {
+    fun checkActivationCenterCode(code: String) {
 
-        if (!unitOfWorkService.getValidationModelService().isModelValid(CenterCode(code))) {
-            return unitOfWorkService.getValidationModelService().validate(CenterCode(code))
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+            checkCenterActivationCodeResult.postValue(
+                unitOfWorkUseCase.getCheckCenterActivationCodeUseCase().checkCenterActivationCode(
+                    CenterCode(code)
+                )
+            )
         }
-        return null
+
     }
 }

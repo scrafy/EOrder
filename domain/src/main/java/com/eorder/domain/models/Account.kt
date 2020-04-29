@@ -9,12 +9,13 @@ class Account(
     @NullOrEmptyStringValidation("The username can not be empty or null", "username",1)
     val username:String,
     @NullOrEmptyStringValidation("The password can not be empty or null", "password",1)
+    @RegexFormatValidation("The password must containt at least one digit, one lower case, one special character and a lenght of 6 characters as minimun", "password","^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]*.*)(?=.*\\W+.*)[0-9a-zA-Z\\W]{6,}\$",2)
     val password:String,
     @NullOrEmptyStringValidation("The password confirmation can not be empty or null","confirmPassword", 1)
     @FieldEqualToOtherValidation("The password confirmation field has to match with password field","confirmPassword", "password",2)
     val confirmPassword:String,
     @NullOrEmptyStringValidation("The phone can not be empty or null", "phone",1)
-    @RegexFormatValidation("The phone has not the correct format", "phone","^[+]{1}[0-9]{2}+-[0-9]{3}-[0-9]{3}-[0-9]{3}\$",1)
+    @RegexFormatValidation("The phone has to be 9 or more numeric digits", "phone","^[0-9]{9,}\$",1)
     val phone:String,
     val email:String,
     val centerCode:String

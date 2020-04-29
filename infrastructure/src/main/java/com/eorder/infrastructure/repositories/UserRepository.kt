@@ -22,6 +22,22 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
         return response
     }
 
+    override fun checkUserEmail(email: Email): ServerResponse<Boolean> {
+
+        val response = ServerResponse(
+            200,
+            null,
+            ServerData(
+                false,
+                null
+            )
+        )
+        checkServerErrorInResponse(response)
+
+        return response
+
+    }
+
     override fun getFavoriteProducts(favorites: List<Int>): ServerResponse<List<Product>> {
 
 
@@ -40,17 +56,28 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
         return response
     }
 
-    override fun recoverPassword(recoverPasswordRequest: RecoverPassword): ServerResponse<String> {
+    override fun changePassword(recoverPasswordRequest: ChangePassword): ServerResponse<Any> {
 
         //TODO MAKE REAL CALL TO BACKEND
-        var response: ServerResponse<String> =
+        var response: ServerResponse<Any> =
             ServerResponse(
                 200,
                 null,
-                ServerData(
-                    "OK",
-                    null
-                )
+                null
+            )
+        checkServerErrorInResponse(response)
+
+        return response
+    }
+
+    override fun recoverPassword(email: Email): ServerResponse<Any> {
+
+        //TODO MAKE REAL CALL TO BACKEND
+        var response: ServerResponse<Any> =
+            ServerResponse(
+                200,
+                null,
+               null
             )
         checkServerErrorInResponse(response)
 

@@ -28,15 +28,15 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:background="@drawable/shape_blue_gradient_rounded_background">
+                    android:background="@drawable/shape_blue_gradient_rounded_background"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recicleView_orders_done_activity"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recicleView_orders_done_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
-                        />
-                </RelativeLayout>
+                    />
+
             </RelativeLayout>
 
         </LinearLayout>

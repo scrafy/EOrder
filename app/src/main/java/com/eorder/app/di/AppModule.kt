@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.eorder.app.com.eorder.app.viewmodels.CheckEmailActivityModel
 import com.eorder.app.com.eorder.app.viewmodels.CreateProfileViewModel
+import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
 import com.eorder.app.viewmodels.*
 import com.eorder.app.viewmodels.fragments.*
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,7 +15,7 @@ val appModule = module {
 
     /*VIEW MODEL*/
     viewModel { LoginViewModel() }
-    viewModel { RecoverPasswordViewModel() }
+    viewModel { ChangePasswordViewModel() }
     viewModel { CentersViewModel() }
     viewModel { CatalogsViewModel() }
     viewModel { ProductsViewModel() }
@@ -35,6 +36,5 @@ val appModule = module {
     viewModel { CheckEmailActivityModel() }
     viewModel { CreateProfileViewModel() }
     viewModel { ProductCalendarActivityViewModel() }
-
-
+    viewModel { RecoverPasswordViewModel() }
 }

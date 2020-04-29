@@ -26,9 +26,12 @@ import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogQuestion
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.centers_fragment.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -71,8 +74,15 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        editText_activity_main_code_input.text.clear()
+        SnackBar(
+            context!!,
+            swipeRefresh_products_fragment,
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
+
 
     override fun getSearchFromToolbar(search: String) {
         if (search != "")

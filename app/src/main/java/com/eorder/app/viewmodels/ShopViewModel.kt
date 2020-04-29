@@ -14,10 +14,7 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Clock
-import java.time.Instant
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.math.abs
 import kotlin.random.Random.Default.nextInt
 

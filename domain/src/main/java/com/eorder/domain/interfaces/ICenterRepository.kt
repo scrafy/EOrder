@@ -8,7 +8,7 @@ import com.eorder.domain.models.ServerResponse
 interface ICenterRepository {
 
     fun getUserCenters() : ServerResponse<List<Center>>
-    fun activateCenter(code:String) : ServerResponse<Any>
-    fun activateCenter(code:CenterCode, email: Email): ServerResponse<Boolean>
+    fun checkCenterActivationCode(code:CenterCode) : ServerResponse<Boolean>
+
 
 }

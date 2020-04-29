@@ -30,9 +30,12 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CentersViewModel
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.centers_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -57,8 +60,15 @@ class CentersFragment : BaseFragment(),
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        editText_activity_main_code_input.text.clear()
+        SnackBar(
+            context!!,
+            swipeRefresh_centers_fragment,
+            resources.getString(R.string.close),
+            message
+        ).show()
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 

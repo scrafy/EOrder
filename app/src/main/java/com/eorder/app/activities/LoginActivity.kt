@@ -39,8 +39,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         setListeners()
     }
 
-
-    fun setObservers() {
+     fun setObservers() {
 
         model.getloginResultsObservable().observe(this, Observer<ServerResponse<String>> {
 

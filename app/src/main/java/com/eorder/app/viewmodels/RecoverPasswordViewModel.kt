@@ -1,30 +1,29 @@
-package com.eorder.app.viewmodels
+package com.eorder.app.com.eorder.app.viewmodels
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.eorder.domain.models.RecoverPassword
+import com.eorder.app.viewmodels.BaseViewModel
+import com.eorder.domain.models.Email
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
-class RecoverPasswordViewModel: BaseViewModel() {
+class RecoverPasswordViewModel : BaseViewModel() {
 
-    private val recoverPasswordResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
+    val recoverPasswordResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
 
-
-    fun getRecoverPasswordObservable(): LiveData<ServerResponse<String>> = recoverPasswordResult
-
-    fun recoverPassword(recoverPasswordRequest: RecoverPassword) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun recoverPassword(email: Email) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = unitOfWorkUseCase.getRecoverPasswordUseCase().recoverPassword(recoverPasswordRequest)
-            recoverPasswordResult.postValue(result)
+            recoverPasswordResult.postValue(
+                unitOfWorkUseCase.getRecoverPasswordUseCase().recoverPassword(
+                    email
+                )
+            )
         }
     }
-
 }

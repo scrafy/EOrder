@@ -30,7 +30,7 @@ class CalendarService : ICalendarService {
         for (i in 1..getMonthNumDays(month)) {
             days.add(LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, i))
         }
-        return days//.filter { it >= currentDate }
+        return days.filter { it >= currentDate }
     }
 
     override fun getMonthCurrentDay(): Int {
@@ -46,7 +46,7 @@ class CalendarService : ICalendarService {
     override fun getOrderWeek(month:Int): List<LocalDate> {
 
         var dates: MutableList<LocalDate> = mutableListOf()
-        var date = LocalDate.of(2020,4,1).plusWeeks(1)
+        var date = LocalDate.now().plusWeeks(1)
 
         while (date.get(ChronoField.DAY_OF_WEEK) != DayOfWeek.MONDAY.value) {
 

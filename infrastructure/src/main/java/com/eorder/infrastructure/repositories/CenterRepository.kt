@@ -7,13 +7,13 @@ import com.eorder.infrastructure.interfaces.IHttpClient
 class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), ICenterRepository {
 
 
-    override fun activateCenter(code: String):  ServerResponse<Any> {
+    override fun checkCenterActivationCode(code: CenterCode): ServerResponse<Boolean> {
 
-        var response: ServerResponse<Any> =
+        var response: ServerResponse<Boolean> =
             ServerResponse(
                 200,
                 null,
-                null
+                ServerData(false, null)
 
             )
         checkServerErrorInResponse(response)
@@ -21,21 +21,6 @@ class CenterRepository(private val httpClient: IHttpClient) : BaseRepository(), 
         return response
     }
 
-    override fun activateCenter(code:CenterCode, email: Email): ServerResponse<Boolean> {
-
-        val response = ServerResponse(
-            200,
-            null,
-            ServerData(
-                false,
-                null
-            )
-        )
-        checkServerErrorInResponse(response)
-
-        return response
-
-    }
 
     override fun getUserCenters(): ServerResponse<List<Center>> {
 

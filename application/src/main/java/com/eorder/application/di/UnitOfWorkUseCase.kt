@@ -21,21 +21,36 @@ class UnitOfWorkUseCase(
     private var orderDoneUseCase: IOrdersDoneUseCase? = null
     private var orderSummaryTotalsUseCase: IOrderSummaryTotalsUseCase? = null
     private var productsByCatalogUseCase: IProductsByCatalogUseCase? = null
-    private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
+    private var changePasswordUseCase: IChangePasswordUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
-    private var sellerUseCase: ISellerUseCase? = null
     private var sellersUseCase: ISellersUseCase? = null
+    private var sellerUseCase: ISellerUseCase? = null
     private var productsBySellerUseCase: IProductsBySellerUseCase? = null
-    private var activateCenterUseCase: IActivateCenterUseCase? = null
+    private var checkCenterActivationCodeUseCase: ICheckCenterActivationCodeUseCase? = null
     private var createAccountUseCase: ICreateAccountUseCase? = null
+    private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
+    private var existsUserEmailUseCase: IExistsUserEmailUseCase? = null
 
+
+    fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
+
+        if (existsUserEmailUseCase == null) {
+            existsUserEmailUseCase = ExistsUserEmailUseCase(
+                unitOfWorkRepository.getUserRepository(),
+                unitOfWorkService.getValidationModelService()
+            )
+        }
+        return existsUserEmailUseCase as IExistsUserEmailUseCase
+    }
 
     fun getCentersUseCase(): IUserCentersUseCase {
 
-        if (centersUseCase == null)
-            return UserCentersUseCase(
+        if (centersUseCase == null) {
+            centersUseCase = UserCentersUseCase(
                 unitOfWorkRepository.getCenterRepository()
             )
+
+        }
 
         return centersUseCase as IUserCentersUseCase
     }
@@ -43,7 +58,7 @@ class UnitOfWorkUseCase(
     fun getCreateAccountUseCase(): ICreateAccountUseCase {
 
         if (createAccountUseCase == null)
-            return CreateAccountUseCase(
+            createAccountUseCase =  CreateAccountUseCase(
                 unitOfWorkService.getValidationModelService(),
                 unitOfWorkRepository.getUserRepository()
             )
@@ -51,15 +66,15 @@ class UnitOfWorkUseCase(
         return createAccountUseCase as ICreateAccountUseCase
     }
 
-    fun getActivateCenterUseCase(): IActivateCenterUseCase {
+    fun getCheckCenterActivationCodeUseCase(): ICheckCenterActivationCodeUseCase {
 
-        if (activateCenterUseCase == null)
-            activateCenterUseCase = ActivateCenterUseCase(
+        if (checkCenterActivationCodeUseCase == null)
+            checkCenterActivationCodeUseCase = CheckCenterActivationCodeUseCase(
                 unitOfWorkRepository.getCenterRepository(),
                 unitOfWorkService.getValidationModelService()
             )
 
-        return activateCenterUseCase as IActivateCenterUseCase
+        return checkCenterActivationCodeUseCase as ICheckCenterActivationCodeUseCase
     }
 
 
@@ -174,13 +189,24 @@ class UnitOfWorkUseCase(
     }
 
 
+    fun getChangePasswordUseCase(): IChangePasswordUseCase {
+
+        if (changePasswordUseCase == null)
+            changePasswordUseCase = ChangePasswordUseCase(
+                unitOfWorkService.getValidationModelService(),
+                unitOfWorkRepository.getUserRepository()
+
+            )
+
+        return changePasswordUseCase as IChangePasswordUseCase
+    }
+
     fun getRecoverPasswordUseCase(): IRecoverPasswordUseCase {
 
         if (recoverPasswordUseCase == null)
             recoverPasswordUseCase = RecoverPasswordUseCase(
-                unitOfWorkService.getValidationModelService(),
-                unitOfWorkRepository.getUserRepository()
-
+                unitOfWorkRepository.getUserRepository(),
+                unitOfWorkService.getValidationModelService()
             )
 
         return recoverPasswordUseCase as IRecoverPasswordUseCase

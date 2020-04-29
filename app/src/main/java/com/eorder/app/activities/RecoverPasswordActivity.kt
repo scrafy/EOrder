@@ -1,33 +1,29 @@
 package com.eorder.app.activities
 
-
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
+import com.eorder.app.com.eorder.app.viewmodels.RecoverPasswordViewModel
+import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.app.viewmodels.RecoverPasswordViewModel
-import com.eorder.app.widgets.*
-import com.eorder.domain.models.RecoverPassword
-import com.eorder.domain.models.ValidationError
+import com.eorder.domain.models.Email
 import com.eorder.domain.models.ServerResponse
-import com.google.android.material.textfield.TextInputLayout
+import com.eorder.domain.models.ValidationError
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_recover_password.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.O)
-class RecoverPasswordActivity : AppCompatActivity(),
-    IManageFormErrors,
-    IShowSnackBarMessage {
+class RecoverPasswordActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormErrors {
 
     private lateinit var model: RecoverPasswordViewModel
 
@@ -35,15 +31,20 @@ class RecoverPasswordActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recover_password)
         model = getViewModel()
-        setObservers()
         setListeners()
+        setObservers()
+    }
+
+    override fun setValidationErrors(errors: List<ValidationError>?) {
+        textView_activity_recover_password_error_validation_message.text =
+            errors?.firstOrNull { it -> it.fieldName == "email" }?.errorMessage
     }
 
     override fun showMessage(message: String) {
-        clearEditTextAndFocus()
+        editText_activity_main_code_input.text.clear()
         SnackBar(
             this,
-            findViewById<LinearLayout>(R.id.linearLayout_recover_password_activity_root),
+            findViewById<LinearLayout>(R.id.linearLayout_activity_recover_password_conatiner),
             resources.getString(R.string.close),
             message
         ).show()
@@ -51,17 +52,14 @@ class RecoverPasswordActivity : AppCompatActivity(),
 
     fun setObservers() {
 
-        model.getRecoverPasswordObservable().observe(this, Observer<ServerResponse<String>> { it ->
+        model.recoverPasswordResult.observe(this, Observer<ServerResponse<Any>> {
 
-            var dialog = AlertDialogOk(
+            AlertDialogOk(
                 this,
-                resources.getString(R.string.recover_password_activity_alert_dialog_title),
-                resources.getString(R.string.recover_password_activity_alert_dialog_message),
+                "Email confirmation",
+                "An email has been sent your account, please review your mail to recover your password",
                 "OK"
-            ) { _, _ ->
-
-                this.onBackPressed()
-            }.show()
+            ) { d, i -> this.onBackPressed() }.show()
 
         })
 
@@ -73,86 +71,30 @@ class RecoverPasswordActivity : AppCompatActivity(),
 
     }
 
+
     private fun setListeners() {
 
-        findViewById<Button>(R.id.button_recover_password_activity_button).setOnClickListener { v ->
+        button_activity_recover_password_send.setOnClickListener {
 
-            val recoverPasswordRequest = RecoverPassword(
-                findViewById<EditText>(R.id.editText_recover_password_activity_old_password).text.toString(),
-                findViewById<EditText>(R.id.editText_recover_password_activity_new_password).text.toString(),
-                findViewById<EditText>(R.id.editText_recover_password_activity_confirm_password).text.toString()
-            )
-            model.recoverPassword(recoverPasswordRequest)
+            model.recoverPassword(Email(editText_activity_recover_password_mail_input.text.toString()))
         }
 
-        findViewById<EditText>(R.id.editText_recover_password_activity_old_password).addTextChangedListener(
-            object :
-                TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
+        editText_activity_recover_password_mail_input.addTextChangedListener(object :
+            TextWatcher {
 
-                }
+            override fun afterTextChanged(s: Editable?) {
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+            }
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-                    findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_oldpassword).error =
-                        null
-                }
-            })
+            }
 
-        findViewById<EditText>(R.id.editText_recover_password_activity_new_password).addTextChangedListener(
-            object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                textView_activity_recover_password_error_validation_message.text = ""
+            }
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_newpassword).error =
-                        null
-                }
-            })
-
-        findViewById<EditText>(R.id.editText_recover_password_activity_confirm_password).addTextChangedListener(
-            object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_confirm_password).error =
-                        null
-                }
-            })
+        })
     }
 
-    override fun setValidationErrors(errors: List<ValidationError>?) {
-
-        findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_oldpassword).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("oldPassword") }?.errorMessage
-
-
-        findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_newpassword).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("newPassword") }?.errorMessage
-
-
-        findViewById<TextInputLayout>(R.id.textInputLayout_recover_password_activity_confirm_password).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("confirmPassword") }?.errorMessage
-
-    }
-
-    private fun clearEditTextAndFocus() {
-
-        findViewById<EditText>(R.id.editText_recover_password_activity_confirm_password).text.clear()
-        findViewById<EditText>(R.id.editText_recover_password_activity_new_password).text.clear()
-        findViewById<EditText>(R.id.editText_recover_password_activity_old_password).text.clear()
-        findViewById<EditText>(R.id.editText_recover_password_activity_old_password).requestFocus()
-    }
 }

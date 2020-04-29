@@ -2,18 +2,30 @@ package com.eorder.application.services
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.eorder.application.gsonadapters.LocalDateAdapter
+import com.eorder.application.gsonadapters.LocalDateTimeAdapter
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import java.lang.reflect.Type
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 class SharedPreferencesService(
 
     private val jwtTokenService: IJwtTokenService
 
 ) : ISharedPreferencesService {
 
+    private var gson: Gson =
+        GsonBuilder().registerTypeAdapter(LocalDate::class.java, LocalDateAdapter().nullSafe())
+            .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())
+            .create()
 
     override fun loadSession(context: Context?, key: String): String? {
 
@@ -21,7 +33,7 @@ class SharedPreferencesService(
             context?.getSharedPreferences("SESSION", MODE_PRIVATE)
         val stringJson = preferences?.getString(key, null) ?: return null
 
-        return Gson().fromJson(
+        return gson.fromJson(
             stringJson,
             String::class.java
         )
@@ -35,7 +47,7 @@ class SharedPreferencesService(
 
         val preferences =
             context?.getSharedPreferences("SESSION", MODE_PRIVATE)
-        preferences?.edit()?.putString(key, Gson().toJson(token, String::class.java))
+        preferences?.edit()?.putString(key, gson.toJson(token, String::class.java))
             ?.commit()
 
 
@@ -53,7 +65,7 @@ class SharedPreferencesService(
             context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
         val stringJson = preferences?.getString(key, null) ?: return null
 
-        return Gson().fromJson(
+        return gson.fromJson(
             stringJson,
             type
         )
@@ -69,7 +81,7 @@ class SharedPreferencesService(
         val userId = jwtTokenService.getClaimFromToken("userId")
         val preferences =
             context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
-        preferences?.edit()?.putString(key, Gson().toJson(obj, type))
+        preferences?.edit()?.putString(key, gson.toJson(obj, type))
             ?.commit()
 
     }

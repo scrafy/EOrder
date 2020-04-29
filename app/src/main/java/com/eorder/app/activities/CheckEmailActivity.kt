@@ -1,15 +1,18 @@
 package com.eorder.app.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.viewmodels.CheckEmailActivityModel
+import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
@@ -19,12 +22,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-
-
+@RequiresApi(Build.VERSION_CODES.O)
 class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFormErrors {
 
     private lateinit var model: CheckEmailActivityModel
-    private lateinit var centerCode:String
+    private lateinit var centerCode: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +36,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
         setObservers()
         setListeners()
         centerCode = intent.getStringExtra("centerCode")
-    }
 
-    override fun onStart() {
-        super.onStart()
     }
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
@@ -56,18 +56,21 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
 
     private fun setObservers() {
 
-        model.activateCenterResult.observe(this as LifecycleOwner, Observer {
+        model.checkUserEmailResult.observe(this as LifecycleOwner, Observer {
 
             val result = it.serverData?.data!!
 
             if (result) {
-                this.finish()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+               AlertDialogOk(this, "Email validation", "This email already exists", "OK") { d, i->
+
+                   this.finish()
+                   val intent = Intent(this, LoginActivity::class.java)
+                   startActivity(intent)
+               }.show()
             } else {
                 this.finish()
                 val intent = Intent(this, CreateProfileActivity::class.java)
-                intent.putExtra("email",editText_activity_check_email_mail_input.text.toString())
+                intent.putExtra("email", editText_activity_check_email_mail_input.text.toString())
                 intent.putExtra("centerCode", centerCode)
                 startActivity(intent)
             }
@@ -82,11 +85,12 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setListeners() {
 
         button_activity_check_email_send.setOnClickListener {
 
-            model.checkUserEmail(intent.getStringExtra("centerCode"), editText_activity_check_email_mail_input.text.toString())
+            model.checkUserEmail(editText_activity_check_email_mail_input.text.toString())
         }
 
         editText_activity_check_email_mail_input.addTextChangedListener(object :
