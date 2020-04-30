@@ -96,7 +96,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 200,
                 null,
                 ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxODQ1NDIsImV4cCI6MTYxOTcyMDU0OSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiSm9zZSIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.Oa5KosJXMZlKpB5Hd8sMmaQXfooDxNtEE95xqdJ8xes",
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxOTg2MTAsImV4cCI6MTYxOTczNDYxMCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiSm9zZSIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySWQiOiIxMjMiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.KLikj5aohZhvGTTOZlMNAfNnaXoKM3bnSKH9k4rSsJA",
                     null
                 )
             )
@@ -106,7 +106,7 @@ class UserRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 200,
                 null,
                 ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxODA0MTQsImV4cCI6MTYxOTcxNjUzNCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiZnJhbiIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkifQ.ms54FQ7excROsb3z-H7ds8-IL2JS9NCReE_-yFLObFk",
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxOTg2MTAsImV4cCI6MTYxOTczNDc4MywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiZnJhbiIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySWQiOiIxMjQiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.yZ6CBqBMnjyVRFmUMCqIMWfoy2aBqcmFfINBr93ak8A",
                     null
                 )
             )

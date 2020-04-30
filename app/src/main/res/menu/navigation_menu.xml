@@ -8,20 +8,20 @@
                     android:id="@+id/makeorder"
                     android:title="@string/lateral_nav_menu_makeorder"
                     android:icon="@drawable/ic_black_order"
-                    android:checkable="true"
+                    
                 />
                 <item
                     android:id="@+id/centers"
                     android:title="@string/lateral_nav_menu_centers"
                     android:icon="@drawable/ic_black_centro"
-                    android:checkable="true"
+                    
                     />
 
                 <item
                     android:id="@+id/sellers"
                     android:title="@string/lateral_nav_menu_providers"
                     android:icon="@drawable/ic_seller_black"
-                    android:checkable="true"
+                    
                     />
 
 
@@ -29,7 +29,7 @@
                     android:id="@+id/products"
                     android:title="@string/lateral_nav_menu_products"
                     android:icon="@drawable/ic_product_black"
-                    android:checkable="true"
+                    
                     />
 
         </menu>
@@ -44,14 +44,14 @@
                     android:id="@+id/orders_done"
                     android:title="@string/lateral_nav_menu_old_orders"
                     android:icon="@drawable/ic_orden_black"
-                    android:checkable="true"
+                    
                     />
 
                 <item
                     android:id="@+id/favourite_products"
                     android:title="@string/lateral_nav_menu_favourite_products"
                     android:icon="@drawable/ic_heart_black"
-                    android:checkable="true"
+                    
                     />
 
         </menu>
@@ -63,14 +63,14 @@
                 android:id="@+id/messages"
                 android:title="@string/lateral_nav_menu_mails"
                 android:icon="@drawable/ic_black_messages"
-                android:checkable="true"
+                
                 />-->
 
             <item
                 android:id="@+id/profile"
                 android:title="@string/lateral_nav_menu_profile"
                 android:icon="@drawable/ic_black_person"
-                android:checkable="true"
+                
                 />
         </menu>
 

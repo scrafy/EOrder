@@ -10,7 +10,7 @@ class ShopService : IShopService {
     private var order: Order = Order()
 
     override fun cleanShop() {
-        order.products.forEach { p -> p.amount = 0 }
+
         order = Order()
     }
 

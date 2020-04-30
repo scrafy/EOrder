@@ -1,11 +1,13 @@
 package com.eorder.app.activities
 
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -29,7 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_favorites.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage, IToolbarSearch {
 
@@ -38,6 +40,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     private lateinit var adapter: ProductsAdapter
     private var products: MutableList<Product> = mutableListOf()
 
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
@@ -47,6 +50,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         setObservers()
     }
 
+    
     private fun setObservers() {
 
         model.getFavoriteProductsResultObservable()
@@ -55,13 +59,15 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                 this.products = it?.serverData?.data?.toMutableList() ?: mutableListOf()
 
                 if (this.products.isEmpty()) {
+                    adapter.products = products
+                    adapter.notifyDataSetChanged()
                     showMessageFiniteTime("There are not any product on your favorite list yet")
                 } else {
                     this.products.map { p -> p.favorite = true }
                     adapter.products = this.products
-                    adapter.notifyDataSetChanged()
                     loadImages()
                 }
+
 
             })
 
@@ -101,6 +107,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         model.checkValidSession(this)
     }
 
+    
     private fun showMessage(message: String, duration: Int) {
 
         SnackBar(
@@ -113,6 +120,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     }
 
 
+    
     private fun showMessageFiniteTime(message: String) {
 
         showMessage(message, Snackbar.LENGTH_LONG)

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -31,7 +30,6 @@ import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.centers_fragment.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -44,7 +42,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
     private var adapter: OrderProductAdapter = OrderProductAdapter(listOf(), this)
-    private lateinit var products: MutableList<Product>
+    private  var products: MutableList<Product> = mutableListOf()
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var productSpinners: FilterProductSpinners
     private var filters: MutableMap<String, String?> = mutableMapOf()
@@ -67,8 +65,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     override fun onStart() {
         super.onStart()
-        if (adapter.products.isNotEmpty())
+        if ( !products.isNullOrEmpty() ){
+            setProductCurrentState()
             adapter.notifyDataSetChanged()
+        }
         (context as IRepaintShopIcon).repaintShopIcon()
         (context as BaseFloatingButtonActivity).hideFloatingButton()
     }
@@ -135,7 +135,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
-            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar).setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+                .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
+        }else{
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+                .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario))
         }
 
 
@@ -389,6 +393,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 }
 
             }
+        }else{
+            products.filter { it.amount > 0 }.forEach { it.amount = 0 }
+            products.filter { !it.amountsByDay.isNullOrEmpty() }.forEach { it.amountsByDay = null }
         }
 
         val favorites = model.loadFavoritesProducts(context)
