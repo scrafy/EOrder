@@ -1,17 +1,29 @@
 package com.eorder.application.services
 
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.eorder.application.enums.SharedPreferenceKeyEnum
+import com.eorder.application.extensions.clone
+import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 
+@RequiresApi(Build.VERSION_CODES.O)
+class ShopService(
 
-class ShopService : IShopService {
+    private val sharedPreferencesService: ISharedPreferencesService
+
+
+) : IShopService {
 
     private var order: Order = Order()
 
     override fun cleanShop() {
 
         order = Order()
+
     }
 
     override fun getOrder(): Order = this.order
@@ -83,5 +95,38 @@ class ShopService : IShopService {
     override fun getAmountOfProducts(): Int {
 
         return order.totalProducts
+    }
+
+    override fun loadShopForSharedPreferencesOrder(context: Context) {
+
+        val order =
+            sharedPreferencesService.loadFromSharedPreferences<Order>(
+                context,
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
+            )
+
+        if (order != null)
+
+            this.setOrder(order)
+    }
+
+
+    override fun writeShopToSharedPreferencesOrder(context: Context) {
+
+        if (this.order.products.isNotEmpty())
+            sharedPreferencesService.writeToSharedPreferences(
+                context,
+                this.order.clone(),
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
+            )
+        else
+            sharedPreferencesService.writeToSharedPreferences(
+                context,
+                null,
+                SharedPreferenceKeyEnum.SHOP_ORDER.key,
+                Order::class.java
+            )
     }
 }

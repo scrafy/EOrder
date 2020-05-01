@@ -1,10 +1,7 @@
 package com.eorder.app.activities
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import com.eorder.app.R
 import com.eorder.app.fragments.CenterInfoFragment
@@ -14,7 +11,6 @@ import com.eorder.app.viewmodels.CenterActivityViewModel
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.io.Serializable
 
 
 class CenterActivity : BaseMenuActivity(), ISelectCenter {

@@ -13,14 +13,12 @@ import com.eorder.app.R
 import com.eorder.app.adapters.ShopAdapter
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
-import com.eorder.app.interfaces.IRepaintShopIcon
 import com.eorder.app.viewmodels.ShopViewModel
 import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_shop.*
@@ -131,7 +129,8 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
-            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar).setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+                .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
         }
 
     }
@@ -139,8 +138,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
     fun setObservers() {
 
-        model.getConfirmOrderResultObservable().observe(this, Observer<ServerResponse<Int>> {
+        model.confirmOrderResult.observe(this, Observer<ServerResponse<Int>> {
 
+            model.cleanShop(this)
+            model.writeShopToSharedPreferencesOrder(this)
             AlertDialogOk(
                 this, resources.getString(R.string.alert_dialog_confirm_order_title),
                 resources.getString(R.string.alert_dialog_confirm_order_message), "OK"
@@ -153,11 +154,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         })
 
-        model.getSummaryTotalsOrderResultObservable()
-            .observe(this, Observer<ServerResponse<Order>> {
+        model.summaryTotalsOrderResult.observe(this, Observer<Any> {
 
-                this.setTotals()
-            })
+            this.setTotals()
+        })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
@@ -175,10 +175,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
                 AlertDialogQuestion(
                     this,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         decrementProduct(product)
@@ -196,10 +196,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             if (!product.amountsByDay.isNullOrEmpty()) {
                 AlertDialogQuestion(
                     this,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         incrementProduct(product)
@@ -236,10 +236,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
                 AlertDialogQuestion(
                     this,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         modifyAmountOfProduct(product)
@@ -280,34 +280,41 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private fun modifyAmountOfProduct(product: Product) {
 
         var dialog: AlertDialogInput? = null
-        dialog = AlertDialogInput(this, "", "", "ADD", "CANCEL", { d, i ->
+        dialog = AlertDialogInput(
+            this,
+            "",
+            "",
+            resources.getString(R.string.add),
+            resources.getString(R.string.cancel),
+            { d, i ->
 
 
-            if (dialog?.input?.text.isNullOrEmpty()) {
-                product.amount = 0
-            } else {
-                product.amount = Integer(dialog?.input?.text.toString()).toInt()
-            }
-            if (product.amount == 0) {
-
-                model.removeProductFromShop(product)
-                if (model.getProducts().isEmpty()) {
-                    this.onBackPressed()
+                if (dialog?.input?.text.isNullOrEmpty()) {
+                    product.amount = 0
+                } else {
+                    product.amount = Integer(dialog?.input?.text.toString()).toInt()
                 }
+                if (product.amount == 0) {
 
-            }
-            model.getOrderTotalsSummary()
-            product.amountsByDay = null
-            adapter.notifyDataSetChanged()
+                    model.removeProductFromShop(product)
+                    if (model.getProducts().isEmpty()) {
+                        this.onBackPressed()
+                    }
 
-        }, { d, i -> })
+                }
+                model.getOrderTotalsSummary()
+                product.amountsByDay = null
+                adapter.notifyDataSetChanged()
+
+            },
+            { d, i -> })
         dialog.show()
     }
 
     private fun init() {
 
         products = model.getProducts()
-        if (products.filter { p -> p.image == null }.isNotEmpty())
+        if (products.any { p -> p.image == null })
             LoadImageHelper().loadImage(products.filter { p -> p.image == null }).observe(
                 this as LifecycleOwner,
                 Observer {
@@ -391,7 +398,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 resources.getString(R.string.no),
                 { _, _ ->
 
-                    model.cleanShop()
+                    model.cleanShop(this)
                     this.onBackPressed()
                 },
                 { _, _ -> }

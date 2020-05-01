@@ -1,12 +1,14 @@
 package com.eorder.app.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -59,6 +61,7 @@ class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun showMessage(message: String) {
         clearEditTextAndFocus()
         SnackBar(
@@ -82,7 +85,7 @@ class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
 
         model.createAccountResult.observe(this as LifecycleOwner, Observer<Any> {
 
-            AlertDialogOk(this, "Account", "The account has been created correctly", "OK") { d, i ->
+            AlertDialogOk(this, resources.getString(R.string.create_account_activity_alert_title), resources.getString(R.string.create_account_activity_alert_message), resources.getString(R.string.ok)) { d, i ->
                 this.finish()
                 startActivity(Intent(this, LoginActivity::class.java))
                 clearEditTextAndFocus()

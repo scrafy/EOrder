@@ -11,8 +11,6 @@ import com.eorder.app.di.appModule
 import com.eorder.application.di.UnitOfWorkService
 import com.eorder.application.di.applicationModule
 import com.eorder.application.enums.SharedPreferenceKeyEnum
-import com.eorder.application.extensions.clone
-import com.eorder.domain.models.Order
 import com.eorder.infrastructure.di.infrastructureModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -46,21 +44,8 @@ class Main : Application(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
 
-        if (unitOfWorkService.getShopService().getOrder().products.isNotEmpty())
-            unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-                this@Main,
-                unitOfWorkService.getShopService().getOrder().clone(),
-                SharedPreferenceKeyEnum.SHOP_ORDER.key,
-                Order::class.java
-            )
-        else
-            unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-                this@Main,
-               null,
-                SharedPreferenceKeyEnum.SHOP_ORDER.key,
-                Order::class.java
-            )
-
+        unitOfWorkService.getShopService().writeShopToSharedPreferencesOrder(this@Main)
+        
         if (unitOfWorkService.getJwtTokenService().isValidToken())
             unitOfWorkService.getSharedPreferencesService().writeSession(
                 this@Main,
@@ -74,14 +59,7 @@ class Main : Application(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
 
-        val order =
-            unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<Order>(
-                this@Main,
-                SharedPreferenceKeyEnum.SHOP_ORDER.key,
-                Order::class.java
-            )
-        if (order != null)
-            unitOfWorkService.getShopService().setOrder(order)
+        unitOfWorkService.getShopService().loadShopForSharedPreferencesOrder(this@Main)
     }
 
 }

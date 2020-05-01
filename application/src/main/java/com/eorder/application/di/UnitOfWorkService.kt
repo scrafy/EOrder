@@ -38,7 +38,10 @@ class UnitOfWorkService(
 
     fun getCalendarService(): ICalendarService {
 
-        return CalendarService()
+        if (calendarService == null)
+            calendarService = CalendarService()
+
+        return calendarService as ICalendarService
     }
 
     fun getManagerException(): IManagerException {
@@ -87,13 +90,16 @@ class UnitOfWorkService(
     fun getShopService(): IShopService {
 
         if (shopService == null)
-            shopService = ShopService()
+            shopService = ShopService(
+                getSharedPreferencesService()
+
+            )
 
         return shopService as IShopService
     }
 
     fun getLoadImageService(): ILoadImagesService {
-
+        // probar a devolver la misma instancia para ver como se compora la cara de imagenes
         return LoadImagesService()
     }
 }

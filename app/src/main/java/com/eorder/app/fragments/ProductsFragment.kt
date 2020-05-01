@@ -171,10 +171,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 AlertDialogQuestion(
                     context!!,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         decrementProduct(product)
@@ -191,10 +191,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             if (!product.amountsByDay.isNullOrEmpty()) {
                 AlertDialogQuestion(
                     context!!,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         incrementProduct(product)
@@ -231,10 +231,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 AlertDialogQuestion(
                     context!!,
-                    "Calendar",
-                    "If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?",
-                    "Modify",
-                    "Cancel",
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
                     { d, i ->
 
                         modifyAmountOfProduct(product)
@@ -278,7 +278,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun modifyAmountOfProduct(product: Product) {
 
         var dialog: AlertDialogInput? = null
-        dialog = AlertDialogInput(context!!, "", "", "ADD", "CANCEL", { d, i ->
+        dialog = AlertDialogInput(context!!, "", "", resources.getString(R.string.add), resources.getString(R.string.cancel), { d, i ->
 
 
             if (dialog?.input?.text.isNullOrEmpty()) {

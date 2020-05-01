@@ -116,7 +116,7 @@ class SellersFragment : BaseFragment(),
 
         model.getSellersResultObservable().observe(
             this.activity as LifecycleOwner,
-            Observer<ServerResponse<List<Seller>>> { it ->
+            Observer<ServerResponse<List<Seller>>> {
 
                 sellers = it.serverData?.data ?: mutableListOf()
                 adapter.sellers = sellers

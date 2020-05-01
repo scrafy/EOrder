@@ -56,9 +56,9 @@ class RecoverPasswordActivity : AppCompatActivity(), IShowSnackBarMessage, IMana
 
             AlertDialogOk(
                 this,
-                "Email confirmation",
-                "An email has been sent your account, please review your mail to recover your password",
-                "OK"
+                resources.getString(R.string.product_calendar_activity_dialog_email_confirmation),
+                resources.getString(R.string.product_calendar_activity_dialog_email_message),
+                resources.getString(R.string.ok)
             ) { d, i -> this.onBackPressed() }.show()
 
         })

@@ -44,13 +44,16 @@ class SharedPreferencesService(
         token: String?,
         key: String
     ) {
-
         val preferences =
             context?.getSharedPreferences("SESSION", MODE_PRIVATE)
+
+        if (preferences != null && preferences.contains(key) && token == null) {
+
+            preferences.edit().remove(key).commit()
+            return
+        }
         preferences?.edit()?.putString(key, gson.toJson(token, String::class.java))
             ?.commit()
-
-
     }
 
     override fun <T> loadFromSharedPreferences(
@@ -78,9 +81,17 @@ class SharedPreferencesService(
         type: Type
     ) {
 
-        val userId = jwtTokenService.getClaimFromToken("userId")
+        val userId = jwtTokenService.getClaimFromToken("userId")!!
+
         val preferences =
             context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)
+
+        if (preferences != null && preferences.contains(key) && obj == null) {
+
+            preferences.edit().remove(key).commit()
+            return
+        }
+
         preferences?.edit()?.putString(key, gson.toJson(obj, type))
             ?.commit()
 

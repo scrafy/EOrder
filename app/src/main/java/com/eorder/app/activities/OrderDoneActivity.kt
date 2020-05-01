@@ -56,7 +56,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
             orders = it.serverData?.data ?: listOf()
             if ( orders.isEmpty() ){
-                showMessageFiniteTime("There are not orders done yet")
+                showMessageFiniteTime(resources.getString(R.string.order_done_activity_no_orders))
             }else{
                 adapter.orders = orders.sortedByDescending { o -> o.createdAt }
                 adapter.notifyDataSetChanged()

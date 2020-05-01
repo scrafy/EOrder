@@ -48,11 +48,12 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
                 AlertDialogOk(
                     this,
-                    "Centers",
-                    "Your account has not any center associated",
-                    "OK"
+                    resources.getString(R.string.login_activity_digalog_title),
+                    resources.getString(R.string.login_activity_digalog_message),
+                    resources.getString(R.string.ok)
                 ) { d, i -> clearEditTextAndFocus() }.show()
             } else {
+                model.loadShopForSharedPreferencesOrder(this)
                 val intent = Intent(this, LandingActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -95,10 +96,6 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         findViewById<EditText>(R.id.editText_username).text.clear()
         findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
-    }
-
-    private fun getCenters() {
-
     }
 
     fun setListeners() {

@@ -26,8 +26,6 @@ class ConfirmOrderUseCase(
                 "The shop is empty, is not possible to confirm the order"
             )
 
-        var result = orderRepository.confirmOrder(order)
-        shopService.cleanShop()
-        return result
+        return orderRepository.confirmOrder(order)
     }
 }

@@ -141,25 +141,32 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
             view.setOnClickListener {
 
-                dialogInput = AlertDialogInput(this, "", "", "ADD", "CLOSE", { d, i ->
+                dialogInput = AlertDialogInput(
+                    this,
+                    "",
+                    "",
+                    resources.getString(R.string.add),
+                    resources.getString(R.string.close),
+                    { d, i ->
 
-                    if (dialogInput?.input?.text.isNullOrEmpty()) {
-                        day.amount = 0
-                    } else {
-                        day.amount = Integer(dialogInput?.input?.text.toString()).toInt()
-                    }
-                    setDayAmount(day)
-                    if (day.amount != 0)
-                        view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
-                            .text = day.amount.toString()
-                    else
-                        view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
-                            .text = ""
+                        if (dialogInput?.input?.text.isNullOrEmpty()) {
+                            day.amount = 0
+                        } else {
+                            day.amount = Integer(dialogInput?.input?.text.toString()).toInt()
+                        }
+                        setDayAmount(day)
+                        if (day.amount != 0)
+                            view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
+                                .text = day.amount.toString()
+                        else
+                            view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
+                                .text = ""
 
-                }, { d, i ->
+                    },
+                    { d, i ->
 
-                    d.dismiss()
-                })
+                        d.dismiss()
+                    })
 
                 (dialogInput as AlertDialogInput).show()
 
@@ -178,11 +185,16 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         layout.orientation = LinearLayoutManager.VERTICAL
         textView_activity_product_calendar_product_name.text = product.name
         if (product.amountsByDay.isNullOrEmpty())
-            textView_activity_product_calendar_total_units.text =
-                "Units: ${(product.amount * 7).toString()}"
+            textView_activity_product_calendar_total_units.text = String.format(
+                resources.getString(R.string.product_calendar_activity_units),
+                (product.amount * 7)
+            )
         else
-            textView_activity_product_calendar_total_units.text =
-                "Units: ${product.amount.toString()}"
+            textView_activity_product_calendar_total_units.text = String.format(
+                resources.getString(R.string.product_calendar_activity_units),
+                product.amount
+            )
+
         productCalendarAdapter =
             ProductCalendarAdapter(
                 productCalendarDays
@@ -233,9 +245,9 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         if (daysWithAmount.isNullOrEmpty()) {
             AlertDialogOk(
                 this,
-                "Confirm calendar",
-                "There are not days to confirm",
-                "OK"
+                resources.getString(R.string.product_calendar_activity_dialog_confirm_calendar_title),
+                resources.getString(R.string.product_calendar_activity_dialog_confirm_calendar_message_no_days),
+                resources.getString(R.string.ok)
             ) { d, i -> }.show()
             return
         }
@@ -243,10 +255,10 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
         AlertDialogQuestion(
             this,
-            "Confirm calendar",
-            "¿Are you sure you want to confirm?",
-            "YES",
-            "NO",
+            resources.getString(R.string.product_calendar_activity_dialog_confirm_calendar_title),
+            resources.getString(R.string.product_calendar_activity_dialog_confirm_question),
+            resources.getString(R.string.yes),
+            resources.getString(R.string.no),
             { d, i ->
 
                 if (daysWithAmount.isNotEmpty()) {
@@ -269,12 +281,14 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
                     daysWithAmount = mutableListOf()
                     model.removeProductFromShop(product)
-                    textView_activity_product_calendar_total_units.text = "Units: 0"
+                    textView_activity_product_calendar_total_units.text = String.format(resources.getString(R.string.product_calendar_activity_units), 0)
 
                 } else {
 
                     textView_activity_product_calendar_total_units.text =
-                        "Units: ${product.amountsByDay?.sumBy { it.amount }!!.toString()}"
+
+                        String.format(resources.getString(R.string.product_calendar_activity_units), product.amountsByDay?.sumBy { it.amount }!!)
+                   
 
                     model.addProductToShop(product)
                 }
@@ -350,25 +364,25 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
             AlertDialogOk(
                 this,
-                "Clean calendar",
-                "The calendar has not been confirmed yet",
-                "OK"
+                resources.getString(R.string.product_calendar_activity_dialog_clean_title),
+                resources.getString(R.string.product_calendar_activity_dialog_clean_message),
+                resources.getString(R.string.ok)
             ) { d, i -> }.show()
 
         } else {
 
             AlertDialogQuestion(
                 this,
-                "Clean calendar",
-                "¿Are you sure you want to clean the calendar?",
-                "YES",
-                "NO",
+                resources.getString(R.string.product_calendar_activity_dialog_clean_title),
+                resources.getString(R.string.product_calendar_activity_dialog_clean_calendar_message),
+                resources.getString(R.string.yes),
+                resources.getString(R.string.no),
                 { d, i ->
 
                     product.amount = 0
                     product.amountsByDay = mutableListOf()
                     daysWithAmount = mutableListOf()
-                    textView_activity_product_calendar_total_units.text = "Units: 0"
+                    textView_activity_product_calendar_total_units.text = resources.getString(R.string.product_calendar_activity_units)
                     spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
                     this.model.removeProductFromShop(product)
                 },

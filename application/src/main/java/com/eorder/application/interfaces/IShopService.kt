@@ -1,5 +1,6 @@
 package com.eorder.application.interfaces
 
+import android.content.Context
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.Order
 
@@ -20,5 +21,7 @@ interface IShopService {
     fun removeAmountOfProduct(productId: Int)
     fun isShopEmpty(): Boolean
     fun resetTotals()
+    fun loadShopForSharedPreferencesOrder(context: Context)
+    fun writeShopToSharedPreferencesOrder(context: Context)
 
 }

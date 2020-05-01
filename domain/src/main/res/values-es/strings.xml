@@ -1,0 +1,18 @@
+<resources>
+    <string name="username_empty">El campo usuario debe contener un valor</string>
+    <string name="password_empty">El campo password debe contener un valor</string>
+    <string name="password_format">El password debe contener al menos un dígito, una letra en minúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
+    <string name="new_password_empty">El password nuevo debe contener un valor</string>
+    <string name="new_password_format">El password nuevo debe contener al menos un dígito, una letra en minúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
+    <string name="oldpassword_empty">El password antiguo debe contener un valor</string>
+    <string name="oldpassword_format">El password antiguo debe contener al menos un dígito, una letra en minúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
+    <string name="password_confirmation_not_null">La confirmación de password debe contener un valor</string>
+    <string name="password_confirmation_match">La confirmación del password debe coincidir con el password nuevo</string>
+    <string name="phone_not_null">El teléfono debe contener un valor</string>
+    <string name="phone_9_digits">El número de teléfono debe contener al menos 9 dígitos</string>
+    <string name="email_not_null">El email debe contener un valor</string>
+    <string name="email_format">El email no es válido</string>
+    <string name="center_code_not_null">El código de centro debe contener un valor</string>
+
+
+</resources>

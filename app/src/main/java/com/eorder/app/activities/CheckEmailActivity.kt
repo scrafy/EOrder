@@ -61,7 +61,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
             val result = it.serverData?.data!!
 
             if (result) {
-               AlertDialogOk(this, "Email validation", "This email already exists", "OK") { d, i->
+               AlertDialogOk(this, resources.getString(R.string.check_email_activity_alert_title), resources.getString(R.string.check_email_activity_alert_message), resources.getString(R.string.ok)) { d, i->
 
                    this.finish()
                    val intent = Intent(this, LoginActivity::class.java)

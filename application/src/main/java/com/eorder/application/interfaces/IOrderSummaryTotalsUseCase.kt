@@ -5,5 +5,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IOrderSummaryTotalsUseCase {
 
-    fun getOrderTotalsSummary() : ServerResponse<Order>
+    fun getOrderTotalsSummary()// : ServerResponse<Order>
 }

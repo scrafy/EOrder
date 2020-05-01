@@ -3,12 +3,10 @@ package com.eorder.app.viewmodels
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
 import com.eorder.application.extensions.clone
 import com.eorder.application.models.OrdersWrapper
-import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
@@ -21,14 +19,10 @@ import kotlin.random.Random.Default.nextInt
 @RequiresApi(Build.VERSION_CODES.O)
 class ShopViewModel : BaseViewModel() {
 
-    private val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
-    private val summaryTotalsOrderResult: MutableLiveData<ServerResponse<Order>> = MutableLiveData()
+    val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
+    val summaryTotalsOrderResult: MutableLiveData<Any> = MutableLiveData()
 
 
-    fun getSummaryTotalsOrderResultObservable(): LiveData<ServerResponse<Order>> =
-        summaryTotalsOrderResult
-
-    fun getConfirmOrderResultObservable(): LiveData<ServerResponse<Int>> = confirmOrderResult
     fun getTotalTaxBaseAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxBaseAmount()
     fun getTotalTaxesAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxesAmount()
     fun getTotalAmount(): Float? = unitOfWorkService.getShopService().getTotalAmount()
@@ -38,8 +32,9 @@ class ShopViewModel : BaseViewModel() {
         unitOfWorkService.getShopService().removeProductFromShop(product)
 
     fun getSellerName() = unitOfWorkService.getShopService().getOrder().seller.sellerName
-    fun cleanShop() {
+    fun cleanShop(context: Context) {
         unitOfWorkService.getShopService().cleanShop()
+        unitOfWorkService.getShopService().writeShopToSharedPreferencesOrder(context)
     }
 
     fun getCenterName() = unitOfWorkService.getShopService().getOrder().center.centerName
@@ -58,8 +53,8 @@ class ShopViewModel : BaseViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            val result = unitOfWorkUseCase.getOrderSummaryTotalsUseCase().getOrderTotalsSummary()
-            summaryTotalsOrderResult.postValue(result)
+            unitOfWorkUseCase.getOrderSummaryTotalsUseCase().getOrderTotalsSummary()
+            summaryTotalsOrderResult.postValue(null)
         }
     }
 
@@ -97,6 +92,11 @@ class ShopViewModel : BaseViewModel() {
 
         return unitOfWorkService.getFavoritesService().loadFavoriteProducts(context)
 
+    }
+
+    fun writeShopToSharedPreferencesOrder(context:Context){
+
+        unitOfWorkService.getShopService().writeShopToSharedPreferencesOrder(context)
     }
 
 }

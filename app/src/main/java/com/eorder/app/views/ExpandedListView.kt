@@ -1,18 +1,13 @@
-package com.eorder.app.Views
+package com.eorder.app.views
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.ListView
-import android.view.ViewGroup
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
 
 
 class ExpandedListView(context: Context, attrs: AttributeSet) : ListView(context, attrs) {
 
-    private var params: android.view.ViewGroup.LayoutParams? = null
-    private var old_count = 0
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 

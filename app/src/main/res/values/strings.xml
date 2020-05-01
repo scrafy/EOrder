@@ -6,7 +6,10 @@
     <string name="title">PedidoE</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">Ok</string>
     <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="modify">Modify</string>
 
 
     <!--LATERAL NAVIGATION MENU -->
@@ -63,7 +66,34 @@
     <string name="alert_dialog_shop_empty_message">The shop is empty, please, add a product...</string>
     <string name="alert_dialog_shop_confirm_message">¿Are you sure you want to confirm the order?</string>
     <string name="alert_dialog_shop_delete">¿Are you sure you want to empty the cart?</string>
+    <string name="alert_dialog_shop_dialog_title_calendar">Calendar</string>
+    <string name="shop_activity_dialog_message_reset_calendar">If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?</string>
 
+    <!--PRODUCT ACTIVITY-->
+    <string name="product_activity_no_catalog_dialog_title">No catalogs</string>
+    <string name="product_activity_no_catalog_dialog_message">%s does not have any catalog setted</string>
+
+    <!--PRODUCT CALENDAR ACTIVITY-->
+
+    <string name="product_calendar_activity_units">Units: %d</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_title">Confirm calendar</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_message_no_days">There are not days to confirm</string>
+    <string name="product_calendar_activity_dialog_confirm_question">¿Are you sure you want to confirm?</string>
+    <string name="product_calendar_activity_dialog_clean_title">Clean calendar</string>
+    <string name="product_calendar_activity_dialog_clean_message">The calendar has not been confirmed yet</string>
+    <string name="product_calendar_activity_dialog_clean_calendar_message">¿Are you sure you want to clean the calendar?</string>
+
+    <!--RECOVER ACTIVITY-->
+    <string name="product_calendar_activity_dialog_email_confirmation">Email confirmation</string>
+    <string name="product_calendar_activity_dialog_email_message">An email has been sent your account, please review your mail to recover your password</string>
+
+    <!--CHECK EMAIL ACTIVITY-->
+    <string name="check_email_activity_alert_title">Email validation</string>
+    <string name="check_email_activity_alert_message">This email already exists</string>
+
+    <!--CREATE ACCOUNT ACTIVITY-->
+    <string name="create_account_activity_alert_title">Account</string>
+    <string name="create_account_activity_alert_message">The account has been created correctly</string>
 
     <!--ORDER ACTIVITY-->
     <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
@@ -76,6 +106,8 @@
     <string name="main_activity_session_expired_message">The session has expired, please, login again</string>
     <string name="main_activity_login">LOGIN</string>
     <string name="main_activity_create_account">CREATE ACCOUNT</string>
+    <string name="main_activity_dialog_center_title">Center activation</string>
+    <string name="main_activity_dialog_center_message">This center is active, please, check other activation code</string>
 
     <!--RECOVER PASSWORD ACTIVITY-->
     <string name="editText_change_password_activity_old_password">Old password</string>
@@ -89,6 +121,8 @@
     <!--LOGIN ACTIVITY-->
     <string name="login_activity_username">Username</string>
     <string name="login_activity_password">Password</string>
+    <string name="login_activity_digalog_message">Your account has not any center associated"</string>
+    <string name="login_activity_digalog_title">Centers</string>
 
     <!--LANDING ACTIVITY-->
     <string name="landing_activity_favorties">Favorite products</string>
@@ -96,6 +130,7 @@
     <!--FAVORITE ACTIVITY-->
     <string name="favorite_activity_alert_dialog_title">Remove favorite</string>
     <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this product from your favourite list?</string>
+    <string name="favorite_activity_no_product_message">There are not any product on your favorite list yet</string>
 
     <!--SHOP BREAKDOWN ACTIVITY-->
     <string name="shop_breakdown_activity_product_name">Product</string>
@@ -108,9 +143,8 @@
     <string name="shop_breakdown_activity_total">Total</string>
 
     <!--ORDER DONE ACTIVITY-->
-
     <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
-
+    <string name="order_done_activity_no_orders">There are not orders done yet</string>
     <!--CATALOGS FRAGMENT-->
     <string name="catalog_fragment_number_of_products">%d products</string>
     <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>

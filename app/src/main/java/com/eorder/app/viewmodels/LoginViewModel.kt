@@ -1,5 +1,6 @@
 package com.eorder.app.viewmodels
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
@@ -30,6 +31,11 @@ class LoginViewModel : BaseViewModel() {
 
     fun userHasCenters() : Boolean {
         return (unitOfWorkService.getJwtTokenService().getClaimFromToken("userHasCenters") as String).toBoolean()
+    }
+
+    fun loadShopForSharedPreferencesOrder(context: Context){
+
+        unitOfWorkService.getShopService().loadShopForSharedPreferencesOrder(context)
     }
 
 }

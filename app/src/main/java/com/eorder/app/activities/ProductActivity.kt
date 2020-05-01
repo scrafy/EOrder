@@ -1,11 +1,13 @@
 package com.eorder.app.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
@@ -37,6 +39,8 @@ import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout2
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     IRepaintModel, ISetAdapterListener, IToolbarSearch {
 
@@ -71,6 +75,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         setObservers()
         model.getCenters()
     }
+
 
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()
@@ -397,7 +402,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                     0
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
-                val index = centers.indexOf(centers.firstOrNull { s -> s.id == centerSelected } ?: centers[0])
+                val index = centers.indexOf(centers.firstOrNull { s -> s.id == centerSelected }
+                    ?: centers[0])
                 if (index == 0) {
                     (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                         0
@@ -406,7 +412,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                 } else
                     centerViewPager.currentItem = index
-
 
 
             })
@@ -418,9 +423,12 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 if (catalogs.isEmpty()) {
                     AlertDialogOk(
                         this,
-                        "No catalogs",
-                        "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any catalog setted",
-                        "OK"
+                        resources.getString(R.string.product_activity_no_catalog_dialog_title),
+                        String.format(
+                            resources.getString(R.string.product_activity_no_catalog_dialog_message),
+                            centers.find { c -> c.id == centerSelected }?.center_name
+                        ),
+                        resources.getString(R.string.ok)
 
                     ) { d, i -> }.show()
                 } else {

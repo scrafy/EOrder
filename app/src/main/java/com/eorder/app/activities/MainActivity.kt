@@ -92,9 +92,9 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
                 editText_activity_main_code_input.setText("")
                 AlertDialogOk(
                     this,
-                    "Center activation",
-                    "This center is active, please, check other activation code",
-                    "Ok"
+                    resources.getString(R.string.main_activity_dialog_center_title),
+                    resources.getString(R.string.main_activity_dialog_center_message),
+                    resources.getString(R.string.ok)
                 ) { d, i -> }.show()
 
             } else {
