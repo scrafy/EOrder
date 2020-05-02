@@ -101,7 +101,6 @@
     <string name="product_calendar_activity_text_view">Enter your email</string>
     <string name="product_calendar_activity_edit_text">Enter your email...</string>
 
-
     <!--CHECK EMAIL ACTIVITY-->
     <string name="check_email_activity_alert_title">Email validation</string>
     <string name="check_email_activity_alert_message">This email already exists</string>
@@ -131,8 +130,8 @@
     <string name="create_account_activity_alert_message">The account has been created correctly</string>
 
     <!--ORDER ACTIVITY-->
-    <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
-    <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
+    <string name="alert_dialog_order_activity_change_center">There is a pending order for center %s.\nIf the center is changed, the products added to cart will be lose.\n\n¿Do you wish to start a new order for %s?</string>
+    <string name="alert_dialog_order_activity_change_seller">There is a pending order for seller %s.\nIf the seller is changed, the products added to cart will be lose.\n\n¿Do you wish to start a new order for %s?</string>
     <string name="alert_dialog_order_activity_button_deny">No change</string>
     <string name="alert_dialog_order_activity_change_center_button_confirm">Change center</string>
 

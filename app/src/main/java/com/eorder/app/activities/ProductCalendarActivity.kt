@@ -187,7 +187,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         if (product.amountsByDay.isNullOrEmpty())
             textView_activity_product_calendar_total_units.text = String.format(
                 resources.getString(R.string.product_calendar_activity_units),
-                (product.amount * 7)
+                (product.amount)
             )
         else
             textView_activity_product_calendar_total_units.text = String.format(
