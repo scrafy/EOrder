@@ -1,2 +1,233 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <!--COMMON-->
+    <string name="close">Close</string>
+    <string name="shop">Shop</string>
+    <string name="title">PedidoE</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="modify">Modify</string>
+    <string name="send">Send</string>
+    <string name="view_product">View product</string>
+    <string name="number_units">Number of units</string>
+    <string name="change_password">Change password</string>
+
+
+
+    <!--LATERAL NAVIGATION MENU -->
+
+    <string name="lateral_nav_menu_open">Open</string>
+    <string name="lateral_nav_menu_close">Close</string>
+    <string name="lateral_nav_menu_header_1_title">Common Actions</string>
+    <string name="lateral_nav_menu_header_2_title">Orders</string>
+    <string name="lateral_nav_menu_header_3_title">Personal</string>
+    <string name="lateral_nav_menu_old_orders">Orders done</string>
+    <string name="lateral_nav_menu_favourite_products">Favorite products</string>
+    <string name="lateral_nav_menu_mails">Messages</string>
+    <string name="lateral_nav_menu_profile">Profile</string>
+    <string name="lateral_nav_menu_centers">Centers</string>
+    <string name="lateral_nav_menu_providers">Sellers</string>
+    <string name="lateral_nav_menu_products">Products</string>
+    <string name="lateral_nav_menu_makeorder">Make a order</string>
+
+    <!--MAIN MENU-->
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="signout">Sign out</string>
+
+
+    <!--CARD VIEW CATALOG CENTER-->
+
+    <!--SPINNERS-->
+    <string name="product_categories">All categories</string>
+    <string name="product_order_by_price_high">Price from high to low</string>
+    <string name="product_order_by_price_low">Price from low to high</string>
+
+
+    <!--TOOLBAR PRODUCTS-->
+    <string name="toolbar_proudct_list_search">Search product...</string>
+
+
+    <!--ORDER LIST-->
+    <string name="button_order_list_repeat">repeat</string>
+
+
+    <!--SHOP ACTIVITY-->
+    <string name="textview_shop_total_products">Total of products</string>
+    <string name="textview_shop_tax_base">Tax Base:</string>
+    <string name="textview_shop_total_taxes">Total Taxes:</string>
+    <string name="alert_dialog_confirm_order_title">Order done</string>
+    <string name="alert_dialog_confirm_order_message">The order has been processed correctly</string>
+    <string name="textview_shop_total">Total:</string>
+    <string name="textview_shop_center">Center:</string>
+    <string name="textview_shop_seller">Seller:</string>
+    <string name="textview_shop_order_summary">Order Summary</string>
+    <string name="textview_shop_product_list">Product List</string>
+    <string name="button_shop_confirm">Confirm order</string>
+    <string name="alert_dialog_shop_empty_title">Shop</string>
+    <string name="alert_dialog_shop_empty_message">The cart is empty, please, add a product...</string>
+    <string name="alert_dialog_shop_confirm_message">¿Are you sure you want to confirm the order?</string>
+    <string name="alert_dialog_shop_delete">¿Are you sure you want to empty the cart?</string>
+    <string name="alert_dialog_shop_dialog_title_calendar">Calendar</string>
+    <string name="shop_activity_dialog_message_reset_calendar">If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?</string>
+    <string name="shop_activity_breakdown">See breakdown</string>
+
+    <!--PRODUCT ACTIVITY-->
+    <string name="product_activity_no_catalog_dialog_title">No catalogs</string>
+    <string name="product_activity_no_catalog_dialog_message">%s does not have any catalog setted</string>
+    <string name="product_activity_select_center">Select a center ▲</string>
+    <string name="product_activity_select_catalog">Select a catalog ▼</string>
+
+
+    <!--PRODUCT CALENDAR ACTIVITY-->
+
+    <string name="product_calendar_activity_units">Units: %d</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_title">Confirm calendar</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_message_no_days">There are not days to confirm</string>
+    <string name="product_calendar_activity_dialog_confirm_question">¿Are you sure you want to confirm?</string>
+    <string name="product_calendar_activity_dialog_clean_title">Clean calendar</string>
+    <string name="product_calendar_activity_dialog_clean_message">The calendar has not been confirmed yet</string>
+    <string name="product_calendar_activity_dialog_clean_calendar_message">¿Are you sure you want to clean the calendar?</string>
+    <string name="product_calendar_activity_select_month">Select month</string>
+    <string name="product_calendar_activity_confirm">Confirm</string>
+    <string name="product_calendar_activity_clean">Clean</string>
+
+    <!--RECOVER ACTIVITY-->
+    <string name="product_calendar_activity_dialog_email_confirmation">Email confirmation</string>
+    <string name="product_calendar_activity_dialog_email_message">An email has been sent your account, please review your mail to recover your password</string>
+    <string name="product_calendar_activity_text_view">Enter your email</string>
+    <string name="product_calendar_activity_edit_text">Enter your email...</string>
+
+
+    <!--CHECK EMAIL ACTIVITY-->
+    <string name="check_email_activity_alert_title">Email validation</string>
+    <string name="check_email_activity_alert_message">This email already exists</string>
+    <string name="check_email_activity_enter_email">Enter your email</string>
+    <string name="check_email_activity_your_email">Your email...</string>
+
+
+
+    <!--CREATE PROFILE ACTIVITY-->
+    <string name="create_profile_activity_username">Username</string>
+    <string name="create_profile_activity_password">Password</string>
+    <string name="create_profile_activity_confirm_password">Confirm password</string>
+    <string name="create_profile_activity_phone">Phone</string>
+    <string name="create_profile_activity_email">Email</string>
+    <string name="create_profile_activity_center_code">Center code</string>
+    <string name="create_profile_activity_create_account">Create account</string>
+
+    <!--PROFILE ACTIVITY-->
+    <string name="profile_activity_username">Username</string>
+    <string name="profile_activity_phone">Phone</string>
+    <string name="profile_activity_email">Email</string>
+    <string name="profile_activity_change_password">Change password</string>
+
+
+    <!--CREATE ACCOUNT ACTIVITY-->
+    <string name="create_account_activity_alert_title">Account</string>
+    <string name="create_account_activity_alert_message">The account has been created correctly</string>
+
+    <!--ORDER ACTIVITY-->
+    <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
+    <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
+    <string name="alert_dialog_order_activity_button_deny">No change</string>
+    <string name="alert_dialog_order_activity_change_center_button_confirm">Change center</string>
+
+    <!--MAIN ACTIVITY-->
+    <string name="main_activity_session_expired">Session expired</string>
+    <string name="main_activity_session_expired_message">The session has expired, please, login again</string>
+    <string name="main_activity_login">LOGIN</string>
+    <string name="main_activity_create_account">CREATE ACCOUNT</string>
+    <string name="main_activity_dialog_center_title">Center activation</string>
+    <string name="main_activity_dialog_center_message">This center is active, please, check other activation code</string>
+    <string name="main_activity_enter_code">Enter your center activation code</string>
+    <string name="main_activity_code">Code...</string>
+    <string name="main_activity_activate_center">Activate center</string>
+
+
+    <!--ACTIVITY SELLER PRODUCT-->
+    <string name="activity_seller_product_select_seller">Select a seller ▲</string>
+    <string name="activity_seller_product_select_center">Select a center ▼</string>
+
+
+
+    <!--CHANGE PASSWORD ACTIVITY-->
+    <string name="editText_change_password_activity_old_password">Old password</string>
+    <string name="editText_change_password_activity_new_password">New password</string>
+    <string name="editText_change_password_activity_confirm_password">Confirm password</string>
+    <string name="change_password_activity_alert_dialog_message">The password has been changed correctly</string>
+
+
+    <!--LOGIN ACTIVITY-->
+    <string name="login_activity_username">Username</string>
+    <string name="login_activity_password">Password</string>
+    <string name="login_activity_digalog_message">Your account has not any center associated"</string>
+    <string name="login_activity_digalog_title">Centers</string>
+    <string name="login_activity_digalog_sign_in">Sign in</string>
+    <string name="login_activity_digalog_recover_password">Recover password</string>
+
+
+    <!--LANDING ACTIVITY-->
+    <string name="landing_activity_favorties">Favorites</string>
+    <string name="landing_activity_sellers">Sellers</string>
+    <string name="landing_activity_products">Products</string>
+    <string name="landing_activity_make_order">Make order</string>
+    <string name="landing_activity_orders">Orders</string>
+    <string name="landing_activity_centers">Centers</string>
+
+
+    <!--FAVORITE ACTIVITY-->
+    <string name="favorite_activity_alert_dialog_title">Remove favorite</string>
+    <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this product from your favourite list?</string>
+    <string name="favorite_activity_no_product_message">There are not any product on your favorite list yet</string>
+
+    <!--SHOP BREAKDOWN ACTIVITY-->
+    <string name="shop_breakdown_activity_product_name">Product</string>
+    <string name="shop_breakdown_activity_price">Price</string>
+    <string name="shop_breakdown_activity_quantity">Quantity</string>
+    <string name="shop_breakdown_activity_total_base">Total base</string>
+    <string name="shop_breakdown_activity_tax_type">Tax type</string>
+    <string name="shop_breakdown_activity_tax">Tax</string>
+    <string name="shop_breakdown_activity_total_tax">Total tax</string>
+    <string name="shop_breakdown_activity_total">Total</string>
+
+    <!--ORDER DONE ACTIVITY-->
+    <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
+    <string name="order_done_activity_no_orders">There are not orders done yet</string>
+    <!--CATALOGS FRAGMENT-->
+    <string name="catalog_fragment_number_of_products">%d products</string>
+    <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>
+
+    <!--CENTERS FRAGMENT-->
+    <string name="center_fragment_choose_center">Select a center</string>
+
+    <!--SELLERS FRAGMENT-->
+    <string name="seller_fragment_choose_seller">Select a seller</string>
+
+    <!--CENTER FRAGMENT INFO-->
+    <string name="center_fragment_info_center_name">Center name</string>
+    <string name="center_fragment_info_address">Address</string>
+    <string name="center_fragment_info_city">City</string>
+    <string name="center_fragment_info_post_code">Post code</string>
+    <string name="center_fragment_info_country">Country</string>
+    <string name="center_fragment_info_province">Province</string>
+    <string name="center_fragment_info_email">Email</string>
+    <string name="center_fragment_info_sector">Sector</string>
+
+    <!--SELLER FRAGMENT INFO-->
+    <string name="seller_fragment_info_seller_name">Seller name</string>
+    <string name="seller_fragment_info_taxid">TaxId</string>
+    <string name="seller_fragment_info_address">Address</string>
+    <string name="seller_fragment_info_city">City</string>
+    <string name="seller_fragment_info_post_code">Post code</string>
+    <string name="seller_fragment_info_country">Country</string>
+    <string name="seller_fragment_info_province">Province</string>
+    <string name="seller_fragment_info_email">Email</string>
+    <string name="seller_fragment_info_sector">Sector</string>
+    <string name="seller_fragment_info_erp">Erp</string>
+    <string name="seller_fragment_info_gln">Gln</string>
+
+</resources>

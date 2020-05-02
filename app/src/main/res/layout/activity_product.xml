@@ -19,25 +19,26 @@
             layout="@layout/toolbar" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
             android:background="@drawable/shape_blue_gradient_background"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="5dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp">
 
             <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_categories"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
                 />
 
             <com.eorder.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_order"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
                 />
@@ -48,7 +49,7 @@
             android:id="@+id/textView_activity_product_select_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select a center ▲"
+            android:text="@string/product_activity_select_center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
@@ -102,7 +103,7 @@
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
             android:background="@drawable/shape_silver_square_no_rounded"
-            android:text="Select a catalog ▼"
+            android:text="@string/product_activity_select_catalog"
             android:textColor="@color/colorPrimary"
             android:textSize="17dp" />
 

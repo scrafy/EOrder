@@ -1,7 +1,9 @@
 package com.eorder.application.services
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.eorder.application.R
 import com.eorder.application.interfaces.ICalendarService
 import java.time.DayOfWeek
 import java.time.Instant
@@ -59,22 +61,22 @@ class CalendarService : ICalendarService {
         return dates//.filter { it.get(ChronoField.MONTH_OF_YEAR) == month }
     }
 
-    override fun getDayName(day:Int): String {
+    override fun getDayName(context: Context, day:Int): String {
 
         return when(day){
 
-            1 -> "Monday"
-            2 -> "Tuesday"
-            3 -> "Wenesday"
-            4 -> "Thursday"
-            5 -> "Friday"
-            6 -> "Saturday"
-            7 -> "Sunday"
-            else -> "Monday"
+            1 -> context.resources.getString(R.string.monday)
+            2 -> context.resources.getString(R.string.tuesday)
+            3 -> context.resources.getString(R.string.wenesday)
+            4 -> context.resources.getString(R.string.thursday)
+            5 -> context.resources.getString(R.string.friday)
+            6 -> context.resources.getString(R.string.saturday)
+            7 -> context.resources.getString(R.string.sunday)
+            else -> context.resources.getString(R.string.monday)
         }
     }
 
-    override fun getMotnhs(): Array<String> {
+    override fun getMotnhs(context:Context): Array<String> {
 
 
 
@@ -82,19 +84,19 @@ class CalendarService : ICalendarService {
 
             when (i) {
 
-                0 -> "January"
-                1 -> "February"
-                2 -> "March"
-                3 -> "April"
-                4 -> "May"
-                5 -> "June"
-                6 -> "July"
-                7 -> "August"
-                8 -> "September"
-                9 -> "October"
-                10 -> "November"
-                11 -> "December"
-                else -> "January"
+                0 -> context.resources.getString(R.string.enero)
+                1 -> context.resources.getString(R.string.febrero)
+                2 -> context.resources.getString(R.string.marzo)
+                3 -> context.resources.getString(R.string.abril)
+                4 -> context.resources.getString(R.string.mayo)
+                5 -> context.resources.getString(R.string.junio)
+                6 -> context.resources.getString(R.string.julio)
+                7 -> context.resources.getString(R.string.agosto)
+                8 -> context.resources.getString(R.string.septiembre)
+                9 -> context.resources.getString(R.string.octubre)
+                10 -> context.resources.getString(R.string.noviembre)
+                11 -> context.resources.getString(R.string.diciembre)
+                else -> context.resources.getString(R.string.enero)
             }
         }
 

@@ -110,11 +110,11 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                 when (item?.itemId) {
 
                     R.id.profile -> startActivity(Intent(this, ProfileActivity::class.java))
-                    R.id.setting -> Toast.makeText(
+                   /* R.id.setting -> Toast.makeText(
                         getContext(),
                         "Settings",
                         Toast.LENGTH_LONG
-                    ).show()
+                    ).show()*/
                     R.id.signout -> {
                         getContext().signOutApp()
                     }

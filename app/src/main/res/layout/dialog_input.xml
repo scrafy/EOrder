@@ -18,7 +18,7 @@
             android:id="@+id/editText_dialog_input_units"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Number of units"
+            android:hint="@string/number_units"
             android:inputType="number"
             ></EditText>
     </com.google.android.material.textfield.TextInputLayout>

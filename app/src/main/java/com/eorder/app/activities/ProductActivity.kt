@@ -250,7 +250,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         productsAdapter = ProductsAdapter(listOf())
         recyclerView.adapter = productsAdapter
 
-
     }
 
     private fun addDots(size: Int, v: LinearLayout) {
@@ -395,7 +394,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
                 centers = it.serverData?.data ?: listOf()
-                centerSelected = intent.getIntExtra("centerId", 0)
+                centerSelected = intent.getIntExtra("centerId", centers.first().id)
                 centerViewPager.adapter = ProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
                 addDots(centers.size, linearLayout_activity_product_dots_centers)

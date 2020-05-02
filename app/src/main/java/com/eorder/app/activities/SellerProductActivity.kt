@@ -375,7 +375,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
 
                 sellers = it.serverData?.data ?: listOf()
-                sellerSelected = intent.getIntExtra("sellerId", 0)
+                sellerSelected = intent.getIntExtra("sellerId", sellers.first().id)
                 sellerViewPager.adapter = SellerProducSellertListAdapter(this, sellers)
                 sellerViewPager.adapter?.notifyDataSetChanged()
                 addDots(sellers.size, linearLayout_activity_seller_product_dots_sellers)

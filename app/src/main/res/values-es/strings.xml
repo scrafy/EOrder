@@ -1,0 +1,234 @@
+<resources>
+
+    <!--COMMON-->
+    <string name="close">Cerrar</string>
+    <string name="shop">Tienda</string>
+    <string name="title">PedidoE</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="add">Añadir</string>
+    <string name="cancel">Cancelar</string>
+    <string name="modify">Modificar</string>
+    <string name="send">Enviar</string>
+    <string name="view_product">Ver producto</string>
+    <string name="number_units">Número de unidades</string>
+    <string name="change_password">Change password</string>
+
+
+
+    <!--LATERAL NAVIGATION MENU -->
+
+    <string name="lateral_nav_menu_open">Abrir</string>
+    <string name="lateral_nav_menu_close">Close</string>
+    <string name="lateral_nav_menu_header_1_title">Acciones comunes</string>
+    <string name="lateral_nav_menu_header_2_title">Pedidos</string>
+    <string name="lateral_nav_menu_header_3_title">Personal</string>
+    <string name="lateral_nav_menu_old_orders">Pedidos realizados</string>
+    <string name="lateral_nav_menu_favourite_products">Favorite products</string>
+    <string name="lateral_nav_menu_mails">Mensajes</string>
+    <string name="lateral_nav_menu_profile">Perfil</string>
+    <string name="lateral_nav_menu_centers">Centros</string>
+    <string name="lateral_nav_menu_providers">Proveedores</string>
+    <string name="lateral_nav_menu_products">Productos</string>
+    <string name="lateral_nav_menu_makeorder">Realizar pedido</string>
+
+    <!--MAIN MENU-->
+    <string name="profile">Perfil</string>
+    <string name="settings">Configuración</string>
+    <string name="signout">Cerrar</string>
+
+
+    <!--CARD VIEW CATALOG CENTER-->
+
+    <!--SPINNERS-->
+    <string name="product_categories">Categorías</string>
+    <string name="product_order_by_price_high">Precio más alto</string>
+    <string name="product_order_by_price_low">Precio más bajo</string>
+
+
+    <!--TOOLBAR PRODUCTS-->
+    <string name="toolbar_proudct_list_search">Buscar producto...</string>
+
+
+    <!--ORDER LIST-->
+    <string name="button_order_list_repeat">repetir</string>
+
+
+    <!--SHOP ACTIVITY-->
+    <string name="textview_shop_total_products">Total de productos</string>
+    <string name="textview_shop_tax_base">Base imponible:</string>
+    <string name="textview_shop_total_taxes">Total impuestos:</string>
+    <string name="alert_dialog_confirm_order_title">Pedidos realizados</string>
+    <string name="alert_dialog_confirm_order_message">El pedido ha sido procesado correctamente</string>
+    <string name="textview_shop_total">Total:</string>
+    <string name="textview_shop_center">Centro:</string>
+    <string name="textview_shop_seller">Proveedor:</string>
+    <string name="textview_shop_order_summary">Resumen del pedido</string>
+    <string name="textview_shop_product_list">Lista de productos</string>
+    <string name="button_shop_confirm">Confirmar pedido</string>
+    <string name="alert_dialog_shop_empty_title">Tienda</string>
+    <string name="alert_dialog_shop_empty_message">El carro de la compra está vacío,por favor, añada un producto...</string>
+    <string name="alert_dialog_shop_confirm_message">¿Está seguro de que quiere confirmar el pedido?</string>
+    <string name="alert_dialog_shop_delete">¿Está seguro de que quiere vaciar el carro de la compra?</string>
+    <string name="alert_dialog_shop_dialog_title_calendar">Calendario</string>
+    <string name="shop_activity_dialog_message_reset_calendar">Si modifica la cantidad, el calendario configurado se perderá.\n¿Está seguro de que quiere modificar la cantidad?</string>
+    <string name="shop_activity_breakdown">Ver desglose</string>
+
+    <!--PRODUCT ACTIVITY-->
+    <string name="product_activity_no_catalog_dialog_title">No hay catálogos</string>
+    <string name="product_activity_no_catalog_dialog_message">%s no dispone de ningún catálogo configurado</string>
+    <string name="product_activity_select_center">Seleccione un centro ▲</string>
+    <string name="product_activity_select_catalog">Seleccione un catálogo ▼</string>
+
+
+    <!--PRODUCT CALENDAR ACTIVITY-->
+
+    <string name="product_calendar_activity_units">Unidades: %d</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_title">Confirmar calendario</string>
+    <string name="product_calendar_activity_dialog_confirm_calendar_message_no_days">No ha establecido ninguna cantidad para ningún día</string>
+    <string name="product_calendar_activity_dialog_confirm_question">¿Está seguro de que quiere confirmar?</string>
+    <string name="product_calendar_activity_dialog_clean_title">Limpiar calendario</string>
+    <string name="product_calendar_activity_dialog_clean_message">El calendario no ha sido confirmado todavía</string>
+    <string name="product_calendar_activity_dialog_clean_calendar_message">¿Está seguro de que quiere limpiar el calendario?</string>
+    <string name="product_calendar_activity_select_month">Seleccione un mes</string>
+    <string name="product_calendar_activity_confirm">Confirmar</string>
+    <string name="product_calendar_activity_clean">Limpiar</string>
+
+    <!--RECOVER ACTIVITY-->
+    <string name="product_calendar_activity_dialog_email_confirmation">Confirmación de email</string>
+    <string name="product_calendar_activity_dialog_email_message">Un email ha sido enviado a su cuenta, por favor, revise su correo para cambiar su password</string>
+    <string name="product_calendar_activity_text_view">Introduzca su email</string>
+    <string name="product_calendar_activity_edit_text">Introduzca su email...</string>
+
+
+    <!--CHECK EMAIL ACTIVITY-->
+    <string name="check_email_activity_alert_title">Validación de email</string>
+    <string name="check_email_activity_alert_message">La cuenta de correo existe</string>
+    <string name="check_email_activity_enter_email">Introduzca su email</string>
+    <string name="check_email_activity_your_email">Su email...</string>
+
+
+
+    <!--CREATE PROFILE ACTIVITY-->
+    <string name="create_profile_activity_username">Usuario</string>
+    <string name="create_profile_activity_password">Password</string>
+    <string name="create_profile_activity_confirm_password">Confirmar password</string>
+    <string name="create_profile_activity_phone">Teléfono</string>
+    <string name="create_profile_activity_email">Email</string>
+    <string name="create_profile_activity_center_code">Código de centro</string>
+    <string name="create_profile_activity_create_account">Crear cuenta</string>
+
+    <!--PROFILE ACTIVITY-->
+    <string name="profile_activity_username">Usuario</string>
+    <string name="profile_activity_phone">Teléfono</string>
+    <string name="profile_activity_email">Email</string>
+    <string name="profile_activity_change_password">Cambiar password</string>
+
+
+    <!--CREATE ACCOUNT ACTIVITY-->
+    <string name="create_account_activity_alert_title">Cuenta</string>
+    <string name="create_account_activity_alert_message">La cuenta ha sido creada correctamente</string>
+
+    <!--ORDER ACTIVITY-->
+    <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
+    <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
+    <string name="alert_dialog_order_activity_button_deny">No change</string>
+    <string name="alert_dialog_order_activity_change_center_button_confirm">Cambiar de centro</string>
+
+    <!--MAIN ACTIVITY-->
+    <string name="main_activity_session_expired">Sesión finalizada</string>
+    <string name="main_activity_session_expired_message">Su sesión ha caducado, inicie sesión de nuevo</string>
+    <string name="main_activity_login">LOGIN</string>
+    <string name="main_activity_create_account">CREAR CUENTA</string>
+    <string name="main_activity_dialog_center_title">Activación de centro</string>
+    <string name="main_activity_dialog_center_message">El centro se encuentra activo, por favor, introduzca un código de activación diferente</string>
+    <string name="main_activity_enter_code">Introduzca su código de activación</string>
+    <string name="main_activity_code">Código...</string>
+    <string name="main_activity_activate_center">Activar centro</string>
+
+
+    <!--ACTIVITY SELLER PRODUCT-->
+    <string name="activity_seller_product_select_seller">Selecciona un proveedor ▲</string>
+    <string name="activity_seller_product_select_center">Selecciona un centro ▼</string>
+
+
+
+    <!--CHANGE PASSWORD ACTIVITY-->
+    <string name="editText_change_password_activity_old_password">Password antiguo</string>
+    <string name="editText_change_password_activity_new_password">Nuevo password</string>
+    <string name="editText_change_password_activity_confirm_password">Confirmar nuevo password</string>
+    <string name="change_password_activity_alert_dialog_message">El password ha sido cambiado correctamente</string>
+
+
+    <!--LOGIN ACTIVITY-->
+    <string name="login_activity_username">Usuario</string>
+    <string name="login_activity_password">Password</string>
+    <string name="login_activity_digalog_message">Su cuenta no tiene ningún centro asociado"</string>
+    <string name="login_activity_digalog_title">Centros</string>
+    <string name="login_activity_digalog_sign_in">Entrar</string>
+    <string name="login_activity_digalog_recover_password">Recuperar password</string>
+
+
+    <!--LANDING ACTIVITY-->
+    <string name="landing_activity_favorties">Favoritos</string>
+    <string name="landing_activity_sellers">Proveedores</string>
+    <string name="landing_activity_products">Productos</string>
+    <string name="landing_activity_make_order">Realizar pedido</string>
+    <string name="landing_activity_orders">Pedidos</string>
+    <string name="landing_activity_centers">Centros</string>
+
+
+    <!--FAVORITE ACTIVITY-->
+    <string name="favorite_activity_alert_dialog_title">Eliminar favorito</string>
+    <string name="favorite_activity_alert_dialog_message">¿Está seguro de que desea eliminar el producto de su lista de favoritos?</string>
+    <string name="favorite_activity_no_product_message">No hay ningún producto en su lista de favoritos aún</string>
+
+    <!--SHOP BREAKDOWN ACTIVITY-->
+    <string name="shop_breakdown_activity_product_name">Producto</string>
+    <string name="shop_breakdown_activity_price">Precio</string>
+    <string name="shop_breakdown_activity_quantity">Cantidad</string>
+    <string name="shop_breakdown_activity_total_base">Base imponible</string>
+    <string name="shop_breakdown_activity_tax_type">Tipo impuesto</string>
+    <string name="shop_breakdown_activity_tax">Cantidad</string>
+    <string name="shop_breakdown_activity_total_tax">Total impuesto</string>
+    <string name="shop_breakdown_activity_total">Total</string>
+
+    <!--ORDER DONE ACTIVITY-->
+    <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
+    <string name="order_done_activity_no_orders">No se han encontrado pedidos realizados</string>
+    <!--CATALOGS FRAGMENT-->
+    <string name="catalog_fragment_number_of_products">%d productos</string>
+    <string name="catalog_fragment_choose_catalogue">Seleccione un catálogo</string>
+
+    <!--CENTERS FRAGMENT-->
+    <string name="center_fragment_choose_center">Seleccione un centro</string>
+
+    <!--SELLERS FRAGMENT-->
+    <string name="seller_fragment_choose_seller">Seleccione un proveedor</string>
+
+    <!--CENTER FRAGMENT INFO-->
+    <string name="center_fragment_info_center_name">Nombre de centro</string>
+    <string name="center_fragment_info_address">Dirección</string>
+    <string name="center_fragment_info_city">Ciudad</string>
+    <string name="center_fragment_info_post_code">Código postal</string>
+    <string name="center_fragment_info_country">País</string>
+    <string name="center_fragment_info_province">Provincia</string>
+    <string name="center_fragment_info_email">Email</string>
+    <string name="center_fragment_info_sector">Sector</string>
+
+    <!--SELLER FRAGMENT INFO-->
+    <string name="seller_fragment_info_seller_name">Proveedor</string>
+    <string name="seller_fragment_info_taxid">Cif</string>
+    <string name="seller_fragment_info_address">Dirección</string>
+    <string name="seller_fragment_info_city">Ciudad</string>
+    <string name="seller_fragment_info_post_code">Código postal</string>
+    <string name="seller_fragment_info_country">País</string>
+    <string name="seller_fragment_info_province">Provincia</string>
+    <string name="seller_fragment_info_email">Email</string>
+    <string name="seller_fragment_info_sector">Sector</string>
+    <string name="seller_fragment_info_erp">Erp</string>
+    <string name="seller_fragment_info_gln">Gln</string>
+
+
+</resources>

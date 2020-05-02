@@ -43,7 +43,7 @@
                     android:id="@+id/editText_create_profile_activity_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"></EditText>
+                    android:hint="@string/create_profile_activity_username"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +58,7 @@
                     android:id="@+id/editText_create_profile_activity_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/create_profile_activity_password"
                     android:inputType="textPassword"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +74,7 @@
                     android:id="@+id/editText_create_profile_activity_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Confirm password"
+                    android:hint="@string/create_profile_activity_confirm_password"
                     android:inputType="textPassword"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +90,7 @@
                     android:id="@+id/editText_create_profile_activity_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone"></EditText>
+                    android:hint="@string/create_profile_activity_phone"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:hint="Email"></EditText>
+                    android:hint="@string/create_profile_activity_email"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
-                    android:hint="Center code"></EditText>
+                    android:hint="@string/create_profile_activity_center_code"></EditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -132,7 +132,7 @@
                 android:layout_marginTop="50dp"
                 android:background="@drawable/shape_boton_rounded"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Create account"
+                android:text="@string/create_profile_activity_create_account"
                 android:layout_marginBottom="20dp"
                 android:textColor="@android:color/white"
 

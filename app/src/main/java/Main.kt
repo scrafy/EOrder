@@ -1,6 +1,7 @@
 package com.eorder.app
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Lifecycle
@@ -23,8 +24,10 @@ class Main : Application(), LifecycleObserver {
     private lateinit var unitOfWorkService: UnitOfWorkService
 
 
+
     override fun onCreate() {
         super.onCreate()
+
         startKoin {
             modules(
                 listOf(

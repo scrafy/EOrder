@@ -41,7 +41,6 @@
                     android:textSize="20dp"
                     android:textStyle="bold"></TextView>
 
-
                 <LinearLayout
                     android:id="@+id/linearLayout_order_done_list_product_list_container"
                     android:layout_width="match_parent"

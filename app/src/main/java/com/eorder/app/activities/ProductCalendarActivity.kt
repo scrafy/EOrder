@@ -92,7 +92,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
 
         view.findViewById<TextView>(R.id.textView_fragment_product_calendar_day_name).text =
-            calendarService.getDayName(day.day.get(ChronoField.DAY_OF_WEEK))
+            calendarService.getDayName(this, day.day.get(ChronoField.DAY_OF_WEEK))
 
         if (day.day in orderDays) {
 
@@ -351,7 +351,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         val monthsAdapter = ArrayAdapter<String>(
             this,
             R.layout.simple_spinner_item,
-            calendarService.getMotnhs()
+            calendarService.getMotnhs(this)
         )
         monthsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_text_color)
         spinnerMonths.adapter = monthsAdapter
@@ -382,7 +382,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
                     product.amount = 0
                     product.amountsByDay = mutableListOf()
                     daysWithAmount = mutableListOf()
-                    textView_activity_product_calendar_total_units.text = resources.getString(R.string.product_calendar_activity_units)
+                    textView_activity_product_calendar_total_units.text = String.format(resources.getString(R.string.product_calendar_activity_units), 0)
                     spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
                     this.model.removeProductFromShop(product)
                 },

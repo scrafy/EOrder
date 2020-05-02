@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Seller name:"
+                    android:text="@string/seller_fragment_info_seller_name"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -60,7 +60,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"></EditText>
 
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="TaxId:"
+                    android:text="@string/seller_fragment_info_taxid"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -90,7 +90,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"></EditText>
 
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Address:"
+                    android:text="@string/seller_fragment_info_address"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -120,7 +120,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
                     android:singleLine="false"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="City:"
+                    android:text="@string/seller_fragment_info_city"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -152,7 +152,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Post code:"
+                    android:text="@string/seller_fragment_info_post_code"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -186,7 +186,7 @@
 
                     android:focusable="false"
                     android:focusedByDefault="true"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -206,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Country:"
+                    android:text="@string/seller_fragment_info_country"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -218,7 +218,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -238,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Province:"
+                    android:text="@string/seller_fragment_info_province"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -250,7 +250,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -270,7 +270,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Email:"
+                    android:text="@string/seller_fragment_info_email"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -282,7 +282,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -302,7 +302,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Sector:"
+                    android:text="@string/seller_fragment_info_sector"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -314,7 +314,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -334,7 +334,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Erp:"
+                    android:text="@string/seller_fragment_info_erp"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -346,7 +346,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 
@@ -366,7 +366,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:singleLine="false"
-                    android:text="Gln:"
+                    android:text="@string/seller_fragment_info_gln"
                     android:textColor="@color/primaryText"
                     android:textSize="15dp"></TextView>
 
@@ -378,7 +378,7 @@
                     android:layout_gravity="bottom"
                     android:editable="false"
                     android:focusable="false"
-                    android:text="afdasd ad fas fasdf"
+                    
                     android:textColor="@color/secondaryText"
                     android:textSize="15dp"
 

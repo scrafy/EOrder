@@ -52,7 +52,7 @@
             android:layout_marginTop="10dp"
             android:padding="5dp"
             android:background="@drawable/shape_boton_rounded"
-            android:text="View products"
+            android:text="@string/view_product"
             android:textColor="@color/colorPrimary">
 
         </TextView>

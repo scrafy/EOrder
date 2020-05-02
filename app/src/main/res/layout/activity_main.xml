@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="Enter your center activation code"
+                android:text="@string/main_activity_enter_code"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15dp"
                 android:textStyle="bold">
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_blue_borders_rectangle"
-                android:hint="Code..."
+                android:hint="@string/main_activity_code"
                 android:id="@+id/editText_activity_main_code_input"
                 android:padding="12dp" />
 
@@ -96,7 +96,7 @@
                 android:paddingRight="10dp"
                 android:background="@drawable/shape_boton_rounded"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Activate center"
+                android:text="@string/main_activity_activate_center"
                 android:textColor="@android:color/white"
                 android:textStyle="italic"
                 android:id="@+id/button_activity_main_activate_center"

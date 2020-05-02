@@ -10,6 +10,11 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="modify">Modify</string>
+    <string name="send">Send</string>
+    <string name="view_product">View product</string>
+    <string name="number_units">Number of units</string>
+    <string name="change_password">Change password</string>
+
 
 
     <!--LATERAL NAVIGATION MENU -->
@@ -63,15 +68,19 @@
     <string name="textview_shop_product_list">Product List</string>
     <string name="button_shop_confirm">Confirm order</string>
     <string name="alert_dialog_shop_empty_title">Shop</string>
-    <string name="alert_dialog_shop_empty_message">The shop is empty, please, add a product...</string>
+    <string name="alert_dialog_shop_empty_message">The cart is empty, please, add a product...</string>
     <string name="alert_dialog_shop_confirm_message">¿Are you sure you want to confirm the order?</string>
     <string name="alert_dialog_shop_delete">¿Are you sure you want to empty the cart?</string>
     <string name="alert_dialog_shop_dialog_title_calendar">Calendar</string>
     <string name="shop_activity_dialog_message_reset_calendar">If you modify the amount, the product calendar will be reset.\n¿Are you sure you want to modify the amount?</string>
+    <string name="shop_activity_breakdown">See breakdown</string>
 
     <!--PRODUCT ACTIVITY-->
     <string name="product_activity_no_catalog_dialog_title">No catalogs</string>
     <string name="product_activity_no_catalog_dialog_message">%s does not have any catalog setted</string>
+    <string name="product_activity_select_center">Select a center ▲</string>
+    <string name="product_activity_select_catalog">Select a catalog ▼</string>
+
 
     <!--PRODUCT CALENDAR ACTIVITY-->
 
@@ -82,14 +91,39 @@
     <string name="product_calendar_activity_dialog_clean_title">Clean calendar</string>
     <string name="product_calendar_activity_dialog_clean_message">The calendar has not been confirmed yet</string>
     <string name="product_calendar_activity_dialog_clean_calendar_message">¿Are you sure you want to clean the calendar?</string>
+    <string name="product_calendar_activity_select_month">Select month</string>
+    <string name="product_calendar_activity_confirm">Confirm</string>
+    <string name="product_calendar_activity_clean">Clean</string>
 
     <!--RECOVER ACTIVITY-->
     <string name="product_calendar_activity_dialog_email_confirmation">Email confirmation</string>
     <string name="product_calendar_activity_dialog_email_message">An email has been sent your account, please review your mail to recover your password</string>
+    <string name="product_calendar_activity_text_view">Enter your email</string>
+    <string name="product_calendar_activity_edit_text">Enter your email...</string>
 
     <!--CHECK EMAIL ACTIVITY-->
     <string name="check_email_activity_alert_title">Email validation</string>
     <string name="check_email_activity_alert_message">This email already exists</string>
+    <string name="check_email_activity_enter_email">Enter your email</string>
+    <string name="check_email_activity_your_email">Your email...</string>
+
+
+
+    <!--CREATE PROFILE ACTIVITY-->
+    <string name="create_profile_activity_username">Username</string>
+    <string name="create_profile_activity_password">Password</string>
+    <string name="create_profile_activity_confirm_password">Confirm password</string>
+    <string name="create_profile_activity_phone">Phone</string>
+    <string name="create_profile_activity_email">Email</string>
+    <string name="create_profile_activity_center_code">Center code</string>
+    <string name="create_profile_activity_create_account">Create account</string>
+
+    <!--PROFILE ACTIVITY-->
+    <string name="profile_activity_username">Username</string>
+    <string name="profile_activity_phone">Phone</string>
+    <string name="profile_activity_email">Email</string>
+    <string name="profile_activity_change_password">Change password</string>
+
 
     <!--CREATE ACCOUNT ACTIVITY-->
     <string name="create_account_activity_alert_title">Account</string>
@@ -108,13 +142,21 @@
     <string name="main_activity_create_account">CREATE ACCOUNT</string>
     <string name="main_activity_dialog_center_title">Center activation</string>
     <string name="main_activity_dialog_center_message">This center is active, please, check other activation code</string>
+    <string name="main_activity_enter_code">Enter your center activation code</string>
+    <string name="main_activity_code">Code...</string>
+    <string name="main_activity_activate_center">Activate center</string>
 
-    <!--RECOVER PASSWORD ACTIVITY-->
+
+    <!--ACTIVITY SELLER PRODUCT-->
+    <string name="activity_seller_product_select_seller">Select a seller ▲</string>
+    <string name="activity_seller_product_select_center">Select a center ▼</string>
+
+
+
+    <!--CHANGE PASSWORD ACTIVITY-->
     <string name="editText_change_password_activity_old_password">Old password</string>
     <string name="editText_change_password_activity_new_password">New password</string>
     <string name="editText_change_password_activity_confirm_password">Confirm password</string>
-    <string name="button_change_password_activity_button">Change password</string>
-    <string name="change_password_activity_alert_dialog_title">Change password</string>
     <string name="change_password_activity_alert_dialog_message">The password has been changed correctly</string>
 
 
@@ -123,9 +165,18 @@
     <string name="login_activity_password">Password</string>
     <string name="login_activity_digalog_message">Your account has not any center associated"</string>
     <string name="login_activity_digalog_title">Centers</string>
+    <string name="login_activity_digalog_sign_in">Sign in</string>
+    <string name="login_activity_digalog_recover_password">Recover password</string>
+
 
     <!--LANDING ACTIVITY-->
-    <string name="landing_activity_favorties">Favorite products</string>
+    <string name="landing_activity_favorties">Favorites</string>
+    <string name="landing_activity_sellers">Sellers</string>
+    <string name="landing_activity_products">Products</string>
+    <string name="landing_activity_make_order">Make order</string>
+    <string name="landing_activity_orders">Orders</string>
+    <string name="landing_activity_centers">Centers</string>
+
 
     <!--FAVORITE ACTIVITY-->
     <string name="favorite_activity_alert_dialog_title">Remove favorite</string>
@@ -155,8 +206,27 @@
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Select a seller</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--CENTER FRAGMENT INFO-->
+    <string name="center_fragment_info_center_name">Center name</string>
+    <string name="center_fragment_info_address">Address</string>
+    <string name="center_fragment_info_city">City</string>
+    <string name="center_fragment_info_post_code">Post code</string>
+    <string name="center_fragment_info_country">Country</string>
+    <string name="center_fragment_info_province">Province</string>
+    <string name="center_fragment_info_email">Email</string>
+    <string name="center_fragment_info_sector">Sector</string>
 
+    <!--SELLER FRAGMENT INFO-->
+    <string name="seller_fragment_info_seller_name">Seller name</string>
+    <string name="seller_fragment_info_taxid">TaxId</string>
+    <string name="seller_fragment_info_address">Address</string>
+    <string name="seller_fragment_info_city">City</string>
+    <string name="seller_fragment_info_post_code">Post code</string>
+    <string name="seller_fragment_info_country">Country</string>
+    <string name="seller_fragment_info_province">Province</string>
+    <string name="seller_fragment_info_email">Email</string>
+    <string name="seller_fragment_info_sector">Sector</string>
+    <string name="seller_fragment_info_erp">Erp</string>
+    <string name="seller_fragment_info_gln">Gln</string>
 
 </resources>

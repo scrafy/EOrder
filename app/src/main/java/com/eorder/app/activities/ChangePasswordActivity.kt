@@ -77,7 +77,7 @@ class ChangePasswordActivity : BaseFloatingButtonActivity(),
 
             var dialog = AlertDialogOk(
                 this,
-                resources.getString(R.string.change_password_activity_alert_dialog_title),
+                resources.getString(R.string.change_password),
                 resources.getString(R.string.change_password_activity_alert_dialog_message),
                 "OK"
             ) { _, _ ->

@@ -47,7 +47,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="See breakdown"
+                        android:text="@string/shop_activity_breakdown"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/colorPrimary"
                         android:id="@+id/textView_activity_shop_breakdown"

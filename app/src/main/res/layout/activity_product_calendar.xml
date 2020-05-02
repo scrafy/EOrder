@@ -44,7 +44,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:textColor="@android:color/white"
-                            android:text="Select a month"
+                            android:text="@string/product_calendar_activity_select_month"
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:layout_marginTop="20dp"
@@ -91,7 +91,6 @@
                             android:id="@+id/textView_activity_product_calendar_total_units"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="200"
                             android:layout_marginTop="20dp"
                             android:textColor="@android:color/white"
                             android:textSize="20dp"
@@ -107,9 +106,9 @@
                         >
 
                         <Button
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Confirm"
+                            android:text="@string/product_calendar_activity_confirm"
                             android:background="@drawable/shape_boton_rounded_solid_white"
                             android:textStyle="bold"
                             android:elevation="20dp"
@@ -122,9 +121,9 @@
                             ></Button>
 
                         <Button
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Clean"
+                            android:text="@string/product_calendar_activity_clean"
                             android:elevation="10dp"
                             android:background="@drawable/shape_boton_rounded_solid_white"
                             android:textStyle="bold"
