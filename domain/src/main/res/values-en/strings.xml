@@ -14,5 +14,4 @@
     <string name="email_format">The email has not a correct format</string>
     <string name="center_code_not_null">The center code can not be empty or null</string>
 
-
 </resources>

@@ -4,10 +4,10 @@ import com.eorder.domain.attributes.NullOrEmptyStringValidation
 
 class Login {
 
-    @NullOrEmptyStringValidation("The username field can not be empty or null", "username", 1)
+    @NullOrEmptyStringValidation("username_empty", "username", 1)
     var username: String? = null
 
-    @NullOrEmptyStringValidation("The password field can not be empty or null", "password", 1)
+    @NullOrEmptyStringValidation("password_empty", "password", 1)
     var password: String? = null
 
     constructor(username: String, password: String) {

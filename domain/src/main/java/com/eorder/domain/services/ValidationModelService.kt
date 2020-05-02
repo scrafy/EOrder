@@ -5,11 +5,15 @@ import com.eorder.domain.attributes.FieldEqualToOtherValidation
 import com.eorder.domain.attributes.NullOrEmptyStringValidation
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.ValidationError
+import org.koin.android.ext.koin.androidApplication
+import org.koin.core.KoinComponent
 import java.util.regex.Pattern
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
-class ValidationModelService : IValidationModelService {
+class ValidationModelService : KoinComponent, IValidationModelService {
+
+    private val context = this.getKoin().rootScope.androidApplication().applicationContext
 
     override fun isModelValid(model: Any): Boolean {
         return validate(model).isEmpty()
@@ -31,7 +35,7 @@ class ValidationModelService : IValidationModelService {
 
                                 result.add(
                                     ValidationError(
-                                        annotation.message ?: "",
+                                        context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
                                         model::class.simpleName ?: "",
                                         value.toString()
@@ -54,7 +58,7 @@ class ValidationModelService : IValidationModelService {
 
                                 result.add(
                                     ValidationError(
-                                        annotation.message ?: "",
+                                        context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
                                         model::class.simpleName ?: "",
                                         value.toString()
@@ -67,7 +71,7 @@ class ValidationModelService : IValidationModelService {
 
                                 result.add(
                                     ValidationError(
-                                        annotation.message,
+                                        context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
                                         model::class.simpleName ?: "",
                                         value.toString()
