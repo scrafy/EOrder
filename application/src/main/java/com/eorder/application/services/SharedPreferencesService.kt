@@ -4,15 +4,10 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.application.gsonadapters.LocalDateAdapter
-import com.eorder.application.gsonadapters.LocalDateTimeAdapter
 import com.eorder.application.interfaces.ISharedPreferencesService
 import com.eorder.domain.interfaces.IJwtTokenService
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import java.lang.reflect.Type
-import java.time.LocalDate
-import java.time.LocalDateTime
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -22,10 +17,8 @@ class SharedPreferencesService(
 
 ) : ISharedPreferencesService {
 
-    private var gson: Gson =
-        GsonBuilder().registerTypeAdapter(LocalDate::class.java, LocalDateAdapter().nullSafe())
-            .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())
-            .create()
+    private var gson: com.google.gson.Gson = com.eorder.application.factories.Gson.Create()
+
 
     override fun loadSession(context: Context?, key: String): String? {
 
