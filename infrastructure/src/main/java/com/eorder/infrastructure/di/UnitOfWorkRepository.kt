@@ -1,6 +1,7 @@
 package com.eorder.infrastructure.di
 
 import com.eorder.domain.interfaces.*
+import com.eorder.infrastructure.interfaces.ICategoryRepository
 import com.eorder.infrastructure.repositories.*
 
 class UnitOfWorkRepository(
@@ -16,6 +17,7 @@ class UnitOfWorkRepository(
     private var orderRepository: IOrderRepository? = null
     private var productRepository: IProductRepository? = null
     private var sellerRepository: ISellerRepository? = null
+    private var categoryRepository: ICategoryRepository? = null
 
     //borrar cuando conectemos con backend, se usa para obtener una instancia en ProductService
     init {
@@ -81,6 +83,15 @@ class UnitOfWorkRepository(
             sellerRepository = SellerRepository(unitOfWorkService.getHttpClient())
 
         return sellerRepository as ISellerRepository
+    }
+
+    fun getCategoryRepository(): ICategoryRepository {
+
+        if (categoryRepository == null)
+
+            categoryRepository = CategoryRepository(unitOfWorkService.getHttpClient())
+
+        return categoryRepository as ICategoryRepository
     }
 
 }

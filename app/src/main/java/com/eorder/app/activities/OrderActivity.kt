@@ -9,7 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
+import com.eorder.app.com.eorder.app.interfaces.ISelectCategory
 import com.eorder.app.fragments.CatalogsFragment
+import com.eorder.app.fragments.CategoriesFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.fragments.ProductsFragment
 import com.eorder.app.interfaces.*
@@ -19,6 +21,7 @@ import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
+import com.eorder.domain.models.Category
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -26,10 +29,13 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
-    IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked, IOpenProductCalendar {
+    IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked, IOpenProductCalendar,
+    ISelectCategory {
 
     private lateinit var model: OrderViewModel
     private lateinit var center: Center
+    private lateinit var category: Category
+    private lateinit var catalog: Catalog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +126,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         this.center = center
         if (model.isPossibleChangeCenter(center)) {
 
-            loadCatalogsFragment(center)
+            loadCatalogsFragment()
             model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
 
         } else {
@@ -136,7 +142,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                 { d, i ->
 
                     model.cleanShop()
-                    loadCatalogsFragment(center)
+                    loadCatalogsFragment()
 
                 },
                 { d, i ->
@@ -156,10 +162,11 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun selectCatalog(catalog: Catalog) {
 
+        this.catalog = catalog
         if (model.isPossibleChangeCatalog(catalog.sellerId)) {
 
             model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
-            loadProductsFragment(catalog)
+            loadCategoriesFragment()
 
         } else {
             AlertDialogQuestion(
@@ -175,7 +182,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
                     model.cleanProducts()
                     model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
-                    loadProductsFragment(catalog)
+                    loadCategoriesFragment()
 
                 },
                 { d, i ->
@@ -183,6 +190,15 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
                 }).show()
         }
+
+
+    }
+
+    override fun selectCategory(category: Category) {
+
+        this.category = category
+        loadProductsFragment()
+
     }
 
     private fun init() {
@@ -207,7 +223,20 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         ).show()
     }
 
-    private fun loadCatalogsFragment(center: Center) {
+    private fun loadCategoriesFragment() {
+
+        var fragment = CategoriesFragment()
+        var args = Bundle()
+
+        args.putInt("catalogId", catalog.id)
+        fragment.arguments = args
+
+        this.supportFragmentManager.beginTransaction()
+            .replace(R.id.linear_layout_center_fragment_container, fragment)
+            .addToBackStack(null).commit()
+    }
+
+    private fun loadCatalogsFragment() {
 
         var fragment = CatalogsFragment()
         var args = Bundle()
@@ -220,11 +249,12 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    private fun loadProductsFragment(catalog: Catalog) {
+    private fun loadProductsFragment() {
 
         var args = Bundle()
         var fragment = ProductsFragment()
-        args.putInt("catalogId", catalog.id)
+        args.putInt("categoryId", this.category.id)
+        args.putInt("catalogId", this.catalog.id)
         args.putInt("centerId", this.center.id)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()

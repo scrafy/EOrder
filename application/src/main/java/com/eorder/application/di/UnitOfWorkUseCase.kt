@@ -30,6 +30,7 @@ class UnitOfWorkUseCase(
     private var createAccountUseCase: ICreateAccountUseCase? = null
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
     private var existsUserEmailUseCase: IExistsUserEmailUseCase? = null
+    private var categoriesUseCase: ICategoriesUseCase? = null
 
 
     fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
@@ -58,7 +59,7 @@ class UnitOfWorkUseCase(
     fun getCreateAccountUseCase(): ICreateAccountUseCase {
 
         if (createAccountUseCase == null)
-            createAccountUseCase =  CreateAccountUseCase(
+            createAccountUseCase = CreateAccountUseCase(
                 unitOfWorkService.getValidationModelService(),
                 unitOfWorkRepository.getUserRepository()
             )
@@ -210,5 +211,16 @@ class UnitOfWorkUseCase(
             )
 
         return recoverPasswordUseCase as IRecoverPasswordUseCase
+    }
+
+    fun getCategoriesUseCase(): ICategoriesUseCase {
+
+        if (categoriesUseCase == null)
+            categoriesUseCase = CategoriesUseCase(
+                unitOfWorkRepository.getCategoryRepository()
+                
+            )
+
+        return categoriesUseCase as ICategoriesUseCase
     }
 }

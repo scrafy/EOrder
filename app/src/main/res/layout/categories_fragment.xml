@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefresh_catalogs_fragment"
+    android:id="@+id/swipeRefresh_categories_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,16 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:background="@drawable/shape_blue_gradient_rounded_background" />
 
-            <LinearLayout
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -26,22 +20,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/catalog_fragment_choose_catalogue"
+                    android:text="Select a category"
                     android:textAlignment="center"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="25dp"
-                    android:textStyle="bold"
+                    android:textStyle="bold"></TextView>
 
-                    ></TextView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recView_catalogs_fragment"
+                <com.eorder.app.views.ExpandedListView
+                    android:id="@+id/listView_categories_fragment_listview"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
 
             </LinearLayout>
-        </RelativeLayout>
-
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

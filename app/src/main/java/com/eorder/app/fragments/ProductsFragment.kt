@@ -157,9 +157,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         val centerId = arguments?.getInt("centerId")
         if (catalogId != null && centerId != null)
             model.getProductsByCatalog(centerId, catalogId)
-        else {
-            //TODO show snackbar showing message error
-        }
+
     }
 
     override fun setAdapterListeners(view: View, obj: Any?) {
