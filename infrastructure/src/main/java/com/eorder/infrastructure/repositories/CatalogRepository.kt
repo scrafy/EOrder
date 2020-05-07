@@ -23,8 +23,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog1",
                     10,
                     1,
-                    "MercaBarna",
-                    "https://atencioncliente.com/wp-content/uploads/2019/08/mercabarna.jpg"
+                    "MaxClean",
+                    "https://1.bp.blogspot.com/-R1wXSr4Amtk/ULQ3AXhkCVI/AAAAAAAABfI/yArzvXfBdfo/s1600/Logo+max+clean-01.jpg"
 
                 )
             )
@@ -34,8 +34,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog2",
                     10,
                     2,
-                    "Coca Cola",
-                    "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
+                    "Bebidas & Drinks",
+                    "https://thumbs.dreamstime.com/b/Bebidas & Drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
                 )
             )
             catalogs.add(
@@ -44,8 +44,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog3",
                     10,
                     3,
-                    "Cofarma",
-                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
+                    "Bread factory",
+                    "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
                 )
             )
             catalogs.add(
@@ -54,8 +54,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog4",
                     10,
                     4,
-                    "Durex",
-                    "https://cdns3-2.primor.eu/img/m/316.jpg"
+                    "Frutas y Verduras",
+                    "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
                 )
             )
         }
@@ -67,8 +67,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog5",
                     10,
                     1,
-                    "MercaBarna",
-                    "https://atencioncliente.com/wp-content/uploads/2019/08/mercabarna.jpg"
+                    "MaxClean",
+                    "https://1.bp.blogspot.com/-R1wXSr4Amtk/ULQ3AXhkCVI/AAAAAAAABfI/yArzvXfBdfo/s1600/Logo+max+clean-01.jpg"
 
                 )
             )
@@ -78,8 +78,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog6",
                     10,
                     2,
-                    "Coca Cola",
-                    "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
+                    "Bebidas & Drinks",
+                    "https://thumbs.dreamstime.com/b/Bebidas & Drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
                 )
             )
             catalogs.add(
@@ -88,8 +88,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog7",
                     10,
                     3,
-                    "Cofarma",
-                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
+                    "Bread factory",
+                    "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
                 )
             )
             catalogs.add(
@@ -98,8 +98,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog8",
                     10,
                     4,
-                    "Durex",
-                    "https://cdns3-2.primor.eu/img/m/316.jpg"
+                    "Frutas y Verduras",
+                    "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
                 )
             )
         }
@@ -111,8 +111,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog9",
                     10,
                     1,
-                    "MercaBarna",
-                    "https://atencioncliente.com/wp-content/uploads/2019/08/mercabarna.jpg"
+                    "MaxClean",
+                    "https://1.bp.blogspot.com/-R1wXSr4Amtk/ULQ3AXhkCVI/AAAAAAAABfI/yArzvXfBdfo/s1600/Logo+max+clean-01.jpg"
 
                 )
             )
@@ -122,8 +122,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog10",
                     10,
                     2,
-                    "Coca Cola",
-                    "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
+                    "Bebidas & Drinks",
+                    "https://thumbs.dreamstime.com/b/Bebidas & Drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
                 )
             )
             catalogs.add(
@@ -132,8 +132,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog11",
                     10,
                     3,
-                    "Cofarma",
-                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
+                    "Bread factory",
+                    "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
                 )
             )
             catalogs.add(
@@ -142,8 +142,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog12",
                     10,
                     4,
-                    "Durex",
-                    "https://cdns3-2.primor.eu/img/m/316.jpg"
+                    "Frutas y Verduras",
+                    "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
                 )
             )
         }
@@ -155,8 +155,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog13",
                     10,
                     1,
-                    "MercaBarna",
-                    "https://atencioncliente.com/wp-content/uploads/2019/08/mercabarna.jpg"
+                    "MaxClean",
+                    "https://1.bp.blogspot.com/-R1wXSr4Amtk/ULQ3AXhkCVI/AAAAAAAABfI/yArzvXfBdfo/s1600/Logo+max+clean-01.jpg"
 
                 )
             )
@@ -166,8 +166,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog14",
                     10,
                     2,
-                    "Coca Cola",
-                    "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
+                    "Bebidas & Drinks",
+                    "https://thumbs.dreamstime.com/b/Bebidas & Drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
                 )
             )
             catalogs.add(
@@ -176,8 +176,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog15",
                     10,
                     3,
-                    "Cofarma",
-                    "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
+                    "Bread factory",
+                    "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
                 )
             )
             catalogs.add(
@@ -186,8 +186,8 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog16",
                     10,
                     4,
-                    "Durex",
-                    "https://cdns3-2.primor.eu/img/m/316.jpg"
+                    "Frutas y Verduras",
+                    "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
                 )
             )
         }

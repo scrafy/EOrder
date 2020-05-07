@@ -3,6 +3,8 @@ package com.eorder.app.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NavUtils.navigateUpTo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +17,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     protected var unitOfWorkService: UnitOfWorkService = inject<UnitOfWorkService>().value

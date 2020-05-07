@@ -2,6 +2,7 @@ package com.eorder.infrastructure.repositories
 
 import com.eorder.domain.interfaces.IProductRepository
 import com.eorder.domain.models.Product
+import com.eorder.domain.models.SearchProduct
 import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
@@ -10,7 +11,10 @@ import com.eorder.infrastructure.services.ProductsService
 class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
     IProductRepository {
 
-    override fun getProductsByCatalog(centerId:Int, catalogId: Int): ServerResponse<List<Product>> {
+    override fun getProductsByCatalog(
+        centerId: Int,
+        catalogId: Int
+    ): ServerResponse<List<Product>> {
 
         //TODO make a backend call
 
@@ -68,6 +72,34 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         checkServerErrorInResponse(response)
 
         return response
+    }
+
+    override fun searchProducts(search: SearchProduct): ServerResponse<List<Product>> {
+
+        var response: ServerResponse<List<Product>>
+        var products =
+            ProductsService.getProducts().filter { p -> p.catallogId == search.catalogId }
+
+        if (!search.category.isNullOrEmpty())
+            products = products.filter { p -> p.category == search.category }
+
+        if (!search.nameProduct.isNullOrEmpty())
+            products = products.filter { p -> p.name == search.nameProduct }
+
+        response =
+            ServerResponse(
+                200,
+                null,
+                ServerData(
+                    products,
+                    null
+                )
+            )
+
+        checkServerErrorInResponse(response)
+
+        return response
+
     }
 
 }

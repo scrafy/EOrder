@@ -28,10 +28,10 @@ class ProductsService{
                     21.00F,
                     "IVA",
                     13.56F,
-                    "Paquete 24 latas cerveza San Miguel 33ml",
-                    "Paquete 24 latas cerveza San Miguel 33ml",
-                    "Alimentacion",
-                    "https://images-na.ssl-images-amazon.com/images/I/81w%2B3eCQW5L._AC_SX679_.jpg"
+                    "Paquete 24 latas cerveza 33ml",
+                    "Paquete 24 latas cerveza 33ml",
+                    "Bebidas",
+                    "https://images-na.ssl-images-amazon.com/images/I/41Nu%2B0wVvEL._AC_SX466_.jpg"
 
                 )
             )
@@ -45,10 +45,10 @@ class ProductsService{
                     21.00F,
                     "IVA",
                     8.56F,
-                    "Paquete de 24 latas Coca Cola",
-                    "Paquete de 24 latas Coca Cola",
-                    "Alimentacion",
-                    "https://images-na.ssl-images-amazon.com/images/I/61rDPfZ0ReL._AC_SX679_.jpg"
+                    "Paquete de 24 latas soda",
+                    "Paquete de 24 latas",
+                    "Bebidas",
+                    "https://image.freepik.com/vector-gratis/anuncio-realista-limonada_52683-8161.jpg"
                 )
             )
             aux.add(
@@ -62,9 +62,9 @@ class ProductsService{
                     "IVA",
                     5.45F,
                     "Caja 24 botellas Fontbella 50cl",
-                    "Caja 24 botellas Fontbella 50cl",
-                    "Alimentacion",
-                    "https://m.media-amazon.com/images/I/41KMEyI8ebL.jpg"
+                    "Paquete 12 botellas de agua 50cl",
+                    "Bebidas",
+                    "https://www.readyrefresh.com/medias/sys_master/images/images/hcb/h7e/h00/8797641539614/1941-main-ice-mountain-0.5-l-12-pack-package-top-view.png"
                 )
             )
             aux.add(
@@ -77,10 +77,10 @@ class ProductsService{
                     21.00F,
                     "IVA",
                     10.56F,
-                    "Paquete cigarros 20 unidades",
-                    "Cajetilla Marlboro 20 pitillos",
-                    "Tabacos",
-                    "https://i0.pngocean.com/files/275/300/985/marlboro-cigarette-pack-arabs-tobacco-marlboro.jpg"
+                    "Té helado Green Tea",
+                    "Té helado Green Tea",
+                    "Bebidas",
+                    "https://image.freepik.com/vector-gratis/ilustracion-realista-vector-te-verde-hielo-publicidad_103044-461.jpg"
 
                 )
             )

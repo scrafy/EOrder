@@ -9,16 +9,17 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.adapters.fragments.CategoriesAdapter
 import com.eorder.app.com.eorder.app.interfaces.ISelectCategory
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
-import com.eorder.app.viewmodels.CategoriesViewModel
+import com.eorder.app.viewmodels.fragments.CategoriesViewModel
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Category
-import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.categories_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -30,6 +31,10 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
     private lateinit var model: CategoriesViewModel
     private lateinit var categories: List<Category>
     private lateinit var adapter: CategoriesAdapter
+    private lateinit var catalog: Catalog
+    private lateinit var refreshLayout: SwipeRefreshLayout
+    private lateinit var categorySelected: Category
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
@@ -55,8 +60,15 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
 
         view.findViewById<TextView>(R.id.textView_category_list_name)
             .setOnClickListener {
-
-                (context as ISelectCategory).selectCategory(category)
+                categorySelected = category
+                model.getProducts(
+                    SearchProduct(
+                        model.getCenterSelected()!!,
+                        catalog.id,
+                        category.categoryName,
+                        null
+                    )
+                )
             }
     }
 
@@ -85,25 +97,61 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
         model.categoriesResult.observe(
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Category>>> {
+                refreshLayout.isRefreshing = false
                 categories = it.serverData?.data ?: listOf()
                 adapter = CategoriesAdapter(categories, this)
                 listView_categories_fragment_listview.adapter = adapter
                 adapter.notifyDataSetChanged()
             })
 
-        model.getErrorObservable()
-            ?.observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
+        model.productsResult.observe(
+            this.activity as LifecycleOwner,
+            Observer<ServerResponse<List<Product>>> {
 
-                //refreshLayout.isRefreshing = false
+                val data = it.serverData!!
+                var self = this
+                var dataString = Gson.Create().toJson(
+                    DataProductFragment(
+
+                        data,
+                        self.categories,
+                        self.categorySelected
+
+                    )
+                )
+                (this.activity as ISelectCategory).selectCategory(dataString)
+            })
+
+
+        model.getErrorObservable()
+            .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
+
+                refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
     }
 
     private fun init() {
-        model.getCategories(arguments!!.getInt("catalogId"))
+        this.catalog = Gson.Create().fromJson(arguments!!.getString("catalog"), Catalog::class.java)
+        model.getCategories(this.catalog.id)
+        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_categories_fragment)!!
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+        refreshLayout.setOnRefreshListener {
+
+            model.getCategories(this.catalog.id)
+        }
 
     }
+
+
+    data class DataProductFragment(
+
+        private val data: ServerData<List<Product>>,
+        private val categories: List<Category>,
+        private val categorySelected: Category
+    )
+
 
 }
 

@@ -19,9 +19,9 @@ import com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
-import com.eorder.domain.models.Category
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -34,7 +34,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     private lateinit var model: OrderViewModel
     private lateinit var center: Center
-    private lateinit var category: Category
     private lateinit var catalog: Catalog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -176,7 +175,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                     model.getCurrentOrderSellerName(),
                     catalog.sellerName
                 ),
-                resources.getString(R.string.alert_dialog_order_activity_change_center_button_confirm),
+                resources.getString(R.string.alert_dialog_order_activity_change_seller_button_confirm),
                 resources.getString(R.string.alert_dialog_order_activity_button_deny),
                 { _, _ ->
 
@@ -194,10 +193,9 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    override fun selectCategory(category: Category) {
+    override fun selectCategory(data:String) {
 
-        this.category = category
-        loadProductsFragment()
+        loadProductsFragment(data)
 
     }
 
@@ -228,7 +226,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         var fragment = CategoriesFragment()
         var args = Bundle()
 
-        args.putInt("catalogId", catalog.id)
+        args.putString("catalog", Gson.Create().toJson(this.catalog))
         fragment.arguments = args
 
         this.supportFragmentManager.beginTransaction()
@@ -249,13 +247,11 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    private fun loadProductsFragment() {
+    private fun loadProductsFragment(data:String) {
 
         var args = Bundle()
         var fragment = ProductsFragment()
-        args.putInt("categoryId", this.category.id)
-        args.putInt("catalogId", this.catalog.id)
-        args.putInt("centerId", this.center.id)
+        args.putString("data", data)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linear_layout_center_fragment_container, fragment)

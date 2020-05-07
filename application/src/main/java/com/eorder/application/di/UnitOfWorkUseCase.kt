@@ -31,6 +31,7 @@ class UnitOfWorkUseCase(
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
     private var existsUserEmailUseCase: IExistsUserEmailUseCase? = null
     private var categoriesUseCase: ICategoriesUseCase? = null
+    private var searchProductsUseCase: ISearchProductsUseCase? = null
 
 
     fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
@@ -42,6 +43,16 @@ class UnitOfWorkUseCase(
             )
         }
         return existsUserEmailUseCase as IExistsUserEmailUseCase
+    }
+
+    fun getSearchProductsUseCase(): ISearchProductsUseCase {
+
+        if (searchProductsUseCase == null) {
+            searchProductsUseCase = SearchProductsUseCase(
+                unitOfWorkRepository.getProductRepository()
+            )
+        }
+        return searchProductsUseCase as ISearchProductsUseCase
     }
 
     fun getCentersUseCase(): IUserCentersUseCase {
@@ -218,7 +229,7 @@ class UnitOfWorkUseCase(
         if (categoriesUseCase == null)
             categoriesUseCase = CategoriesUseCase(
                 unitOfWorkRepository.getCategoryRepository()
-                
+
             )
 
         return categoriesUseCase as ICategoriesUseCase

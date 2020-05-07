@@ -12,4 +12,4 @@ class Catalog(
     override val imageUrl: String? = null,
     override var image: Bitmap? = null
 
-    ) : ILoadImageFields
+) : ILoadImageFields

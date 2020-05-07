@@ -135,6 +135,7 @@
     <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
     <string name="alert_dialog_order_activity_button_deny">No change</string>
     <string name="alert_dialog_order_activity_change_center_button_confirm">Cambiar de centro</string>
+    <string name="alert_dialog_order_activity_change_seller_button_confirm">Cambiar de proveedor</string>
 
     <!--MAIN ACTIVITY-->
     <string name="main_activity_session_expired">Sesión finalizada</string>
