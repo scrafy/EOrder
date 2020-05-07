@@ -24,6 +24,7 @@ import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.*
 import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.app.widgets.AlertDialogInput
+import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.factories.Gson
@@ -284,7 +285,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             resources.getString(R.string.cancel),
             { d, i ->
 
-
                 if (dialog?.input?.text.isNullOrEmpty()) {
                     product.amount = 0
                 } else {
@@ -309,13 +309,18 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> {
 
-                products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
-                spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-                adapter.products = products
-                setProductCurrentState()
-                adapter.notifyDataSetChanged()
-                refreshLayout.isRefreshing = false
-                loadImages()
+                products = it.serverData?.data?.toMutableList() ?: mutableListOf()
+
+                if ( products.isNullOrEmpty() ){
+                    AlertDialogOk(context!!,"No products", "Any product found with search criteria", "OK") { d, i ->}.show()
+                }else{
+                    spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
+                    adapter.products = products
+                    setProductCurrentState()
+                    adapter.notifyDataSetChanged()
+                    refreshLayout.isRefreshing = false
+                    loadImages()
+                }
 
             })
 
@@ -383,7 +388,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            //TODO
+            model.searchProducts(searchProducts)
         }
         spinner_products_fragment_list_categories.setSelection( categories.indexOf(data.categorySelected.categoryName) )
 

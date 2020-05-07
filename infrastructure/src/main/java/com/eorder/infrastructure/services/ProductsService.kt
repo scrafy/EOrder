@@ -4,7 +4,7 @@ import com.eorder.domain.models.Product
 import com.eorder.infrastructure.di.UnitOfWorkRepository
 
 
-class ProductsService{
+class ProductsService {
 
 
     companion object {
@@ -181,23 +181,6 @@ class ProductsService{
                     "https://yourspanishcorner.com/2274-thickbox_default/jamon-serrano-curado.jpg"
                 )
             )
-            aux.add(
-                Product(
-                    11,
-                    1,
-                    0F,
-                    0F,
-                    0F,
-                    21.00F,
-                    "IVA",
-                    18.32F,
-                    "Queso manchego 1.5Kg",
-                    "Queso manchego 1.5Kg",
-                    "Alimentacion",
-                    "https://cadenaser00.epimg.net/ser/imagenes/2019/04/02/ser_ciudad_real/1554203477_864568_1554203890_noticia_normal_recorte1.jpg"
-                )
-            )
-
             return aux
         }
 
@@ -209,15 +192,18 @@ class ProductsService{
             for (i in 1..4) {
                 for (c in 1..4) {
 
-                    getAuxProducts().forEach { p ->
+                    for (d in 1..13) {
+                        getAuxProducts().forEach { p ->
 
-                        p.id = productId
-                        productId++
-                        p.sellerId = i
-                        p.catallogId = catalogId
-                        p.sellerName = UnitOfWorkRepository.self?.getSellerRepository()?.getSeller(p.sellerId)?.serverData?.data?.companyName
-                        products.add(p)
+                            p.id = productId
+                            productId++
+                            p.sellerId = i
+                            p.catallogId = catalogId
+                            p.sellerName = UnitOfWorkRepository.self?.getSellerRepository()
+                                ?.getSeller(p.sellerId)?.serverData?.data?.companyName
+                            products.add(p)
 
+                        }
                     }
                     catalogId++
                 }

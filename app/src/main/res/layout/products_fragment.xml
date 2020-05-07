@@ -10,6 +10,14 @@
         android:layout_height="match_parent"
         tools:context="com.eorder.app.fragments.CentersFragment">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:background="@drawable/shape_blue_gradient_rounded_background" />
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -58,6 +66,7 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+        </RelativeLayout>
 
     </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
