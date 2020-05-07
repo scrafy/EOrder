@@ -1,11 +1,13 @@
 package com.eorder.app.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
@@ -35,6 +37,8 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_seller_product.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     IRepaintModel, ISetAdapterListener, IToolbarSearch {
 
@@ -368,6 +372,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             }.forEach { p -> p.favorite = true }
     }
 
+
     private fun setObservers() {
 
         model.getSellersResultObservable()
@@ -437,11 +442,13 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         productsAdapter.notifyDataSetChanged()
                     } else {
 
-
+                        val categories: MutableList<String> = mutableListOf()
+                        categories.add(this.resources.getString(R.string.product_categories))
+                        categories.addAll(products.map { p-> p.category }.distinct())
                         setFavorites()
                         productSpinners = FilterProductSpinners(
                             this,
-                            products,
+                            categories,
                             spinner_product_list_categories,
                             spinner_product_list_order,
                             { pos ->

@@ -12,7 +12,7 @@ import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class SellerActivity : BaseMenuActivity(), ISelectSeller {
 
     private lateinit var model: SellerActivityViewModel
@@ -31,6 +31,7 @@ class SellerActivity : BaseMenuActivity(), ISelectSeller {
         currentToolBarMenu["main_menu"] = R.menu.main_menu
         setToolbarAndLateralMenu(currentToolBarMenu)
     }
+
 
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()

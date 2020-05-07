@@ -61,14 +61,17 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
         view.findViewById<TextView>(R.id.textView_category_list_name)
             .setOnClickListener {
                 categorySelected = category
-                model.getProducts(
-                    SearchProduct(
-                        model.getCenterSelected()!!,
+
+                var dataString = Gson.Create().toJson(
+                    DataProductFragment(
+                        categories,
+                        categorySelected,
                         catalog.id,
-                        category.categoryName,
-                        null
+                        model.getCenterSelected()!!
+
                     )
                 )
+                (this.activity as ISelectCategory).selectCategory(dataString)
             }
     }
 
@@ -104,25 +107,6 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
                 adapter.notifyDataSetChanged()
             })
 
-        model.productsResult.observe(
-            this.activity as LifecycleOwner,
-            Observer<ServerResponse<List<Product>>> {
-
-                val data = it.serverData!!
-                var self = this
-                var dataString = Gson.Create().toJson(
-                    DataProductFragment(
-
-                        data,
-                        self.categories,
-                        self.categorySelected
-
-                    )
-                )
-                (this.activity as ISelectCategory).selectCategory(dataString)
-            })
-
-
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
@@ -147,9 +131,10 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
 
     data class DataProductFragment(
 
-        private val data: ServerData<List<Product>>,
-        private val categories: List<Category>,
-        private val categorySelected: Category
+        val categories: List<Category>,
+        val categorySelected: Category,
+        val catalogId: Int,
+        var centerId:Int
     )
 
 

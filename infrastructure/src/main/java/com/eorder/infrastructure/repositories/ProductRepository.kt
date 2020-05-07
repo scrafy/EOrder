@@ -84,7 +84,7 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
             products = products.filter { p -> p.category == search.category }
 
         if (!search.nameProduct.isNullOrEmpty())
-            products = products.filter { p -> p.name == search.nameProduct }
+            products = products.filter { p -> p.name.toLowerCase().contains((search.nameProduct as String).toLowerCase()) }
 
         response =
             ServerResponse(

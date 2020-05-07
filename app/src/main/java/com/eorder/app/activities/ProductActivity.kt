@@ -447,11 +447,14 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getProductsResultObservable()
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
+                val categories: MutableList<String> = mutableListOf()
+                categories.add(this.resources.getString(R.string.product_categories))
+                categories.addAll(products.map { p-> p.category }.distinct())
                 products = it.serverData?.data ?: listOf()
                 setFavorites()
                 productSpinners = FilterProductSpinners(
                     this,
-                    products,
+                    categories,
                     spinner_product_list_categories,
                     spinner_product_list_order,
                     { pos ->

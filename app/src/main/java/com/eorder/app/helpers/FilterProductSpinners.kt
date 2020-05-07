@@ -5,21 +5,19 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.eorder.app.R
-import com.eorder.domain.models.Product
 
 
 class FilterProductSpinners(
 
     private val context: Context,
-    private val products: List<Product>,
+    private val categories: List<String> = listOf(),
     private val SpinnerCategories: SpinnerExtension,
     private val SpinnerOrder: SpinnerExtension,
     private val onSelectedCategory: (position: Int) -> Unit,
     private val onSelectedOrder: (position: Int) -> Unit,
-    private val itemLayout:Int
+    private val itemLayout: Int
 ) {
 
-    private val categories:MutableList<String> = mutableListOf()
     private val order: MutableList<String> = mutableListOf()
 
     init {
@@ -27,13 +25,9 @@ class FilterProductSpinners(
         setOrderItems()
     }
 
-
     fun getCategories() = categories
 
     private fun setCategoryItemsSpinner() {
-
-        categories.add(context.resources.getString(R.string.product_categories))
-        products.map { p -> p.category }.distinct().forEach { s -> categories.add(s) }
 
         val categoriesAdapter = ArrayAdapter<String>(
             context,

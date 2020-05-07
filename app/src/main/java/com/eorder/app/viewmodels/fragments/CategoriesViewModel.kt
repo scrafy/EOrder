@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class CategoriesViewModel : BaseMainMenuActionsViewModel() {
 
     val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
-    val productsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
+
 
 
     fun getCategories(catalogId: Int) {
@@ -26,15 +26,6 @@ class CategoriesViewModel : BaseMainMenuActionsViewModel() {
 
             var result = unitOfWorkUseCase.getCategoriesUseCase().getCategories(catalogId)
             categoriesResult.postValue(result)
-        }
-    }
-
-    fun getProducts(search: SearchProduct) {
-
-        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-
-            var result = unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search)
-            productsResult.postValue(result)
         }
     }
 

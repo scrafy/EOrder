@@ -26,8 +26,11 @@ import com.eorder.app.viewmodels.fragments.ProductsViewModel
 import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.domain.models.Category
 import com.eorder.domain.models.Product
+import com.eorder.domain.models.SearchProduct
 import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*
@@ -42,10 +45,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
     private var adapter: OrderProductAdapter = OrderProductAdapter(listOf(), this)
-    private  var products: MutableList<Product> = mutableListOf()
+    private var products: MutableList<Product> = mutableListOf()
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var productSpinners: FilterProductSpinners
     private var filters: MutableMap<String, String?> = mutableMapOf()
+    private var categories: MutableList<String> = mutableListOf()
+    private lateinit var categorySelected: Category
+    private lateinit var searchProducts: SearchProduct
 
 
     init {
@@ -65,7 +71,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     override fun onStart() {
         super.onStart()
-        if ( !products.isNullOrEmpty() ){
+        if (!products.isNullOrEmpty()) {
             setProductCurrentState()
             adapter.notifyDataSetChanged()
         }
@@ -86,11 +92,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     override fun getSearchFromToolbar(search: String) {
         if (search != "")
-            filters["search"] = search
+            searchProducts.nameProduct = search
         else
-            filters["search"] = null
+            searchProducts.nameProduct = null
 
-        applyFilters()
+        searchProducts()
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -137,7 +143,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
             view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
                 .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
-        }else{
+        } else {
             view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
                 .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario))
         }
@@ -150,14 +156,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         super.onActivityCreated(savedInstanceState)
 
         model = getViewModel()
-        init()
         setObservers()
-
-        val catalogId = arguments?.getInt("catalogId")
-        val centerId = arguments?.getInt("centerId")
-        if (catalogId != null && centerId != null)
-            model.getProductsByCatalog(centerId, catalogId)
-
+        init()
     }
 
     override fun setAdapterListeners(view: View, obj: Any?) {
@@ -276,49 +276,42 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun modifyAmountOfProduct(product: Product) {
 
         var dialog: AlertDialogInput? = null
-        dialog = AlertDialogInput(context!!, "", "", resources.getString(R.string.add), resources.getString(R.string.cancel), { d, i ->
+        dialog = AlertDialogInput(
+            context!!,
+            "",
+            "",
+            resources.getString(R.string.add),
+            resources.getString(R.string.cancel),
+            { d, i ->
 
 
-            if (dialog?.input?.text.isNullOrEmpty()) {
-                product.amount = 0
-            } else {
-                product.amount = Integer(dialog?.input?.text.toString()).toInt()
-            }
-            if (product.amount == 0)
-                model.removeProductFromShop(product)
-            else
-                model.addProductToShop(product)
+                if (dialog?.input?.text.isNullOrEmpty()) {
+                    product.amount = 0
+                } else {
+                    product.amount = Integer(dialog?.input?.text.toString()).toInt()
+                }
+                if (product.amount == 0)
+                    model.removeProductFromShop(product)
+                else
+                    model.addProductToShop(product)
 
-            product.amountsByDay = null
-            (context as IRepaintShopIcon).repaintShopIcon()
-            adapter.notifyDataSetChanged()
-        }, { d, i -> })
+                product.amountsByDay = null
+                (context as IRepaintShopIcon).repaintShopIcon()
+                adapter.notifyDataSetChanged()
+            },
+            { d, i -> })
         dialog.show()
     }
 
     private fun setObservers() {
 
-        model.getProductsByCatalogObservable().observe(
+        model.searchProductsResult.observe(
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> {
 
                 products = (it.serverData?.data?.toMutableList() ?: mutableListOf())
+                spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
                 adapter.products = products
-                productSpinners = FilterProductSpinners(
-                    context!!,
-                    products,
-                    spinner_products_fragment_list_categories,
-                    spinner_product_products_fragment_list_order,
-                    { pos ->
-
-                        onSelectedCategory(pos)
-                    },
-                    { pos ->
-
-                        onSelectedOrder(pos)
-                    },
-                    R.layout.simple_spinner_item
-                )
                 setProductCurrentState()
                 adapter.notifyDataSetChanged()
                 refreshLayout.isRefreshing = false
@@ -335,6 +328,27 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     }
 
+    private fun loadSpinnersData(_categories: List<String>, categorySelected:String) {
+
+        categories.add(context!!.resources.getString(R.string.product_categories))
+        categories.addAll(_categories)
+        productSpinners = FilterProductSpinners(
+            context!!,
+            categories,
+            spinner_products_fragment_list_categories,
+            spinner_product_products_fragment_list_order,
+            { pos ->
+
+                onSelectedCategory(pos)
+            },
+            { pos ->
+
+                onSelectedOrder(pos)
+            },
+            R.layout.simple_spinner_item
+        )
+    }
+
     private fun loadImages() {
 
         LoadImageHelper().loadImage(products)
@@ -346,6 +360,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun init() {
 
+        val data = Gson.Create().fromJson(
+            arguments!!.getString("data"),
+            CategoriesFragment.DataProductFragment::class.java
+        )
+        searchProducts = SearchProduct(data.centerId, data.catalogId)
+        loadSpinnersData(data.categories.map { it.categoryName }, data.categorySelected.categoryName)
         var menu = mutableMapOf<String, Int>()
         menu["cart_menu"] = R.menu.cart_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
@@ -359,16 +379,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this
         )
         recyclerView.adapter = adapter
-
         refreshLayout = this.view?.findViewById(R.id.swipeRefresh_products_fragment)!!
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getProductsByCatalog(
-                arguments?.getInt("centerId")!!,
-                arguments?.getInt("catalogId")!!
-            )
+            //TODO
         }
+        spinner_products_fragment_list_categories.setSelection( categories.indexOf(data.categorySelected.categoryName) )
 
     }
 
@@ -391,7 +408,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 }
 
             }
-        }else{
+        } else {
             products.filter { it.amount > 0 }.forEach { it.amount = 0 }
             products.filter { !it.amountsByDay.isNullOrEmpty() }.forEach { it.amountsByDay = null }
         }
@@ -404,68 +421,42 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             }.forEach { p -> p.favorite = true }
     }
 
-    private fun applyFilters() {
+    private fun searchProducts() {
 
-        var filtered: List<Product> = listOf()
-
-        if (filters["category"] != null) {
-
-            if (filters["category"] != null && filters["category"]?.toInt() == 0) {
-
-                filtered = products
-            }
-            if (filters["category"]?.toInt()!! > 0) {
-
-                filtered =
-                    products.filter { p -> p.category === productSpinners.getCategories()[filters["category"]?.toInt()!!] }
-            }
-
-        }
-
-        if (filters["search"] != null) {
-
-            filtered = filtered.filter { p ->
-                p.name.toLowerCase().contains(filters["search"]?.toLowerCase()!!)
-
-            }
-
-        }
-
-
-        if (filters["order"] != null) {
-
-            when (filters["order"]?.toInt()!!) {
-
-                0 -> {
-                    filtered = filtered.sortedBy { p -> p.name }
-
-                }
-                1 -> {
-                    filtered = filtered.sortedByDescending { p -> p.name }
-
-                }
-                2 -> {
-                    filtered = filtered.sortedBy { p -> p.price }
-                }
-                3 -> {
-                    filtered = filtered.sortedByDescending { p -> p.price }
-                }
-            }
-        }
-
-        adapter.products = filtered
-        adapter.notifyDataSetChanged()
+        model.searchProducts(searchProducts)
     }
 
     private fun onSelectedCategory(position: Int) {
 
-        filters["category"] = position.toString()
-        applyFilters()
+        if ( position == 0 )
+            searchProducts.category = null
+
+        else
+            searchProducts.category = categories[position]
+
+        searchProducts()
     }
 
     private fun onSelectedOrder(position: Int) {
 
-        filters["order"] = position.toString()
-        applyFilters()
+        when (position) {
+
+            0 -> {
+                products = products.sortedBy { p -> p.name }.toMutableList()
+
+            }
+            1 -> {
+                products = products.sortedByDescending { p -> p.name }.toMutableList()
+
+            }
+            2 -> {
+                products = products.sortedBy { p -> p.price }.toMutableList()
+            }
+            3 -> {
+                products = products.sortedByDescending { p -> p.price }.toMutableList()
+            }
+        }
+        adapter.products = products
+        adapter.notifyDataSetChanged()
     }
 }
