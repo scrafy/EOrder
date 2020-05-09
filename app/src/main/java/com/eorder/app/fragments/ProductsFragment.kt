@@ -318,7 +318,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     setProductCurrentState()
                     adapter.addProducts(it.serverData?.data!!)
                     spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-                    loadImages()
+                    //loadImages()
                 }
 
             })
@@ -376,7 +376,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var menu = mutableMapOf<String, Int>()
         menu["cart_menu"] = R.menu.cart_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
-        var layout = LinearLayoutManager(this.context)
+        var layout = LinearLayoutManager(this.context).apply { isAutoMeasureEnabled = false }
         layout.orientation = LinearLayoutManager.VERTICAL
         recyclerView = this.view!!.findViewById(R.id.recView_products_fragment_product_list)
         recyclerView.layoutManager = layout
@@ -424,7 +424,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     private fun searchProducts() {
-
+        hideLoadMoreProductsButton()
         model.searchProducts(searchProducts, currentPage)
         imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
     }
