@@ -85,10 +85,19 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         if (!search.nameProduct.isNullOrEmpty())
             products = products.filter { p -> p.name.toLowerCase().contains((search.nameProduct as String).toLowerCase()) }
 
+
+        var numpages: Int
+
+        if ( products.size%50 == 0 ){
+            numpages = products.size/50
+        }else
+        {
+            numpages = (products.size/50)+1
+        }
+
         val offset = 50 * (page - 1)
         val take = (page * 50) - 1
 
-        products = products.slice(IntRange(0, 199))
         products = products.slice(IntRange(offset, take))
 
         response =
@@ -97,7 +106,7 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 null,
                 ServerData(
                     products,
-                    Pagination(4,  page, 50, 200)
+                    Pagination(numpages,  page, 50, products.size)
                 )
             )
 
