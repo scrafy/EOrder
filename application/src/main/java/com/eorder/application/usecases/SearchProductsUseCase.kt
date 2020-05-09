@@ -12,8 +12,8 @@ class SearchProductsUseCase(
     private val productRepository: IProductRepository
 ): ISearchProductsUseCase {
 
-    override fun searchProducts(search: SearchProduct) : ServerResponse<List<Product>> {
+    override fun searchProducts(search: SearchProduct, page:Int) : ServerResponse<List<Product>> {
 
-        return productRepository.searchProducts(search)
+        return productRepository.searchProducts(search, page)
     }
 }

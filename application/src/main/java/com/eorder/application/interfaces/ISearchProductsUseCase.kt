@@ -6,6 +6,6 @@ import com.eorder.domain.models.ServerResponse
 
 interface ISearchProductsUseCase {
 
-    fun searchProducts(search: SearchProduct) : ServerResponse<List<Product>>
+    fun searchProducts(search: SearchProduct, page:Int) : ServerResponse<List<Product>>
 
 }

@@ -14,6 +14,7 @@
     <string name="view_product">Ver producto</string>
     <string name="number_units">Número de unidades</string>
     <string name="change_password">Change password</string>
+    <string name="productos">Productos</string>
 
 
 
@@ -30,7 +31,6 @@
     <string name="lateral_nav_menu_profile">Perfil</string>
     <string name="lateral_nav_menu_centers">Centros</string>
     <string name="lateral_nav_menu_providers">Proveedores</string>
-    <string name="lateral_nav_menu_products">Productos</string>
     <string name="lateral_nav_menu_makeorder">Realizar pedido</string>
 
     <!--MAIN MENU-->
@@ -207,6 +207,12 @@
 
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Seleccione un proveedor</string>
+
+    <!--PRODUCTS FRAGMENT-->
+
+    <string name="products_fragment_no_products_message">Lista de productos cargada...</string>
+    <string name="products_fragment_no_products_search_message">No se ha encontrado ningún producto con los criterios de búsqueda establecidos</string>
+    <string name="products_fragment_more_products">Mostrar más productos</string>
 
     <!--CENTER FRAGMENT INFO-->
     <string name="center_fragment_info_center_name">Nombre de centro</string>

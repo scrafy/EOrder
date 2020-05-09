@@ -12,10 +12,10 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.models.Product
 
 
-class OrderProductAdapter(var products: List<Product>, private val fragment: ProductsFragment) :
+class OrderProductAdapter(private val fragment: ProductsFragment) :
     RecyclerView.Adapter<OrderProductAdapter.ProductViewHolder>() {
 
-
+    var products: MutableList<Product> = mutableListOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -35,6 +35,19 @@ class OrderProductAdapter(var products: List<Product>, private val fragment: Pro
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
 
         holder.setData(products[position])
+    }
+
+    fun addProducts(_products:List<Product>){
+
+        val oldSize = products.size
+        products.addAll(_products)
+        notifyItemRangeInserted(oldSize, products.size)
+    }
+
+    fun resetProducts(){
+
+        products = mutableListOf()
+        notifyDataSetChanged()
     }
 
 

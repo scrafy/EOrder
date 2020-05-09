@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.eorder.app.R
 import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
@@ -29,7 +28,7 @@ import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Category
+import com.eorder.domain.models.Pagination
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.SearchProduct
 import com.eorder.domain.models.ServerResponse
@@ -45,22 +44,14 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private lateinit var model: ProductsViewModel
     private lateinit var recyclerView: RecyclerView
-    private var adapter: OrderProductAdapter = OrderProductAdapter(listOf(), this)
+    private var adapter: OrderProductAdapter = OrderProductAdapter(this)
     private var products: MutableList<Product> = mutableListOf()
-    private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var productSpinners: FilterProductSpinners
-    private var filters: MutableMap<String, String?> = mutableMapOf()
     private var categories: MutableList<String> = mutableListOf()
-    private lateinit var categorySelected: Category
+    private lateinit var pagination: Pagination
+    private var currentPage: Int = 1
     private lateinit var searchProducts: SearchProduct
 
-
-    init {
-
-        filters["category"] = null
-        filters["order"] = null
-        filters["search"] = null
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +75,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         editText_activity_main_code_input.text.clear()
         SnackBar(
             context!!,
-            swipeRefresh_products_fragment,
+            frameLayout_products_fragment_container,
             resources.getString(R.string.close),
             message
         ).show()
@@ -97,6 +88,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         else
             searchProducts.nameProduct = null
 
+        newSearch()
         searchProducts()
     }
 
@@ -137,8 +129,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
                 product.image
             )
-        else
-            LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
+       // else
+           // LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
@@ -159,6 +151,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model = getViewModel()
         setObservers()
         init()
+        setListeners()
     }
 
     override fun setAdapterListeners(view: View, obj: Any?) {
@@ -309,16 +302,22 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> {
 
-                products = it.serverData?.data?.toMutableList() ?: mutableListOf()
-
-                if ( products.isNullOrEmpty() ){
-                    AlertDialogOk(context!!,"No products", "Any product found with search criteria", "OK") { d, i ->}.show()
-                }else{
-                    spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-                    adapter.products = products
+                imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
+                if (it.serverData?.data.isNullOrEmpty()) {
+                    hideLoadMoreProductsButton()
+                    AlertDialogOk(
+                        context!!,
+                        resources.getString(R.string.productos),
+                        resources.getString(R.string.products_fragment_no_products_search_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i -> }.show()
+                } else {
+                    showLoadMoreProductsButton()
+                    pagination = it.serverData?.paginationData!!
+                    products.addAll(it.serverData?.data!!)
                     setProductCurrentState()
-                    adapter.notifyDataSetChanged()
-                    refreshLayout.isRefreshing = false
+                    adapter.addProducts(it.serverData?.data!!)
+                    spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
                     loadImages()
                 }
 
@@ -327,13 +326,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
-                refreshLayout.isRefreshing = false
+
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
 
     }
 
-    private fun loadSpinnersData(_categories: List<String>, categorySelected:String) {
+    private fun loadSpinnersData(_categories: List<String>) {
 
         categories.add(context!!.resources.getString(R.string.product_categories))
         categories.addAll(_categories)
@@ -370,7 +369,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             CategoriesFragment.DataProductFragment::class.java
         )
         searchProducts = SearchProduct(data.centerId, data.catalogId)
-        loadSpinnersData(data.categories.map { it.categoryName }, data.categorySelected.categoryName)
+        loadSpinnersData(
+            data.categories.map { it.categoryName }
+
+        )
         var menu = mutableMapOf<String, Int>()
         menu["cart_menu"] = R.menu.cart_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
@@ -380,17 +382,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         recyclerView.layoutManager = layout
         recyclerView.itemAnimator = DefaultItemAnimator()
         adapter = OrderProductAdapter(
-            listOf(),
+
             this
         )
         recyclerView.adapter = adapter
-        refreshLayout = this.view?.findViewById(R.id.swipeRefresh_products_fragment)!!
-        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
-        refreshLayout.setOnRefreshListener {
+        spinner_products_fragment_list_categories.setSelection(categories.indexOf(data.categorySelected.categoryName))
 
-            model.searchProducts(searchProducts)
-        }
-        spinner_products_fragment_list_categories.setSelection( categories.indexOf(data.categorySelected.categoryName) )
 
     }
 
@@ -428,14 +425,14 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun searchProducts() {
 
-        model.searchProducts(searchProducts)
+        model.searchProducts(searchProducts, currentPage)
+        imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
     }
 
     private fun onSelectedCategory(position: Int) {
-
-        if ( position == 0 )
+        newSearch()
+        if (position == 0)
             searchProducts.category = null
-
         else
             searchProducts.category = categories[position]
 
@@ -447,21 +444,55 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         when (position) {
 
             0 -> {
-                products = products.sortedBy { p -> p.name }.toMutableList()
+                adapter.products = adapter.products.sortedBy { p -> p.name }.toMutableList()
 
             }
             1 -> {
-                products = products.sortedByDescending { p -> p.name }.toMutableList()
+                adapter.products = adapter.products.sortedByDescending { p -> p.name }.toMutableList()
 
             }
             2 -> {
-                products = products.sortedBy { p -> p.price }.toMutableList()
+                adapter.products = adapter.products.sortedBy { p -> p.price }.toMutableList()
             }
             3 -> {
-                products = products.sortedByDescending { p -> p.price }.toMutableList()
+                adapter.products = adapter.products.sortedByDescending { p -> p.price }.toMutableList()
             }
         }
-        adapter.products = products
+
         adapter.notifyDataSetChanged()
+    }
+
+    private fun newSearch(){
+        currentPage = 1
+        adapter.resetProducts()
+        products = mutableListOf()
+    }
+
+    private fun setListeners() {
+
+        button_products_fragment_load_more_products.setOnClickListener {
+            if (currentPage < pagination.numPages) {
+                searchProducts()
+                currentPage++
+            } else {
+                hideLoadMoreProductsButton()
+                AlertDialogOk(
+                    context!!,
+                    resources.getString(R.string.productos),
+                    resources.getString(R.string.products_fragment_no_products_message),
+                    resources.getString(R.string.ok)
+                ) { d, i -> }.show()
+            }
+
+        }
+    }
+
+    private fun hideLoadMoreProductsButton() {
+
+        button_products_fragment_load_more_products.visibility = View.INVISIBLE
+    }
+
+    private fun showLoadMoreProductsButton() {
+        button_products_fragment_load_more_products.visibility = View.VISIBLE
     }
 }

@@ -58,9 +58,9 @@ class LoadImageHelper : KoinComponent {
     }
 
 
-    fun setGifLoading(img: ImageView) {
+    fun setGifLoading(img: ImageView, gif:Int = R.drawable.loading) {
         try {
-            img.setImageDrawable(GifDrawable(context.resources!!, R.drawable.loading))
+            img.setImageDrawable(GifDrawable(context.resources!!, gif))
         } catch (ex: Exception) {
 
         }

@@ -71,7 +71,7 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         return response
     }
 
-    override fun searchProducts(search: SearchProduct): ServerResponse<List<Product>> {
+    override fun searchProducts(search: SearchProduct, page:Int): ServerResponse<List<Product>> {
 
         var response: ServerResponse<List<Product>>
         var products =
@@ -85,7 +85,11 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         if (!search.nameProduct.isNullOrEmpty())
             products = products.filter { p -> p.name.toLowerCase().contains((search.nameProduct as String).toLowerCase()) }
 
+        val offset = 50 * (page - 1)
+        val take = (page * 50) - 1
 
+        products = products.slice(IntRange(0, 199))
+        products = products.slice(IntRange(offset, take))
 
         response =
             ServerResponse(
@@ -93,7 +97,7 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
                 null,
                 ServerData(
                     products,
-                    Pagination(250, 1, 20)
+                    Pagination(4,  page, 50, 200)
                 )
             )
 

@@ -27,7 +27,7 @@
 
                 <item
                     android:id="@+id/products"
-                    android:title="@string/lateral_nav_menu_products"
+                    android:title="@string/productos"
                     android:icon="@drawable/ic_product_black"
                     
                     />

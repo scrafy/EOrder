@@ -192,7 +192,7 @@ class ProductsService {
             for (i in 1..4) {
                 for (c in 1..4) {
 
-                    for (d in 1..13) {
+                    for (d in 1..50) {
                         getAuxProducts().forEach { p ->
 
                             p.id = productId

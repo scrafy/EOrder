@@ -14,6 +14,7 @@
     <string name="view_product">View product</string>
     <string name="number_units">Number of units</string>
     <string name="change_password">Change password</string>
+    <string name="productos">Productos</string>
 
 
 
@@ -30,7 +31,6 @@
     <string name="lateral_nav_menu_profile">Profile</string>
     <string name="lateral_nav_menu_centers">Centers</string>
     <string name="lateral_nav_menu_providers">Sellers</string>
-    <string name="lateral_nav_menu_products">Products</string>
     <string name="lateral_nav_menu_makeorder">Make a order</string>
 
     <!--MAIN MENU-->
@@ -200,6 +200,12 @@
     <!--CATALOGS FRAGMENT-->
     <string name="catalog_fragment_number_of_products">%d products</string>
     <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>
+
+    <!--PRODUCTS FRAGMENT-->
+
+    <string name="products_fragment_no_products_message">There are not more products...</string>
+    <string name="products_fragment_no_products_search_message">Any product found with search criteria</string>
+    <string name="products_fragment_more_products">Load more products</string>
 
     <!--CENTERS FRAGMENT-->
     <string name="center_fragment_choose_center">Select a center</string>
