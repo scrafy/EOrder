@@ -20,11 +20,11 @@ class ProductsViewModel : BaseViewModel() {
     val searchProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
 
 
-    fun searchProducts(search: SearchProduct) {
+    fun searchProducts(search: SearchProduct, page:Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search)
+            var result = unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search, page)
             searchProductsResult.postValue(result)
         }
     }
