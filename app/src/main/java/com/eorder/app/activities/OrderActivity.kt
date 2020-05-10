@@ -212,15 +212,27 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             Observer<ServerResponse<List<Center>>> {
 
                 centers = it.serverData?.data ?: listOf()
-                if (centers.isNotEmpty() && centers.size > 1) {
 
-                    loadCentersFragment()
-
+                if (centers.isEmpty()) {
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.centers),
+                        resources.getString(R.string.alert_dialog_order_activity_no_center_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i -> this.onBackPressed() }.show()
                 } else {
-                    center = centers[0]
-                    model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
-                    model.getCatalogByCenter(center.id)
+                    if (centers.isNotEmpty() && centers.size > 1) {
+
+                        loadCentersFragment()
+
+                    } else {
+                        center = centers[0]
+                        model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
+                        model.getCatalogByCenter(center.id)
+                    }
                 }
+
+
             })
 
         model.getCatalogByCenterResult
@@ -228,20 +240,30 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
 
                 catalogs = it.serverData?.data ?: listOf()
-                if (catalogs.isNotEmpty() && catalogs.size > 1) {
-
-                    if (centers.isNotEmpty() && centers.size == 1)
-                        loadCatalogsFragmentNoReplace()
-                    else
-                        loadCatalogsFragment()
+                if (catalogs.isEmpty()) {
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.catalogs),
+                        resources.getString(R.string.alert_dialog_order_activity_no_catalog_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i -> this.onBackPressed() }.show()
                 } else {
-                    catalog = catalogs[0]
-                    model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+                    if (catalogs.isNotEmpty() && catalogs.size > 1) {
 
-                    if (centers.isNotEmpty() && centers.size > 1)
-                        loadCategoriesFragment()
-                    else
-                        loadCategoriesFragmentNoReplace()
+                        if (centers.isNotEmpty() && centers.size == 1)
+                            loadCatalogsFragmentNoReplace()
+                        else
+                            loadCatalogsFragment()
+                    } else {
+                        catalog = catalogs[0]
+                        model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+
+                        if (centers.isNotEmpty() && centers.size > 1)
+                            loadCategoriesFragment()
+                        else
+                            loadCategoriesFragmentNoReplace()
+                    }
+
                 }
             })
 
@@ -260,6 +282,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         var args = Bundle()
 
         args.putBoolean("showViewProductsLink", true)
+        args.putString("centers", Gson.Create().toJson(centers))
         fragment.arguments = args
 
         supportFragmentManager.beginTransaction()
@@ -310,7 +333,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
         var fragment = CatalogsFragment()
         var args = Bundle()
-        args.putInt("centerId", center.id)
+        args.putString("catalogs", Gson.Create().toJson(catalogs))
         fragment.arguments = args
 
         if (catalogs.isNotEmpty() && catalogs.size > 1) {
@@ -326,7 +349,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
         var fragment = CatalogsFragment()
         var args = Bundle()
-        args.putInt("centerId", center.id)
+        args.putString("catalogs", Gson.Create().toJson(catalogs))
         fragment.arguments = args
 
         if (catalogs.isNotEmpty() && catalogs.size > 1) {

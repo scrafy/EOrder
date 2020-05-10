@@ -24,13 +24,14 @@ import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCatalog
-import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.catalogs_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -89,13 +90,8 @@ class CatalogsFragment : BaseFragment(),
         model = getViewModel()
         init()
         setObservers()
-        var centerId = arguments?.getInt("centerId")
-        if (centerId != null)
 
-            model.getCatalogByCenter(centerId)
-        else {
-            //TODO show snackbar showing message error
-        }
+
     }
 
     override fun showMessage(message: String) {
@@ -161,6 +157,9 @@ class CatalogsFragment : BaseFragment(),
                 true
             )
         )
+        catalogs = Gson.Create().fromJson(arguments?.getString("catalogs"), object: TypeToken<List<Catalog>>(){}.type)
+        adapter.catalogs = catalogs
+        adapter.notifyDataSetChanged()
     }
 
 }

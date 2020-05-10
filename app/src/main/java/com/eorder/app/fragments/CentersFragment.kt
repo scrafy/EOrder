@@ -30,9 +30,12 @@ import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CentersViewModel
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.centers_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -75,7 +78,7 @@ class CentersFragment : BaseFragment(),
         model = getViewModel()
         init()
         setObservers()
-        model.getCenters()
+
 
     }
 
@@ -173,6 +176,9 @@ class CentersFragment : BaseFragment(),
                 true
             )
         )
+        centers = Gson.Create().fromJson(arguments?.getString("centers"), object: TypeToken<List<Center>>(){}.type)
+        adapter.centers = centers
+        adapter.notifyDataSetChanged()
     }
 
 }
