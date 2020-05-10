@@ -26,6 +26,8 @@ android {
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
+        mavenCentral()
+        google()
     }
 }
 
@@ -57,6 +59,8 @@ dependencies {
     implementation 'com.github.softrunapp:Paginated-RecyclerView:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation project(path: ':domain')
     implementation project(path: ':application')

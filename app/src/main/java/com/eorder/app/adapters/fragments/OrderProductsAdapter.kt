@@ -37,16 +37,9 @@ class OrderProductAdapter(private val fragment: ProductsFragment) :
         holder.setData(products[position])
     }
 
-    fun addProducts(_products:List<Product>){
-
-        val oldSize = products.size
-        products.addAll(_products)
-        notifyItemRangeInserted(oldSize, products.size)
-    }
-
     fun resetProducts(){
 
-        products = mutableListOf()
+        products.clear()
         notifyDataSetChanged()
     }
 

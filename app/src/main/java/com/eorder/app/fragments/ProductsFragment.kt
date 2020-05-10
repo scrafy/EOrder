@@ -35,6 +35,7 @@ import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import com.bumptech.glide.Glide
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -125,12 +126,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         amountView.text = product.amount.toString()
 
 
-        if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
-                product.image
-            )
-        else
-            LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
+        Glide.with(context!!).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
@@ -316,9 +312,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     pagination = it.serverData?.paginationData!!
                     products.addAll(it.serverData?.data!!)
                     setProductCurrentState()
-                    adapter.addProducts(it.serverData?.data!!)
+                    adapter.products = products
                     spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-                    loadImages()
+
                 }
 
             })
@@ -351,15 +347,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             },
             R.layout.simple_spinner_item
         )
-    }
-
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(products)
-            .observe(this.activity as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
     }
 
     private fun init() {

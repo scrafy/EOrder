@@ -29,7 +29,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
 
 
     private lateinit var model: CategoriesViewModel
-    private lateinit var categories: List<Category>
+    private var categories: List<Category> = listOf()
     private lateinit var adapter: CategoriesAdapter
     private lateinit var catalog: Catalog
     private lateinit var refreshLayout: SwipeRefreshLayout
@@ -41,7 +41,8 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
         super.onActivityCreated(savedInstanceState)
         model = getViewModel()
         setObservers()
-        init()
+        if ( categories.isNullOrEmpty() )
+            init()
     }
 
     override fun onCreateView(
