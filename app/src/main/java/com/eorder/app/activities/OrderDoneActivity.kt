@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.OrderDoneAdapter
 import com.eorder.app.helpers.LoadImageHelper
@@ -55,9 +56,9 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         model.getOrdersDoneResultObservable().observe(this, Observer<ServerResponse<List<Order>>> {
 
             orders = it.serverData?.data ?: listOf()
-            if ( orders.isEmpty() ){
+            if (orders.isEmpty()) {
                 showMessageFiniteTime(resources.getString(R.string.order_done_activity_no_orders))
-            }else{
+            } else {
                 adapter.orders = orders.sortedByDescending { o -> o.createdAt }
                 adapter.notifyDataSetChanged()
             }
@@ -116,7 +117,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
     }
 
     override fun onResume() {
-       super.onResume()
+        super.onResume()
         model.getOrdersDoneByUser(this)
     }
 
@@ -127,7 +128,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
     }
 
 
-    private fun showMessage(message:String, duration:Int){
+    private fun showMessage(message: String, duration: Int) {
 
         SnackBar(
             this,
@@ -139,7 +140,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
     }
 
 
-    private fun showMessageFiniteTime(message:String){
+    private fun showMessageFiniteTime(message: String) {
 
         showMessage(message, Snackbar.LENGTH_LONG)
     }
@@ -166,8 +167,15 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         }
 
         view.findViewById<TextView>(R.id.textView_order_done_list_ref).text = "Ref. ${order.id}"
-        view.findViewById<TextView>(R.id.textView_order_done_list_date).text = order.createdAt?.convertToString()
-        LoadImageHelper().loadImage(order.center.imageUrl, view.findViewById(R.id.textView_order_done_list_center_image), true )
+        view.findViewById<TextView>(R.id.textView_order_done_list_date).text =
+            order.createdAt?.convertToString()
+
+        try {
+            Glide.with(this).load(order.center.imageUrl).circleCrop()
+                .into(view.findViewById(R.id.textView_order_done_list_center_image))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById(R.id.textView_order_done_list_center_image))
+        }
     }
 
     private fun init() {

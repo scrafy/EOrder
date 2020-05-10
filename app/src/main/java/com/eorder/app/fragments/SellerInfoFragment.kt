@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.helpers.paintEditTextUnderLines
@@ -18,7 +19,7 @@ class SellerInfoFragment : BaseFragment() {
     private lateinit var model: SellerInfoFragmentViewModel
 
 
-    companion object{
+    companion object {
 
         lateinit var seller: Seller
     }
@@ -55,11 +56,12 @@ class SellerInfoFragment : BaseFragment() {
         editText_fragment_seller_info_erp.setText(seller.erp)
         editText_fragment_seller_info_seller_taxid.setText(seller.taxId)
 
-        LoadImageHelper().loadImage(
-            seller.imageUrl,
-            imgView_fragment_seller_seller_image,
-            false
-        )
+        try {
+            Glide.with(context!!).load(seller.imageUrl)
+                .into(imgView_fragment_seller_seller_image)
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(imgView_fragment_seller_seller_image)
+        }
 
         paintEditTextUnderLines(
             this.context!!,

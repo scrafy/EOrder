@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.fragments.CatalogsAdapter
 import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISelectCatalog
+import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.widgets.SnackBar
@@ -73,11 +75,11 @@ class CatalogsFragment : BaseFragment(),
             resources.getString(R.string.catalog_fragment_number_of_products)
                 .format(catalog.totalProducts)
 
-
-        if ( catalog.image != null)
-            view.findViewById<ImageView>(R.id.imgView_catalog_list_img).setImageBitmap(catalog.image)
-        else
+        try{
+            Glide.with(context!!).load(catalog.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_catalog_list_img))
+        }catch (ex:Exception){
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_catalog_list_img))
+        }
 
     }
 
@@ -109,14 +111,15 @@ class CatalogsFragment : BaseFragment(),
     fun setObservers() {
 
         model.getCatalogBySellersObservable()
-            .observe((context as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> { it ->
+            .observe((context as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> {
 
 
                 catalogs = it.serverData?.data ?: mutableListOf()
+
                 adapter.catalogs = catalogs
                 adapter.notifyDataSetChanged()
                 refreshLayout.isRefreshing = false
-                loadImages()
+
             })
 
         model.getErrorObservable()
@@ -128,14 +131,6 @@ class CatalogsFragment : BaseFragment(),
             })
 
 
-    }
-
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(catalogs).observe(this.activity as LifecycleOwner, Observer<Any> {
-
-            adapter.notifyDataSetChanged()
-        })
     }
 
     private fun init() {

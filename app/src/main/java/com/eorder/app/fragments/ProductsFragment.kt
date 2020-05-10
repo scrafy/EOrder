@@ -28,14 +28,11 @@ import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Pagination
-import com.eorder.domain.models.Product
-import com.eorder.domain.models.SearchProduct
-import com.eorder.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import com.bumptech.glide.Glide
+import com.eorder.domain.models.*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -126,7 +123,12 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         amountView.text = product.amount.toString()
 
 
-        Glide.with(context!!).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        try{
+            Glide.with(context!!).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        }catch (ex:Exception){
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        }
+
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
@@ -353,7 +355,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         val data = Gson.Create().fromJson(
             arguments!!.getString("data"),
-            CategoriesFragment.DataProductFragment::class.java
+            DataProductFragment::class.java
         )
         searchProducts = SearchProduct(data.centerId, data.catalogId)
         loadSpinnersData(

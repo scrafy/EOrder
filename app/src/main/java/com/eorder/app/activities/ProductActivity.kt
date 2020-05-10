@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.ProductCatalogListAdapter
 import com.eorder.app.adapters.ProductCenterListAdapter
@@ -168,12 +169,13 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         val catalog = obj as Catalog
 
+        try {
+            Glide.with(this).load(catalog.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_catalogs_list_image))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_catalogs_list_image))
+        }
 
-        LoadImageHelper().loadImage(
-            catalog.imageUrl,
-            view.findViewById(R.id.imgView_catalogs_list_image),
-            false
-        )
 
         view.findViewById<TextView>(R.id.textView_catalogs_list_provider_name).text =
             catalog.sellerName
@@ -183,24 +185,16 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         val center = obj as Center
 
-        LoadImageHelper().loadImage(
-            center.imageUrl,
-            view.findViewById(R.id.imgView_center_list_image),
-            true
-        )
+        try {
+            Glide.with(this).load(center.imageUrl).circleCrop()
+                .into(view.findViewById<ImageView>(R.id.imgView_center_list_image))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_image))
+        }
 
         view.findViewById<TextView>(R.id.textView_center_list_center_name).text =
             center.center_name
 
-    }
-
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(products.filter { p -> p.image == null })
-            .observe(this as LifecycleOwner, Observer<Any> {
-
-                productsAdapter.notifyDataSetChanged()
-            })
     }
 
 
@@ -218,6 +212,13 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             )
         else
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+
+        try {
+            Glide.with(this).load(product.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        }
 
         if (product.favorite) {
             view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
@@ -468,7 +469,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     R.layout.simple_spinner_item_white
                 )
                 productsAdapter.products = products
-                loadImages()
+                productsAdapter.notifyDataSetChanged()
             })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->

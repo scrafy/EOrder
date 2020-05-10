@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.helpers.paintEditTextUnderLines
 import com.eorder.app.viewmodels.fragments.CenterInfoFragmentViewModel
 import com.eorder.domain.models.Center
 import kotlinx.android.synthetic.main.fragment_center_info.*
+import kotlinx.android.synthetic.main.fragment_seller_info.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -50,11 +52,12 @@ class CenterInfoFragment : BaseFragment() {
         editText_fragment_center_info_sector.setText(center.sector)
         editText_fragment_center_info_country.setText(center.country)
 
-        LoadImageHelper().loadImage(
-            center.imageUrl,
-            imgView_fragment_center_center_image,
-            true
-        )
+        try {
+            Glide.with(context!!).load(center.imageUrl).circleCrop()
+                .into(imgView_fragment_center_center_image)
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(imgView_fragment_center_center_image)
+        }
 
         paintEditTextUnderLines(
             this.context!!,

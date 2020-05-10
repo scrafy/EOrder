@@ -2,7 +2,6 @@ package com.eorder.app.fragments
 
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.activities.ProductActivity
 import com.eorder.app.adapters.fragments.CentersAdapter
@@ -105,13 +105,12 @@ class CentersFragment : BaseFragment(),
 
         view.findViewById<TextView>(R.id.textView_center_name).text = center.center_name
 
-        if (center.image != null)
-            LoadImageHelper().setImageAsCircle(
-                view.findViewById<ImageView>(R.id.imgView_center_list_img_center),
-                center.image as Bitmap
-            )
-        else
+        try {
+            Glide.with(context!!).load(center.imageUrl).circleCrop()
+                .into(view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
+        }
 
         if (this.arguments != null && (this.arguments as Bundle).getBoolean("showViewProductsLink")) {
 
@@ -129,13 +128,14 @@ class CentersFragment : BaseFragment(),
 
         model.getCentersResultObservable().observe(
             this.activity as LifecycleOwner,
-            Observer<ServerResponse<List<Center>>> { it ->
+            Observer<ServerResponse<List<Center>>> {
 
                 centers = it.serverData?.data ?: mutableListOf()
+
                 adapter.centers = centers
                 adapter.notifyDataSetChanged()
                 refreshLayout.isRefreshing = false
-                loadImages()
+
             })
 
         model.getErrorObservable()
@@ -146,15 +146,6 @@ class CentersFragment : BaseFragment(),
             })
 
 
-    }
-
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(centers)
-            .observe(this.activity as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
     }
 
     private fun init() {

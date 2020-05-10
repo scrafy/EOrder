@@ -2,12 +2,23 @@ package com.eorder.app.viewmodels
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
+import com.eorder.domain.models.ServerResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderViewModel : BaseMainMenuActionsViewModel() {
 
+
+    val getCentersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
+    val getCatalogByCenterResult: MutableLiveData<ServerResponse<List<Catalog>>> =
+        MutableLiveData()
 
     fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?) {
 
@@ -37,5 +48,25 @@ class OrderViewModel : BaseMainMenuActionsViewModel() {
 
     fun getCurrentOrderSellerName() =
         unitOfWorkService.getShopService().getOrder().seller.sellerName
+
+
+    fun getCenters() {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getCentersUseCase().getCenters()
+            getCentersResult.postValue(result)
+        }
+    }
+
+    fun getCatalogByCenter(centerId: Int) {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result =
+                unitOfWorkUseCase.getCatalogsByCenterUseCase().getCatalogsByCenter(centerId)
+            getCatalogByCenterResult.postValue(result)
+        }
+    }
 
 }

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.adapters.SellerProducSellertListAdapter
@@ -163,22 +164,28 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     private fun repaintSellersList(view: View, obj: Any?) {
 
-        LoadImageHelper().loadImage(
-            (obj as Seller).imageUrl,
-            view.findViewById(R.id.imgView_seller_list_image),
-            false
-        )
+        var obj  = obj as Seller
         view.findViewById<TextView>(R.id.textView_sellers_list_sellers_name).text = obj.companyName
+
+        try {
+            Glide.with(this).load((obj).imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_seller_list_image))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_seller_list_image))
+        }
+
     }
 
     private fun repaintCenterList(view: View, obj: Any?) {
 
-        LoadImageHelper().loadImage(
-            (obj as Center).imageUrl,
-            view.findViewById(R.id.imgView_center_list_image),
-            true
-        )
-        view.findViewById<TextView>(R.id.textView_center_list_center_name).text = obj.center_name
+        try {
+            Glide.with(this).load((obj as Center).imageUrl).circleCrop()
+                .into(view.findViewById<ImageView>(R.id.imgView_center_list_image))
+        } catch (ex: Exception) {
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_image))
+        }
+
+        view.findViewById<TextView>(R.id.textView_center_list_center_name).text = (obj as Center).center_name
     }
 
     private fun repaintProductList(view: View, obj: Any?) {
@@ -189,12 +196,13 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
 
-        if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
-                product.image
-            )
-        else
+
+        try {
+            Glide.with(this).load(product.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        }
 
         if (product.favorite) {
             view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
@@ -209,12 +217,6 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
     }
 
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(products).observe(this as LifecycleOwner, Observer<Any> {
-            productsAdapter.notifyDataSetChanged()
-        })
-    }
 
     private fun init() {
 
@@ -462,7 +464,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                             R.layout.simple_spinner_item_white
                         )
                         productsAdapter.products = products
-                        loadImages()
+                        productsAdapter.notifyDataSetChanged()
 
                     }
                 }

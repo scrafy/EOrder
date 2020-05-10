@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.activities.SellerProductActivity
 import com.eorder.app.adapters.fragments.SellerAdapter
@@ -103,11 +104,13 @@ class SellersFragment : BaseFragment(),
         view.findViewById<TextView>(R.id.textView_sellers_list_seller_name).text =
             seller.companyName
 
-
-        if (seller.image != null)
-            view.findViewById<ImageView>(R.id.imgView_seller_list_img).setImageBitmap(seller.image)
-        else
+        try {
+            Glide.with(context!!).load(seller.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_seller_list_img))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_seller_list_img))
+        }
+
 
     }
 
@@ -121,7 +124,7 @@ class SellersFragment : BaseFragment(),
                 sellers = it.serverData?.data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
-                loadImages()
+
 
             })
 

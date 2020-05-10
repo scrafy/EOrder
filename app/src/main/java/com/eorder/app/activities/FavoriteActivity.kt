@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.helpers.GridLayoutItemDecoration
@@ -31,7 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_favorites.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-@RequiresApi(Build.VERSION_CODES.M)
+@RequiresApi(Build.VERSION_CODES.O)
 class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     IShowSnackBarMessage, IToolbarSearch {
 
@@ -51,6 +52,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     }
 
     
+
     private fun setObservers() {
 
         model.getFavoriteProductsResultObservable()
@@ -65,7 +67,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                 } else {
                     this.products.map { p -> p.favorite = true }
                     adapter.products = this.products
-                    loadImages()
+                    adapter.notifyDataSetChanged()
                 }
 
 
@@ -179,25 +181,18 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
 
         }
 
-        if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
-                product.image
-            )
-        else
+        try {
+            Glide.with(this).load(product.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+        }
 
         view.findViewById<LinearLayout>(R.id.linearLayout_product_list_add_container)
             .removeView(view.findViewById<LinearLayout>(R.id.linearLayout_product_list_add_container_icons))
 
     }
 
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(products).observe(this as LifecycleOwner, Observer<Any> {
-
-            adapter.notifyDataSetChanged()
-        })
-    }
 
     private fun init() {
 

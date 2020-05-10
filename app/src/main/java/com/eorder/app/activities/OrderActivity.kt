@@ -7,6 +7,8 @@ import android.view.Menu
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.com.eorder.app.interfaces.ISelectCategory
@@ -24,6 +26,7 @@ import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
+import com.eorder.domain.models.ServerResponse
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -35,11 +38,14 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     private lateinit var model: OrderViewModel
     private lateinit var center: Center
     private lateinit var catalog: Catalog
+    private lateinit var centers: List<Center>
+    private lateinit var catalogs: List<Catalog>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         model = getViewModel()
+        setObservers()
         init()
         setMenuToolbar()
     }
@@ -125,7 +131,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         this.center = center
         if (model.isPossibleChangeCenter(center)) {
 
-            loadCatalogsFragment()
+            model.getCatalogByCenter(center.id)
             model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
 
         } else {
@@ -141,7 +147,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                 { d, i ->
 
                     model.cleanShop()
-                    loadCatalogsFragment()
+                    model.getCatalogByCenter(center.id)
 
                 },
                 { d, i ->
@@ -193,13 +199,62 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     }
 
-    override fun selectCategory(data:String) {
+    override fun selectCategory(data: String) {
 
         loadProductsFragment(data)
 
     }
 
-    private fun init() {
+    fun setObservers() {
+
+        model.getCentersResult.observe(
+            this as LifecycleOwner,
+            Observer<ServerResponse<List<Center>>> {
+
+                centers = it.serverData?.data ?: listOf()
+                if (centers.isNotEmpty() && centers.size > 1) {
+
+                    loadCentersFragment()
+
+                } else {
+                    center = centers[0]
+                    model.addCenterToOrder(center.id!!, center.center_name!!, center.imageUrl)
+                    model.getCatalogByCenter(center.id)
+                }
+            })
+
+        model.getCatalogByCenterResult
+            .observe((this as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> {
+
+
+                catalogs = it.serverData?.data ?: listOf()
+                if (catalogs.isNotEmpty() && catalogs.size > 1) {
+
+                    if (centers.isNotEmpty() && centers.size == 1)
+                        loadCatalogsFragmentNoReplace()
+                    else
+                        loadCatalogsFragment()
+                } else {
+                    catalog = catalogs[0]
+                    model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+
+                    if (centers.isNotEmpty() && centers.size > 1)
+                        loadCategoriesFragment()
+                    else
+                        loadCategoriesFragmentNoReplace()
+                }
+            })
+
+        model.getErrorObservable()
+            ?.observe(this as LifecycleOwner, Observer<Throwable> { ex ->
+
+                model.getManagerExceptionService().manageException(this, ex)
+            })
+
+
+    }
+
+    private fun loadCentersFragment() {
 
         var fragment = CentersFragment()
         var args = Bundle()
@@ -209,6 +264,11 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
         supportFragmentManager.beginTransaction()
             .add(R.id.linear_layout_center_fragment_container, fragment).commit()
+    }
+
+    private fun init() {
+
+        model.getCenters()
     }
 
     override fun showMessage(message: String) {
@@ -234,20 +294,51 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             .addToBackStack(null).commit()
     }
 
+    private fun loadCategoriesFragmentNoReplace() {
+
+        var fragment = CategoriesFragment()
+        var args = Bundle()
+
+        args.putString("catalog", Gson.Create().toJson(this.catalog))
+        fragment.arguments = args
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.linear_layout_center_fragment_container, fragment).commit()
+    }
+
     private fun loadCatalogsFragment() {
 
         var fragment = CatalogsFragment()
         var args = Bundle()
-
         args.putInt("centerId", center.id)
         fragment.arguments = args
-        this.supportFragmentManager.beginTransaction()
-            .replace(R.id.linear_layout_center_fragment_container, fragment)
-            .addToBackStack(null).commit()
+
+        if (catalogs.isNotEmpty() && catalogs.size > 1) {
+
+            this.supportFragmentManager.beginTransaction()
+                .replace(R.id.linear_layout_center_fragment_container, fragment)
+                .addToBackStack(null).commit()
+        }
 
     }
 
-    private fun loadProductsFragment(data:String) {
+    private fun loadCatalogsFragmentNoReplace() {
+
+        var fragment = CatalogsFragment()
+        var args = Bundle()
+        args.putInt("centerId", center.id)
+        fragment.arguments = args
+
+        if (catalogs.isNotEmpty() && catalogs.size > 1) {
+
+            this.supportFragmentManager.beginTransaction()
+                .add(R.id.linear_layout_center_fragment_container, fragment).commit()
+        }
+
+
+    }
+
+    private fun loadProductsFragment(data: String) {
 
         var args = Bundle()
         var fragment = ProductsFragment()
