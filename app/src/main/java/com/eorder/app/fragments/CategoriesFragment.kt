@@ -105,6 +105,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
                 adapter = CategoriesAdapter(categories, this)
                 listView_categories_fragment_listview.adapter = adapter
                 adapter.notifyDataSetChanged()
+                imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
             })
 
         model.getErrorObservable()
@@ -119,6 +120,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
     private fun init() {
         this.catalog = Gson.Create().fromJson(arguments!!.getString("catalog"), Catalog::class.java)
         model.getCategories(this.catalog.id)
+        imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
         refreshLayout = this.view?.findViewById(R.id.swipeRefresh_categories_fragment)!!
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {

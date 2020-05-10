@@ -9,32 +9,43 @@
         android:layout_height="match_parent">
 
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
 
+            >
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Select a category"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25dp"
+                android:textStyle="bold"></TextView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Select a category"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25dp"
-                    android:textStyle="bold"></TextView>
+            <com.eorder.app.views.ExpandedListView
+                android:id="@+id/listView_categories_fragment_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp" />
 
-                <com.eorder.app.views.ExpandedListView
-                    android:id="@+id/listView_categories_fragment_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    />
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/imgView_products_fragment_pedidoe_loading"
+                android:layout_width="100dp"
+                android:layout_gravity="center"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/loading_balls"
+                android:visibility="invisible" />
 
-            </LinearLayout>
+        </LinearLayout>
+
+
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
