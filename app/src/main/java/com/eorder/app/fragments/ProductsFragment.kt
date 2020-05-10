@@ -129,8 +129,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
                 product.image
             )
-       // else
-           // LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
+        else
+            LoadImageHelper().setGifLoading(view.findViewById(R.id.imgView_order_product_list_img_product))
 
         if (!product.amountsByDay.isNullOrEmpty()) {
 
@@ -318,7 +318,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     setProductCurrentState()
                     adapter.addProducts(it.serverData?.data!!)
                     spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-                    //loadImages()
+                    loadImages()
                 }
 
             })
