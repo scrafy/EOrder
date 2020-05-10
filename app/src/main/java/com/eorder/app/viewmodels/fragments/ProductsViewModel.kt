@@ -23,8 +23,7 @@ class ProductsViewModel : BaseViewModel() {
     fun searchProducts(search: SearchProduct, page:Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-            //quitar una vez conectado al backend, simula un delay
-            Thread.sleep(500)
+
             var result = unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search, page)
             searchProductsResult.postValue(result)
         }
