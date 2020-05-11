@@ -70,7 +70,8 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun getSearchFromToolbar(search: String) {
 
-        (this.supportFragmentManager.fragments.first() as IToolbarSearch).getSearchFromToolbar(
+        val fragment = this.supportFragmentManager.fragments.last{ f -> f is IToolbarSearch }
+        (fragment as IToolbarSearch).getSearchFromToolbar(
             search
         )
     }
