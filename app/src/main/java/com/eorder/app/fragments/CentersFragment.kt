@@ -115,14 +115,17 @@ class CentersFragment : BaseFragment(),
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_img_center))
         }
 
-        if (this.arguments != null && !(this.arguments as Bundle).getBoolean("showViewProductsLink")) {
+        if (this.arguments != null && (this.arguments as Bundle).getBoolean("showViewProductsLink")) {
 
-            (view.findViewById<LinearLayout>(R.id.textView_center_list_container)).removeView(
-                view.findViewById<TextView>(
-                    R.id.textView_centers_list_view_products
-                )
-            )
+            view.findViewById<TextView>(
+                R.id.textView_centers_list_view_products
+            ).visibility = View.VISIBLE
+        }else{
+            view.findViewById<TextView>(
+                R.id.textView_centers_list_view_products
+            ).visibility = View.INVISIBLE
         }
+
 
 
     }

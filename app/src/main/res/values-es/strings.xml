@@ -202,6 +202,7 @@
     <!--ORDER DONE ACTIVITY-->
     <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
     <string name="order_done_activity_no_orders">No se han encontrado pedidos realizados</string>
+    <string name="order_done_activity_view_detail">Ver detalle</string>
 
     <!--SELLER PRODUCT ACTIVITY-->
     <string name="seller_product_activity_dialog_no_centers_message">Hubo un problema al cargar los centros</string>

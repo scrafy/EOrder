@@ -292,6 +292,8 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
 
                     model.addProductToShop(product)
                 }
+
+                this.onBackPressed()
             },
             { d, i ->
 

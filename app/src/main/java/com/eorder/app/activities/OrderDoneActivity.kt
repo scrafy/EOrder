@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,6 +22,7 @@ import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.extensions.convertToString
+import com.eorder.application.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
@@ -114,6 +114,13 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
                 ).show()
             }
         }
+
+        view.findViewById<TextView>(R.id.textView_order_done_activity_detail).setOnClickListener {
+
+            val intent = Intent(this, CartBreakdownActivity::class.java)
+            intent.putExtra("order",Gson.Create().toJson(obj as Order))
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
@@ -152,19 +159,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
             order.seller.sellerName
         view.findViewById<TextView>(R.id.textView_order_list_total_amount).text =
             order.total.toString() + "€"
-        view.findViewById<LinearLayout>(R.id.linearLayout_order_done_list_product_list_container)
-            .removeAllViews()
-        order.products.forEach { p ->
 
-            var textView = TextView(this)
-            textView.text = "${p.amount} x ${p.name}"
-            textView.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            textView.setTextColor(resources.getColor(R.color.secondaryText))
-            view.findViewById<LinearLayout>(R.id.linearLayout_order_done_list_product_list_container)
-                .addView(textView)
-        }
 
         view.findViewById<TextView>(R.id.textView_order_done_list_ref).text = "Ref. ${order.id}"
         view.findViewById<TextView>(R.id.textView_order_done_list_date).text =

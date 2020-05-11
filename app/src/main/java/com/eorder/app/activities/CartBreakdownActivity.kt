@@ -12,6 +12,7 @@ import android.view.Gravity
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.eorder.application.extensions.convertDpToPixel
+import com.eorder.application.factories.Gson
 import com.eorder.domain.models.Order
 import kotlinx.android.synthetic.main.activity_cart_breakdown.*
 
@@ -41,7 +42,13 @@ class CartBreakdownActivity : BaseActivity() {
 
     private fun init() {
 
-        val order = model.getOrder()
+        var order:Order
+
+        if ( this.intent.getStringExtra("order") != null )
+
+             order = Gson.Create().fromJson<Order>(this.intent.getStringExtra("order"), Order::class.java)
+        else
+             order = model.getOrder()
 
         val table = findViewById<TableLayout>(R.id.tableLayout_activity_cart_breakdown_container)
 
