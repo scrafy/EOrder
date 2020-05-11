@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.eorder.app.R
 import com.eorder.app.adapters.ShopAdapter
 import com.eorder.app.helpers.LoadImageHelper
@@ -89,12 +90,11 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         var heart = view.findViewById<ImageView>(R.id.imgView_order_product_list_heart)
 
 
-        if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product).setImageBitmap(
-                product.image
-            )
-        else
+        try{
+            Glide.with(this).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        }catch (ex:Exception){
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        }
 
 
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =

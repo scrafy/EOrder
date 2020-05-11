@@ -281,7 +281,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         var fragment = CentersFragment()
         var args = Bundle()
 
-        args.putBoolean("showViewProductsLink", true)
+        args.putBoolean("showViewProductsLink", false)
         args.putString("centers", Gson.Create().toJson(centers))
         fragment.arguments = args
 

@@ -34,7 +34,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog2",
                     10,
                     2,
-                    "Bebidas & Drinks",
+                    "Drinks",
                     "https://thumbs.dreamstime.com/b/Bebidas & Drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
                 )
             )
@@ -44,7 +44,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog3",
                     10,
                     3,
-                    "Bread factory",
+                    "Bread Factory",
                     "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
                 )
             )
@@ -54,7 +54,7 @@ class CatalogRepository(private val httpClient: IHttpClient) : BaseRepository(),
                     "Catalog4",
                     10,
                     4,
-                    "Frutas y Verduras",
+                    "Fruits & Vegetables",
                     "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
                 )
             )

@@ -206,12 +206,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
             .setBackgroundResource(R.drawable.ic_corazon)
 
-        if (product.image != null)
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_product).setImageBitmap(
-                product.image
-            )
-        else
-            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
 
         try {
             Glide.with(this).load(product.imageUrl)

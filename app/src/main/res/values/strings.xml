@@ -188,6 +188,7 @@
     <string name="favorite_activity_alert_dialog_message">¿Are you sure you want to remove this product from your favourite list?</string>
     <string name="favorite_activity_no_product_message">There are not any product on your favorite list yet</string>
 
+
     <!--SHOP BREAKDOWN ACTIVITY-->
     <string name="shop_breakdown_activity_product_name">Product</string>
     <string name="shop_breakdown_activity_price">Price</string>
@@ -197,6 +198,11 @@
     <string name="shop_breakdown_activity_tax">Tax</string>
     <string name="shop_breakdown_activity_total_tax">Total tax</string>
     <string name="shop_breakdown_activity_total">Total</string>
+
+
+    <!--SELLER PRODUCT ACTIVITY-->
+    <string name="seller_product_activity_dialog_no_centers_message">There was a problem trying to load centers</string>
+    <string name="seller_product_activity_dialog_no_products_message">%s does not have any product from seller %s}</string>
 
     <!--ORDER DONE ACTIVITY-->
     <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>

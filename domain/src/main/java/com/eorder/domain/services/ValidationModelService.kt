@@ -37,7 +37,6 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
-                                        model::class.simpleName ?: "",
                                         value.toString()
                                     )
                                 )
@@ -60,7 +59,6 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
-                                        model::class.simpleName ?: "",
                                         value.toString()
                                     )
                                 )
@@ -73,7 +71,6 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
                                         annotation.name,
-                                        model::class.simpleName ?: "",
                                         value.toString()
                                     )
                                 )

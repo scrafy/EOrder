@@ -71,17 +71,17 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
             Seller(
                 1,
                 65552422454545,
-                "MercaBarna",
+                "MaxClean",
                 "C-523665522",
                 "C//Manzanillo Nº3 Polígono 7",
                 "Barcelona",
                 38005,
                 "España",
                 "SAP",
-                "mercabarna@gmail.com",
+                "maxclean@gmail.com",
                 "Barcelona",
                 "Horeca",
-                "https://atencioncliente.com/wp-content/uploads/2019/08/mercabarna.jpg"
+                "https://1.bp.blogspot.com/-R1wXSr4Amtk/ULQ3AXhkCVI/AAAAAAAABfI/yArzvXfBdfo/s1600/Logo+max+clean-01.jpg"
 
             )
         )
@@ -89,7 +89,7 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
             Seller(
                 2,
                 65552422454545,
-                "Coca Cola",
+                "Drinks",
                 "C-523665522",
                 "C//Manzanillo Nº3 Polígono 7",
                 "Barcelona",
@@ -99,14 +99,14 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "mercabarna@gmail.com",
                 "Barcelona",
                 "Horeca",
-                "https://www.cocacolaespana.es/content/dam/one/es/es/lead/logo-coca-cola-1.jpg"
+                "https://thumbs.dreamstime.com/b/drinks-vector-logo-badge-green-cocktail-bar-calligraphy-logotype-hand-written-modern-lettering-cafe-menu-vintage-retro-style-167082304.jpg"
             )
         )
         sellers.add(
             Seller(
                 3,
                 65552422454545,
-                "Cofarma",
+                "Bread Factory",
                 "C-523665522",
                 "C//Manzanillo Nº3 Polígono 7",
                 "Barcelona",
@@ -115,15 +115,15 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "SAP",
                 "mercabarna@gmail.com",
                 "Barcelona",
-                "Farmaceutico",
-                "https://pbs.twimg.com/profile_images/1149523084/Logo-cofarma-FACE-BOOK2_400x400.jpg"
+                "Horeca",
+                "https://www.brandcrowd.com/gallery/brands/pictures/picture1558517543547.jpg"
             )
         )
         sellers.add(
             Seller(
                 4,
                 65552422454545,
-                "Durex",
+                "Fruits & Vegetables",
                 "C-523665522",
                 "C//Manzanillo Nº3 Polígono 7",
                 "Barcelona",
@@ -132,8 +132,8 @@ class SellerRepository(private val httpClient: IHttpClient) : BaseRepository(), 
                 "SAP",
                 "mercabarna@gmail.com",
                 "Barcelona",
-                "Sanitario",
-                "https://cdns3-2.primor.eu/img/m/316.jpg"
+                "Horeca",
+                "https://image.freepik.com/free-vector/fruit-vegetables-logo_7085-159.jpg"
             )
         )
         return sellers

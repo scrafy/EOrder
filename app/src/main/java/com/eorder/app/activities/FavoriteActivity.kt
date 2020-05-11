@@ -63,7 +63,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
                 if (this.products.isEmpty()) {
                     adapter.products = products
                     adapter.notifyDataSetChanged()
-                    showMessageFiniteTime("There are not any product on your favorite list yet")
+                    showMessageFiniteTime(resources.getString(R.string.favorite_activity_no_product_message))
                 } else {
                     this.products.map { p -> p.favorite = true }
                     adapter.products = this.products

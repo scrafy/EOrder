@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -422,9 +421,9 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                     AlertDialogOk(
                         this,
-                        "No centers",
-                        "There was a problem trying to load centers",
-                        "OK"
+                        resources.getString(R.string.centers),
+                        resources.getString(R.string.seller_product_activity_dialog_no_centers_message),
+                        resources.getString(R.string.ok)
 
                     ) { d, i ->
 
@@ -433,9 +432,9 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     if (products.isEmpty()) {
                         AlertDialogOk(
                             this,
-                            "No products",
-                            "${centers.find { c -> c.id == centerSelected }?.center_name} does not have any product from seller ${sellers.find { s -> s.id == sellerSelected }?.companyName}",
-                            "OK"
+                            resources.getString(R.string.productos),
+                            String.format(resources.getString(R.string.seller_product_activity_dialog_no_products_message), centers.find { c -> c.id == centerSelected }?.center_name, sellers.find { s -> s.id == sellerSelected }?.companyName ),
+                            resources.getString(R.string.ok)
 
                         ) { d, i ->
 
