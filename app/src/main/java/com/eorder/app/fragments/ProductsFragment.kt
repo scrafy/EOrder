@@ -26,7 +26,7 @@ import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*

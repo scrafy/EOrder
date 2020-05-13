@@ -34,7 +34,7 @@ class UnitOfWorkRepository(
     fun getUserRepository(): IUserRepository {
 
         if (userRepository == null)
-            userRepository = UserRepository(unitOfWorkService.getHttpClient())
+            userRepository = UserRepository(unitOfWorkService.getHttpClient(), configurationManager)
 
 
         return userRepository as IUserRepository

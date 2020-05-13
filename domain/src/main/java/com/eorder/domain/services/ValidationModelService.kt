@@ -36,8 +36,8 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                 result.add(
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
-                                        annotation.name,
-                                        value.toString()
+                                        annotation.name
+
                                     )
                                 )
 
@@ -58,8 +58,7 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                 result.add(
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
-                                        annotation.name,
-                                        value.toString()
+                                        annotation.name
                                     )
                                 )
                             }
@@ -70,8 +69,8 @@ class ValidationModelService : KoinComponent, IValidationModelService {
                                 result.add(
                                     ValidationError(
                                         context.resources.getString(context.resources.getIdentifier(annotation.message, "string", context.packageName)),
-                                        annotation.name,
-                                        value.toString()
+                                        annotation.name
+
                                     )
                                 )
                             }

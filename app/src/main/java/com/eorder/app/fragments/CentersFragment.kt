@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
@@ -30,9 +29,8 @@ import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CentersViewModel
 import com.eorder.app.widgets.SnackBar
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
 import com.google.gson.reflect.TypeToken

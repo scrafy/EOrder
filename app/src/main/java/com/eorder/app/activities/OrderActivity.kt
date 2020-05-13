@@ -21,7 +21,7 @@ import com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center

@@ -17,7 +17,7 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CategoriesViewModel
 import com.eorder.app.widgets.SnackBar
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.categories_fragment.*

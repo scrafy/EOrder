@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.ISharedPreferencesService
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.interfaces.IJwtTokenService
 import java.lang.reflect.Type
 
@@ -17,7 +18,7 @@ class SharedPreferencesService(
 
 ) : ISharedPreferencesService {
 
-    private var gson: com.google.gson.Gson = com.eorder.application.factories.Gson.Create()
+    private var gson: com.google.gson.Gson = Gson.Create()
 
 
     override fun loadSession(context: Context?, key: String): String? {

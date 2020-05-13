@@ -2,7 +2,7 @@ package com.eorder.application.extensions
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.models.Order
 
 

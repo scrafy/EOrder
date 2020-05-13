@@ -22,7 +22,7 @@ import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.extensions.convertToString
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
@@ -118,7 +118,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         view.findViewById<TextView>(R.id.textView_order_done_activity_detail).setOnClickListener {
 
             val intent = Intent(this, CartBreakdownActivity::class.java)
-            intent.putExtra("order",Gson.Create().toJson(obj as Order))
+            intent.putExtra("order", Gson.Create().toJson(obj as Order))
             startActivity(intent)
         }
     }

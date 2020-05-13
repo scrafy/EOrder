@@ -27,7 +27,7 @@ import com.eorder.app.interfaces.ISelectCatalog
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.viewmodels.fragments.CatalogsViewModel
 import com.eorder.app.widgets.SnackBar
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.ServerResponse

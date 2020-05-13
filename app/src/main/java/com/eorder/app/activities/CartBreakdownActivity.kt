@@ -12,7 +12,7 @@ import android.view.Gravity
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.eorder.application.extensions.convertDpToPixel
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.models.Order
 import kotlinx.android.synthetic.main.activity_cart_breakdown.*
 

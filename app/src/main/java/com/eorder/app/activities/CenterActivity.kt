@@ -10,7 +10,7 @@ import com.eorder.app.fragments.CenterInfoFragment
 import com.eorder.app.fragments.CentersFragment
 import com.eorder.app.interfaces.ISelectCenter
 import com.eorder.app.viewmodels.CenterActivityViewModel
-import com.eorder.application.factories.Gson
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse

@@ -2,8 +2,8 @@ package com.eorder.infrastructure.services
 
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.InvalidJwtTokenException
-import com.eorder.infrastructure.interfaces.IHttpClient
 import com.eorder.domain.interfaces.IJwtTokenService
+import com.eorder.infrastructure.interfaces.IHttpClient
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -12,17 +12,27 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.lang.Exception
 
 
 class OkHttpClient(private val client: OkHttpClient, private val tokenService: IJwtTokenService) :
     IHttpClient {
+
+    private var addAuthorizationHeader: Boolean = true
+
+    override fun addAuthorizationHeader(authorize: Boolean) {
+        addAuthorizationHeader = false
+    }
+
+
 
     override fun getJsonResponse(url: String, headers: Map<String, String>?): String? {
 
 
         val request = with(Request.Builder()) {
             addHeader("Accept", "application/json")
-            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             get()
             url(url)
@@ -39,16 +49,16 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
         val request = with(Request.Builder()) {
             addHeader("Accept", "application/json")
-            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(Gson().toJson(body).toRequestBody("application/json; charset=utf-8".toMediaType()))
             url(url)
             build()
         }
-        val resp = client.newCall(request).execute()
+        var resp = client.newCall(request).execute()
         this.refreshToken(resp.headers["Authorization"])
-        return resp.body?.string()
-
+        return resp?.body?.string()
     }
 
 
@@ -63,7 +73,8 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
 
         val request = with(Request.Builder()) {
-            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(form.build())
             url(url)
@@ -89,7 +100,8 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
         val request = with(Request.Builder()) {
             url(url)
-            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(requestBody.build())
             build()
@@ -115,7 +127,8 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
         val request = with(Request.Builder()) {
             url(url)
-            addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(requestBody.build())
             build()
@@ -127,18 +140,20 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
     private fun refreshToken(newToken: String?) {
 
-        val list = newToken?.split(" ")
-        if (list != null) {
-            tokenService.refreshToken(
-                list[1]
-            )
-        } else {
-            throw InvalidJwtTokenException(
-                ErrorCode.JWT_TOKEN_INVALID,
-                "The getToken() session is invalid"
-            )
-        }
+        if (newToken != null) {
 
+            val list = newToken?.split(" ")
+            if (list != null) {
+                tokenService.refreshToken(
+                    list[1]
+                )
+            } else {
+                throw InvalidJwtTokenException(
+                    ErrorCode.JWT_TOKEN_INVALID,
+                    "The getToken() session is invalid"
+                )
+            }
+        }
     }
 }
 

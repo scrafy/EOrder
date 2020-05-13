@@ -86,7 +86,7 @@ class JwtTokenService(
     private fun setToken(token: String): Jws<Claims?> {
 
         return try {
-
+            Thread.sleep(500)
             Jwts.parserBuilder()
                 .setSigningKey(
                     Keys.hmacShaKeyFor(
