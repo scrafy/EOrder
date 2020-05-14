@@ -6,20 +6,20 @@ import com.eorder.domain.attributes.RegexFormatValidation
 
 class Account(
 
-    @NullOrEmptyStringValidation("username_empty", "username",1)
+    @NullOrEmptyStringValidation("username_empty", "Username",1)
     val username:String,
-    @NullOrEmptyStringValidation("password_empty", "password",1)
-    @RegexFormatValidation("password_format", "password","^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]*.*)(?=.*\\W+.*)[0-9a-zA-Z\\W]{6,}\$",2)
+    @NullOrEmptyStringValidation("password_empty", "Password",1)
+    @RegexFormatValidation("password_format", "Password","^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]*.*)(?=.*\\W+.*)[0-9a-zA-Z\\W]{6,}\$",2)
     val password:String,
-    @NullOrEmptyStringValidation("password_confirmation_not_null","confirmPassword", 1)
-    @FieldEqualToOtherValidation("password_confirmation_match","confirmPassword", "password",2)
+    @NullOrEmptyStringValidation("password_confirmation_not_null","ConfirmPassword", 1)
+    @FieldEqualToOtherValidation("password_confirmation_match","ConfirmPassword", "password",2)
     val confirmPassword:String,
-    @NullOrEmptyStringValidation("phone_not_null", "phone",1)
-    @RegexFormatValidation("phone_9_digits", "phone","^[0-9]{9,}\$",1)
+    @NullOrEmptyStringValidation("phone_not_null", "Phone",1)
+    @RegexFormatValidation("phone_9_digits", "Phone","^[0-9]{9,}\$",1)
     val phone:String,
-    @NullOrEmptyStringValidation("email_not_null","email", 1)
-    @RegexFormatValidation("email_format","email", "^[a-zA-Z0-9_!#\$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\$",2)
+    @NullOrEmptyStringValidation("email_not_null","Email", 1)
+    @RegexFormatValidation("email_format","Email", "^[a-zA-Z0-9_!#\$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\$",2)
     val email:String,
-    @NullOrEmptyStringValidation("center_code_not_null", "centerCode",1)
+    @NullOrEmptyStringValidation("center_code_not_null", "CenterCode",1)
     val centerCode:String
 )

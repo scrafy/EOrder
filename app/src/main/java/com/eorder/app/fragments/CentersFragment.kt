@@ -134,7 +134,7 @@ class CentersFragment : BaseFragment(),
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Center>>> {
 
-                centers = it.serverData?.data ?: mutableListOf()
+                centers = it.ServerData?.Data ?: mutableListOf()
 
                 adapter.centers = centers
                 adapter.notifyDataSetChanged()

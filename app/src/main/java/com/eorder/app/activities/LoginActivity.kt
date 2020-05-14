@@ -73,12 +73,12 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
     override fun setValidationErrors(errors: List<ValidationError>?) {
 
         findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_username).error =
-            errors?.firstOrNull { it -> it.fieldName == "username" }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName == "Username" }?.ErrorMessage
 
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_login_activity_password).error =
-            errors?.firstOrNull { it -> it.fieldName == "password" }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName == "Password" }?.ErrorMessage
 
     }
 

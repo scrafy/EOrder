@@ -200,7 +200,7 @@ class ProductsService {
                             p.sellerId = i
                             p.catallogId = catalogId
                             p.sellerName = UnitOfWorkRepository.self?.getSellerRepository()
-                                ?.getSeller(p.sellerId)?.serverData?.data?.companyName
+                                ?.getSeller(p.sellerId)?.ServerData?.Data?.companyName
                             products.add(p)
 
                         }

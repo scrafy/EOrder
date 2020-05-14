@@ -35,7 +35,7 @@ class LoginUseCase(
             )
 
         var response = userRepository.login(login)
-        jwtTokenService.addToken(response.serverData?.data!!)
+        jwtTokenService.addToken(response.ServerData?.Data!!)
         return response
     }
 

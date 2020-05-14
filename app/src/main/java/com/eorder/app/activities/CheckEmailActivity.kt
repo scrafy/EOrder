@@ -41,7 +41,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_check_email_error_validation_message.text =
-            errors?.firstOrNull { it -> it.fieldName == "email" }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName == "email" }?.ErrorMessage
     }
 
     override fun showMessage(message: String) {
@@ -58,7 +58,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
 
         model.checkUserEmailResult.observe(this as LifecycleOwner, Observer {
 
-            val result = it.serverData?.data!!
+            val result = it.ServerData?.Data!!
 
             if (result) {
                AlertDialogOk(this, resources.getString(R.string.check_email_activity_alert_title), resources.getString(R.string.check_email_activity_alert_message), resources.getString(R.string.ok)) { d, i->

@@ -55,7 +55,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
         model.getOrdersDoneResultObservable().observe(this, Observer<ServerResponse<List<Order>>> {
 
-            orders = it.serverData?.data ?: listOf()
+            orders = it.ServerData?.Data ?: listOf()
             if (orders.isEmpty()) {
                 showMessageFiniteTime(resources.getString(R.string.order_done_activity_no_orders))
             } else {

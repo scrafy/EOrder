@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_main_error_validation_message.text =
-            errors?.firstOrNull { it -> it.fieldName == "centerCode" }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName == "centerCode" }?.ErrorMessage
     }
 
 
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
 
         model.checkCenterActivationCodeResult.observe(this, Observer<ServerResponse<Boolean>> {
 
-            val result = it.serverData?.data ?: false
+            val result = it.ServerData?.Data ?: false
 
             if (result) {
                 editText_activity_main_code_input.setText("")

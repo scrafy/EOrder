@@ -388,7 +388,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getCentersResultObservable()
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
-                centers = it.serverData?.data ?: listOf()
+                centers = it.ServerData?.Data ?: listOf()
                 centerSelected = intent.getIntExtra("centerId", centers.first().id)
                 centerViewPager.adapter = ProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
@@ -413,7 +413,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getCatalogsResultObservable()
             .observe(this, Observer<ServerResponse<List<Catalog>>> {
 
-                catalogs = it.serverData?.data ?: listOf()
+                catalogs = it.ServerData?.Data ?: listOf()
                 if (catalogs.isEmpty()) {
                     AlertDialogOk(
                         this,
@@ -445,7 +445,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 val categories: MutableList<String> = mutableListOf()
                 categories.add(this.resources.getString(R.string.product_categories))
                 categories.addAll(products.map { p-> p.category }.distinct())
-                products = it.serverData?.data ?: listOf()
+                products = it.ServerData?.Data ?: listOf()
                 setFavorites()
                 productSpinners = FilterProductSpinners(
                     this,

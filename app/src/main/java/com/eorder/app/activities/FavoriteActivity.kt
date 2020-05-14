@@ -58,7 +58,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         model.getFavoriteProductsResultObservable()
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
-                this.products = it?.serverData?.data?.toMutableList() ?: mutableListOf()
+                this.products = it?.ServerData?.Data?.toMutableList() ?: mutableListOf()
 
                 if (this.products.isEmpty()) {
                     adapter.products = products

@@ -212,7 +212,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             this as LifecycleOwner,
             Observer<ServerResponse<List<Center>>> {
 
-                centers = it.serverData?.data ?: listOf()
+                centers = it.ServerData?.Data ?: listOf()
 
                 if (centers.isEmpty()) {
                     AlertDialogOk(
@@ -240,7 +240,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
             .observe((this as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> {
 
 
-                catalogs = it.serverData?.data ?: listOf()
+                catalogs = it.ServerData?.Data ?: listOf()
                 if (catalogs.isEmpty()) {
                     AlertDialogOk(
                         this,

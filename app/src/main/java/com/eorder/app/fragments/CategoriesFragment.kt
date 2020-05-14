@@ -102,7 +102,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Category>>> {
                 refreshLayout.isRefreshing = false
-                categories = it.serverData?.data ?: listOf()
+                categories = it.ServerData?.Data ?: listOf()
                 adapter = CategoriesAdapter(categories, this)
                 listView_categories_fragment_listview.adapter = adapter
                 adapter.notifyDataSetChanged()

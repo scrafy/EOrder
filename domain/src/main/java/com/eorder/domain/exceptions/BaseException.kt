@@ -5,7 +5,7 @@ import java.lang.Exception
 
 abstract class BaseException: Exception {
 
-    var errorCode: ErrorCode = ErrorCode.UNKNOWN_ERROR
+    var errorCode: ErrorCode
 
     constructor(errorCode: ErrorCode, message: String) : super(message){
 

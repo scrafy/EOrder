@@ -2,10 +2,10 @@ package com.eorder.domain.models
 
 class ServerError(
 
-    val errorMessage: String,
-    val errorCode: Int? = null,
-    val stackTrace: String? = null,
-    val validationErrors: List<ValidationError>? = null
+    val ErrorMessage: String,
+    val ErrorCode: Int? = null,
+    val StackTrace: String? = null,
+    val ValidationErrors: List<ValidationError>? = null
 
 )
 

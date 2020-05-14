@@ -301,7 +301,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             Observer<ServerResponse<List<Product>>> {
 
                 imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
-                if (it.serverData?.data.isNullOrEmpty()) {
+                if (it.ServerData?.Data.isNullOrEmpty()) {
                     hideLoadMoreProductsButton()
                     AlertDialogOk(
                         context!!,
@@ -311,8 +311,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     ) { d, i -> }.show()
                 } else {
                     showLoadMoreProductsButton()
-                    pagination = it.serverData?.paginationData!!
-                    products.addAll(it.serverData?.data!!)
+                    pagination = it.ServerData?.PaginationData!!
+                    products.addAll(it.ServerData?.Data!!)
                     setProductCurrentState()
                     adapter.products = products
                     spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
@@ -353,13 +353,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun init() {
 
-        val data = Gson.Create().fromJson(
-            arguments!!.getString("data"),
+        val Data = Gson.Create().fromJson(
+            arguments!!.getString("Data"),
             DataProductFragment::class.java
         )
-        searchProducts = SearchProduct(data.centerId, data.catalogId)
+        searchProducts = SearchProduct(Data.centerId, Data.catalogId)
         loadSpinnersData(
-            data.categories.map { it.categoryName }
+            Data.categories.map { it.categoryName }
 
         )
         var menu = mutableMapOf<String, Int>()
@@ -375,7 +375,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this
         )
         recyclerView.adapter = adapter
-        spinner_products_fragment_list_categories.setSelection(categories.indexOf(data.categorySelected.categoryName))
+        spinner_products_fragment_list_categories.setSelection(categories.indexOf(Data.categorySelected.categoryName))
 
 
     }

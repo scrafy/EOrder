@@ -72,7 +72,7 @@ class CenterActivity : BaseMenuActivity(), ISelectCenter {
             this as LifecycleOwner,
             Observer<ServerResponse<List<Center>>> {
 
-                val centers = it.serverData?.data ?: mutableListOf()
+                val centers = it.ServerData?.Data ?: mutableListOf()
                 var fragment = CentersFragment()
                 var args = Bundle()
 

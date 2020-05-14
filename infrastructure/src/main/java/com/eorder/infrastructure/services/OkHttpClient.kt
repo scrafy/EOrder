@@ -12,7 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.lang.Exception
+
 
 
 class OkHttpClient(private val client: OkHttpClient, private val tokenService: IJwtTokenService) :

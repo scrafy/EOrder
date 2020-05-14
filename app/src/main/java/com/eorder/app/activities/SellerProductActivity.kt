@@ -380,7 +380,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Seller>>> {
 
 
-                sellers = it.serverData?.data ?: listOf()
+                sellers = it.ServerData?.Data ?: listOf()
                 sellerSelected = intent.getIntExtra("sellerId", sellers.first().id)
                 sellerViewPager.adapter = SellerProducSellertListAdapter(this, sellers)
                 sellerViewPager.adapter?.notifyDataSetChanged()
@@ -401,7 +401,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getCentersResultObservable()
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
-                centers = it.serverData?.data ?: listOf()
+                centers = it.ServerData?.Data ?: listOf()
                 addDots(centers.size, linearLayout_activity_seller_product_dots_centers)
                 centerViewPager.adapter = SellerProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
@@ -415,7 +415,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         model.getProductsResultObservable()
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
-                products = it.serverData?.data ?: listOf()
+                products = it.ServerData?.Data ?: listOf()
 
                 if (centers.isEmpty()) {
 

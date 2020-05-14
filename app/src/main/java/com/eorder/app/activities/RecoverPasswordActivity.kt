@@ -37,7 +37,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IShowSnackBarMessage, IMana
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_recover_password_error_validation_message.text =
-            errors?.firstOrNull { it -> it.fieldName == "email" }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName == "email" }?.ErrorMessage
     }
 
     override fun showMessage(message: String) {

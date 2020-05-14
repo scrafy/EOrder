@@ -40,24 +40,24 @@ class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
     override fun setValidationErrors(errors: List<ValidationError>?) {
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_username).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("username") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("Username") }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_password).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("password") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("Password") }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_confirm_password).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("confirmPassword") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("ConfirmPassword") }?.ErrorMessage
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_phone).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("phone") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("Phone") }?.ErrorMessage
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_email).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("email") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("Email") }?.ErrorMessage
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_centerCode).error =
-            errors?.firstOrNull { it -> it.fieldName.equals("centerCode") }?.errorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("CenterCode") }?.ErrorMessage
 
     }
 

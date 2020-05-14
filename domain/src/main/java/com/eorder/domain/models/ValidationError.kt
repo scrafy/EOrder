@@ -2,6 +2,6 @@ package com.eorder.domain.models
 
 class ValidationError (
 
-    var errorMessage: String,
-    var fieldName: String
+    var ErrorMessage: String,
+    var FieldName: String
 )

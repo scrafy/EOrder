@@ -1,37 +1,39 @@
 package com.eorder.infrastructure.repositories
 
 import com.eorder.domain.enumerations.ErrorCode
-import com.eorder.domain.exceptions.ServerErrorException
-import com.eorder.domain.exceptions.ServerErrorUnhadledException
-import com.eorder.domain.exceptions.ServerErrorValidationException
+import com.eorder.domain.exceptions.*
 import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.ValidationError
 
 abstract class BaseRepository {
 
-    protected fun<T> checkServerErrorInResponse(response: ServerResponse<T>){
+    protected fun <T> checkServerErrorInResponse(response: ServerResponse<T>) {
 
-        when( response.statusCode ){
+        when (response.StatusCode) {
 
             400 -> {
-                if (response.serverError?.validationErrors != null)
-                    throw ServerErrorValidationException(
-                        response.serverError?.errorCode,
-                        ErrorCode.SERVER_VALIDATION_ERROR,
-                        response.serverError?.errorMessage ?: "",
-                        response.serverError?.validationErrors
+                if (response.ServerError?.ValidationErrors != null)
+                    throw ModelValidationException(
+                        ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
+                        response.ServerError?.ErrorMessage ?: "",
+                        response.ServerError?.ValidationErrors as List<ValidationError>
                     )
-
-                throw ServerErrorException(
-                    response.serverError?.errorCode,
-                    ErrorCode.SERVER_ERROR,
-                    response.serverError?.errorMessage ?: ""
+            }
+            404 -> {
+                throw ResourceNotFoundException(
+                    ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
+                    response.ServerError?.ErrorMessage ?: ""
                 )
             }
-            500 -> throw ServerErrorUnhadledException(
-                response.serverError?.errorCode,
-                ErrorCode.SERVER_ERROR,
-                response.serverError?.errorMessage ?: "",
-                response.serverError?.stackTrace
+            401 -> {
+                throw UnauthorizedException(
+                    ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
+                    response.ServerError?.ErrorMessage ?: ""
+                )
+            }
+            500 -> throw InternalServerErrorException(
+                ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
+                response.ServerError?.ErrorMessage ?: ""
             )
 
         }

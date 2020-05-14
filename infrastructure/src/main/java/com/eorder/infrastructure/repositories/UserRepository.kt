@@ -92,6 +92,7 @@ class UserRepository(
 
     override fun login(loguinRequest: Login): ServerResponse<String> {
 
+
         httpClient.addAuthorizationHeader(false)
         var resp = httpClient.postJsonData(
             "${configurationManager.getProperty("endpoint_url")}Users/authenticate",

@@ -2,7 +2,7 @@ package com.eorder.domain.models
 
 class ServerData<T>(
 
-    val data: T,
-    val paginationData: Pagination? = null
+    val Data: T,
+    val PaginationData: Pagination? = null
 )
 

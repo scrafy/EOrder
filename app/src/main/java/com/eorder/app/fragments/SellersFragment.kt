@@ -121,7 +121,7 @@ class SellersFragment : BaseFragment(),
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Seller>>> {
 
-                sellers = it.serverData?.data ?: mutableListOf()
+                sellers = it.ServerData?.Data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()
 

@@ -110,7 +110,7 @@ class CatalogsFragment : BaseFragment(),
             .observe((context as LifecycleOwner), Observer<ServerResponse<List<Catalog>>> {
 
 
-                catalogs = it.serverData?.data ?: mutableListOf()
+                catalogs = it.ServerData?.Data ?: mutableListOf()
 
                 adapter.catalogs = catalogs
                 adapter.notifyDataSetChanged()
