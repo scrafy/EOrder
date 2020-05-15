@@ -18,6 +18,11 @@ abstract class BaseRepository {
                         response.ServerError?.ErrorMessage ?: "",
                         response.ServerError?.ValidationErrors as List<ValidationError>
                     )
+                else
+                    throw BadRequestException(
+                        ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
+                        response.ServerError?.ErrorMessage ?: ""
+                    )
             }
             404 -> {
                 throw ResourceNotFoundException(

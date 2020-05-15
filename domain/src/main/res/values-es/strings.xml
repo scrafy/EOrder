@@ -1,7 +1,7 @@
 <resources>
     <string name="username_empty">El campo usuario debe contener un valor</string>
     <string name="password_empty">El campo password debe contener un valor</string>
-    <string name="password_format">El password debe contener al menos un dígito, una letra en minúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
+    <string name="password_format">El password debe contener al menos un dígito, una letra en minúscula, una letra en mayúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
     <string name="new_password_empty">El password nuevo debe contener un valor</string>
     <string name="new_password_format">El password nuevo debe contener al menos un dígito, una letra en minúscula, al menos un carácter especial y una longitud de 6 caracteres como mínimo</string>
     <string name="oldpassword_empty">El password antiguo debe contener un valor</string>

@@ -18,13 +18,16 @@ class UserRepository(
 
     override fun createAccount(account: Account): ServerResponse<Any> {
 
-        val response = ServerResponse<Any>(
-            200,
-            null,
+        httpClient.addAuthorizationHeader(false)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}Users/register",
+            account,
             null
         )
+        var response = Gson.Create().fromJson<ServerResponse<Any>>(
+            resp, object : TypeToken<ServerResponse<String>>() {}.type
+        )
         checkServerErrorInResponse(response)
-
         return response
     }
 
@@ -90,8 +93,7 @@ class UserRepository(
         return response
     }
 
-   /* override fun login(loguinRequest: Login): ServerResponse<String> {
-
+    override fun login(loguinRequest: Login): ServerResponse<String> {
 
         httpClient.addAuthorizationHeader(false)
         var resp = httpClient.postJsonData(
@@ -103,43 +105,6 @@ class UserRepository(
             resp, object : TypeToken<ServerResponse<String>>() {}.type
         )
         checkServerErrorInResponse(response)
-        return response
-    }*/
-
-    override fun login(loguinRequest: Login): ServerResponse<String> {
-
-        //TODO MAKE REAL CALL TO BACKEND
-
-        var response: ServerResponse<String>? = null
-
-        if (loguinRequest.username == "pedidoe")
-
-            response = ServerResponse(
-                200,
-                null,
-                ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxOTg2MTAsImV4cCI6MTYxOTczNDYxMCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiSm9zZSIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySWQiOiIxMjMiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.KLikj5aohZhvGTTOZlMNAfNnaXoKM3bnSKH9k4rSsJA",
-                    null
-                )
-            )
-        else if (loguinRequest.username == "pedidoe2")
-
-            response = ServerResponse(
-                200,
-                null,
-                ServerData(
-                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1ODgxOTg2MTAsImV4cCI6MTYxOTczNDc4MywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoiZnJhbiIsImVtYWlsIjoic2NyYWZ5MjZAZ21haWwuY29tIiwicGhvbmUiOiI2MjcyMDYzNjkiLCJ1c2VySWQiOiIxMjQiLCJ1c2VySGFzQ2VudGVycyI6InRydWUifQ.yZ6CBqBMnjyVRFmUMCqIMWfoy2aBqcmFfINBr93ak8A",
-                    null
-                )
-            )
-        else
-            response = ServerResponse(
-                500,
-                ServerError("The users does not exists", 500, null, null)
-
-            )
-
-        checkServerErrorInResponse(response!!)
         return response
     }
 

@@ -57,13 +57,13 @@ class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
             errors?.firstOrNull { it -> it.FieldName.equals("Email") }?.ErrorMessage
 
         findViewById<TextInputLayout>(R.id.textInputLayout_create_profile_activity_centerCode).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("CenterCode") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("CentreCode") }?.ErrorMessage
 
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun showMessage(message: String) {
-        clearEditTextAndFocus()
+
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_create_profile_activity_root),
