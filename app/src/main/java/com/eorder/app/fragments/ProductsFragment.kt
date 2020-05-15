@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eorder.app.R
-import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.helpers.FilterProductSpinners
@@ -32,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import com.bumptech.glide.Glide
+import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.domain.models.*
 
 
@@ -65,8 +65,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             setProductCurrentState()
             adapter.notifyDataSetChanged()
         }
-        (context as IRepaintShopIcon).repaintShopIcon()
-        (context as BaseFloatingButtonActivity).hideFloatingButton()
+        (context as BaseFloatingButtonActivity).showFloatingButton()
     }
 
     override fun showMessage(message: String) {
@@ -253,7 +252,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         adapter.notifyDataSetChanged()
         product.amountsByDay = null
-        (context as IRepaintShopIcon).repaintShopIcon()
+        (context as BaseFloatingButtonActivity).showFloatingButton()
     }
 
     private fun incrementProduct(product: Product) {
@@ -262,7 +261,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         model.addProductToShop(product)
         adapter.notifyDataSetChanged()
         product.amountsByDay = null
-        (context as IRepaintShopIcon).repaintShopIcon()
+        (context as BaseFloatingButtonActivity).showFloatingButton()
     }
 
     private fun modifyAmountOfProduct(product: Product) {
@@ -287,7 +286,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     model.addProductToShop(product)
 
                 product.amountsByDay = null
-                (context as IRepaintShopIcon).repaintShopIcon()
+                (context as BaseFloatingButtonActivity).showFloatingButton()
                 adapter.notifyDataSetChanged()
             },
             { d, i -> })
@@ -354,7 +353,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun init() {
 
         val Data = Gson.Create().fromJson(
-            arguments!!.getString("Data"),
+            arguments!!.getString("data"),
             DataProductFragment::class.java
         )
         searchProducts = SearchProduct(Data.centerId, Data.catalogId)
@@ -363,7 +362,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         )
         var menu = mutableMapOf<String, Int>()
-        menu["cart_menu"] = R.menu.cart_menu
+        menu["search_menu"] = R.menu.search_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
         var layout = LinearLayoutManager(this.context).apply { isAutoMeasureEnabled = false }
         layout.orientation = LinearLayoutManager.VERTICAL

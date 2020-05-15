@@ -217,7 +217,7 @@
 
     <string name="products_fragment_no_products_message">There are not more products...</string>
     <string name="products_fragment_no_products_search_message">Any product found with search criteria</string>
-    <string name="products_fragment_more_products">Load more products</string>
+    <string name="products_fragment_more_products">More products</string>
 
     <!--CENTERS FRAGMENT-->
     <string name="center_fragment_choose_center">Select a center</string>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
@@ -59,7 +60,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
 
         val category = (obj as Category)
 
-        view.findViewById<TextView>(R.id.textView_category_list_name)
+        view.findViewById<LinearLayout>(R.id.linearLayout_category_list_container)
             .setOnClickListener {
                 categorySelected = category
 

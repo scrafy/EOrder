@@ -223,7 +223,7 @@
 
     <string name="products_fragment_no_products_message">Lista de productos cargada...</string>
     <string name="products_fragment_no_products_search_message">No se ha encontrado ningún producto con los criterios de búsqueda establecidos</string>
-    <string name="products_fragment_more_products">Mostrar más productos</string>
+    <string name="products_fragment_more_products">Más productos</string>
 
     <!--CENTER FRAGMENT INFO-->
     <string name="center_fragment_info_center_name">Nombre de centro</string>
