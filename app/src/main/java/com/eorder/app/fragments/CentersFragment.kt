@@ -104,7 +104,7 @@ class CentersFragment : BaseFragment(),
 
         val center = (model as Center)
 
-        view.findViewById<TextView>(R.id.textView_center_name).text = center.center_name
+        view.findViewById<TextView>(R.id.textView_center_name).text = center.name
 
         try {
             Glide.with(context!!).load(center.imageUrl).circleCrop()

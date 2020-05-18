@@ -18,10 +18,10 @@ import java.io.File
 class OkHttpClient(private val client: OkHttpClient, private val tokenService: IJwtTokenService) :
     IHttpClient {
 
-    private var addAuthorizationHeader: Boolean = true
+    private var addAuthorizationHeader: Boolean = false
 
     override fun addAuthorizationHeader(authorize: Boolean) {
-        addAuthorizationHeader = false
+        addAuthorizationHeader = authorize
     }
 
 

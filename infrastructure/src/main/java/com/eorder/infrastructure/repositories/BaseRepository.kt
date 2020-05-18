@@ -21,24 +21,24 @@ abstract class BaseRepository {
                 else
                     throw BadRequestException(
                         ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
-                        response.ServerError?.ErrorMessage ?: ""
+                        response.ServerError?.ErrorMessage ?: "Bad request"
                     )
             }
             404 -> {
                 throw ResourceNotFoundException(
                     ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
-                    response.ServerError?.ErrorMessage ?: ""
+                    response.ServerError?.ErrorMessage ?: "Resource not found"
                 )
             }
             401 -> {
                 throw UnauthorizedException(
                     ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
-                    response.ServerError?.ErrorMessage ?: ""
+                    response.ServerError?.ErrorMessage ?: "Unauthorized"
                 )
             }
             500 -> throw InternalServerErrorException(
                 ErrorCode.findByValue(response.StatusCode) ?: ErrorCode.UNKNOWN_ERROR_CODE,
-                response.ServerError?.ErrorMessage ?: ""
+                response.ServerError?.ErrorMessage ?: "Internal server error"
             )
 
         }

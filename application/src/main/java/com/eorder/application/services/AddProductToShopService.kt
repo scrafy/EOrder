@@ -39,7 +39,7 @@ class AddProductToShopService(
 
         val order = shopService.getOrder()
         order.center.centerId = center.id
-        order.center.centerName = center.center_name
+        order.center.centerName = center.name
         order.center.imageUrl = center.imageUrl
         order.seller.sellerId = product.sellerId
         order.seller.sellerName = product.sellerName

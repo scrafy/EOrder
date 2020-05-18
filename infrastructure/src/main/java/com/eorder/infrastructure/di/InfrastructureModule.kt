@@ -9,7 +9,7 @@ val infrastructureModule = module {
 
 
     /*REPOSITORIES*/
-    single { UnitOfWorkRepository( get(), get() )}
+    single { UnitOfWorkRepository( get(), get() , get())}
 }
 
 

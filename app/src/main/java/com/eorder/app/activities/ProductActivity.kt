@@ -193,7 +193,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         }
 
         view.findViewById<TextView>(R.id.textView_center_list_center_name).text =
-            center.center_name
+            center.name
 
     }
 
@@ -420,7 +420,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         resources.getString(R.string.product_activity_no_catalog_dialog_title),
                         String.format(
                             resources.getString(R.string.product_activity_no_catalog_dialog_message),
-                            centers.find { c -> c.id == centerSelected }?.center_name
+                            centers.find { c -> c.id == centerSelected }?.name
                         ),
                         resources.getString(R.string.ok)
 

@@ -4,8 +4,6 @@ import com.eorder.application.interfaces.IUserCentersUseCase
 import com.eorder.domain.interfaces.ICenterRepository
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.di.UnitOfWorkRepository
-import com.eorder.infrastructure.repositories.CenterRepository
 
 
 class UserCentersUseCase(

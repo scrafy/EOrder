@@ -7,3 +7,4 @@ interface IUserCentersUseCase {
 
     fun getCenters() : ServerResponse<List<Center>>
 }
+

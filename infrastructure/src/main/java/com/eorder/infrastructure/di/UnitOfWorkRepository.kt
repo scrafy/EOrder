@@ -7,7 +7,8 @@ import com.eorder.infrastructure.repositories.*
 class UnitOfWorkRepository(
 
     private val unitOfWorkService: UnitOfWorkService,
-    private val configurationManager: IConfigurationManager
+    private val configurationManager: IConfigurationManager,
+    private val jwtTokenService: IJwtTokenService
 
 ) {
 
@@ -43,7 +44,7 @@ class UnitOfWorkRepository(
     fun getCatalogRepository(): ICatalogRepository {
 
         if (catalogRepository == null)
-            catalogRepository = CatalogRepository(unitOfWorkService.getHttpClient())
+            catalogRepository = CatalogRepository(unitOfWorkService.getHttpClient(), configurationManager)
 
 
         return catalogRepository as ICatalogRepository
@@ -52,7 +53,7 @@ class UnitOfWorkRepository(
     fun getCenterRepository(): ICenterRepository {
 
         if (centerRepository == null)
-            centerRepository = CenterRepository(unitOfWorkService.getHttpClient())
+            centerRepository = CenterRepository(unitOfWorkService.getHttpClient(), configurationManager, jwtTokenService)
 
         return centerRepository as ICenterRepository
     }

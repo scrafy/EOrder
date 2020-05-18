@@ -43,10 +43,10 @@ class CenterInfoFragment : BaseFragment() {
 
         val center = CenterInfoFragment.center
 
-        editText_fragment_center_info_center_name.setText(center.center_name)
+        editText_fragment_center_info_center_name.setText(center.name)
         editText_fragment_center_info_address.setText(center.address)
         editText_fragment_center_info_city.setText(center.city)
-        editText_fragment_center_info_post_code.setText(center.pc.toString())
+        editText_fragment_center_info_post_code.setText(center.postalCode.toString())
         editText_fragment_center_info_province.setText(center.province)
         editText_fragment_center_info_email.setText(center.email)
         editText_fragment_center_info_sector.setText(center.sector)

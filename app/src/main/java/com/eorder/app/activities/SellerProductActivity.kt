@@ -184,7 +184,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_center_list_image))
         }
 
-        view.findViewById<TextView>(R.id.textView_center_list_center_name).text = (obj as Center).center_name
+        view.findViewById<TextView>(R.id.textView_center_list_center_name).text = (obj as Center).name
     }
 
     private fun repaintProductList(view: View, obj: Any?) {
@@ -433,7 +433,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         AlertDialogOk(
                             this,
                             resources.getString(R.string.productos),
-                            String.format(resources.getString(R.string.seller_product_activity_dialog_no_products_message), centers.find { c -> c.id == centerSelected }?.center_name, sellers.find { s -> s.id == sellerSelected }?.companyName ),
+                            String.format(resources.getString(R.string.seller_product_activity_dialog_no_products_message), centers.find { c -> c.id == centerSelected }?.name, sellers.find { s -> s.id == sellerSelected }?.companyName ),
                             resources.getString(R.string.ok)
 
                         ) { d, i ->
