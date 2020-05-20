@@ -90,7 +90,7 @@ class UnitOfWorkRepository(
 
         if (categoryRepository == null)
 
-            categoryRepository = CategoryRepository(unitOfWorkService.getHttpClient())
+            categoryRepository = CategoryRepository(unitOfWorkService.getHttpClient(), configurationManager)
 
         return categoryRepository as ICategoryRepository
     }

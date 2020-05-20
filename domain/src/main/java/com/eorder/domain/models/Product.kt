@@ -1,9 +1,5 @@
 package com.eorder.domain.models
 
-import android.graphics.Bitmap
-import com.eorder.domain.interfaces.ILoadImageFields
-import java.io.Serializable
-
 class Product(
 
     // cambiar al val cuando se recuperen los datos del backend
@@ -19,16 +15,15 @@ class Product(
     val description: String? = null,
     val name: String,
     val category: String,
-    override val imageUrl: String? = null,
-    override var image: Bitmap? = null,
+    val imageUrl: String? = null,
     var favorite: Boolean = false,
     // cambiar al val cuando se recuperen los datos del backend
-    var catallogId: Int? = null,
+    var catalogId: Int? = null,
     // cambiar al val cuando se recuperen los datos del backend
     var sellerName: String? = null,
     var amountsByDay: MutableList<ProductAmountByDay>? = null
 
-) : ILoadImageFields {
+)  {
     var amount: Int = 0
         set(value) {
             field = value
