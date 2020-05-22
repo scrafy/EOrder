@@ -62,7 +62,7 @@ class UnitOfWorkRepository(
 
         if (productRepository == null)
 
-            productRepository = ProductRepository(unitOfWorkService.getHttpClient())
+            productRepository = ProductRepository(unitOfWorkService.getHttpClient(), configurationManager)
 
         return productRepository as IProductRepository
     }

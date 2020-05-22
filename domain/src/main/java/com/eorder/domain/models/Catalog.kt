@@ -1,6 +1,5 @@
 package com.eorder.domain.models
 
-
 class Catalog(
     val id: Int,
     val name: String,
@@ -8,5 +7,4 @@ class Catalog(
     val sellerId: Int,
     val sellerName: String,
     val imageUrl: String? = null
-
 )

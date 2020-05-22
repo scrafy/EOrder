@@ -5,7 +5,6 @@ import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.models.*
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.eorder.infrastructure.services.ProductsService
 import com.google.gson.reflect.TypeToken
 
 
@@ -50,19 +49,8 @@ class UserRepository(
     override fun getFavoriteProducts(favorites: List<Int>): ServerResponse<List<Product>> {
 
 
-        var filtered = ProductsService.getProducts().filter { p -> p.id in favorites }
-        var response: ServerResponse<List<Product>> =
-            ServerResponse(
-                200,
-                null,
-                ServerData(
-                    filtered,
-                    null
-                )
-            )
-        checkServerErrorInResponse(response)
-
-        return response
+        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
+        return resp
     }
 
     override fun changePassword(recoverPasswordRequest: ChangePassword): ServerResponse<Any> {
@@ -81,15 +69,16 @@ class UserRepository(
 
     override fun recoverPassword(email: Email): ServerResponse<Any> {
 
-        //TODO MAKE REAL CALL TO BACKEND
-        var response: ServerResponse<Any> =
-            ServerResponse(
-                200,
-                null,
-                null
-            )
+        httpClient.addAuthorizationHeader(false)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}Users/forgotPassword",
+            email,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<Any>>(
+            resp, object : TypeToken<ServerResponse<Any>>() {}.type
+        )
         checkServerErrorInResponse(response)
-
         return response
     }
 

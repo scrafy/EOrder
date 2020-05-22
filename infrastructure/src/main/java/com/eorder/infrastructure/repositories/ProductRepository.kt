@@ -1,11 +1,19 @@
 package com.eorder.infrastructure.repositories
 
+import com.eorder.domain.factories.Gson
+import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IProductRepository
-import com.eorder.domain.models.*
+import com.eorder.domain.models.Product
+import com.eorder.domain.models.SearchProduct
+import com.eorder.domain.models.ServerData
+import com.eorder.domain.models.ServerResponse
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.eorder.infrastructure.services.ProductsService
+import com.google.gson.reflect.TypeToken
 
-class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
+class ProductRepository(
+    private val httpClient: IHttpClient,
+    private val configurationManager: IConfigurationManager
+) : BaseRepository(),
     IProductRepository {
 
     override fun getProductsByCatalog(
@@ -13,105 +21,30 @@ class ProductRepository(private val httpClient: IHttpClient) : BaseRepository(),
         catalogId: Int
     ): ServerResponse<List<Product>> {
 
-        //TODO make a backend call
+       var products =  listOf<Product>()
 
-        var products = ProductsService.getProducts().filter { p -> p.catallogId == catalogId }
-
-
-        var response: ServerResponse<List<Product>> =
-            ServerResponse(
-                200,
-                null,
-                ServerData(
-                    products,
-                    null
-                )
-            )
-        checkServerErrorInResponse(response)
-
-        return response
+        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
+        return resp
     }
 
     override fun getProductsBySeller(centerId: Int, sellerId: Int): ServerResponse<List<Product>> {
 
-        //TODO make a backend call
-        var response: ServerResponse<List<Product>>
-        var products = ProductsService.getProducts().filter { p -> p.sellerId == sellerId }
-
-        /*if ( centerId == 1){
-             response =
-                ServerResponse(
-                    200,
-                    null,
-                    ServerData(
-                        products,
-                        null
-                    )
-                )
-        }else{
-             response =
-                ServerResponse(
-                    200,
-                    null,
-                    null
-                )
-        }*/
-        response =
-            ServerResponse(
-                200,
-                null,
-                ServerData(
-                    products,
-                    null
-                )
-            )
-
-        checkServerErrorInResponse(response)
-
-        return response
+        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
+        return resp
     }
 
-    override fun searchProducts(search: SearchProduct, page:Int): ServerResponse<List<Product>> {
+    override fun searchProducts(search: SearchProduct, page: Int): ServerResponse<List<Product>> {
 
-        var response: ServerResponse<List<Product>>
-        var products =
-            ProductsService.getProducts()
-
-        products = products.filter { p -> p.catallogId == search.catalogId }
-
-        if (!search.category.isNullOrEmpty())
-            products = products.filter { p -> p.category == search.category }
-
-        if (!search.nameProduct.isNullOrEmpty())
-            products = products.filter { p -> p.name.toLowerCase().contains((search.nameProduct as String).toLowerCase()) }
-
-
-        var numpages: Int
-
-        if ( products.size%50 == 0 ){
-            numpages = products.size/50
-        }else
-        {
-            numpages = (products.size/50)+1
-        }
-
-        val offset = 50 * (page - 1)
-        val take = (page * 50) - 1
-
-        products = products.slice(IntRange(offset, take))
-
-        response =
-            ServerResponse(
-                200,
-                null,
-                ServerData(
-                    products,
-                    Pagination(numpages,  page, 50, products.size)
-                )
-            )
-
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/${page}/search",
+            search,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<List<Product>>>(
+            resp, object : TypeToken<ServerResponse<List<Product>>>() {}.type
+        )
         checkServerErrorInResponse(response)
-
         return response
 
     }

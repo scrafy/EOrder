@@ -314,13 +314,6 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private fun init() {
 
         products = model.getProducts()
-        if (products.any { p -> p.image == null })
-            LoadImageHelper().loadImage(products.filter { p -> p.image == null }).observe(
-                this as LifecycleOwner,
-                Observer {
-
-                    adapter.notifyDataSetChanged()
-                })
         setProductsFavoriteState(products)
         adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)

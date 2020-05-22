@@ -41,7 +41,7 @@ class RecoverPasswordActivity : AppCompatActivity(), IShowSnackBarMessage, IMana
     }
 
     override fun showMessage(message: String) {
-        editText_activity_main_code_input.text.clear()
+
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_activity_recover_password_conatiner),

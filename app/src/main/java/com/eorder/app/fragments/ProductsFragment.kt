@@ -315,7 +315,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     setProductCurrentState()
                     adapter.products = products
                     spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
-
+                    if ( currentPage == pagination.totalPages )
+                        hideLoadMoreProductsButton()
                 }
 
             })
@@ -359,7 +360,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         searchProducts = SearchProduct(Data.centerId, Data.catalogId)
         loadSpinnersData(
             Data.categories.map { it.categoryName }
-
         )
         var menu = mutableMapOf<String, Int>()
         menu["search_menu"] = R.menu.search_menu
@@ -375,8 +375,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         )
         recyclerView.adapter = adapter
         spinner_products_fragment_list_categories.setSelection(categories.indexOf(Data.categorySelected.categoryName))
-
-
     }
 
     private fun setProductCurrentState() {
@@ -414,7 +412,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun searchProducts() {
         hideLoadMoreProductsButton()
         model.searchProducts(searchProducts, currentPage)
-        imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
+
     }
 
     private fun onSelectedCategory(position: Int) {
@@ -459,9 +457,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun setListeners() {
 
         button_products_fragment_load_more_products.setOnClickListener {
-            if (currentPage < pagination.numPages) {
+            if ( currentPage < pagination.totalPages ) {
+                currentPage += 1
                 searchProducts()
-                currentPage++
             } else {
                 hideLoadMoreProductsButton()
                 AlertDialogOk(
@@ -471,7 +469,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     resources.getString(R.string.ok)
                 ) { d, i -> }.show()
             }
-
         }
     }
 
