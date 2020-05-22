@@ -44,11 +44,14 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private lateinit var recyclerView: RecyclerView
     private var adapter: OrderProductAdapter = OrderProductAdapter(this)
     private var products: MutableList<Product> = mutableListOf()
+    private var aux: List<Product> = listOf()
     private lateinit var productSpinners: FilterProductSpinners
     private var categories: MutableList<String> = mutableListOf()
     private lateinit var pagination: Pagination
     private var currentPage: Int = 1
     private lateinit var searchProducts: SearchProduct
+    private var orderPosition: Int = 0
+
 
 
     override fun onCreateView(
@@ -311,10 +314,14 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 } else {
                     showLoadMoreProductsButton()
                     pagination = it.ServerData?.PaginationData!!
-                    products.addAll(it.ServerData?.Data!!)
+                    aux = it.ServerData?.Data!!
+                    orderProducts(orderPosition, aux)
+                    val oldSize = products.size
+                    products.addAll(aux)
                     setProductCurrentState()
                     adapter.products = products
-                    spinner_product_products_fragment_list_order.setSelection( spinner_product_products_fragment_list_order.selectedItemPosition )
+                    adapter.notifyItemRangeInserted(oldSize, aux.size)
+
                     if ( currentPage == pagination.totalPages )
                         hideLoadMoreProductsButton()
                 }
@@ -392,7 +399,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     p.amountsByDay = found.amountsByDay
                     model.removeProductFromShop(found)
                     model.addProductToShop(p)
-
                 }
 
             }
@@ -427,25 +433,49 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun onSelectedOrder(position: Int) {
 
-        when (position) {
-
-            0 -> {
-                adapter.products = adapter.products.sortedBy { p -> p.name }.toMutableList()
-
-            }
-            1 -> {
-                adapter.products = adapter.products.sortedByDescending { p -> p.name }.toMutableList()
-
-            }
-            2 -> {
-                adapter.products = adapter.products.sortedBy { p -> p.price }.toMutableList()
-            }
-            3 -> {
-                adapter.products = adapter.products.sortedByDescending { p -> p.price }.toMutableList()
-            }
-        }
-
+        orderProducts(position)
+        orderPosition = position
+        adapter.products = products
         adapter.notifyDataSetChanged()
+
+    }
+
+    private fun orderProducts(position:Int, _products: List<Product>? = null){
+
+            if ( position == 0){
+                if ( _products == null ){
+                    this.products = this.products.sortedBy { p -> p.name }.toMutableList()
+                }
+                else{
+                    aux = _products?.sortedBy { p -> p.name }
+                }
+            }
+            else if ( position == 1){
+                if ( _products == null ){
+                    this.products = this.products.sortedByDescending { p -> p.name }.toMutableList()
+                }
+                else{
+                    aux = _products?.sortedByDescending { p -> p.name }
+                }
+            }
+            else if ( position == 2){
+                if ( _products == null ){
+                    this.products = this.products.sortedBy { p -> p.price }.toMutableList()
+                }
+                else{
+                    aux = _products?.sortedBy { p -> p.price }
+                }
+            }
+            else if ( position == 3){
+                if ( _products == null ){
+                    this.products = this.products.sortedByDescending { p -> p.price }.toMutableList()
+                }
+                else{
+                    aux = _products?.sortedByDescending { p -> p.price }
+                }
+
+            }
+
     }
 
     private fun newSearch(){

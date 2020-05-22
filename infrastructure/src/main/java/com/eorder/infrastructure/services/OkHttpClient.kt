@@ -24,8 +24,6 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
         addAuthorizationHeader = authorize
     }
 
-
-
     override fun getJsonResponse(url: String, headers: Map<String, String>?): String? {
 
 
