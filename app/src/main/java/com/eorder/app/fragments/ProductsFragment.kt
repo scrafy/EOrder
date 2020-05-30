@@ -51,6 +51,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private var currentPage: Int = 1
     private lateinit var searchProducts: SearchProduct
     private var orderPosition: Int = 0
+    private lateinit var center: OrderCenterInfo
+    private lateinit var seller: OrderSellerInfo
 
 
 
@@ -64,6 +66,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     override fun onStart() {
         super.onStart()
+        model.getOrder().center = center
+        model.getOrder().seller = seller
         if (!products.isNullOrEmpty()) {
             setProductCurrentState()
             adapter.notifyDataSetChanged()
@@ -360,6 +364,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun init() {
 
+        center = model.getOrder().center
+        seller = model.getOrder().seller
         val Data = Gson.Create().fromJson(
             arguments!!.getString("data"),
             DataProductFragment::class.java

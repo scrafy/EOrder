@@ -5,5 +5,5 @@ import com.eorder.domain.models.ServerResponse
 
 interface IConfirmOrderUseCase {
 
-    fun confirmOrder(order: Order) : ServerResponse<Int>
+    fun confirmOrder(order: Order) : ServerResponse<Any>
 }

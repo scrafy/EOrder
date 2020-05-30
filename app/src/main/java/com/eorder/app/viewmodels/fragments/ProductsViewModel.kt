@@ -29,7 +29,8 @@ class ProductsViewModel : BaseViewModel() {
         }
     }
 
-
+    fun getOrder() =
+        unitOfWorkService.getShopService().getOrder()
 
     fun addProductToShop(product: Product) =
         unitOfWorkService.getShopService().addProductToShop(product)

@@ -10,7 +10,7 @@ interface IShopService {
     fun getOrder(): Order
     fun setOrder(order:Order)
     fun cleanProducts()
-    fun getTotalTaxBaseAmount(): Float?
+    fun getTotalBaseAmount(): Float?
     fun getTotalTaxesAmount():Float?
     fun getTotalAmount():Float?
     fun addProductToShop(product:Product)

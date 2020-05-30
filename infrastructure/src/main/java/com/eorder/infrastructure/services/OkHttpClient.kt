@@ -2,9 +2,9 @@ package com.eorder.infrastructure.services
 
 import com.eorder.domain.enumerations.ErrorCode
 import com.eorder.domain.exceptions.InvalidJwtTokenException
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.interfaces.IJwtTokenService
 import com.eorder.infrastructure.interfaces.IHttpClient
-import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -50,7 +50,7 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
             if (addAuthorizationHeader)
                 addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
-            post(Gson().toJson(body).toRequestBody("application/json; charset=utf-8".toMediaType()))
+            post(Gson.Create().toJson(body).toRequestBody("application/json; charset=utf-8".toMediaType()))
             url(url)
             build()
         }

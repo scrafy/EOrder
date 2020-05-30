@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.eorder.app.R
@@ -43,7 +42,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         model = getViewModel()
         setObservers()
         setListeners()
-        isShopEmpty()
+        init()
+        this.setSupportActionBar(toolbar as Toolbar)
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        this.supportActionBar?.setDisplayShowHomeEnabled(true)
 
     }
 
@@ -52,9 +54,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         isShopEmpty()
         adapter.notifyDataSetChanged()
         model.getOrderTotalsSummary()
-        this.setSupportActionBar(toolbar as Toolbar)
-        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        this.supportActionBar?.setDisplayShowHomeEnabled(true)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -138,7 +138,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
     fun setObservers() {
 
-        model.confirmOrderResult.observe(this, Observer<ServerResponse<Int>> {
+        model.confirmOrderResult.observe(this, Observer<ServerResponse<Any>> {
 
             model.cleanShop(this)
             model.writeShopToSharedPreferencesOrder(this)
@@ -146,16 +146,16 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 this, resources.getString(R.string.alert_dialog_confirm_order_title),
                 resources.getString(R.string.alert_dialog_confirm_order_message), "OK"
             ) { _, _ ->
-                if (intent.getStringExtra("activity_name") != null)
-                    navigateUpTo(Intent(this, LandingActivity::class.java))
-                else
-                    this.onBackPressed()
+                navigateUpTo(Intent(this, LandingActivity::class.java))
             }.show()
 
         })
 
         model.summaryTotalsOrderResult.observe(this, Observer<Any> {
 
+            this.products = model.getProducts()
+            adapter.products = this.products
+            adapter.notifyDataSetChanged()
             this.setTotals()
         })
 
@@ -318,7 +318,6 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
-        model.getOrderTotalsSummary()
 
     }
 
@@ -341,7 +340,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         findViewById<TextView>(R.id.textView_shop_amount_products).text =
             model.getAmountOfProducts().toString()
         findViewById<TextView>(R.id.textView_shop_amount_tax_base).text =
-            model.getTotalTaxBaseAmount().toString() + "€"
+            model.getTotalBaseAmount().toString() + "€"
         findViewById<TextView>(R.id.textView_shop_amount_total_taxes).text =
             model.getTotalTaxesAmount().toString() + "€"
         findViewById<TextView>(R.id.textView_shop_amount_total).text =
@@ -356,9 +355,9 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         if (model.getProducts().isEmpty()) {
 
             this.onBackPressed()
-        } else
-            init()
+        }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners() {
@@ -373,7 +372,6 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 resources.getString(R.string.no),
                 { _, _ ->
 
-                    model.saveOrder(this)
                     model.confirmOrder()
                 },
                 { _, _ -> }

@@ -54,7 +54,7 @@ class ShopService(
     }
 
 
-    override fun getTotalTaxBaseAmount(): Float? {
+    override fun getTotalBaseAmount(): Float? {
 
         return order.totalBase
     }

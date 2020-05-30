@@ -125,7 +125,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
 
     override fun onResume() {
         super.onResume()
-        model.getOrdersDoneByUser(this)
+        model.getOrdersDoneByUser()
     }
 
     override fun showMessage(message: String) {

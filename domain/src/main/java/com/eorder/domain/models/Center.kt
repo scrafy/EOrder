@@ -12,6 +12,7 @@ class Center(
     val email: String,
     val province: String,
     val sector: String,
-    val imageUrl: String? = null
+    val imageUrl: String? = null,
+    var buyerId:Int? = null
 )
 

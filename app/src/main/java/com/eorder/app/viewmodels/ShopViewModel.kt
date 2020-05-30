@@ -4,26 +4,22 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import com.eorder.application.enums.SharedPreferenceKeyEnum
-import com.eorder.application.extensions.clone
-import com.eorder.application.models.OrdersWrapper
+import com.eorder.domain.models.Order
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import kotlin.math.abs
-import kotlin.random.Random.Default.nextInt
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ShopViewModel : BaseViewModel() {
 
-    val confirmOrderResult: MutableLiveData<ServerResponse<Int>> = MutableLiveData()
+    val confirmOrderResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
     val summaryTotalsOrderResult: MutableLiveData<Any> = MutableLiveData()
 
 
-    fun getTotalTaxBaseAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxBaseAmount()
+    fun getTotalBaseAmount(): Float? = unitOfWorkService.getShopService().getTotalBaseAmount()
     fun getTotalTaxesAmount(): Float? = unitOfWorkService.getShopService().getTotalTaxesAmount()
     fun getTotalAmount(): Float? = unitOfWorkService.getShopService().getTotalAmount()
     fun getProducts(): List<Product> = unitOfWorkService.getShopService().getOrder().products
@@ -53,33 +49,9 @@ class ShopViewModel : BaseViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            unitOfWorkUseCase.getOrderSummaryTotalsUseCase().getOrderTotalsSummary()
-            summaryTotalsOrderResult.postValue(null)
+
+            summaryTotalsOrderResult.postValue(unitOfWorkUseCase.getOrderSummaryTotalsUseCase().getOrderTotalsSummary())
         }
-    }
-
-    /*ELIMINAR METODO CUANDO LOS PEDIDOS REALIZADOS SE OBTENGAN DESDE EL BACKEND*/
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun saveOrder(context: Context) {
-
-        val orders =
-            (unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<OrdersWrapper>(
-                context,
-                SharedPreferenceKeyEnum.ORDERS_DONE.key,
-                OrdersWrapper::class.java
-            )) ?: OrdersWrapper(mutableListOf())
-
-        var order = unitOfWorkService.getShopService().getOrder().clone()
-        order.createdAt = LocalDateTime.now()
-        order.id = abs(nextInt())
-        orders.orders.add(order)
-
-        unitOfWorkService.getSharedPreferencesService().writeToSharedPreferences(
-            context,
-            orders,
-            SharedPreferenceKeyEnum.ORDERS_DONE.key,
-            OrdersWrapper::class.java
-        )
     }
 
 

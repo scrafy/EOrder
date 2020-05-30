@@ -148,7 +148,8 @@ class UnitOfWorkUseCase(
         if (confirmOrderUseCase == null)
             confirmOrderUseCase = ConfirmOrderUseCase(
                 unitOfWorkService.getShopService(),
-                unitOfWorkRepository.getOrderRepository()
+                unitOfWorkRepository.getOrderRepository(),
+                unitOfWorkService.getJwtTokenService()
             )
 
         return confirmOrderUseCase as IConfirmOrderUseCase
@@ -170,10 +171,7 @@ class UnitOfWorkUseCase(
 
         if (orderDoneUseCase == null)
             orderDoneUseCase = OrdersDoneUseCase(
-                unitOfWorkService.getSharedPreferencesService(),
                 unitOfWorkRepository.getOrderRepository()
-
-
             )
 
         return orderDoneUseCase as IOrdersDoneUseCase

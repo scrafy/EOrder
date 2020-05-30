@@ -133,7 +133,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         if (model.isPossibleChangeCenter(center)) {
 
             model.getCatalogByCenter(center.id)
-            model.addCenterToOrder(center.id!!, center.name!!, center.imageUrl)
+            model.addCenterToOrder(center.id!!, center.name!!, center.imageUrl, center.buyerId)
 
         } else {
             AlertDialogQuestion(
@@ -228,7 +228,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
                     } else {
                         center = centers[0]
-                        model.addCenterToOrder(center.id!!, center.name!!, center.imageUrl)
+                        model.addCenterToOrder(center.id!!, center.name!!, center.imageUrl, center.buyerId)
                         model.getCatalogByCenter(center.id)
                     }
                 }

@@ -9,7 +9,7 @@ import com.eorder.app.R
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.domain.models.Product
 
-class ShopAdapter(private val products: List<Product>, private val context: Context) :
+class ShopAdapter(var products: List<Product>, private val context: Context) :
     BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

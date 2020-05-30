@@ -1,6 +1,5 @@
 package com.eorder.app.viewmodels
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
@@ -19,16 +18,15 @@ class OrderDoneViewModel : BaseMainMenuActionsViewModel() {
 
     fun getOrdersDoneResultObservable(): LiveData<ServerResponse<List<Order>>> = ordersDoneResult
 
-    fun getOrdersDoneByUser(context: Context) {
+    fun getOrdersDoneByUser() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            val orders = unitOfWorkUseCase.getOrderDoneUseCase().getOrdersDoneByUser(context)
+            val orders = unitOfWorkUseCase.getOrderDoneUseCase().getOrdersDoneByUser()
             ordersDoneResult.postValue(orders)
 
         }
     }
-
 
     fun isShopEmpty(): Boolean = unitOfWorkService.getShopService().isShopEmpty()
     fun setOrder(order: Order) {

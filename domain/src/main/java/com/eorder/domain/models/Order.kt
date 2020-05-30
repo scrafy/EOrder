@@ -1,12 +1,15 @@
 package com.eorder.domain.models
 
+import com.eorder.domain.enumerations.Currency
 import java.time.LocalDateTime
 
 class Order {
 
     var id: Int? = null
-    var center: OrderCenter = OrderCenter()
-    var seller: SellerOrder = SellerOrder()
+    var center: OrderCenterInfo = OrderCenterInfo()
+    var seller: OrderSellerInfo = OrderSellerInfo()
+    var currency: Currency = Currency.EUR
+    var userId:String? = null
     var createdAt: LocalDateTime?=null
     var totalBase: Float = 0F
     var totalTaxes: Float = 0F

@@ -30,12 +30,12 @@ class Gson {
 class LocalDateTimeAdapter : TypeAdapter<LocalDateTime>() {
 
     override fun write(out: com.google.gson.stream.JsonWriter?, value: LocalDateTime?) {
-        out?.value(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(value))
+        out?.value(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss").format(value))
     }
 
     override fun read(input: com.google.gson.stream.JsonReader?): LocalDateTime {
 
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")
         return LocalDateTime.parse(input?.nextString(), formatter)
     }
 }

@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi
 import com.eorder.application.interfaces.IOrderSummaryTotalsUseCase
 import com.eorder.application.interfaces.IShopService
 import com.eorder.domain.interfaces.IOrderRepository
+import com.eorder.domain.models.Order
+import com.eorder.domain.models.ServerResponse
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -14,10 +16,11 @@ class OrderSummaryTotalsUseCase(
 ) : IOrderSummaryTotalsUseCase {
 
 
-    override fun getOrderTotalsSummary() {
+    override fun getOrderTotalsSummary()  {
 
-        shopService.resetTotals()
-        orderRepository.getOrderTotalsSummary(shopService.getOrder())
+        val resp= orderRepository.getOrderTotalsSummary(shopService.getOrder())
+        shopService.cleanShop()
+        shopService.setOrder(resp.ServerData?.Data!!)
 
     }
 }
