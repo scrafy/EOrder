@@ -395,18 +395,22 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         if (model.getProductsFromShop().isNotEmpty()) {
 
             val productsShop = model.getProductsFromShop()
-            this.products.forEach { p ->
+            productsShop.forEach { p ->
 
-                val found = productsShop.firstOrNull { _p -> _p.id === p.id }
+                val found = this.products.firstOrNull { _p -> _p.id == p.id }
                 if (found != null) {
 
-                    p.amount = found.amount
-                    p.favorite = found.favorite
-                    p.amountsByDay = found.amountsByDay
-                    model.removeProductFromShop(found)
-                    model.addProductToShop(p)
+                    found.amount = p.amount
+                    found.favorite = p.favorite
+                    found.amountsByDay = p.amountsByDay
                 }
 
+            }
+            val products = this.products.filter { p -> p.amount > 0}
+            products.forEach { p ->
+                if ( productsShop.find { _p -> _p.id == p.id } == null ){
+                    p.amount = 0
+                }
             }
         } else {
             products.filter { it.amount > 0 }.forEach { it.amount = 0 }
