@@ -7,24 +7,29 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.eorder.app.R
 import com.eorder.app.viewmodels.MainViewModel
 import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
+import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.ServerResponse
 import com.eorder.domain.models.ValidationError
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-class MainActivity : AppCompatActivity(), IManageFormErrors {
+class MainActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
+
 
     private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         model = getViewModel()
@@ -35,12 +40,21 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
     }
 
     override fun onResume() {
+
         super.onResume()
         this.findViewById<EditText>(R.id.editText_activity_main_code_input).setText("")
-
-
     }
 
+    override fun showMessage(message: String) {
+
+        SnackBar(
+            this,
+            findViewById<LinearLayout>(R.id.linearLayout_activity_main_conatiner),
+            resources.getString(R.string.close),
+            message
+        ).show()
+
+    }
 
     override fun setValidationErrors(errors: List<ValidationError>?) {
         textView_activity_main_error_validation_message.text =
@@ -51,11 +65,12 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
     fun setListeners() {
 
         button_activity_main_login.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
 
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         button_activity_main_create_account.setOnClickListener {
+
             startActivity(Intent(this, CreateAccountActivity::class.java))
         }
 
@@ -88,14 +103,18 @@ class MainActivity : AppCompatActivity(), IManageFormErrors {
 
             val result = it.ServerData?.Data ?: false
 
-            if (result) {
+            if (!result) {
                 editText_activity_main_code_input.setText("")
                 AlertDialogOk(
                     this,
                     resources.getString(R.string.main_activity_dialog_center_title),
                     resources.getString(R.string.main_activity_dialog_center_message),
                     resources.getString(R.string.ok)
-                ) { d, i -> }.show()
+                ) { d, i ->
+
+
+
+                }.show()
 
             } else {
                 val intent = Intent(this, CheckEmailActivity::class.java)

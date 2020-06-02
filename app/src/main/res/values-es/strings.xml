@@ -147,7 +147,7 @@
     <string name="main_activity_login">LOGIN</string>
     <string name="main_activity_create_account">CREAR CUENTA</string>
     <string name="main_activity_dialog_center_title">Activación de centro</string>
-    <string name="main_activity_dialog_center_message">El centro se encuentra activo, por favor, introduzca un código de activación diferente</string>
+    <string name="main_activity_dialog_center_message">El código de centro no existe, por favor, introduzca otro código</string>
     <string name="main_activity_enter_code">Introduzca su código de activación</string>
     <string name="main_activity_code">Código...</string>
     <string name="main_activity_activate_center">Activar centro</string>

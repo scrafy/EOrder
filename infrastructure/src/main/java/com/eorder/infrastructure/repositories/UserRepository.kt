@@ -32,16 +32,16 @@ class UserRepository(
 
     override fun checkUserEmail(email: Email): ServerResponse<Boolean> {
 
-        val response = ServerResponse(
-            200,
-            null,
-            ServerData(
-                false,
-                null
-            )
+        httpClient.addAuthorizationHeader(false)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}Users/finduserbyemail",
+            email,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<Boolean>>(
+            resp, object : TypeToken<ServerResponse<Boolean>>() {}.type
         )
         checkServerErrorInResponse(response)
-
         return response
 
     }
@@ -55,15 +55,16 @@ class UserRepository(
 
     override fun changePassword(recoverPasswordRequest: ChangePassword): ServerResponse<Any> {
 
-        //TODO MAKE REAL CALL TO BACKEND
-        var response: ServerResponse<Any> =
-            ServerResponse(
-                200,
-                null,
-                null
-            )
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}Users/changepassword",
+            recoverPasswordRequest,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<Any>>(
+            resp, object : TypeToken<ServerResponse<Any>>() {}.type
+        )
         checkServerErrorInResponse(response)
-
         return response
     }
 

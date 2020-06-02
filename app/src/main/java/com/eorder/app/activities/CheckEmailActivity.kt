@@ -16,6 +16,7 @@ import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.domain.models.AccountCentreCode
 import com.eorder.domain.models.ValidationError
 import kotlinx.android.synthetic.main.activity_check_email.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,7 +46,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
     }
 
     override fun showMessage(message: String) {
-        editText_activity_main_code_input.text.clear()
+
         SnackBar(
             this,
             findViewById<LinearLayout>(R.id.linearLayout_activity_check_email_conatiner),
@@ -61,12 +62,7 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
             val result = it.ServerData?.Data!!
 
             if (result) {
-               AlertDialogOk(this, resources.getString(R.string.check_email_activity_alert_title), resources.getString(R.string.check_email_activity_alert_message), resources.getString(R.string.ok)) { d, i->
-
-                   this.finish()
-                   val intent = Intent(this, LoginActivity::class.java)
-                   startActivity(intent)
-               }.show()
+                model.associateAccountToCentreCode(AccountCentreCode(editText_activity_check_email_mail_input.text.toString(), centerCode))
             } else {
                 this.finish()
                 val intent = Intent(this, CreateAccountActivity::class.java)
@@ -75,6 +71,11 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
                 startActivity(intent)
             }
 
+        })
+
+        model.associateAccountResult.observe(this as LifecycleOwner, Observer {
+
+            startActivity(Intent(this, LoginActivity::class.java))
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->

@@ -75,7 +75,7 @@ class ChangePasswordActivity : BaseFloatingButtonActivity(),
 
         model.changePasswordResult.observe(this, Observer<ServerResponse<Any>> { it ->
 
-            var dialog = AlertDialogOk(
+            AlertDialogOk(
                 this,
                 resources.getString(R.string.change_password),
                 resources.getString(R.string.change_password_activity_alert_dialog_message),
@@ -158,15 +158,15 @@ class ChangePasswordActivity : BaseFloatingButtonActivity(),
     override fun setValidationErrors(errors: List<ValidationError>?) {
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_oldpassword).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("oldPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("OldPassword") }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_newpassword).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("newPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("NewPassword") }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_confirm_password).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("confirmPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName.equals("ConfirmPassword") }?.ErrorMessage
 
     }
 

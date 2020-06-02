@@ -4,9 +4,7 @@ import com.eorder.domain.factories.Gson
 import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IOrderRepository
 import com.eorder.domain.models.Order
-import com.eorder.domain.models.ServerData
 import com.eorder.domain.models.ServerResponse
-import com.eorder.infrastructure.extensions.round
 import com.eorder.infrastructure.interfaces.IHttpClient
 import com.google.gson.reflect.TypeToken
 
@@ -33,7 +31,16 @@ class OrderRepository(
 
 
     override fun getOrdersDone(): ServerResponse<List<Order>> {
-        TODO()
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.getJsonResponse (
+            "${configurationManager.getProperty("endpoint_url")}Orders/OrdersDone",
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<List<Order>>>(
+            resp, object : TypeToken<ServerResponse<List<Order>>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
     }
 
     override fun getOrderTotalsSummary(order: Order): ServerResponse<Order> {

@@ -59,7 +59,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
             if (orders.isEmpty()) {
                 showMessageFiniteTime(resources.getString(R.string.order_done_activity_no_orders))
             } else {
-                adapter.orders = orders.sortedByDescending { o -> o.createdAt }
+                adapter.orders = orders
                 adapter.notifyDataSetChanged()
             }
 
@@ -123,10 +123,6 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        model.getOrdersDoneByUser()
-    }
 
     override fun showMessage(message: String) {
 
@@ -183,7 +179,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.itemAnimator = DefaultItemAnimator()
-
+        model.getOrdersDoneByUser()
 
     }
 }

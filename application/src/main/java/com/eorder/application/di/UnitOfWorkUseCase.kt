@@ -32,6 +32,7 @@ class UnitOfWorkUseCase(
     private var existsUserEmailUseCase: IExistsUserEmailUseCase? = null
     private var categoriesUseCase: ICategoriesUseCase? = null
     private var searchProductsUseCase: ISearchProductsUseCase? = null
+    private var associateAccountToCentreUseCase:IAssociateAccountToCentreCodeUseCase? = null
 
 
     fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
@@ -231,5 +232,15 @@ class UnitOfWorkUseCase(
             )
 
         return categoriesUseCase as ICategoriesUseCase
+    }
+
+    fun getAssociateAccountToCentreUseCase(): IAssociateAccountToCentreCodeUseCase {
+
+        if (associateAccountToCentreUseCase == null) {
+            associateAccountToCentreUseCase = AssociateAccountToCentreCodeUseCase(
+                unitOfWorkRepository.getCenterRepository()
+            )
+        }
+        return associateAccountToCentreUseCase as IAssociateAccountToCentreCodeUseCase
     }
 }

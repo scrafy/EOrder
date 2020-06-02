@@ -58,8 +58,6 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
                 startActivity(intent)
                 finish()
             }
-
-
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
@@ -93,6 +91,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
     }
 
     private fun clearEditTextAndFocus() {
+
         findViewById<EditText>(R.id.editText_username).text.clear()
         findViewById<EditText>(R.id.editText_password).text.clear()
         findViewById<EditText>(R.id.editText_username).requestFocus()
@@ -100,7 +99,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
 
     fun setListeners() {
 
-        findViewById<Button>(R.id.button_signIn).setOnClickListener { view ->
+        findViewById<Button>(R.id.button_signIn).setOnClickListener {
 
             val loginRequest = Login(
                 findViewById<EditText>(R.id.editText_username).text.toString(),
@@ -138,7 +137,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
             }
         })
 
-        findViewById<TextView>(R.id.textView_recoverPassword).setOnClickListener { v ->
+        findViewById<TextView>(R.id.textView_recoverPassword).setOnClickListener {
 
             val intent = Intent(this, RecoverPasswordActivity::class.java)
             startActivity(intent)

@@ -4,10 +4,7 @@ import com.eorder.domain.factories.Gson
 import com.eorder.domain.interfaces.ICenterRepository
 import com.eorder.domain.interfaces.IConfigurationManager
 import com.eorder.domain.interfaces.IJwtTokenService
-import com.eorder.domain.models.Center
-import com.eorder.domain.models.CenterCode
-import com.eorder.domain.models.ServerData
-import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.*
 import com.eorder.infrastructure.interfaces.IHttpClient
 import com.google.gson.reflect.TypeToken
 
@@ -20,15 +17,15 @@ class CenterRepository(
 
     override fun checkCenterActivationCode(code: CenterCode): ServerResponse<Boolean> {
 
-        var response: ServerResponse<Boolean> =
-            ServerResponse(
-                200,
-                null,
-                ServerData(false, null)
-
-            )
+        val url = "${configurationManager.getProperty("endpoint_url")}Centres/${code.centerCode}/ActivationCode"
+        val resp = httpClient.getJsonResponse (
+            url,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<Boolean>>(
+            resp, object : TypeToken<ServerResponse<Boolean>>() {}.type
+        )
         checkServerErrorInResponse(response)
-
         return response
     }
 
@@ -43,6 +40,21 @@ class CenterRepository(
         )
         var response = Gson.Create().fromJson<ServerResponse<List<Center>>>(
             resp, object : TypeToken<ServerResponse<List<Center>>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
+    }
+
+    override fun associateAccountToCentreCode(data: AccountCentreCode): ServerResponse<Any> {
+
+        val url = "${configurationManager.getProperty("endpoint_url")}Centres/associatecentre"
+        val resp = httpClient.postJsonData (
+            url,
+            data,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<Any>>(
+            resp, object : TypeToken<ServerResponse<Any>>() {}.type
         )
         checkServerErrorInResponse(response)
         return response

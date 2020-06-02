@@ -4,17 +4,20 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.eorder.app.viewmodels.BaseViewModel
+import com.eorder.domain.models.AccountCentreCode
 import com.eorder.domain.models.Email
 import com.eorder.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class CheckEmailActivityModel : BaseViewModel() {
 
     val checkUserEmailResult: MutableLiveData<ServerResponse<Boolean>> = MutableLiveData()
+    val associateAccountResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun checkUserEmail(email: String) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
@@ -22,6 +25,19 @@ class CheckEmailActivityModel : BaseViewModel() {
             checkUserEmailResult.postValue(
                 unitOfWorkUseCase.getExistsUserEmailUseCase().checkExistUserEmail(
                     Email(email)
+                )
+            )
+        }
+    }
+
+
+    fun associateAccountToCentreCode(data: AccountCentreCode) {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            associateAccountResult.postValue(
+                unitOfWorkUseCase.getAssociateAccountToCentreUseCase().AssociateAccountToCentreCode(
+                    data
                 )
             )
         }

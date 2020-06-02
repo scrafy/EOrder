@@ -146,7 +146,7 @@
     <string name="main_activity_login">LOGIN</string>
     <string name="main_activity_create_account">CREATE ACCOUNT</string>
     <string name="main_activity_dialog_center_title">Center activation</string>
-    <string name="main_activity_dialog_center_message">This center is active, please, check other activation code</string>
+    <string name="main_activity_dialog_center_message">This center does not exists, please, enter other activation code</string>
     <string name="main_activity_enter_code">Enter your center activation code</string>
     <string name="main_activity_code">Code...</string>
     <string name="main_activity_activate_center">Activate center</string>
