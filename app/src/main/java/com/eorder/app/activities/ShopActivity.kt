@@ -219,7 +219,6 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 this,
                 product.id
             )
-
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -314,10 +313,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
     private fun init() {
 
         products = model.getProducts()
-        setProductsFavoriteState(products)
         adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
+        setProductsFavoriteState(products)
 
     }
 
@@ -333,6 +332,8 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             products.filter { p ->
                 p.id in favorites
             }.forEach { p -> p.favorite = true }
+
+        adapter.notifyDataSetChanged()
     }
 
     private fun setTotals() {

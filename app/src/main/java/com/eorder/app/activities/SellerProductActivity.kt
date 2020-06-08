@@ -231,7 +231,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 true
             )
         )
-        productsAdapter = ProductsAdapter(listOf())
+        productsAdapter = ProductsAdapter()
         recyclerView.adapter = productsAdapter
     }
 
@@ -439,7 +439,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         ) { d, i ->
 
                         }.show()
-                        productsAdapter.products = products
+                        productsAdapter.products = products.toMutableList()
                         productsAdapter.notifyDataSetChanged()
                     } else {
 
@@ -462,7 +462,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                             },
                             R.layout.simple_spinner_item_white
                         )
-                        productsAdapter.products = products
+                        productsAdapter.products = products.toMutableList()
                         productsAdapter.notifyDataSetChanged()
 
                     }
@@ -531,7 +531,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             }
         }
 
-        productsAdapter.products = filtered
+        productsAdapter.products = filtered.toMutableList()
         productsAdapter.notifyDataSetChanged()
     }
 

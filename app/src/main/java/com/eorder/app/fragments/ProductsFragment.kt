@@ -398,12 +398,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             productsShop.forEach { p ->
 
                 val found = this.products.firstOrNull { _p -> _p.id == p.id }
-                if (found != null) {
-
-                    found.amount = p.amount
-                    found.favorite = p.favorite
-                    found.amountsByDay = p.amountsByDay
-                }
+                if (found != null)
+                    this.products[this.products.indexOf(found)] = p
 
             }
             val products = this.products.filter { p -> p.amount > 0}
@@ -432,6 +428,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     private fun onSelectedCategory(position: Int) {
+
         newSearch()
         if (position == 0)
             searchProducts.category = null

@@ -11,13 +11,15 @@ import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.domain.models.Product
 
-class ProductsAdapter(var products: List<Product>) :
+class ProductsAdapter :
     RecyclerView.Adapter<ProductsAdapter.FavoritesViewHolder>(){
+
+    var products: MutableList<Product> = mutableListOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.order_products_list, parent, false)
 
         return FavoritesViewHolder(
             view,
@@ -32,6 +34,12 @@ class ProductsAdapter(var products: List<Product>) :
     override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
 
         holder.setData(products[position])
+    }
+
+    fun resetProducts(){
+
+        products.clear()
+        notifyDataSetChanged()
     }
 
 

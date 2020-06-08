@@ -1,27 +1,24 @@
 package com.eorder.app.viewmodels
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
-import com.eorder.domain.models.Catalog
-import com.eorder.domain.models.Center
-import com.eorder.domain.models.Product
-import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class ProductViewModel : BaseMainMenuActionsViewModel() {
 
-    private val catalogsResult: MutableLiveData<ServerResponse<List<Catalog>>> = MutableLiveData()
-    private val centersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
-    private val productsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
-
-
-    fun getCatalogsResultObservable(): LiveData<ServerResponse<List<Catalog>>> = catalogsResult
-    fun getCentersResultObservable(): LiveData<ServerResponse<List<Center>>> = centersResult
-    fun getProductsResultObservable(): LiveData<ServerResponse<List<Product>>> = productsResult
+    val catalogsResult: MutableLiveData<ServerResponse<List<Catalog>>> = MutableLiveData()
+    val centersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
+    val productsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
+    val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
+    val searchProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
 
 
     fun getAddProductToCartObservable(): LiveData<Any> =
@@ -37,6 +34,16 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
+    fun getCategories(catalogId: Int){
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result =
+                unitOfWorkUseCase.getCategoriesUseCase().getCategories(catalogId)
+            categoriesResult.postValue(result)
+        }
+    }
+
     fun getCenters() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
@@ -46,16 +53,22 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
-    fun getProductsByCatalog(centerId: Int, catalogId: Int) {
+
+    fun getProductsByCatalog(search: SearchProduct, page:Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
             var result =
-                unitOfWorkUseCase.getProductsByCatalogUseCase()
-                    .getProductsByCatalog(centerId, catalogId)
+                unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search, page)
             productsResult.postValue(result)
         }
     }
+
+    fun addProductToShop(product: Product) =
+        unitOfWorkService.getShopService().addProductToShop(product)
+
+    fun removeProductFromShop(product: Product) =
+        unitOfWorkService.getShopService().removeProductFromShop(product)
 
 
     fun writeProductsFavorites(context: Context, productId: Int) {
@@ -63,8 +76,13 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
     }
 
-    fun addProductToShop(context: Context, product: Product, center:Center) {
-        unitOfWorkService.getAddProductToShopService().addProductToShop(context, product, center)
+    fun searchProducts(search: SearchProduct, page:Int) {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search, page)
+            searchProductsResult.postValue(result)
+        }
     }
 
     fun loadFavoritesProducts(context: Context?): List<Int>? {

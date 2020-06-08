@@ -1,19 +1,20 @@
 package com.eorder.app.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -21,29 +22,29 @@ import com.eorder.app.R
 import com.eorder.app.adapters.ProductCatalogListAdapter
 import com.eorder.app.adapters.ProductCenterListAdapter
 import com.eorder.app.adapters.ProductsAdapter
+import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.helpers.FilterProductSpinners
-import com.eorder.app.helpers.GridLayoutItemDecoration
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.viewmodels.ProductViewModel
+import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
+import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IShowSnackBarMessage
-import com.eorder.domain.models.Catalog
-import com.eorder.domain.models.Center
-import com.eorder.domain.models.Product
-import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout2
+import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
-    IRepaintModel, ISetAdapterListener, IToolbarSearch {
+    IRepaintModel, ISetAdapterListener, IToolbarSearch, IOpenProductCalendar {
 
     private lateinit var model: ProductViewModel
     private lateinit var centerViewPager: ViewPager
@@ -51,22 +52,21 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var recyclerView: RecyclerView
     private lateinit var productsAdapter: ProductsAdapter
     private lateinit var catalogs: List<Catalog>
+    private var categories: MutableList<String> = mutableListOf()
+    private var aux: List<Product> = listOf()
+    private var searchProducts: SearchProduct? = null
+    private lateinit var pagination: Pagination
+    private var currentPage: Int = 1
     private lateinit var centers: List<Center>
-    private var products: List<Product> = listOf()
+    private var products: MutableList<Product> = mutableListOf()
     private var catalogSelected: Int = 0
+    private var orderPosition: Int = 0
     private var centerSelected: Int = 0
     private lateinit var productSpinners: FilterProductSpinners
-    private var filters: MutableMap<String, String?> = mutableMapOf()
-
-    init {
-
-        filters["category"] = null
-        filters["order"] = null
-        filters["search"] = null
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
         model = getViewModel()
@@ -74,20 +74,19 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         setListeners()
         setMenuToolbar()
         setObservers()
-        model.getCenters()
-    }
 
+    }
 
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()
     }
 
     override fun onResume() {
-        if (products.isNotEmpty()) {
-            setFavorites()
+
+        if (!products.isNullOrEmpty()) {
+            setProductCurrentState()
             productsAdapter.notifyDataSetChanged()
         }
-
         super.onResume()
     }
 
@@ -100,16 +99,24 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         setActionBar(currentToolBarMenu, true, false)
     }
 
+    override fun openProductCalendar(product: Product) {
+
+        ProductCalendarActivity.product = product
+        var intent = Intent(this, ProductCalendarActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun getSearchFromToolbar(search: String) {
 
         if (search != "")
-            filters["search"] = search
+            searchProducts?.nameProduct = search
         else
-            filters["search"] = null
+            searchProducts?.nameProduct = null
 
-        applyFilters()
-
+        newSearch()
+        searchProducts()
     }
+
 
     override fun signOutApp() {
         model.signOutApp(this)
@@ -118,7 +125,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     override fun showMessage(message: String) {
         SnackBar(
             this,
-            findViewById<DrawerLayout>(R.id.frameLayout_activity_seller_product_container),
+            findViewById<DrawerLayout>(R.id.frameLayout_activity_product_container),
             resources.getString(R.string.close),
             message
         ).show()
@@ -139,29 +146,142 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     override fun setAdapterListeners(view: View, obj: Any?) {
 
-        var product = (obj as Product)
+        var product = obj as Product
+        view.findViewById<Button>(R.id.button_order_product_list_remove).setOnClickListener {
 
-        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
+            if (!product.amountsByDay.isNullOrEmpty()) {
+
+                AlertDialogQuestion(
+                    this,
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
+                    { d, i ->
+
+                        decrementProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                decrementProduct(product)
+            }
+        }
+
+        view.findViewById<Button>(R.id.button_order_product_list_add).setOnClickListener {
+
+            if (!product.amountsByDay.isNullOrEmpty()) {
+                AlertDialogQuestion(
+                    this,
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
+                    { d, i ->
+
+                        incrementProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                incrementProduct(product)
+            }
+        }
+
+
+        view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
+            product.favorite = !product.favorite
+            productsAdapter.notifyDataSetChanged()
+
+            model.writeProductsFavorites(
+                this,
+                product.id
+            )
+        }
+
+        view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
             .setOnClickListener {
 
-                product.favorite = !product.favorite
-                productsAdapter.notifyDataSetChanged()
-
-                model.writeProductsFavorites(
-                    this,
-                    product.id
-                )
+                openProductCalendar(product)
             }
 
-        view.findViewById<ImageView>(R.id.imgView_products_list_cart).setOnClickListener {
+        view.findViewById<TextView>(R.id.textView_order_product_list_amount).setOnClickListener {
 
-            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
+            if (!product.amountsByDay.isNullOrEmpty()) {
+
+                AlertDialogQuestion(
+                    this,
+                    resources.getString(R.string.alert_dialog_shop_dialog_title_calendar),
+                    resources.getString(R.string.shop_activity_dialog_message_reset_calendar),
+                    resources.getString(R.string.modify),
+                    resources.getString(R.string.cancel),
+                    { d, i ->
+
+                        modifyAmountOfProduct(product)
+                    },
+                    { d, i -> }
+                ).show()
+            } else {
+                modifyAmountOfProduct(product)
+            }
         }
+    }
 
-        view.findViewById<TextView>(R.id.textView_products_list_add).setOnClickListener {
+    private fun decrementProduct(product: Product) {
+        if (product.amount > 0)
+            product.amount--
 
-            model.addProductToShop(this, obj, centers.first { it.id == centerSelected })
-        }
+        if (product.amount == 0)
+            model.removeProductFromShop(product)
+
+        productsAdapter.notifyDataSetChanged()
+        product.amountsByDay = null
+        showFloatingButton()
+    }
+
+    private fun searchProducts() {
+
+        model.searchProducts(searchProducts as SearchProduct, currentPage)
+
+    }
+
+
+    private fun incrementProduct(product: Product) {
+
+        product.amount++
+        model.addProductToShop(product)
+        productsAdapter.notifyDataSetChanged()
+        product.amountsByDay = null
+        showFloatingButton()
+    }
+
+    private fun modifyAmountOfProduct(product: Product) {
+
+        var dialog: AlertDialogInput? = null
+        dialog = AlertDialogInput(
+            this,
+            "",
+            "",
+            resources.getString(R.string.add),
+            resources.getString(R.string.cancel),
+            { d, i ->
+
+                if (dialog?.input?.text.isNullOrEmpty()) {
+                    product.amount = 0
+                } else {
+                    product.amount = Integer(dialog?.input?.text.toString()).toInt()
+                }
+                if (product.amount == 0)
+                    model.removeProductFromShop(product)
+                else
+                    model.addProductToShop(product)
+
+                product.amountsByDay = null
+                showFloatingButton()
+                productsAdapter.notifyDataSetChanged()
+            },
+            { d, i -> })
+        dialog.show()
     }
 
 
@@ -198,33 +318,87 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     }
 
 
-    private fun repaintProductList(view: View, obj: Any?) {
+    private fun repaintProductList(view: View, model: Any?) {
 
-        val product = (obj as Product)
-        view.findViewById<TextView>(R.id.textView_products_list_product_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_products_list_price).text = "${product.price}€"
-        view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
-            .setBackgroundResource(R.drawable.ic_corazon)
+        var product = model as Product
+        var amountView = view.findViewById<TextView>(R.id.textView_order_product_list_amount)
+        var heart = view.findViewById<ImageView>(R.id.imgView_order_product_list_heart)
+
+
+        view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
+        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
+            product.category
+        view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
+            if (product.price == 0F) "N/A" else product.price.toString() + "€"
+        view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
+            product.amount.toString()
+
+
+        if (product.amount == 0) {
+            amountView.background =
+                this.getDrawable(R.drawable.shape_amount_zero_products)
+        } else {
+            amountView.background = this.getDrawable(R.drawable.shape_amount_products)
+        }
+
+        if (product.favorite) {
+            heart.setBackgroundResource(R.drawable.ic_corazon)
+
+        } else {
+            heart.setBackgroundResource(R.drawable.ic_corazon_outline)
+
+        }
+        amountView.text = product.amount.toString()
 
 
         try {
             Glide.with(this).load(product.imageUrl)
-                .into(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+                .into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
         } catch (ex: Exception) {
-            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_products_list_image_product))
+            LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
         }
 
-        if (product.favorite) {
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
-                .setBackgroundResource(R.drawable.ic_corazon)
 
+        if (!product.amountsByDay.isNullOrEmpty()) {
+
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+                .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario_confirmado))
         } else {
-            view.findViewById<ImageView>(R.id.imgView_products_list_image_heart)
-                .setBackgroundResource(R.drawable.ic_corazon_outline)
+            view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
+                .setImageDrawable(resources.getDrawable(R.drawable.ic_calendario))
+        }
+
+    }
+
+    private fun orderProducts(position: Int, _products: List<Product>? = null) {
+
+        if (position == 0) {
+            if (_products == null) {
+                this.products = this.products.sortedBy { p -> p.name }.toMutableList()
+            } else {
+                aux = _products?.sortedBy { p -> p.name }
+            }
+        } else if (position == 1) {
+            if (_products == null) {
+                this.products = this.products.sortedByDescending { p -> p.name }.toMutableList()
+            } else {
+                aux = _products?.sortedByDescending { p -> p.name }
+            }
+        } else if (position == 2) {
+            if (_products == null) {
+                this.products = this.products.sortedBy { p -> p.price }.toMutableList()
+            } else {
+                aux = _products?.sortedBy { p -> p.price }
+            }
+        } else if (position == 3) {
+            if (_products == null) {
+                this.products = this.products.sortedByDescending { p -> p.price }.toMutableList()
+            } else {
+                aux = _products?.sortedByDescending { p -> p.price }
+            }
 
         }
 
-        view.findViewById<TextView>(R.id.textView_products_list_category).text = product.category
     }
 
     private fun init() {
@@ -233,18 +407,20 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         centerViewPager = findViewById(R.id.viewPager_activity_product_centers)
 
         recyclerView = findViewById(R.id.recView_product_activity_product_list)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.addItemDecoration(
-            GridLayoutItemDecoration(
-                2,
-                50,
-                true
-            )
-        )
-        productsAdapter = ProductsAdapter(listOf())
+        productsAdapter = ProductsAdapter()
         recyclerView.adapter = productsAdapter
+        var layout = LinearLayoutManager(this).apply { isAutoMeasureEnabled = false }
+        layout.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = layout
+        model.getCenters()
+    }
 
+    private fun newSearch() {
+
+        currentPage = 1
+        productsAdapter.resetProducts()
+        products = mutableListOf()
     }
 
     private fun addDots(size: Int, v: LinearLayout) {
@@ -330,7 +506,15 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
                 catalogSelected = catalogs[position].id
-                model.getProductsByCatalog(centerSelected, catalogSelected)
+                model.getProductsByCatalog(
+                    SearchProduct(
+                        centerSelected,
+                        catalogSelected,
+                        null,
+                        null
+                    ), currentPage
+                )
+                model.getCategories(catalogSelected)
 
             }
 
@@ -371,21 +555,59 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             }
 
         })
+
+
+        button_activity_product_load_more_products.setOnClickListener {
+
+            if ( currentPage < pagination.totalPages ) {
+                currentPage += 1
+                searchProducts()
+            } else {
+                hideLoadMoreProductsButton()
+                AlertDialogOk(
+                    this,
+                    resources.getString(R.string.productos),
+                    resources.getString(R.string.products_fragment_no_products_message),
+                    resources.getString(R.string.ok)
+                ) { d, i -> }.show()
+            }
+        }
     }
 
-    private fun setFavorites() {
-
-        val favorites = model.loadFavoritesProducts(this)
-        products.forEach { p -> p.favorite = false }
-        if (favorites != null)
-            products.filter { p ->
-                p.id in favorites
-            }.forEach { p -> p.favorite = true }
-    }
 
     private fun setObservers() {
 
-        model.getCentersResultObservable()
+        model.searchProductsResult.observe(
+            this,
+            Observer<ServerResponse<List<Product>>> {
+
+                //imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
+                if (it.ServerData?.Data.isNullOrEmpty()) {
+
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.productos),
+                        resources.getString(R.string.products_fragment_no_products_search_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i -> }.show()
+                } else {
+                    showLoadMoreProductsButton()
+                    pagination = it.ServerData?.PaginationData!!
+                    aux = it.ServerData?.Data!!
+                    orderProducts(orderPosition, aux)
+                    val oldSize = products.size
+                    products.addAll(aux)
+                    setProductCurrentState()
+                    productsAdapter.products = products
+                    productsAdapter.notifyItemRangeInserted(oldSize, aux.size)
+
+                    if (currentPage == pagination.totalPages)
+                        hideLoadMoreProductsButton()
+                }
+
+            })
+
+        model.centersResult
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
                 centers = it.ServerData?.Data ?: listOf()
@@ -406,11 +628,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                 } else
                     centerViewPager.currentItem = index
-
-
             })
 
-        model.getCatalogsResultObservable()
+        model.catalogsResult
             .observe(this, Observer<ServerResponse<List<Catalog>>> {
 
                 catalogs = it.ServerData?.Data ?: listOf()
@@ -434,37 +654,38 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         0
                     ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
                     catalogSelected = catalogs[0].id
-                    model.getProductsByCatalog(centerSelected, catalogSelected)
+                    searchProducts = SearchProduct(
+                        centerSelected,
+                        catalogSelected,
+                        null,
+                        null
+                    )
+                    model.getProductsByCatalog(
+                        searchProducts as SearchProduct, currentPage
+                    )
+                    model.getCategories(catalogSelected)
                 }
 
             })
 
-        model.getProductsResultObservable()
+        model.productsResult
             .observe(this, Observer<ServerResponse<List<Product>>> {
 
                 val categories: MutableList<String> = mutableListOf()
                 categories.add(this.resources.getString(R.string.product_categories))
-                categories.addAll(products.map { p-> p.category }.distinct())
-                products = it.ServerData?.Data ?: listOf()
-                setFavorites()
-                productSpinners = FilterProductSpinners(
-                    this,
-                    categories,
-                    spinner_product_list_categories,
-                    spinner_product_list_order,
-                    { pos ->
-
-                        onSelectedCategory(pos)
-                    },
-                    { pos ->
-
-                        onSelectedOrder(pos)
-                    },
-                    R.layout.simple_spinner_item_white
-                )
-                productsAdapter.products = products
+                categories.addAll(products.map { p -> p.category }.distinct())
+                products = it.ServerData?.Data?.toMutableList() ?: mutableListOf()
+                productsAdapter.products = products.toMutableList()
                 productsAdapter.notifyDataSetChanged()
+                setProductCurrentState()
             })
+
+        model.categoriesResult.observe(this, Observer<ServerResponse<List<Category>>> {
+
+            val result = it.ServerData?.Data!!
+            loadSpinnersData(result.map { c -> c.categoryName })
+
+        })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 
@@ -479,69 +700,87 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     }
 
-    private fun applyFilters() {
-
-        var filtered: List<Product> = listOf()
-
-        if (filters["category"] != null) {
-
-            if (filters["category"] != null && filters["category"]?.toInt() == 0) {
-
-                filtered = products
-            }
-            if (filters["category"]?.toInt()!! > 0) {
-
-                filtered =
-                    products.filter { p -> p.category === productSpinners.getCategories()[filters["category"]?.toInt()!!] }
-            }
-
-        }
-
-        if (filters["search"] != null) {
-
-            filtered = filtered.filter { p ->
-                p.name.toLowerCase().contains(filters["search"]?.toLowerCase()!!)
-
-            }
-
-        }
-
-
-        if (filters["order"] != null) {
-
-            when (filters["order"]?.toInt()!!) {
-
-                0 -> {
-                    filtered = filtered.sortedBy { p -> p.name }
-
-                }
-                1 -> {
-                    filtered = filtered.sortedByDescending { p -> p.name }
-
-                }
-                2 -> {
-                    filtered = filtered.sortedBy { p -> p.price }
-                }
-                3 -> {
-                    filtered = filtered.sortedByDescending { p -> p.price }
-                }
-            }
-        }
-
-        productsAdapter.products = filtered
-        productsAdapter.notifyDataSetChanged()
-    }
-
     private fun onSelectedCategory(position: Int) {
 
-        filters["category"] = position.toString()
-        applyFilters()
+        if (searchProducts != null) {
+            newSearch()
+            if (position == 0)
+                searchProducts?.category = null
+            else
+                searchProducts?.category = categories[position]
+
+            searchProducts()
+        }
+
+    }
+
+    private fun setProductCurrentState() {
+
+        if (model.getProductsFromShop().isNotEmpty()) {
+
+            val productsShop = model.getProductsFromShop()
+            productsShop.forEach { p ->
+
+                val found = this.products.firstOrNull { _p -> _p.id == p.id }
+                if (found != null)
+                    this.products[this.products.indexOf(found)] = p
+
+            }
+            val products = this.products.filter { p -> p.amount > 0}
+            products.forEach { p ->
+                if ( productsShop.find { _p -> _p.id == p.id } == null ){
+                    p.amount = 0
+                }
+            }
+        } else {
+            products.filter { it.amount > 0 }.forEach { it.amount = 0 }
+            products.filter { !it.amountsByDay.isNullOrEmpty() }.forEach { it.amountsByDay = null }
+        }
+
+        val favorites = model.loadFavoritesProducts(this)
+        this.products.forEach { p -> p.favorite = false }
+        if (favorites != null)
+            this.products.filter { p ->
+                p.id in favorites
+            }.forEach { p -> p.favorite = true }
     }
 
     private fun onSelectedOrder(position: Int) {
 
-        filters["order"] = position.toString()
-        applyFilters()
+        orderProducts(position)
+        orderPosition = position
+        productsAdapter.products = products
+        productsAdapter.notifyDataSetChanged()
+    }
+
+    private fun loadSpinnersData(_categories: List<String>) {
+
+        categories.add(this.resources.getString(R.string.product_categories))
+        categories.addAll(_categories)
+        productSpinners = FilterProductSpinners(
+            this,
+            categories,
+            spinner_product_list_categories,
+            spinner_product_list_order,
+            { pos ->
+
+                onSelectedCategory(pos)
+            },
+            { pos ->
+
+                onSelectedOrder(pos)
+            },
+            R.layout.simple_spinner_item
+        )
+    }
+
+    private fun hideLoadMoreProductsButton() {
+
+        button_activity_product_load_more_products.visibility = View.INVISIBLE
+    }
+
+    private fun showLoadMoreProductsButton() {
+        button_activity_product_load_more_products.visibility = View.VISIBLE
     }
 }
 

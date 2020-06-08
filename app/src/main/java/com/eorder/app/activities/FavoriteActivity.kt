@@ -86,9 +86,9 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun getSearchFromToolbar(search: String) {
-        adapter.products =
+        /*adapter.products =
             products.filter { p -> p.name.toLowerCase().contains(search.toLowerCase()) }
-        adapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()*/
     }
 
 
@@ -199,7 +199,7 @@ class FavoriteActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
         var layout = GridLayoutManager(this, 2)
         adapter = ProductsAdapter(
 
-            listOf()
+
         )
         recyclerView = recicleView_favorites_activity
         recyclerView.adapter = adapter
