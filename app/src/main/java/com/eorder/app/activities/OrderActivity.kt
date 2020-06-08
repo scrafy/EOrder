@@ -171,7 +171,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         this.catalog = catalog
         if (model.isPossibleChangeCatalog(catalog.sellerId)) {
 
-            model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+            model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
             loadCategoriesFragment()
 
         } else {
@@ -187,7 +187,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                 { _, _ ->
 
                     model.cleanProducts()
-                    model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+                    model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
                     loadCategoriesFragment()
 
                 },
@@ -257,7 +257,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
                             loadCatalogsFragment()
                     } else {
                         catalog = catalogs[0]
-                        model.addSellerToOrder(catalog.sellerId, catalog.sellerName)
+                        model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
 
                         if (centers.isNotEmpty() && centers.size > 1)
                             loadCategoriesFragment()

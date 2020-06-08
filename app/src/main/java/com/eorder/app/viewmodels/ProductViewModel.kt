@@ -1,8 +1,6 @@
 package com.eorder.app.viewmodels
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum

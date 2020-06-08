@@ -2,7 +2,6 @@ package com.eorder.app.viewmodels
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.domain.models.Catalog
 import com.eorder.domain.models.Center
@@ -28,10 +27,11 @@ class OrderViewModel : BaseMainMenuActionsViewModel() {
         unitOfWorkService.getShopService().getOrder().center.buyerId = buyerId
     }
 
-    fun addSellerToOrder(sellerId: Int, sellerName: String) {
+    fun addSellerToOrder(sellerId: Int, sellerName: String, primaryCode: String) {
 
         unitOfWorkService.getShopService().getOrder().seller.sellerId = sellerId
         unitOfWorkService.getShopService().getOrder().seller.sellerName = sellerName
+        unitOfWorkService.getShopService().getOrder().primaryCode = primaryCode
     }
 
     fun cleanShop() = unitOfWorkService.getShopService().cleanShop()

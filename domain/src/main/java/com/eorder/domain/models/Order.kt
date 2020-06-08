@@ -9,6 +9,7 @@ class Order {
     var center: OrderCenterInfo = OrderCenterInfo()
     var seller: OrderSellerInfo = OrderSellerInfo()
     var currency: Currency = Currency.EUR
+    var primaryCode:String? = null
     var userId:String? = null
     var createdAt: LocalDateTime?=null
     var totalBase: Float = 0F
