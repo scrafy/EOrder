@@ -154,6 +154,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         model.summaryTotalsOrderResult.observe(this, Observer<Any> {
 
             this.products = model.getProducts()
+            setProductsFavoriteState()
             adapter.products = this.products
             adapter.notifyDataSetChanged()
             this.setTotals()
@@ -316,11 +317,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         adapter = ShopAdapter(products, this)
         listView = findViewById<ExpandableListView>(R.id.listView_activity_shop_product_list)
         listView.adapter = adapter
-        setProductsFavoriteState(products)
 
     }
 
-    private fun setProductsFavoriteState(products: List<Product>) {
+    private fun setProductsFavoriteState() {
 
         products.forEach { p ->
 
@@ -332,8 +332,6 @@ class ShopActivity : BaseActivity(), IRepaintModel,
             products.filter { p ->
                 p.id in favorites
             }.forEach { p -> p.favorite = true }
-
-        adapter.notifyDataSetChanged()
     }
 
     private fun setTotals() {

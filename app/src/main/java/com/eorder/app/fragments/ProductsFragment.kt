@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -53,6 +52,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private var orderPosition: Int = 0
     private lateinit var center: OrderCenterInfo
     private lateinit var seller: OrderSellerInfo
+    private var isScrolling : Boolean = false
+    private lateinit var manager: LinearLayoutManager
 
 
 
@@ -308,7 +309,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
                 imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
                 if (it.ServerData?.Data.isNullOrEmpty()) {
-                    hideLoadMoreProductsButton()
+
                     AlertDialogOk(
                         context!!,
                         resources.getString(R.string.productos),
@@ -316,7 +317,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                         resources.getString(R.string.ok)
                     ) { d, i -> }.show()
                 } else {
-                    showLoadMoreProductsButton()
+
                     pagination = it.ServerData?.PaginationData!!
                     aux = it.ServerData?.Data!!
                     orderProducts(orderPosition, aux)
@@ -326,8 +327,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     adapter.products = products
                     adapter.notifyItemRangeInserted(oldSize, aux.size)
 
-                    if ( currentPage == pagination.totalPages )
-                        hideLoadMoreProductsButton()
                 }
 
             })
@@ -377,10 +376,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         var menu = mutableMapOf<String, Int>()
         menu["search_menu"] = R.menu.search_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
-        var layout = LinearLayoutManager(this.context).apply { isAutoMeasureEnabled = false }
-        layout.orientation = LinearLayoutManager.VERTICAL
+        manager = LinearLayoutManager(this.context).apply { isAutoMeasureEnabled = false }
+        manager.orientation = LinearLayoutManager.VERTICAL
         recyclerView = this.view!!.findViewById(R.id.recView_products_fragment_product_list)
-        recyclerView.layoutManager = layout
+        recyclerView.layoutManager = manager
         recyclerView.itemAnimator = DefaultItemAnimator()
         adapter = OrderProductAdapter(
 
@@ -422,7 +421,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     private fun searchProducts() {
-        hideLoadMoreProductsButton()
+
         model.searchProducts(searchProducts, currentPage)
 
     }
@@ -493,28 +492,36 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun setListeners() {
 
-        button_products_fragment_load_more_products.setOnClickListener {
-            if ( currentPage < pagination.totalPages ) {
-                currentPage += 1
-                searchProducts()
-            } else {
-                hideLoadMoreProductsButton()
-                AlertDialogOk(
-                    context!!,
-                    resources.getString(R.string.productos),
-                    resources.getString(R.string.products_fragment_no_products_message),
-                    resources.getString(R.string.ok)
-                ) { d, i -> }.show()
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int){
+
+                super.onScrolled(recyclerView, dx, dy)
+                var currentItems = manager.childCount
+                var totalItems = manager.itemCount
+                var scrollOutItems = manager.findFirstVisibleItemPosition()
+
+                if ( isScrolling && (currentItems + scrollOutItems == totalItems) ){
+
+                    isScrolling = false
+                    if ( currentPage < pagination.totalPages ) {
+                        currentPage += 1
+                        imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
+                        searchProducts()
+                    }
+                }
+
             }
-        }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState:Int){
+
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+
+                    isScrolling = true
+                }
+            }
+        })
     }
 
-    private fun hideLoadMoreProductsButton() {
-
-        button_products_fragment_load_more_products.visibility = View.INVISIBLE
-    }
-
-    private fun showLoadMoreProductsButton() {
-        button_products_fragment_load_more_products.visibility = View.VISIBLE
-    }
 }

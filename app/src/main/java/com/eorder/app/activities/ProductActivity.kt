@@ -5,10 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
@@ -63,6 +60,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private var orderPosition: Int = 0
     private var centerSelected: Int = 0
     private lateinit var productSpinners: FilterProductSpinners
+    private var isScrolling : Boolean = false
+    private lateinit var manager: LinearLayoutManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -410,9 +409,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         recyclerView.itemAnimator = DefaultItemAnimator()
         productsAdapter = ProductsAdapter()
         recyclerView.adapter = productsAdapter
-        var layout = LinearLayoutManager(this).apply { isAutoMeasureEnabled = false }
-        layout.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = layout
+        manager = LinearLayoutManager(this).apply { isAutoMeasureEnabled = false }
+        manager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView.layoutManager = manager
         model.getCenters()
     }
 
@@ -556,22 +555,36 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
         })
 
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
 
-        button_activity_product_load_more_products.setOnClickListener {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int){
 
-            if ( currentPage < pagination.totalPages ) {
-                currentPage += 1
-                searchProducts()
-            } else {
-                hideLoadMoreProductsButton()
-                AlertDialogOk(
-                    this,
-                    resources.getString(R.string.productos),
-                    resources.getString(R.string.products_fragment_no_products_message),
-                    resources.getString(R.string.ok)
-                ) { d, i -> }.show()
+                super.onScrolled(recyclerView, dx, dy)
+                var currentItems = manager.childCount
+                var totalItems = manager.itemCount
+                var scrollOutItems = manager.findFirstVisibleItemPosition()
+
+                if ( isScrolling && (currentItems + scrollOutItems == totalItems) ){
+
+                    isScrolling = false
+                    if ( currentPage < pagination.totalPages ) {
+                        currentPage += 1
+                        imgView_activity_product_pedidoe_loading.visibility = View.VISIBLE
+                        searchProducts()
+                    }
+                }
+
             }
-        }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState:Int){
+
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+
+                    isScrolling = true
+                }
+            }
+        })
     }
 
 
@@ -581,7 +594,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             this,
             Observer<ServerResponse<List<Product>>> {
 
-                //imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
+                imgView_activity_product_pedidoe_loading.visibility = View.INVISIBLE
                 if (it.ServerData?.Data.isNullOrEmpty()) {
 
                     AlertDialogOk(
@@ -591,7 +604,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         resources.getString(R.string.ok)
                     ) { d, i -> }.show()
                 } else {
-                    showLoadMoreProductsButton()
+
                     pagination = it.ServerData?.PaginationData!!
                     aux = it.ServerData?.Data!!
                     orderProducts(orderPosition, aux)
@@ -601,8 +614,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     productsAdapter.products = products
                     productsAdapter.notifyItemRangeInserted(oldSize, aux.size)
 
-                    if (currentPage == pagination.totalPages)
-                        hideLoadMoreProductsButton()
+
+
                 }
 
             })
@@ -774,13 +787,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         )
     }
 
-    private fun hideLoadMoreProductsButton() {
 
-        button_activity_product_load_more_products.visibility = View.INVISIBLE
-    }
-
-    private fun showLoadMoreProductsButton() {
-        button_activity_product_load_more_products.visibility = View.VISIBLE
-    }
 }
 
