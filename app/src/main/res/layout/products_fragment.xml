@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_silver_square_no_rounded"
+            android:background="@drawable/shape_blue_gradient_background"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@android:color/white"
 
                 />
 
@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@android:color/white"
 
                 />
 

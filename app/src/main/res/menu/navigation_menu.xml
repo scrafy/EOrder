@@ -47,12 +47,12 @@
                     
                     />
 
-                <item
+               <!-- <item
                     android:id="@+id/favourite_products"
                     android:title="@string/lateral_nav_menu_favourite_products"
                     android:icon="@drawable/ic_heart_black"
                     
-                    />
+                    />-->
 
         </menu>
     </item>

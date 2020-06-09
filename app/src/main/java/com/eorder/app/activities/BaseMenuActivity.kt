@@ -179,10 +179,10 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                             intent.setClass(this, OrderDoneActivity::class.java)
                             startActivity(intent)
                         }
-                        R.id.favourite_products -> {
+                        /*R.id.favourite_products -> {
                             intent.setClass(this, FavoriteActivity::class.java)
                             startActivity(intent)
-                        }
+                        }*/
                         R.id.profile ->  {
                             intent.setClass(this, ProfileActivity::class.java)
                             startActivity(intent)

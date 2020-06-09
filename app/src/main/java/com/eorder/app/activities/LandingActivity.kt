@@ -36,13 +36,6 @@ class LandingActivity : BaseMenuActivity() {
 
         }
 
-        cardView_activity_landing_favorites.setOnClickListener {
-
-
-            intent.setClass(this, FavoriteActivity::class.java)
-            startActivity(intent)
-        }
-
         cardView_activity_landing_orders.setOnClickListener {
 
             intent.setClass(this, OrderDoneActivity::class.java)
