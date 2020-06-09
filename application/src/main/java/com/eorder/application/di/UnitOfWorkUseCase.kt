@@ -24,7 +24,6 @@ class UnitOfWorkUseCase(
     private var changePasswordUseCase: IChangePasswordUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
     private var sellersUseCase: ISellersUseCase? = null
-    private var sellerUseCase: ISellerUseCase? = null
     private var productsBySellerUseCase: IProductsBySellerUseCase? = null
     private var checkCenterActivationCodeUseCase: ICheckCenterActivationCodeUseCase? = null
     private var createAccountUseCase: ICreateAccountUseCase? = null
@@ -99,16 +98,6 @@ class UnitOfWorkUseCase(
             )
 
         return productsBySellerUseCase as IProductsBySellerUseCase
-    }
-
-    fun getSellerUseCase(): ISellerUseCase {
-
-        if (sellerUseCase == null)
-            sellerUseCase = SellerUseCase(
-                unitOfWorkRepository.getSellerRepository()
-            )
-
-        return sellerUseCase as ISellerUseCase
     }
 
     fun getSellersUseCase(): ISellersUseCase {

@@ -1,24 +1,21 @@
 package com.eorder.domain.models
 
-import android.graphics.Bitmap
-import com.eorder.domain.interfaces.ILoadImageFields
-import java.io.Serializable
+import com.eorder.domain.enumerations.Sector
 
 class Seller(
 
     val id: Int,
     val gln: Long,
     val companyName: String,
-    val taxId: String,
+    val vatNumber: String,
     val address: String,
     val city: String,
-    val pc: Int,
+    val postalCode: String,
     val country: String,
     val erp: String? = null,
     val email: String,
     val province: String,
-    val sector: String,
-    override val imageUrl: String? = null,
-    override var image: Bitmap? = null
+    val sector: Sector,
+    val imageUrl: String? = null
 
-) :  ILoadImageFields
+)

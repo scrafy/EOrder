@@ -237,7 +237,7 @@
 
     <!--SELLER FRAGMENT INFO-->
     <string name="seller_fragment_info_seller_name">Seller name</string>
-    <string name="seller_fragment_info_taxid">TaxId</string>
+    <string name="seller_fragment_info_taxid">Vat number</string>
     <string name="seller_fragment_info_address">Address</string>
     <string name="seller_fragment_info_city">City</string>
     <string name="seller_fragment_info_post_code">Post code</string>

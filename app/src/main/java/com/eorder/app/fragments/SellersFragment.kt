@@ -89,13 +89,6 @@ class SellersFragment : BaseFragment(),
                 (context as ISelectSeller).selectSeller(seller)
             }
 
-        view.findViewById<TextView>(R.id.textView_sellers_list_view_products).setOnClickListener {
-
-            val intent = Intent(context, SellerProductActivity::class.java)
-            intent.putExtra("sellerId", seller.id)
-            startActivity(intent)
-        }
-
     }
 
     override fun repaintModel(view: View, model: Any?) {
@@ -137,14 +130,6 @@ class SellersFragment : BaseFragment(),
 
     }
 
-    private fun loadImages() {
-
-        LoadImageHelper().loadImage(sellers)
-            .observe(this.activity as LifecycleOwner, Observer<Any> {
-
-                adapter.notifyDataSetChanged()
-            })
-    }
 
     private fun init() {
 

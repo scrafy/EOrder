@@ -1,5 +1,7 @@
 package com.eorder.domain.models
 
+import com.eorder.domain.enumerations.Sector
+
 
 class Center(
 
@@ -11,7 +13,7 @@ class Center(
     val country: String,
     val email: String,
     val province: String,
-    val sector: String,
+    val sector: Sector,
     val imageUrl: String? = null,
     var buyerId:Int? = null
 )

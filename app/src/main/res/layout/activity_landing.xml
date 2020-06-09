@@ -133,7 +133,7 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <androidx.cardview.widget.CardView
+                    <!--<androidx.cardview.widget.CardView
                         android:id="@+id/cardView_activity_landing_favorites"
                         android:layout_width="90dp"
                         android:layout_height="90dp"
@@ -178,7 +178,7 @@
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>-->
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView_activity_landing_catalogs"
