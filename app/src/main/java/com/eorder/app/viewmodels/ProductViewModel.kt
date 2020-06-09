@@ -43,6 +43,23 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
+    fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?, buyerId:Int?) {
+
+        unitOfWorkService.getShopService().getOrder().center.centerId = centerId
+        unitOfWorkService.getShopService().getOrder().center.centerName = centerName
+        unitOfWorkService.getShopService().getOrder().center.imageUrl = centerImageUrl
+        unitOfWorkService.getShopService().getOrder().center.buyerId = buyerId
+    }
+
+    fun addSellerToOrder(sellerId: Int, sellerName: String, primaryCode: String) {
+
+        unitOfWorkService.getShopService().getOrder().seller.sellerId = sellerId
+        unitOfWorkService.getShopService().getOrder().seller.sellerName = sellerName
+        unitOfWorkService.getShopService().getOrder().primaryCode = primaryCode
+    }
+
+    fun cleanShop() = unitOfWorkService.getShopService().cleanShop()
+
     fun getCenters() {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {

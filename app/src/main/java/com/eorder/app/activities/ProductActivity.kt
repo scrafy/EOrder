@@ -35,7 +35,6 @@ import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.activity_product.*
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout
 import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout2
-import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -56,9 +55,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private var currentPage: Int = 1
     private lateinit var centers: List<Center>
     private var products: MutableList<Product> = mutableListOf()
-    private var catalogSelected: Int = 0
+    private var catalogSelected: Catalog? = null
+    private var centerSelected: Center? = null
     private var orderPosition: Int = 0
-    private var centerSelected: Int = 0
     private lateinit var productSpinners: FilterProductSpinners
     private var isScrolling : Boolean = false
     private lateinit var manager: LinearLayoutManager
@@ -504,9 +503,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     position
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
-                catalogSelected = catalogs[position].id
-                searchProducts?.catalogId = catalogSelected
-                model.getCategories(catalogSelected)
+                catalogSelected = catalogs[position]
+                searchProducts?.catalogId = (catalogSelected as Catalog).id
+                model.getCategories((catalogSelected as Catalog).id)
 
             }
 
@@ -542,8 +541,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     position
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
-                centerSelected = centers[position].id
-                model.getCatalogByCenter(centerSelected)
+                centerSelected = centers[position]
+                model.getCatalogByCenter((centerSelected as Center).id)
             }
 
         })
@@ -615,14 +614,14 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
                 centers = it.ServerData?.Data ?: listOf()
-                centerSelected = intent.getIntExtra("centerId", centers.first().id)
+                centerSelected = centers.first { x -> x.id == intent.getIntExtra("centerId", centers.first().id) }
                 centerViewPager.adapter = ProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
                 addDots(centers.size, linearLayout_activity_product_dots_centers)
                 (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                     0
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
-                val index = centers.indexOf(centers.firstOrNull { s -> s.id == centerSelected }
+                val index = centers.indexOf(centers.firstOrNull { s -> s.id == (centerSelected as Center).id }
                     ?: centers[0])
                 if (index == 0) {
                     (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
@@ -644,7 +643,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         resources.getString(R.string.product_activity_no_catalog_dialog_title),
                         String.format(
                             resources.getString(R.string.product_activity_no_catalog_dialog_message),
-                            centers.find { c -> c.id == centerSelected }?.name
+                            centers.find { c -> c.id == (centerSelected as Center).id }?.name
                         ),
                         resources.getString(R.string.ok)
 
@@ -657,14 +656,14 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_catalogs).getChildAt(
                         0
                     ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
-                    catalogSelected = catalogs[0].id
+                    catalogSelected = catalogs[0]
                     searchProducts = SearchProduct(
-                        centerSelected,
-                        catalogSelected,
+                        (centerSelected as Center).id,
+                        (catalogSelected as Catalog).id,
                         null,
                         null
                     )
-                    model.getCategories(catalogSelected)
+                    model.getCategories((catalogSelected as Catalog).id)
                 }
 
             })
