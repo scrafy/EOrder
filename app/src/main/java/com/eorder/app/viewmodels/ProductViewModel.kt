@@ -16,7 +16,6 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
 
     val catalogsResult: MutableLiveData<ServerResponse<List<Catalog>>> = MutableLiveData()
     val centersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
-    val productsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
     val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
     val searchProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
 
@@ -50,17 +49,6 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
 
             var result = unitOfWorkUseCase.getCentersUseCase().getCenters()
             centersResult.postValue(result)
-        }
-    }
-
-
-    fun getProductsByCatalog(search: SearchProduct, page:Int) {
-
-        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-
-            var result =
-                unitOfWorkUseCase.getSearchProductsUseCase().searchProducts(search, page)
-            productsResult.postValue(result)
         }
     }
 

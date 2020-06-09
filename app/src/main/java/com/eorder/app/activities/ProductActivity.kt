@@ -505,14 +505,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
                 catalogSelected = catalogs[position].id
-                model.getProductsByCatalog(
-                    SearchProduct(
-                        centerSelected,
-                        catalogSelected,
-                        null,
-                        null
-                    ), currentPage
-                )
+                searchProducts?.catalogId = catalogSelected
                 model.getCategories(catalogSelected)
 
             }
@@ -614,8 +607,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     productsAdapter.products = products
                     productsAdapter.notifyItemRangeInserted(oldSize, aux.size)
 
-
-
                 }
 
             })
@@ -673,24 +664,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                         null,
                         null
                     )
-                    model.getProductsByCatalog(
-                        searchProducts as SearchProduct, currentPage
-                    )
                     model.getCategories(catalogSelected)
                 }
 
-            })
-
-        model.productsResult
-            .observe(this, Observer<ServerResponse<List<Product>>> {
-
-                val categories: MutableList<String> = mutableListOf()
-                categories.add(this.resources.getString(R.string.product_categories))
-                categories.addAll(products.map { p -> p.category }.distinct())
-                products = it.ServerData?.Data?.toMutableList() ?: mutableListOf()
-                productsAdapter.products = products.toMutableList()
-                productsAdapter.notifyDataSetChanged()
-                setProductCurrentState()
             })
 
         model.categoriesResult.observe(this, Observer<ServerResponse<List<Category>>> {
@@ -768,6 +744,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     private fun loadSpinnersData(_categories: List<String>) {
 
+        categories.clear()
         categories.add(this.resources.getString(R.string.product_categories))
         categories.addAll(_categories)
         productSpinners = FilterProductSpinners(
