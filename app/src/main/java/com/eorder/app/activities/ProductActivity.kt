@@ -56,12 +56,22 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var centers: List<Center>
     private var products: MutableList<Product> = mutableListOf()
     private var catalogSelected: Catalog? = null
+    private var beforeCenterSelected: Center? = null
     private var centerSelected: Center? = null
     private var orderPosition: Int = 0
     private lateinit var productSpinners: FilterProductSpinners
-    private var isScrolling : Boolean = false
+    private var isScrolling: Boolean = false
     private lateinit var manager: LinearLayoutManager
 
+
+    init {
+        self = this
+    }
+
+    companion object {
+
+        var self: ProductActivity? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -246,6 +256,28 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     private fun incrementProduct(product: Product) {
 
+        if (model.isPossibleAddProduct(
+                product,
+                beforeCenterSelected as Center,
+                centerSelected as Center
+            )
+        ) {
+
+            addProduct(product)
+
+        } else {
+            addProductMessage {
+
+                addProduct(product)
+            }
+        }
+
+    }
+
+    private fun addProduct(product: Product) {
+
+        addSellerToOrder(catalogSelected as Catalog)
+        addCenterToOrder(centerSelected as Center)
         product.amount++
         model.addProductToShop(product)
         productsAdapter.notifyDataSetChanged()
@@ -253,8 +285,10 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         showFloatingButton()
     }
 
-    private fun modifyAmountOfProduct(product: Product) {
+    private fun addAmountOfProduct(product: Product) {
 
+        addSellerToOrder(catalogSelected as Catalog)
+        addCenterToOrder(centerSelected as Center)
         var dialog: AlertDialogInput? = null
         dialog = AlertDialogInput(
             this,
@@ -274,12 +308,32 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 else
                     model.addProductToShop(product)
 
+
                 product.amountsByDay = null
                 showFloatingButton()
                 productsAdapter.notifyDataSetChanged()
             },
             { d, i -> })
         dialog.show()
+    }
+
+    private fun modifyAmountOfProduct(product: Product) {
+
+        if (model.isPossibleAddProduct(
+                product,
+                beforeCenterSelected as Center,
+                centerSelected as Center
+            )
+        ) {
+
+            addAmountOfProduct(product)
+        } else {
+            addProductMessage {
+
+                addAmountOfProduct(product)
+
+            }
+        }
     }
 
 
@@ -434,6 +488,29 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         }
     }
 
+    private fun addProductMessage(callback: () -> Unit) {
+
+        AlertDialogQuestion(self?.getContext()!!, resources.getString(R.string.catalogs),
+            resources.getString(R.string.product_activity_add_product),
+            resources.getString(R.string.add),
+            resources.getString(R.string.no_add),
+
+            { i, t ->
+
+                model.resetAmountOfProducts()
+                model.cleanShop()
+                beforeCenterSelected = centerSelected
+                callback()
+
+            },
+            { i, t ->
+
+
+            }
+
+        ).show()
+    }
+
     private fun setListeners() {
 
         textView_activity_product_select_center.setOnClickListener {
@@ -489,6 +566,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
             override fun onPageSelected(position: Int) {
 
+
                 findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_catalogs).children.iterator()
                     .forEach { v ->
                         (v as TextView).setTextColor(
@@ -503,10 +581,52 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     position
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
+                /* if (!model.isShopEmpty()) {
+
+                     if (model.getCurrentSupplier() != catalogSelected?.sellerId) {
+
+                         AlertDialogQuestion(self?.getContext()!!, "Catalog",
+                             "If you change the catalog, the shop´s products will be deleted, is not possible mix products from differents sellers\n¿Are you sure you want change the catalog?",
+                             "Change",
+                             "No change",
+
+                             { i, t ->
+
+                                 catalogSelected = catalogs[position]
+                                 model.cleanShop()
+                                 (self as ProductActivity).showFloatingButton()
+                                 addSellerToOrder(catalogSelected as Catalog)
+                                 addCenterToOrder(centerSelected as Center)
+                                 searchProducts?.catalogId = (catalogSelected as Catalog).id
+                                 model.getCategories((catalogSelected as Catalog).id)
+
+                             },
+                             { i, t ->
+
+
+                             }
+
+                         ).show()
+
+                     }else{
+
+                         catalogSelected = catalogs[position]
+                         addSellerToOrder(catalogSelected as Catalog)
+                         searchProducts?.catalogId = (catalogSelected as Catalog).id
+                         model.getCategories((catalogSelected as Catalog).id)
+                     }
+
+
+                 } else {
+                     catalogSelected = catalogs[position]
+                     addSellerToOrder(catalogSelected as Catalog)
+                     searchProducts?.catalogId = (catalogSelected as Catalog).id
+                     model.getCategories((catalogSelected as Catalog).id)
+                 }*/
+
                 catalogSelected = catalogs[position]
                 searchProducts?.catalogId = (catalogSelected as Catalog).id
                 model.getCategories((catalogSelected as Catalog).id)
-
             }
 
         })
@@ -542,24 +662,28 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
                 centerSelected = centers[position]
+
+                if (model.isShopEmpty())
+                    beforeCenterSelected = centerSelected
+
                 model.getCatalogByCenter((centerSelected as Center).id)
             }
 
         })
 
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
                 super.onScrolled(recyclerView, dx, dy)
                 var currentItems = manager.childCount
                 var totalItems = manager.itemCount
                 var scrollOutItems = manager.findFirstVisibleItemPosition()
 
-                if ( isScrolling && (currentItems + scrollOutItems == totalItems) ){
+                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
 
                     isScrolling = false
-                    if ( currentPage < pagination.totalPages ) {
+                    if (currentPage < pagination.totalPages) {
                         currentPage += 1
                         imgView_activity_product_pedidoe_loading.visibility = View.VISIBLE
                         searchProducts()
@@ -568,10 +692,10 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState:Int){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
 
                     isScrolling = true
                 }
@@ -614,15 +738,23 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
                 centers = it.ServerData?.Data ?: listOf()
-                centerSelected = centers.first { x -> x.id == intent.getIntExtra("centerId", centers.first().id) }
+                centerSelected = centers.first { x ->
+                    x.id == intent.getIntExtra(
+                        "centerId",
+                        centers.first().id
+                    )
+                }
+                beforeCenterSelected = centerSelected
+                addCenterToOrder(centerSelected as Center)
                 centerViewPager.adapter = ProductCenterListAdapter(this, centers)
                 centerViewPager.adapter?.notifyDataSetChanged()
                 addDots(centers.size, linearLayout_activity_product_dots_centers)
                 (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                     0
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
-                val index = centers.indexOf(centers.firstOrNull { s -> s.id == (centerSelected as Center).id }
-                    ?: centers[0])
+                val index =
+                    centers.indexOf(centers.firstOrNull { s -> s.id == (centerSelected as Center).id }
+                        ?: centers[0])
                 if (index == 0) {
                     (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_centers).getChildAt(
                         0
@@ -688,6 +820,16 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
     }
 
+    private fun addCenterToOrder(center: Center) {
+
+        model.addCenterToOrder(center.id, center.name, center.imageUrl, center.buyerId)
+    }
+
+    private fun addSellerToOrder(catalog: Catalog) {
+
+        model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
+    }
+
     private fun onSelectedCategory(position: Int) {
 
         if (searchProducts != null) {
@@ -714,9 +856,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     this.products[this.products.indexOf(found)] = p
 
             }
-            val products = this.products.filter { p -> p.amount > 0}
+            val products = this.products.filter { p -> p.amount > 0 }
             products.forEach { p ->
-                if ( productsShop.find { _p -> _p.id == p.id } == null ){
+                if (productsShop.find { _p -> _p.id == p.id } == null) {
                     p.amount = 0
                 }
             }

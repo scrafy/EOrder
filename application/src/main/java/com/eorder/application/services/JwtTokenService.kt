@@ -84,7 +84,7 @@ class JwtTokenService(
     }
 
     private fun setToken(token: String): Jws<Claims?> {
-        //Thread.sleep(500)
+        Thread.sleep(1500)
         return try {
 
             Jwts.parserBuilder()

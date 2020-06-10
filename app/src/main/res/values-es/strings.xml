@@ -8,6 +8,7 @@
     <string name="no">No</string>
     <string name="ok">Ok</string>
     <string name="add">Añadir</string>
+    <string name="no_add">No añadir</string>
     <string name="cancel">Cancelar</string>
     <string name="modify">Modificar</string>
     <string name="send">Enviar</string>
@@ -15,7 +16,7 @@
     <string name="number_units">Número de unidades</string>
     <string name="change_password">Change password</string>
     <string name="productos">Productos</string>
-    <string name="catalogs">Catalogs</string>
+    <string name="catalogs">Catalogos</string>
     <string name="centers">Centers</string>
 
 
@@ -82,6 +83,7 @@
     <string name="product_activity_no_catalog_dialog_message">%s no dispone de ningún catálogo configurado</string>
     <string name="product_activity_select_center">Seleccione un centro ▲</string>
     <string name="product_activity_select_catalog">Seleccione un catálogo ▼</string>
+    <string name="product_activity_add_product">Si quiere añadir este producto, el carro de la compra será eliminado. No es posible realizar pedidos mezclando productos de diferentes proveedores o hacia diferentes centros</string>
 
 
     <!--PRODUCT CALENDAR ACTIVITY-->

@@ -8,6 +8,7 @@
     <string name="no">No</string>
     <string name="ok">Ok</string>
     <string name="add">Add</string>
+    <string name="no_add">No add</string>
     <string name="cancel">Cancel</string>
     <string name="modify">Modify</string>
     <string name="send">Send</string>
@@ -82,6 +83,7 @@
     <string name="product_activity_no_catalog_dialog_message">%s does not have any catalog setted</string>
     <string name="product_activity_select_center">Select a center ▲</string>
     <string name="product_activity_select_catalog">Select a catalog ▼</string>
+    <string name="product_activity_add_product">If you want add this product, the current cart will be deleted. It´s not possible to make orders mixing products from different suppliers or for multiple centers</string>
 
 
     <!--PRODUCT CALENDAR ACTIVITY-->

@@ -43,6 +43,21 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
+    fun isShopEmpty() = getProductsFromShop().size == 0
+
+    fun isPossibleAddProduct(product: Product, beforeCenter:Center, currentCenter:Center) : Boolean {
+
+        val products = unitOfWorkService.getShopService().getOrder().products
+
+        if ( products.any { x -> x.sellerId != product.sellerId } )
+            return false
+
+        if ( beforeCenter.id != currentCenter.id )
+            return false
+
+        return true
+    }
+
     fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?, buyerId:Int?) {
 
         unitOfWorkService.getShopService().getOrder().center.centerId = centerId
@@ -59,6 +74,11 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
     }
 
     fun cleanShop() = unitOfWorkService.getShopService().cleanShop()
+
+    fun resetAmountOfProducts(){
+
+        unitOfWorkService.getShopService().getOrder().products.forEach { p -> p.amount = 0 }
+    }
 
     fun getCenters() {
 
