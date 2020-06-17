@@ -50,7 +50,7 @@ class UserRepository(
 
         httpClient.addAuthorizationHeader(true)
         var resp = httpClient.postJsonData(
-            "${configurationManager.getProperty("endpoint_url")}ProductDetails/searchids",
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/subsetproducts",
             searchProduct,
             null
         )
