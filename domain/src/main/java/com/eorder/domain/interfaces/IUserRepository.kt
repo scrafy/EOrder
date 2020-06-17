@@ -6,7 +6,7 @@ interface IUserRepository {
 
     fun login(login: Login): ServerResponse<String>
     fun changePassword(recoverPassword: ChangePassword): ServerResponse<Any>
-    fun getFavoriteProducts( favorites:List<Int> ) : ServerResponse<List<Product>>
+    fun getFavoriteProducts( searchProduct: SearchProduct ): ServerResponse<List<Product>>
     fun createAccount(account: Account): ServerResponse<Any>
     fun recoverPassword(email: Email): ServerResponse<Any>
     fun checkUserEmail(email: Email): ServerResponse<Boolean>

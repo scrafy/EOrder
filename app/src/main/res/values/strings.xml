@@ -225,6 +225,7 @@
 
     <string name="products_fragment_no_products_message">There are not more products...</string>
     <string name="products_fragment_no_products_search_message">Any product found with search criteria</string>
+    <string name="products_fragment_no_favorite_products_message">You has not added any product to your favorite list yet</string>
     <string name="products_fragment_more_products">More products</string>
 
 

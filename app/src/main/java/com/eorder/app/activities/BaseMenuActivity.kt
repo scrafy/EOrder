@@ -3,13 +3,13 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.view.Gravity
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.eorder.app.R
-import com.eorder.app.interfaces.IOnShopToolbarIconClicked
+import com.eorder.app.interfaces.IFavoriteIconClicked
 import com.eorder.app.interfaces.ISetActionBar
 import com.eorder.app.interfaces.IToolbarSearch
 import com.google.android.material.navigation.NavigationView
@@ -56,23 +56,40 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
         setToolbarAndLateralMenu(currentToolBarMenu)
         when (currentToolBarMenu.keys.first()) {
 
-            "cart_menu" -> {
+            "search_menu" -> {
 
-                val itemShop = menu?.findItem(R.id.item_menu_product_list_shop)
-                itemShop?.setOnMenuItemClickListener {
-                    (getContext() as IOnShopToolbarIconClicked).onShopIconClicked()
-                    true
+                val itemFavorite = menu?.findItem(R.id.item_menu_product_list_favorite)
+
+                itemFavorite!!.setOnMenuItemClickListener {
+
+                    (getContext() as IFavoriteIconClicked).onFavoriteIconClicked()
+                     true
                 }
-                executeSearch(menu)
+
+                val itemSearch = menu ?. findItem (R.id.item_menu_product_list_search)
+                val search = (itemSearch?.actionView as SearchView)
+                search.queryHint = resources.getString(R.string.toolbar_proudct_list_search)
+                search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        search.isIconified = true
+                        (getContext() as IToolbarSearch).getSearchFromToolbar(query ?: "")
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+
+                        (getContext() as IToolbarSearch).getSearchFromToolbar(newText ?: "")
+                        return true
+                    }
+
+                })
 
             }
-
-            "search_menu" -> executeSearch(menu)
-
         }
-
         return super.onCreateOptionsMenu(menu)
     }
+
 
     protected fun setToolbarAndLateralMenu(
         menu: MutableMap<String, Int>
@@ -84,8 +101,6 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
             setListenersMainMenu()
             toolbar.setPadding(0, 0, 10, 0)
         }
-        if (menu.values.first() == R.menu.cart_menu)
-            toolbar.setPadding(0, 0, 70, 0)
 
         toolbar.inflateMenu(menu.values.first())
         if (this.showLateralMenu) {
@@ -110,11 +125,11 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                 when (item?.itemId) {
 
                     R.id.profile -> startActivity(Intent(this, ProfileActivity::class.java))
-                   /* R.id.setting -> Toast.makeText(
-                        getContext(),
-                        "Settings",
-                        Toast.LENGTH_LONG
-                    ).show()*/
+                    /* R.id.setting -> Toast.makeText(
+                         getContext(),
+                         "Settings",
+                         Toast.LENGTH_LONG
+                     ).show()*/
                     R.id.signout -> {
                         getContext().signOutApp()
                     }
@@ -122,29 +137,6 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                 }
                 true
             }
-    }
-
-    private fun executeSearch(menu: Menu?) {
-
-        val itemSearch = menu?.findItem(R.id.item_menu_product_list_search)
-        val search = (itemSearch?.actionView as SearchView)
-        search.queryHint = resources.getString(R.string.toolbar_proudct_list_search)
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                search.isIconified = true
-                (getContext() as IToolbarSearch).getSearchFromToolbar(query ?: "")
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-
-                (getContext() as IToolbarSearch).getSearchFromToolbar(newText ?: "")
-                return true
-            }
-
-        })
-
     }
 
     private fun bindEventsToLateralMenu() {
@@ -183,7 +175,7 @@ abstract class BaseMenuActivity : BaseFloatingButtonActivity(), ISetActionBar {
                             intent.setClass(this, FavoriteActivity::class.java)
                             startActivity(intent)
                         }*/
-                        R.id.profile ->  {
+                        R.id.profile -> {
                             intent.setClass(this, ProfileActivity::class.java)
                             startActivity(intent)
                         }

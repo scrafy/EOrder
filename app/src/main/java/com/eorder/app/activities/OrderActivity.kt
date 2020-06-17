@@ -31,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepaintShopIcon,
+class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavoriteIconClicked,
     IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked, IOpenProductCalendar,
     ISelectCategory {
 
@@ -51,19 +51,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
     }
 
 
-    override fun repaintShopIcon() {
-
-        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
-        if (model.getProductsFromShop().isNotEmpty()) {
-
-            val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
-            menuItem?.setIcon(R.drawable.ic_orange_full_order)
-        } else {
-            val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_shop)
-            menuItem?.setIcon(R.drawable.ic_shopping_cart_white_24dp)
-        }
-    }
-
     override fun getProductsFromShop(): List<Product> {
         return model.getProductsFromShop()
     }
@@ -74,6 +61,12 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
         (fragment as IToolbarSearch).getSearchFromToolbar(
             search
         )
+    }
+
+    override fun onFavoriteIconClicked() {
+
+        val fragment = this.supportFragmentManager.fragments.last{ f -> f is IToolbarSearch }
+        (fragment as IFavoriteIconClicked).onFavoriteIconClicked()
     }
 
     override fun onShopIconClicked() {
@@ -115,16 +108,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog, IRepain
 
     override fun signOutApp() {
         model.signOutApp(this)
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        super.onCreateOptionsMenu(menu)
-        if (menu?.findItem(R.id.item_menu_product_list_shop) != null) {
-            this.repaintShopIcon()
-        }
-        return true
     }
 
     override fun selectCenter(center: Center) {

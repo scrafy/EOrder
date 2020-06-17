@@ -46,11 +46,19 @@ class UserRepository(
 
     }
 
-    override fun getFavoriteProducts(favorites: List<Int>): ServerResponse<List<Product>> {
+    override fun getFavoriteProducts( searchProduct: SearchProduct ): ServerResponse<List<Product>> {
 
-
-        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
-        return resp
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.postJsonData(
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/searchids",
+            searchProduct,
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<List<Product>>>(
+            resp, object : TypeToken<ServerResponse<List<Product>>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
     }
 
     override fun changePassword(recoverPasswordRequest: ChangePassword): ServerResponse<Any> {

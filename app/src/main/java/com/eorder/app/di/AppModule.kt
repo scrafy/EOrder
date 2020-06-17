@@ -19,13 +19,12 @@ val appModule = module {
     viewModel { ChangePasswordViewModel() }
     viewModel { CentersViewModel() }
     viewModel { CatalogsViewModel() }
-    viewModel { ProductsViewModel() }
+    viewModel { ProductsFragmentViewModel() }
     viewModel { ShopViewModel() }
     viewModel { OrderViewModel() }
     viewModel { SellersViewModel() }
     viewModel { LandingViewModel() }
     viewModel { MainViewModel() }
-    viewModel { FavoriteViewModel() }
     viewModel { OrderDoneViewModel() }
     viewModel { CartBreakdownModelView() }
     viewModel { SellerProductViewModel() }

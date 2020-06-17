@@ -7,8 +7,10 @@ import android.text.Html
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.children
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,7 @@ import com.eorder.app.adapters.ProductsAdapter
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.app.helpers.LoadImageHelper
+import com.eorder.app.interfaces.IFavoriteIconClicked
 import com.eorder.app.interfaces.IRepaintModel
 import com.eorder.app.interfaces.ISetAdapterListener
 import com.eorder.app.interfaces.IToolbarSearch
@@ -39,7 +42,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
+class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconClicked,
     IRepaintModel, ISetAdapterListener, IToolbarSearch, IOpenProductCalendar {
 
     private lateinit var model: ProductViewModel
@@ -50,7 +53,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var catalogs: List<Catalog>
     private var categories: MutableList<String> = mutableListOf()
     private var aux: List<Product> = listOf()
-    private var searchProducts: SearchProduct? = null
+    private lateinit var searchProducts: SearchProduct
     private lateinit var pagination: Pagination
     private var currentPage: Int = 1
     private lateinit var centers: List<Center>
@@ -62,6 +65,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     private lateinit var productSpinners: FilterProductSpinners
     private var isScrolling: Boolean = false
     private lateinit var manager: LinearLayoutManager
+    private var favoriteButtonClicked = false
 
 
     init {
@@ -105,6 +109,25 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
     override fun setMenuToolbar() {
         currentToolBarMenu["search_menu"] = R.menu.search_menu
         setActionBar(currentToolBarMenu, true, false)
+    }
+
+    override fun onFavoriteIconClicked() {
+
+        favoriteButtonClicked = !favoriteButtonClicked
+
+        if ( favoriteButtonClicked ){
+
+            model.getFavoriteProducts(this, searchProducts)
+        }
+        else {
+            paintFavoriteHeart(false)
+            products.clear()
+            productsAdapter.products = products
+            productsAdapter.notifyDataSetChanged()
+            currentPage = 1
+            model.searchProducts(searchProducts, 1)
+        }
+
     }
 
     override fun openProductCalendar(product: Product) {
@@ -283,6 +306,16 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         productsAdapter.notifyDataSetChanged()
         product.amountsByDay = null
         showFloatingButton()
+    }
+
+    private fun paintFavoriteHeart( full:Boolean ){
+
+        val toolbar = this.findViewById<Toolbar>(R.id.toolbar)
+        val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_favorite)
+        if (full)
+            menuItem?.setIcon(R.drawable.ic_heart)
+        else
+            menuItem?.setIcon(R.drawable.ic_corazon_outline_blue)
     }
 
     private fun addAmountOfProduct(product: Product) {
@@ -581,49 +614,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                     position
                 ) as TextView).setTextColor(resources.getColor(R.color.primaryText, null))
 
-                /* if (!model.isShopEmpty()) {
-
-                     if (model.getCurrentSupplier() != catalogSelected?.sellerId) {
-
-                         AlertDialogQuestion(self?.getContext()!!, "Catalog",
-                             "If you change the catalog, the shop´s products will be deleted, is not possible mix products from differents sellers\n¿Are you sure you want change the catalog?",
-                             "Change",
-                             "No change",
-
-                             { i, t ->
-
-                                 catalogSelected = catalogs[position]
-                                 model.cleanShop()
-                                 (self as ProductActivity).showFloatingButton()
-                                 addSellerToOrder(catalogSelected as Catalog)
-                                 addCenterToOrder(centerSelected as Center)
-                                 searchProducts?.catalogId = (catalogSelected as Catalog).id
-                                 model.getCategories((catalogSelected as Catalog).id)
-
-                             },
-                             { i, t ->
-
-
-                             }
-
-                         ).show()
-
-                     }else{
-
-                         catalogSelected = catalogs[position]
-                         addSellerToOrder(catalogSelected as Catalog)
-                         searchProducts?.catalogId = (catalogSelected as Catalog).id
-                         model.getCategories((catalogSelected as Catalog).id)
-                     }
-
-
-                 } else {
-                     catalogSelected = catalogs[position]
-                     addSellerToOrder(catalogSelected as Catalog)
-                     searchProducts?.catalogId = (catalogSelected as Catalog).id
-                     model.getCategories((catalogSelected as Catalog).id)
-                 }*/
-
                 catalogSelected = catalogs[position]
                 searchProducts?.catalogId = (catalogSelected as Catalog).id
                 model.getCategories((catalogSelected as Catalog).id)
@@ -680,7 +670,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
                 var totalItems = manager.itemCount
                 var scrollOutItems = manager.findFirstVisibleItemPosition()
 
-                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
+                if (isScrolling && (currentItems + scrollOutItems == totalItems) && !favoriteButtonClicked) {
 
                     isScrolling = false
                     if (currentPage < pagination.totalPages) {
@@ -817,6 +807,31 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
             this.showFloatingButton()
         })
+
+        model.getFavoriteProductsResult.observe(
+            this as LifecycleOwner,
+            Observer<ServerResponse<List<Product>>> {
+
+                if (it.ServerData?.Data.isNullOrEmpty()) {
+
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.productos),
+                        resources.getString(R.string.products_fragment_no_favorite_products_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i ->  favoriteButtonClicked = false}.show()
+
+                } else {
+                    paintFavoriteHeart(true)
+                    favoriteButtonClicked = true
+                    products = it.ServerData?.Data!! as MutableList<Product>
+                    setProductCurrentState()
+                    productsAdapter.products = products
+                    productsAdapter.notifyDataSetChanged()
+
+                }
+
+            })
 
     }
 

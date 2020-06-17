@@ -5,40 +5,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AbsListView
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.eorder.app.R
+import com.eorder.app.activities.BaseFloatingButtonActivity
 import com.eorder.app.adapters.fragments.OrderProductAdapter
 import com.eorder.app.com.eorder.app.interfaces.IOpenProductCalendar
 import com.eorder.app.helpers.FilterProductSpinners
 import com.eorder.app.helpers.LoadImageHelper
 import com.eorder.app.interfaces.*
-import com.eorder.app.viewmodels.fragments.ProductsViewModel
+import com.eorder.app.viewmodels.fragments.ProductsFragmentViewModel
 import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
-import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
+import com.eorder.domain.factories.Gson
+import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.products_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import com.bumptech.glide.Glide
-import com.eorder.app.activities.BaseFloatingButtonActivity
-import com.eorder.domain.models.*
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
-    IShowSnackBarMessage,
+    IShowSnackBarMessage, IFavoriteIconClicked,
     IToolbarSearch {
 
-    private lateinit var model: ProductsViewModel
+
+    private lateinit var model: ProductsFragmentViewModel
     private lateinit var recyclerView: RecyclerView
     private var adapter: OrderProductAdapter = OrderProductAdapter(this)
     private var products: MutableList<Product> = mutableListOf()
@@ -51,9 +56,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private var orderPosition: Int = 0
     private lateinit var center: OrderCenterInfo
     private lateinit var seller: OrderSellerInfo
-    private var isScrolling : Boolean = false
+    private var isScrolling: Boolean = false
     private lateinit var manager: LinearLayoutManager
-
+    private var favoriteButtonClicked = false
 
 
     override fun onCreateView(
@@ -96,6 +101,26 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         searchProducts()
     }
 
+    override fun onFavoriteIconClicked() {
+
+        favoriteButtonClicked = !favoriteButtonClicked
+
+        if ( favoriteButtonClicked ){
+
+            model.getFavoriteProducts(context!!, searchProducts)
+        }
+        else {
+            paintFavoriteHeart(false)
+            products.clear()
+            adapter.products = products
+            adapter.notifyDataSetChanged()
+            currentPage = 1
+            model.searchProducts(searchProducts, 1)
+        }
+
+    }
+
+
     override fun repaintModel(view: View, model: Any?) {
 
         var product = model as Product
@@ -129,9 +154,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         amountView.text = product.amount.toString()
 
 
-        try{
-            Glide.with(context!!).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
-        }catch (ex:Exception){
+        try {
+            Glide.with(context!!).load(product.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
         }
 
@@ -244,6 +270,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
         var map = mutableMapOf<String, Int>()
         map["main_menu"] = R.menu.main_menu
@@ -330,6 +357,31 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
             })
 
+        model.getFavoriteProductsResult.observe(
+            this.activity as LifecycleOwner,
+            Observer<ServerResponse<List<Product>>> {
+
+                if (it.ServerData?.Data.isNullOrEmpty()) {
+
+                    AlertDialogOk(
+                        context!!,
+                        resources.getString(R.string.productos),
+                        resources.getString(R.string.products_fragment_no_favorite_products_message),
+                        resources.getString(R.string.ok)
+                    ) { d, i ->  favoriteButtonClicked = false}.show()
+
+                } else {
+                    paintFavoriteHeart(true)
+                    favoriteButtonClicked = true
+                    products = it.ServerData?.Data!! as MutableList<Product>
+                    setProductCurrentState()
+                    adapter.products = products
+                    adapter.notifyDataSetChanged()
+
+                }
+
+            })
+
         model.getErrorObservable()
             .observe(this.activity as LifecycleOwner, Observer<Throwable> { ex ->
 
@@ -400,9 +452,9 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     this.products[this.products.indexOf(found)] = p
 
             }
-            val products = this.products.filter { p -> p.amount > 0}
+            val products = this.products.filter { p -> p.amount > 0 }
             products.forEach { p ->
-                if ( productsShop.find { _p -> _p.id == p.id } == null ){
+                if (productsShop.find { _p -> _p.id == p.id } == null) {
                     p.amount = 0
                 }
             }
@@ -425,6 +477,16 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     }
 
+    private fun paintFavoriteHeart( full:Boolean ){
+
+        val toolbar = this.activity!!.findViewById<Toolbar>(R.id.toolbar)
+        val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_favorite)
+        if (full)
+            menuItem?.setIcon(R.drawable.ic_heart)
+        else
+            menuItem?.setIcon(R.drawable.ic_corazon_outline_blue)
+    }
+
     private fun onSelectedCategory(position: Int) {
 
         newSearch()
@@ -445,44 +507,37 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     }
 
-    private fun orderProducts(position:Int, _products: List<Product>? = null){
+    private fun orderProducts(position: Int, _products: List<Product>? = null) {
 
-            if ( position == 0){
-                if ( _products == null ){
-                    this.products = this.products.sortedBy { p -> p.name }.toMutableList()
-                }
-                else{
-                    aux = _products?.sortedBy { p -> p.name }
-                }
+        if (position == 0) {
+            if (_products == null) {
+                this.products = this.products.sortedBy { p -> p.name }.toMutableList()
+            } else {
+                aux = _products?.sortedBy { p -> p.name }
             }
-            else if ( position == 1){
-                if ( _products == null ){
-                    this.products = this.products.sortedByDescending { p -> p.name }.toMutableList()
-                }
-                else{
-                    aux = _products?.sortedByDescending { p -> p.name }
-                }
+        } else if (position == 1) {
+            if (_products == null) {
+                this.products = this.products.sortedByDescending { p -> p.name }.toMutableList()
+            } else {
+                aux = _products?.sortedByDescending { p -> p.name }
             }
-            else if ( position == 2){
-                if ( _products == null ){
-                    this.products = this.products.sortedBy { p -> p.price }.toMutableList()
-                }
-                else{
-                    aux = _products?.sortedBy { p -> p.price }
-                }
+        } else if (position == 2) {
+            if (_products == null) {
+                this.products = this.products.sortedBy { p -> p.price }.toMutableList()
+            } else {
+                aux = _products?.sortedBy { p -> p.price }
             }
-            else if ( position == 3){
-                if ( _products == null ){
-                    this.products = this.products.sortedByDescending { p -> p.price }.toMutableList()
-                }
-                else{
-                    aux = _products?.sortedByDescending { p -> p.price }
-                }
+        } else if (position == 3) {
+            if (_products == null) {
+                this.products = this.products.sortedByDescending { p -> p.price }.toMutableList()
+            } else {
+                aux = _products?.sortedByDescending { p -> p.price }
+            }
 
-            }
+        }
     }
 
-    private fun newSearch(){
+    private fun newSearch() {
         currentPage = 1
         adapter.resetProducts()
         products = mutableListOf()
@@ -490,19 +545,19 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun setListeners() {
 
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
                 super.onScrolled(recyclerView, dx, dy)
                 var currentItems = manager.childCount
                 var totalItems = manager.itemCount
                 var scrollOutItems = manager.findFirstVisibleItemPosition()
 
-                if ( isScrolling && (currentItems + scrollOutItems == totalItems) ){
+                if (isScrolling && (currentItems + scrollOutItems == totalItems) && !favoriteButtonClicked) {
 
                     isScrolling = false
-                    if ( currentPage < pagination.totalPages ) {
+                    if (currentPage < pagination.totalPages) {
                         currentPage += 1
                         imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
                         searchProducts()
@@ -511,10 +566,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState:Int){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 
                 super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
 
                     isScrolling = true
                 }

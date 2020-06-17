@@ -149,7 +149,7 @@ class UnitOfWorkUseCase(
 
         if (favoriteProductsUseCase == null)
             favoriteProductsUseCase = FavoriteProductsUseCase(
-                unitOfWorkService.getFavoritesService(),
+
                 unitOfWorkRepository.getUserRepository()
 
             )

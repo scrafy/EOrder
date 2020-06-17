@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.eorder.application.enums.SharedPreferenceKeyEnum
+import com.eorder.domain.factories.Gson
 import com.eorder.domain.models.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,7 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
     val centersResult: MutableLiveData<ServerResponse<List<Center>>> = MutableLiveData()
     val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
     val searchProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
+    val getFavoriteProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
 
 
     fun getAddProductToCartObservable(): LiveData<Any> =
@@ -30,6 +32,19 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
             var result =
                 unitOfWorkUseCase.getCatalogsByCenterUseCase().getCatalogsByCenter(centerId)
             catalogsResult.postValue(result)
+        }
+    }
+
+    fun getFavoriteProducts(context: Context, search: SearchProduct) {
+
+        var clone = Gson.Create().fromJson<SearchProduct>(Gson.Create().toJson(search), SearchProduct::class.java)
+
+        clone.ProductsIds = loadFavoritesProducts(context)
+        clone.category = null
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getFavoriteProductsUseCase().getFavoriteProducts( context, clone )
+            getFavoriteProductsResult.postValue(result)
         }
     }
 

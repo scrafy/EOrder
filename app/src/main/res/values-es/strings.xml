@@ -225,6 +225,7 @@
 
     <string name="products_fragment_no_products_message">Lista de productos cargada...</string>
     <string name="products_fragment_no_products_search_message">No se ha encontrado ningún producto con los criterios de búsqueda establecidos</string>
+    <string name="products_fragment_no_favorite_products_message">No ha añadido ningún producto a su lista de favoritos aún</string>
     <string name="products_fragment_more_products">Más productos</string>
 
     <!--CENTER FRAGMENT INFO-->
