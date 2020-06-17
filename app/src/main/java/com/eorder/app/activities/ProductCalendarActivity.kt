@@ -211,8 +211,14 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
             )
         )
 
-        spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
+        if ( orderDays.any { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 } ){
 
+            spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR))
+
+        }else{
+
+            spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
+        }
     }
 
     private fun setDayAmount(day: ProductAmountByDay) {
@@ -288,7 +294,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
                     textView_activity_product_calendar_total_units.text =
 
                         String.format(resources.getString(R.string.product_calendar_activity_units), product.amountsByDay?.sumBy { it.amount }!!)
-                   
+
 
                     model.addProductToShop(product)
                 }
@@ -304,8 +310,13 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
     private fun setMonthDays(month: Int) {
 
         var productAmountByDay: ProductAmountByDay? = null
-        val days = calendarService.getMonthDays(month)
+        val days = mutableListOf<LocalDate>()
 
+        if ( orderDays.any { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 && month == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 } )
+
+            days.addAll(orderDays.filter { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) })
+
+        days.addAll(calendarService.getMonthDays(month))
         productCalendarDays.clear()
         if (!this.product.amountsByDay.isNullOrEmpty()) {
 
@@ -352,7 +363,7 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         spinnerMonths = spinner_activity_product_calendar_months
         val monthsAdapter = ArrayAdapter<String>(
             this,
-            R.layout.simple_spinner_item,
+            R.layout.simple_spinner_item_blue,
             calendarService.getMotnhs(this)
         )
         monthsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_text_color)

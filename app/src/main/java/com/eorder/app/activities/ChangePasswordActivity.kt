@@ -158,15 +158,15 @@ class ChangePasswordActivity : BaseFloatingButtonActivity(),
     override fun setValidationErrors(errors: List<ValidationError>?) {
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_oldpassword).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("OldPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName == "OldPassword" }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_newpassword).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("NewPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName == "NewPassword" }?.ErrorMessage
 
 
         findViewById<TextInputLayout>(R.id.textInputLayout_change_password_activity_confirm_password).error =
-            errors?.firstOrNull { it -> it.FieldName.equals("ConfirmPassword") }?.ErrorMessage
+            errors?.firstOrNull { it -> it.FieldName == "ConfirmPassword" }?.ErrorMessage
 
     }
 

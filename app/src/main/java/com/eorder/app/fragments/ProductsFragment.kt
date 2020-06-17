@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -108,7 +107,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
         view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
             product.category
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
-            if (product.price == 0F) "N/A" else product.price.toString() + "€"
+            if (product.price == 0F) "" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
             product.amount.toString()
 
@@ -481,7 +480,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                 }
 
             }
-
     }
 
     private fun newSearch(){

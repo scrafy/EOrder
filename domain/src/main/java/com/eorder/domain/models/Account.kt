@@ -9,7 +9,7 @@ class Account(
     @NullOrEmptyStringValidation("username_empty", "Username",1)
     val Username:String,
     @NullOrEmptyStringValidation("password_empty", "Password",1)
-    @RegexFormatValidation("password_format", "Password","^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)(?=.*[A-Z]*.*)(?=.*\\W+.*)[0-9a-zA-Z\\W]{6,}\$",2)
+    @RegexFormatValidation("password_format", "Password","^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)(?=.*[A-Z]*.*)[0-9a-zA-Z\\W]{6,}\$",2)
     val Password:String,
     @NullOrEmptyStringValidation("password_confirmation_not_null","ConfirmPassword", 1)
     @FieldEqualToOtherValidation("password_confirmation_match","ConfirmPassword", "Password",2)

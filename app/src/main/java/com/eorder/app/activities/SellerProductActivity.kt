@@ -460,7 +460,7 @@ class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
 
                                 onSelectedOrder(pos)
                             },
-                            R.layout.simple_spinner_item_white
+                            R.layout.simple_spinner_item_blue
                         )
                         productsAdapter.products = products.toMutableList()
                         productsAdapter.notifyDataSetChanged()

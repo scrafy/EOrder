@@ -26,13 +26,13 @@ class CalendarService : ICalendarService {
         return LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, 1).lengthOfMonth()
     }
 
-    override fun getMonthDays(month: Int): List<LocalDate> {
+    override fun getMonthDays(month: Int): MutableList<LocalDate> {
 
         val days: MutableList<LocalDate> = mutableListOf()
         for (i in 1..getMonthNumDays(month)) {
             days.add(LocalDate.of(LocalDate.now().get(ChronoField.YEAR), month, i))
         }
-        return days.filter { it >= currentDate }
+        return days.filter { it >= currentDate } as MutableList<LocalDate>
     }
 
     override fun getMonthCurrentDay(): Int {
@@ -58,7 +58,7 @@ class CalendarService : ICalendarService {
             dates.add(date)
             date = date.plusDays(1)
         }
-        return dates//.filter { it.get(ChronoField.MONTH_OF_YEAR) == month }
+        return dates
     }
 
     override fun getDayName(context: Context, day:Int): String {

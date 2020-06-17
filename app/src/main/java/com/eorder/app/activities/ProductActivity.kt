@@ -381,7 +381,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
         view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
             product.category
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
-            if (product.price == 0F) "N/A" else product.price.toString() + "€"
+            if (product.price == 0F) "" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
             product.amount.toString()
 

@@ -1,11 +1,11 @@
 <resources>
     <string name="username_empty">The username can not be empty or null</string>
     <string name="password_empty">The password can not be empty or null</string>
-    <string name="password_format">The password must containt at least one digit,at least one lower case, at least one upper case,at least one special character and a lenght of 6 characters as minimun</string>
+    <string name="password_format">The password must containt at least one digit,at least one lower case, at least one upper case and a lenght of 6 characters as minimun</string>
     <string name="new_password_empty">The new password can not be empty or null</string>
-    <string name="new_password_format">The new password must containt at least one digit, one lower case, one special character and a lenght of 6 characters as minimun</string>
+    <string name="new_password_format">The new password must containt at least one digit, one lower case and a lenght of 6 characters as minimun</string>
     <string name="oldpassword_empty">The old pasword field can not be empty or null</string>
-    <string name="oldpassword_format">The old password must containt at least one digit, one lower case, one special character and a lenght of 6 characters as minimun</string>
+    <string name="oldpassword_format">The old password must containt at least one digit, one lower case and a lenght of 6 characters as minimun</string>
     <string name="password_confirmation_not_null">The password confirmation can not be empty or null</string>
     <string name="password_confirmation_match">The password confirmation field has to match with password field</string>
     <string name="phone_not_null">The phone can not be empty or null</string>
