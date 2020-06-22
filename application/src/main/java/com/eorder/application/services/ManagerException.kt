@@ -12,6 +12,10 @@ class ManagerException : IManagerException {
         when(ex::class.simpleName){
 
             "ModelValidationException" -> (context as IManageFormErrors).setValidationErrors((ex as ModelValidationException).validationErrors)
+
+            "UnauthorizedException" -> {
+
+            }
             else -> {
 
                 (context as IShowSnackBarMessage).showMessage(ex.message ?: "An error has hapenned")

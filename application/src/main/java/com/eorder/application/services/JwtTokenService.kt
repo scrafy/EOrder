@@ -34,9 +34,6 @@ class JwtTokenService(
         this.token = null
     }
 
-    override fun refreshToken(newToken: String) {
-        this.token = newToken
-    }
 
     override fun getToken(): String? {
 
@@ -84,7 +81,7 @@ class JwtTokenService(
     }
 
     private fun setToken(token: String): Jws<Claims?> {
-        Thread.sleep(4000)
+        //Thread.sleep(4000)
         return try {
 
             Jwts.parserBuilder()

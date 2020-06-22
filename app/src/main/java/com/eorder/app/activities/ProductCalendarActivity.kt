@@ -4,10 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -162,6 +159,8 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
                             view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
                                 .text = ""
 
+                        Toast.makeText(this, "Se han añadido ${day.amount} unidades", Toast.LENGTH_LONG).show()
+
                     },
                     { d, i ->
 
@@ -211,11 +210,11 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
             )
         )
 
-        if ( orderDays.any { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 } ){
+        if (orderDays.any { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 }) {
 
             spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR))
 
-        }else{
+        } else {
 
             spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
         }
@@ -258,52 +257,44 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
             return
         }
 
+        if (daysWithAmount.isNotEmpty()) {
 
-        AlertDialogQuestion(
-            this,
-            resources.getString(R.string.product_calendar_activity_dialog_confirm_calendar_title),
-            resources.getString(R.string.product_calendar_activity_dialog_confirm_question),
-            resources.getString(R.string.yes),
-            resources.getString(R.string.no),
-            { d, i ->
+            daysWithAmount.forEach {
 
-                if (daysWithAmount.isNotEmpty()) {
+                if ((product.amountsByDay as MutableList<ProductAmountByDay>).firstOrNull { p -> p.day == it.day } != null) {
 
-                    daysWithAmount.forEach {
-
-                        if ((product.amountsByDay as MutableList<ProductAmountByDay>).firstOrNull { p -> p.day == it.day } != null) {
-
-                            (product.amountsByDay as MutableList<ProductAmountByDay>).find { p -> p.day == it.day }
-                                ?.amount = it.amount
-                        } else {
-                            (product.amountsByDay as MutableList<ProductAmountByDay>).add(it)
-                        }
-                    }
-                }
-
-                product.amount = product.amountsByDay?.sumBy { it.amount }!!
-
-                if (product.amount == 0) {
-
-                    daysWithAmount = mutableListOf()
-                    model.removeProductFromShop(product)
-                    textView_activity_product_calendar_total_units.text = String.format(resources.getString(R.string.product_calendar_activity_units), 0)
-
+                    (product.amountsByDay as MutableList<ProductAmountByDay>).find { p -> p.day == it.day }
+                        ?.amount = it.amount
                 } else {
-
-                    textView_activity_product_calendar_total_units.text =
-
-                        String.format(resources.getString(R.string.product_calendar_activity_units), product.amountsByDay?.sumBy { it.amount }!!)
-
-
-                    model.addProductToShop(product)
+                    (product.amountsByDay as MutableList<ProductAmountByDay>).add(it)
                 }
+            }
+        }
 
-                this.onBackPressed()
-            },
-            { d, i ->
+        product.amount = product.amountsByDay?.sumBy { it.amount }!!
 
-            }).show()
+        if (product.amount == 0) {
+
+            daysWithAmount = mutableListOf()
+            model.removeProductFromShop(product)
+            textView_activity_product_calendar_total_units.text =
+                String.format(resources.getString(R.string.product_calendar_activity_units), 0)
+
+        } else {
+
+            textView_activity_product_calendar_total_units.text =
+
+                String.format(
+                    resources.getString(R.string.product_calendar_activity_units),
+                    product.amountsByDay?.sumBy { it.amount }!!
+                )
+
+
+            model.addProductToShop(product)
+        }
+
+        this.onBackPressed()
+
     }
 
 
@@ -312,7 +303,11 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
         var productAmountByDay: ProductAmountByDay? = null
         val days = mutableListOf<LocalDate>()
 
-        if ( orderDays.any { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 && month == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 } )
+        if (orderDays.any { x ->
+                x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) + 1 && month == LocalDate.now().get(
+                    ChronoField.MONTH_OF_YEAR
+                ) + 1
+            })
 
             days.addAll(orderDays.filter { x -> x.monthValue == LocalDate.now().get(ChronoField.MONTH_OF_YEAR) })
 
@@ -395,7 +390,10 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
                     product.amount = 0
                     product.amountsByDay = mutableListOf()
                     daysWithAmount = mutableListOf()
-                    textView_activity_product_calendar_total_units.text = String.format(resources.getString(R.string.product_calendar_activity_units), 0)
+                    textView_activity_product_calendar_total_units.text = String.format(
+                        resources.getString(R.string.product_calendar_activity_units),
+                        0
+                    )
                     spinnerMonths.setSelection(LocalDate.now().get(ChronoField.MONTH_OF_YEAR) - 1)
                     this.model.removeProductFromShop(product)
                 },

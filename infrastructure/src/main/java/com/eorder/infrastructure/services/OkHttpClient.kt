@@ -142,7 +142,7 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
             val list = newToken?.split(" ")
             if (list != null) {
-                tokenService.refreshToken(
+                tokenService.addToken(
                     list[1]
                 )
             } else {

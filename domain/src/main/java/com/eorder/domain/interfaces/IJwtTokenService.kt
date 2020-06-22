@@ -13,5 +13,4 @@ interface IJwtTokenService {
 
     fun addToken(token: String)
 
-    fun refreshToken(newToken:String)
 }

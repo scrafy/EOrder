@@ -8,9 +8,9 @@
     <application
         android:name=".Main"
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="PedidoE"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
@@ -26,7 +26,6 @@
         <activity android:name=".activities.SellerProductActivity" />
         <activity android:name=".activities.CartBreakdownActivity" />
         <activity android:name=".activities.OrderDoneActivity" />
-        <activity android:name=".activities.FavoriteActivity" />
         <activity android:name=".activities.OrderActivity" />
         <activity android:name=".activities.BaseMenuActivity" />
         <activity android:name=".activities.ShopActivity" />

@@ -8,6 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import com.eorder.app.R
 
 
+import android.view.inputmethod.InputMethodManager
+
+
 class AlertDialogInput(
 
     ctx: Context,
@@ -28,16 +31,24 @@ class AlertDialogInput(
 
         input = layout.findViewById(R.id.editText_dialog_input_units)
         input.requestFocus()
-
+        val imm = ctx.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         this.dialog = AlertDialog.Builder(ctx)
 
             .setCancelable(false)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(buttonTextPositive, callbackPositive)
-            .setNegativeButton(buttonTextNegative, callbackNegative)
+            .setPositiveButton(buttonTextPositive){i,v ->
+                imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                callbackPositive(i,v)}
+            .setNegativeButton(buttonTextNegative){i,v ->
+                imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                callbackNegative(i,v)
+            }
             .setView(layout)
             .create()
+
+
     }
 
     override fun show() {
