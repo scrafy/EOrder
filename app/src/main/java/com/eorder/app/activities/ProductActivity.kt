@@ -33,6 +33,7 @@ import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.*
 import kotlinx.android.synthetic.main.activity_product.*
@@ -43,7 +44,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconClicked,
-    IRepaintModel, ISetAdapterListener, IToolbarSearch, IOpenProductCalendar {
+    IRepaintModel, ISetAdapterListener, IToolbarSearch, IOpenProductCalendar, ICheckValidSession {
 
     private lateinit var model: ProductViewModel
     private lateinit var centerViewPager: ViewPager

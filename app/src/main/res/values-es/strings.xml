@@ -98,6 +98,7 @@
     <string name="product_calendar_activity_select_month">Seleccione un mes</string>
     <string name="product_calendar_activity_confirm">Confirmar</string>
     <string name="product_calendar_activity_clean">Limpiar</string>
+    <string name="product_calendar_activity_number_units">Se han añadido %d unidades</string>
 
     <!--RECOVER ACTIVITY-->
     <string name="product_calendar_activity_dialog_email_confirmation">Confirmación de email</string>
@@ -202,7 +203,7 @@
     <string name="shop_breakdown_activity_total">Total</string>
 
     <!--ORDER DONE ACTIVITY-->
-    <string name="order_done_activity_alert_dialog_message">Actually, you have a pending order for process. If you repeat this order, the shop´s pending order will be delete.\n¿Are you sure you want repeat this order?</string>
+    <string name="order_done_activity_alert_dialog_message">Actualmente, tiene un pedido pediente de confirmar. Si usted quiere repetir este pedido, el pedido actual que se encuentra pendiente de confirmar será eliminado.\n¿Está usted seguro de repetir este pedido?</string>
     <string name="order_done_activity_no_orders">No se han encontrado pedidos realizados</string>
     <string name="order_done_activity_view_detail">Ver detalle</string>
 

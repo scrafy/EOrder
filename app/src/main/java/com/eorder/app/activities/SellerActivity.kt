@@ -8,12 +8,13 @@ import com.eorder.app.fragments.SellerInfoFragment
 import com.eorder.app.fragments.SellersFragment
 import com.eorder.app.interfaces.ISelectSeller
 import com.eorder.app.viewmodels.SellerActivityViewModel
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.Seller
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-class SellerActivity : BaseMenuActivity(), ISelectSeller {
+class SellerActivity : BaseMenuActivity(), ISelectSeller, ICheckValidSession {
 
     private lateinit var model: SellerActivityViewModel
 

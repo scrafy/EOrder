@@ -11,7 +11,6 @@ import com.eorder.app.helpers.paintEditTextUnderLines
 import com.eorder.app.viewmodels.fragments.CenterInfoFragmentViewModel
 import com.eorder.domain.models.Center
 import kotlinx.android.synthetic.main.fragment_center_info.*
-import kotlinx.android.synthetic.main.fragment_seller_info.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -49,7 +48,8 @@ class CenterInfoFragment : BaseFragment() {
         editText_fragment_center_info_post_code.setText(center.postalCode.toString())
         editText_fragment_center_info_province.setText(center.province)
         editText_fragment_center_info_email.setText(center.email)
-        editText_fragment_center_info_sector.setText(center.sector.toString())
+        if ( center.sector  != null )
+            editText_fragment_center_info_sector.setText( center.sector.toString() )
         editText_fragment_center_info_country.setText(center.country)
 
         try {

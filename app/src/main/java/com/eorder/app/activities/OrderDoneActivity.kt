@@ -22,6 +22,7 @@ import com.eorder.app.viewmodels.OrderDoneViewModel
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
 import com.eorder.application.extensions.convertToString
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Order
@@ -34,7 +35,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener,
-    IShowSnackBarMessage {
+    IShowSnackBarMessage, ICheckValidSession {
 
     private lateinit var model: OrderDoneViewModel
     private lateinit var recyclerView: RecyclerView
@@ -107,7 +108,7 @@ class OrderDoneActivity : BaseMenuActivity(), IRepaintModel, ISetAdapterListener
                     { _, _ ->
                         model.setOrder(obj as Order)
                         startActivity(Intent(this, ShopActivity::class.java))
-                        //showFloatingButton()
+
                     },
                     { _, _ -> }
 

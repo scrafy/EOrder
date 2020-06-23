@@ -3,9 +3,7 @@ package com.eorder.app.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -21,6 +19,7 @@ import com.eorder.app.viewmodels.OrderViewModel
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.factories.Gson
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Catalog
@@ -33,7 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavoriteIconClicked,
     IShowSnackBarMessage, IToolbarSearch, IOnShopToolbarIconClicked, IOpenProductCalendar,
-    ISelectCategory {
+    ISelectCategory, ICheckValidSession {
 
     private lateinit var model: OrderViewModel
     private lateinit var center: Center
@@ -95,7 +94,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
 
     override fun checkValidSession() {
-
 
         model.checkValidSession(this)
     }

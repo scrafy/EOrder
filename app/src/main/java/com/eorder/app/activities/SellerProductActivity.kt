@@ -29,6 +29,7 @@ import com.eorder.app.interfaces.IToolbarSearch
 import com.eorder.app.viewmodels.SellerProductViewModel
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Center
 import com.eorder.domain.models.Product
@@ -40,7 +41,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class SellerProductActivity : BaseMenuActivity(), IShowSnackBarMessage,
-    IRepaintModel, ISetAdapterListener, IToolbarSearch {
+    IRepaintModel, ISetAdapterListener, IToolbarSearch, ICheckValidSession {
 
     private lateinit var model: SellerProductViewModel
     private lateinit var sellerViewPager: ViewPager

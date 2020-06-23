@@ -18,6 +18,7 @@ import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ServerResponse
@@ -27,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 class ShopActivity : BaseActivity(), IRepaintModel,
-    IShowSnackBarMessage {
+    IShowSnackBarMessage, ICheckValidSession {
 
     private lateinit var model: ShopViewModel
     private lateinit var adapter: ShopAdapter

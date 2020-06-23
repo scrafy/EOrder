@@ -92,6 +92,7 @@ class JwtTokenService(
                         )
                     )
                 )
+                .setAllowedClockSkewSeconds(120)
                 .build()
                 .parseClaimsJws(token)
 

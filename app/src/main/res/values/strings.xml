@@ -98,6 +98,7 @@
     <string name="product_calendar_activity_select_month">Select month</string>
     <string name="product_calendar_activity_confirm">Confirm</string>
     <string name="product_calendar_activity_clean">Clean</string>
+    <string name="product_calendar_activity_number_units">Has been added %d units</string>
 
     <!--RECOVER ACTIVITY-->
     <string name="product_calendar_activity_dialog_email_confirmation">Email confirmation</string>

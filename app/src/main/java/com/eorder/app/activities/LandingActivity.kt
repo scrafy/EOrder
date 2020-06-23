@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import com.eorder.app.R
 import com.eorder.app.viewmodels.LandingViewModel
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_landing.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class LandingActivity : BaseMenuActivity() {
+class LandingActivity : BaseMenuActivity(), ICheckValidSession {
 
     private lateinit var model: LandingViewModel
 

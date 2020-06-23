@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.viewmodels.ProfileActivityViewModel
 import com.eorder.app.widgets.SnackBar
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Product
 import kotlinx.android.synthetic.main.activity_product_calendar.toolbar
@@ -17,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ProfileActivity : BaseFloatingButtonActivity(), IShowSnackBarMessage {
+class ProfileActivity : BaseFloatingButtonActivity(), IShowSnackBarMessage, ICheckValidSession {
 
     private lateinit var model: ProfileActivityViewModel
 

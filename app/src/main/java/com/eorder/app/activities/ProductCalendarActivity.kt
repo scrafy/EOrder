@@ -22,6 +22,7 @@ import com.eorder.app.widgets.AlertDialogInput
 import com.eorder.app.widgets.AlertDialogOk
 import com.eorder.app.widgets.AlertDialogQuestion
 import com.eorder.application.interfaces.ICalendarService
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ProductAmountByDay
 import kotlinx.android.synthetic.main.activity_product_calendar.*
@@ -31,7 +32,8 @@ import java.time.temporal.ChronoField
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListener {
+class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListener,
+    ICheckValidSession {
 
     private lateinit var model: ProductCalendarActivityViewModel
     private lateinit var spinnerMonths: SpinnerExtension
@@ -159,7 +161,14 @@ class ProductCalendarActivity : BaseActivity(), IRepaintModel, ISetAdapterListen
                             view.findViewById<TextView>(R.id.textView_fragment_product_calendar_units)
                                 .text = ""
 
-                        Toast.makeText(this, "Se han añadido ${day.amount} unidades", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            String.format(
+                                resources.getString(R.string.product_calendar_activity_number_units),
+                                day.amount
+                            ),
+                            Toast.LENGTH_LONG
+                        ).show()
 
                     },
                     { d, i ->

@@ -16,6 +16,7 @@ import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.app.viewmodels.ChangePasswordViewModel
 import com.eorder.app.widgets.*
+import com.eorder.application.interfaces.ICheckValidSession
 import com.eorder.domain.models.ChangePassword
 import com.eorder.domain.models.Product
 import com.eorder.domain.models.ValidationError
@@ -27,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class ChangePasswordActivity : BaseFloatingButtonActivity(),
     IManageFormErrors,
-    IShowSnackBarMessage {
+    IShowSnackBarMessage, ICheckValidSession {
 
     private lateinit var model: ChangePasswordViewModel
 
