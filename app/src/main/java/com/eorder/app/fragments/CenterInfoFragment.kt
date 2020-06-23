@@ -48,8 +48,7 @@ class CenterInfoFragment : BaseFragment() {
         editText_fragment_center_info_post_code.setText(center.postalCode.toString())
         editText_fragment_center_info_province.setText(center.province)
         editText_fragment_center_info_email.setText(center.email)
-        if ( center.sector  != null )
-            editText_fragment_center_info_sector.setText( center.sector.toString() )
+        editText_fragment_center_info_sector.setText( center.sector?.toString() )
         editText_fragment_center_info_country.setText(center.country)
 
         try {
