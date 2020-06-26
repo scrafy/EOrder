@@ -4,14 +4,22 @@ import com.google.gson.annotations.SerializedName
 
 enum class Format(var code:Int) {
 
+    @SerializedName("0")
+    NO_DEFINIDO(0),
     @SerializedName("1")
-    Caja(1),
+    CAJA(1),
     @SerializedName("2")
-    Unidades(2),
+    UNIDADES(2),
     @SerializedName("3")
-    Kgs(3),
+    KGS(3),
     @SerializedName("4")
-    Pack(4),
+    PACK(4),
     @SerializedName("5")
-    Botellas(5)
+    BOTELLAS(5),
+    @SerializedName("6")
+    BRICK (6),
+    @SerializedName("7")
+    BARRIL(7),
+    @SerializedName("8")
+    LATA (8)
 }

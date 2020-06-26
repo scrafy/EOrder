@@ -60,7 +60,7 @@ class CartBreakdownActivity : BaseActivity(), ICheckValidSession {
             row.addView(getTableTexView(true, "${p.price}€"))
             row.addView(getTableTexView(true, "${p.amount}",false,true))
             row.addView(getTableTexView(true, "${p.totalBase}€"))
-            row.addView(getTableTexView(true, "${p.tax ?: "N/A"}"))
+            row.addView(getTableTexView(true, "${p.tax}"))
             row.addView(getTableTexView(true, "${p.rate}%"))
             row.addView(getTableTexView(true, "${p.totalTaxes}€"))
             row.addView(getTableTexView(true, "${p.total}€"))

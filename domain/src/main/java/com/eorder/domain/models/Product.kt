@@ -16,7 +16,7 @@ class Product(
     var total: Float = 0F,
     val rate: Float = 0F,
     val taxId: Int,
-    val tax: TaxType? = null,
+    val tax: TaxType,
     val price: Float = 0F,
     val name: String,
     val category: String,

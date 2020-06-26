@@ -6,7 +6,7 @@ interface ICenterRepository {
 
     fun getUserCenters() : ServerResponse<List<Center>>
     fun checkCenterActivationCode(code:CenterCode) : ServerResponse<Boolean>
-    fun associateAccountToCentreCode(data: AccountCentreCode): ServerResponse<Any>
+    fun associateAccountToCentreCode(data: AccountCentreCode): ServerResponse<UserProfile>
 
 
 }

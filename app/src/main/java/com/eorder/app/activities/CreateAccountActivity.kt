@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.eorder.app.R
 import com.eorder.app.com.eorder.app.viewmodels.CreateAccountViewModel
 import com.eorder.app.widgets.AlertDialogOk
@@ -19,6 +20,8 @@ import com.eorder.app.widgets.SnackBar
 import com.eorder.application.interfaces.IManageFormErrors
 import com.eorder.application.interfaces.IShowSnackBarMessage
 import com.eorder.domain.models.Account
+import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.UserProfile
 import com.eorder.domain.models.ValidationError
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_create_profile.*
@@ -83,14 +86,17 @@ class CreateAccountActivity : AppCompatActivity(), IShowSnackBarMessage, IManage
 
     private fun setObservers() {
 
-        model.createAccountResult.observe(this as LifecycleOwner, Observer<Any> {
+        model.createAccountResult.observe(this as LifecycleOwner, Observer<ServerResponse<UserProfile>> {
 
             AlertDialogOk(this, resources.getString(R.string.create_account_activity_alert_title), resources.getString(R.string.create_account_activity_alert_message), resources.getString(R.string.ok)) { d, i ->
                 this.finish()
-                startActivity(Intent(this, LoginActivity::class.java))
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.putExtra("username", it.ServerData?.Data?.username)
+                startActivity(Intent(intent))
                 clearEditTextAndFocus()
             }.show()
         })
+
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
 

@@ -121,7 +121,7 @@
     <string name="create_profile_activity_confirm_password">Confirmar password</string>
     <string name="create_profile_activity_phone">Teléfono</string>
     <string name="create_profile_activity_email">Email</string>
-    <string name="create_profile_activity_center_code">Código de centro</string>
+    <string name="create_profile_activity_center_code">Código de activación</string>
     <string name="create_profile_activity_create_account">Crear cuenta</string>
 
     <!--PROFILE ACTIVITY-->

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-class MainActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessage {
+class MainActivity : AppCompatActivity() {
 
 
     private lateinit var model: MainViewModel
@@ -34,33 +34,9 @@ class MainActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessag
         setContentView(R.layout.activity_main)
         model = getViewModel()
         setListeners()
-        setObservers()
         showSessionExpiredMessage()
         init()
     }
-
-    override fun onResume() {
-
-        super.onResume()
-        this.findViewById<EditText>(R.id.editText_activity_main_code_input).setText("")
-    }
-
-    override fun showMessage(message: String) {
-
-        SnackBar(
-            this,
-            findViewById<LinearLayout>(R.id.linearLayout_activity_main_conatiner),
-            resources.getString(R.string.close),
-            message
-        ).show()
-
-    }
-
-    override fun setValidationErrors(errors: List<ValidationError>?) {
-        textView_activity_main_error_validation_message.text =
-            errors?.firstOrNull { it -> it.FieldName == "centerCode" }?.ErrorMessage
-    }
-
 
     fun setListeners() {
 
@@ -71,63 +47,9 @@ class MainActivity : AppCompatActivity(), IManageFormErrors, IShowSnackBarMessag
 
         button_activity_main_create_account.setOnClickListener {
 
-            startActivity(Intent(this, CreateAccountActivity::class.java))
+            startActivity(Intent(this, ActivateCenterActivity::class.java))
         }
 
-        button_activity_main_activate_center.setOnClickListener {
-
-            model.checkActivationCenterCode(editText_activity_main_code_input.text.toString())
-        }
-
-        editText_activity_main_code_input.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                textView_activity_main_error_validation_message.text = ""
-            }
-
-        })
-
-    }
-
-    fun setObservers() {
-
-        model.checkCenterActivationCodeResult.observe(this, Observer<ServerResponse<Boolean>> {
-
-            val result = it.ServerData?.Data ?: false
-
-            if (!result) {
-                editText_activity_main_code_input.setText("")
-                AlertDialogOk(
-                    this,
-                    resources.getString(R.string.main_activity_dialog_center_title),
-                    resources.getString(R.string.main_activity_dialog_center_message),
-                    resources.getString(R.string.ok)
-                ) { d, i ->
-
-
-
-                }.show()
-
-            } else {
-                val intent = Intent(this, CheckEmailActivity::class.java)
-                intent.putExtra("centerCode", editText_activity_main_code_input.text.toString())
-                startActivity(intent)
-            }
-        })
-
-        model.getErrorObservable().observe(this, Observer<Throwable> { ex ->
-
-            model.getManagerExceptionService().manageException(this, ex)
-
-        })
     }
 
     fun showSessionExpiredMessage() {

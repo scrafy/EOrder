@@ -15,7 +15,7 @@ class UserRepository(
     IUserRepository {
 
 
-    override fun createAccount(account: Account): ServerResponse<Any> {
+    override fun createAccount(account: Account): ServerResponse<UserProfile> {
 
         httpClient.addAuthorizationHeader(false)
         var resp = httpClient.postJsonData(
@@ -23,8 +23,8 @@ class UserRepository(
             account,
             null
         )
-        var response = Gson.Create().fromJson<ServerResponse<Any>>(
-            resp, object : TypeToken<ServerResponse<String>>() {}.type
+        var response = Gson.Create().fromJson<ServerResponse<UserProfile>>(
+            resp, object : TypeToken<ServerResponse<UserProfile>>() {}.type
         )
         checkServerErrorInResponse(response)
         return response

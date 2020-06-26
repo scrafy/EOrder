@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 enum class Currency(var code:Int) {
 
-    @SerializedName("0")
-    EUR(0)
+    @SerializedName("1")
+    EUR(1)
 }

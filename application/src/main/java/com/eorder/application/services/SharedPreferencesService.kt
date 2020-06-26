@@ -75,7 +75,8 @@ class SharedPreferencesService(
         type: Type
     ) {
 
-        val userId = jwtTokenService.getClaimFromToken("userId")!!
+        val userId = jwtTokenService.getClaimFromToken("userId") ?: return
+
 
         val preferences =
             context?.getSharedPreferences("STORE_${userId}", MODE_PRIVATE)

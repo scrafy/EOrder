@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
-        <activity android:name=".activities.ProfileActivity"></activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.ActivateCenterActivity"></activity>
+        <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.RecoverPasswordActivity" />
         <activity android:name=".activities.ProductCalendarActivity" />
         <activity android:name=".activities.CreateAccountActivity" />
@@ -39,6 +39,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
+
 </manifest>

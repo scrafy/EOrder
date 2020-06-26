@@ -7,6 +7,7 @@ import com.eorder.domain.interfaces.IUserRepository
 import com.eorder.domain.interfaces.IValidationModelService
 import com.eorder.domain.models.Account
 import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.UserProfile
 
 class CreateAccountUseCase(
     private val validationModelService: IValidationModelService,
@@ -14,7 +15,7 @@ class CreateAccountUseCase(
 
 ) : ICreateAccountUseCase {
 
-    override fun createAccount(account: Account): ServerResponse<Any> {
+    override fun createAccount(account: Account): ServerResponse<UserProfile> {
 
         val errors = validationModelService.validate(account)
 

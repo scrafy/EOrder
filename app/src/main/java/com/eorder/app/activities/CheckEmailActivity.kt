@@ -75,7 +75,9 @@ class CheckEmailActivity : AppCompatActivity(), IShowSnackBarMessage, IManageFor
 
         model.associateAccountResult.observe(this as LifecycleOwner, Observer {
 
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("username", it.ServerData?.Data?.username)
+            startActivity(Intent(intent))
         })
 
         model.getErrorObservable().observe(this, Observer<Throwable> { ex ->

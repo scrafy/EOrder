@@ -81,7 +81,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     }
 
     override fun showMessage(message: String) {
-        editText_activity_main_code_input.text.clear()
+
         SnackBar(
             context!!,
             frameLayout_products_fragment_container,

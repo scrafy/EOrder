@@ -23,6 +23,7 @@ import com.eorder.domain.models.Login
 import com.eorder.domain.models.ServerResponse
 import com.eorder.domain.models.ValidationError
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
         model = getViewModel()
         setObservers()
         setListeners()
+        init()
     }
 
     fun setObservers() {
@@ -142,6 +144,17 @@ class LoginActivity : AppCompatActivity(), IManageFormErrors,
             val intent = Intent(this, RecoverPasswordActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun init() {
+
+        if ( intent.getStringExtra("username") != null ){
+            editText_username.setText(intent.getStringExtra("username"))
+            editText_password.requestFocus()
+        }else{
+            editText_username.requestFocus()
+        }
+
     }
 
 }

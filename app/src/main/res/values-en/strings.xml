@@ -120,7 +120,7 @@
     <string name="create_profile_activity_confirm_password">Confirm password</string>
     <string name="create_profile_activity_phone">Phone</string>
     <string name="create_profile_activity_email">Email</string>
-    <string name="create_profile_activity_center_code">Center code</string>
+    <string name="create_profile_activity_center_code">Activation code</string>
     <string name="create_profile_activity_create_account">Create account</string>
 
     <!--PROFILE ACTIVITY-->

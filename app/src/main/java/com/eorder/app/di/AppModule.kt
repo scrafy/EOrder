@@ -39,4 +39,5 @@ val appModule = module {
     viewModel { RecoverPasswordViewModel() }
     viewModel { ProfileActivityViewModel() }
     viewModel { CategoriesViewModel() }
+    viewModel { ActivateCenterViewModel() }
 }

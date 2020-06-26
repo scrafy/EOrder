@@ -7,6 +7,7 @@ import com.eorder.app.viewmodels.BaseViewModel
 import com.eorder.domain.models.AccountCentreCode
 import com.eorder.domain.models.Email
 import com.eorder.domain.models.ServerResponse
+import com.eorder.domain.models.UserProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 class CheckEmailActivityModel : BaseViewModel() {
 
     val checkUserEmailResult: MutableLiveData<ServerResponse<Boolean>> = MutableLiveData()
-    val associateAccountResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
+    val associateAccountResult: MutableLiveData<ServerResponse<UserProfile>> = MutableLiveData()
 
 
     fun checkUserEmail(email: String) {

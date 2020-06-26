@@ -60,7 +60,7 @@ class CentersFragment : BaseFragment(),
     }
 
     override fun showMessage(message: String) {
-        editText_activity_main_code_input.text.clear()
+
         SnackBar(
             context!!,
             swipeRefresh_centers_fragment,

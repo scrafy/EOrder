@@ -60,7 +60,7 @@ class SellersFragment : BaseFragment(),
     }
 
     override fun showMessage(message: String) {
-        editText_activity_main_code_input.text.clear()
+
         SnackBar(
             context!!,
             swipeRefresh_sellers_fragment,

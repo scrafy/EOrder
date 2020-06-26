@@ -45,7 +45,7 @@ class CenterRepository(
         return response
     }
 
-    override fun associateAccountToCentreCode(data: AccountCentreCode): ServerResponse<Any> {
+    override fun associateAccountToCentreCode(data: AccountCentreCode): ServerResponse<UserProfile> {
 
         val url = "${configurationManager.getProperty("endpoint_url")}Centres/associatecentre"
         val resp = httpClient.postJsonData (
@@ -53,8 +53,8 @@ class CenterRepository(
             data,
             null
         )
-        var response = Gson.Create().fromJson<ServerResponse<Any>>(
-            resp, object : TypeToken<ServerResponse<Any>>() {}.type
+        var response = Gson.Create().fromJson<ServerResponse<UserProfile>>(
+            resp, object : TypeToken<ServerResponse<UserProfile>>() {}.type
         )
         checkServerErrorInResponse(response)
         return response

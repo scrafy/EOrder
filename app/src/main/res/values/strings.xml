@@ -20,7 +20,6 @@
     <string name="centers">Centers</string>
 
 
-
     <!--LATERAL NAVIGATION MENU -->
 
     <string name="lateral_nav_menu_open">Open</string>
@@ -113,14 +112,13 @@
     <string name="check_email_activity_your_email">Your email...</string>
 
 
-
     <!--CREATE PROFILE ACTIVITY-->
     <string name="create_profile_activity_username">Username</string>
     <string name="create_profile_activity_password">Password</string>
     <string name="create_profile_activity_confirm_password">Confirm password</string>
     <string name="create_profile_activity_phone">Phone</string>
     <string name="create_profile_activity_email">Email</string>
-    <string name="create_profile_activity_center_code">Center code</string>
+    <string name="create_profile_activity_center_code">Activation code</string>
     <string name="create_profile_activity_create_account">Create account</string>
 
     <!--PROFILE ACTIVITY-->
@@ -158,7 +156,6 @@
     <!--ACTIVITY SELLER PRODUCT-->
     <string name="activity_seller_product_select_seller">Select a seller ▲</string>
     <string name="activity_seller_product_select_center">Select a center ▼</string>
-
 
 
     <!--CHANGE PASSWORD ACTIVITY-->
