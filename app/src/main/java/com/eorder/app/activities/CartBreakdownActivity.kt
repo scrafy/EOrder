@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import com.eorder.application.extensions.convertDpToPixel
 import com.eorder.application.interfaces.ICheckValidSession
+import com.eorder.domain.enumerations.TaxType
 import com.eorder.domain.factories.Gson
 import com.eorder.domain.models.Order
 import kotlinx.android.synthetic.main.activity_cart_breakdown.*
@@ -60,8 +61,10 @@ class CartBreakdownActivity : BaseActivity(), ICheckValidSession {
             row.addView(getTableTexView(true, "${p.price}€"))
             row.addView(getTableTexView(true, "${p.amount}",false,true))
             row.addView(getTableTexView(true, "${p.totalBase}€"))
-            row.addView(getTableTexView(true, "${p.tax}"))
-            row.addView(getTableTexView(true, "${p.rate}%"))
+            if ( p.tax != TaxType.NO_DEFINIDO )
+                 row.addView(getTableTexView(true, String.format("%s  %.2f", p.tax, p.rate )+"%"))
+            else
+                row.addView(getTableTexView(true, ""))
             row.addView(getTableTexView(true, "${p.totalTaxes}€"))
             row.addView(getTableTexView(true, "${p.total}€"))
             table.addView(row)
@@ -122,7 +125,6 @@ class CartBreakdownActivity : BaseActivity(), ICheckValidSession {
         totalRow.addView(getTableTexView(true, ""))
         totalRow.addView(getTableTexView(true, "${order.totalProducts}", true,true))
         totalRow.addView(getTableTexView(true, "${order.totalBase}€", true))
-        totalRow.addView(getTableTexView(true, ""))
         totalRow.addView(getTableTexView(true, ""))
         totalRow.addView(getTableTexView(true, "${order.totalTaxes}€", true))
         totalRow.addView(getTableTexView(true, "${order.total}€", true))
