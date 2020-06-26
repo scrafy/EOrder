@@ -198,7 +198,7 @@
     <string name="shop_breakdown_activity_quantity">Cantidad</string>
     <string name="shop_breakdown_activity_total_base">Base imponible</string>
     <string name="shop_breakdown_activity_tax_type">Tipo impuesto</string>
-    <string name="shop_breakdown_activity_tax">Cantidad</string>
+    <string name="shop_breakdown_activity_tax">Impuesto</string>
     <string name="shop_breakdown_activity_total_tax">Total impuesto</string>
     <string name="shop_breakdown_activity_total">Total</string>
 
