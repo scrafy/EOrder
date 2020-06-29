@@ -29,7 +29,7 @@
             android:paddingLeft="10dp"
             >
 
-            <com.eorder.app.helpers.SpinnerExtension
+            <com.pedidoe.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_categories"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:backgroundTint="@android:color/white"
                 />
 
-            <com.eorder.app.helpers.SpinnerExtension
+            <com.pedidoe.app.helpers.SpinnerExtension
                 android:id="@+id/spinner_product_list_order"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

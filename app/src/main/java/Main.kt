@@ -1,18 +1,17 @@
-package com.eorder.app
+package com.pedidoe.app
 
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.eorder.app.di.appModule
-import com.eorder.application.di.UnitOfWorkService
-import com.eorder.application.di.applicationModule
-import com.eorder.application.enums.SharedPreferenceKeyEnum
-import com.eorder.infrastructure.di.infrastructureModule
+import com.pedidoe.app.di.appModule
+import com.pedidoe.application.di.UnitOfWorkService
+import com.pedidoe.application.di.applicationModule
+import com.pedidoe.application.enums.SharedPreferenceKeyEnum
+import com.pedidoe.infrastructure.di.infrastructureModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

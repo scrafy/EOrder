@@ -27,7 +27,7 @@
                 android:textSize="25dp"
                 android:textStyle="bold"></TextView>
 
-            <com.eorder.app.views.ExpandedListView
+            <com.pedidoe.app.views.ExpandedListView
                 android:id="@+id/listView_categories_fragment_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -51,7 +51,7 @@
                             android:layout_marginBottom="10dp"
                             ></TextView>
 
-                        <com.eorder.app.helpers.SpinnerExtension
+                        <com.pedidoe.app.helpers.SpinnerExtension
                             android:id="@+id/spinner_activity_product_calendar_months"
                             style="@style/Widget.AppCompat.Spinner"
                             android:layout_width="200dp"

@@ -227,7 +227,7 @@
 
                 </LinearLayout>
 
-                <com.eorder.app.views.ExpandedListView
+                <com.pedidoe.app.views.ExpandedListView
                     android:id="@+id/listView_activity_shop_product_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

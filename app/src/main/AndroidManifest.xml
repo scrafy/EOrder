@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eorder.app">
+    package="com.pedidoe.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".Main"
+        android:name="com.pedidoe.app.Main"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="PedidoE"
@@ -14,25 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ActivateCenterActivity"></activity>
-        <activity android:name=".activities.ProfileActivity" />
-        <activity android:name=".activities.RecoverPasswordActivity" />
-        <activity android:name=".activities.ProductCalendarActivity" />
-        <activity android:name=".activities.CreateAccountActivity" />
-        <activity android:name=".activities.CheckEmailActivity" />
-        <activity android:name=".activities.ProductActivity" />
-        <activity android:name=".activities.SellerActivity" />
-        <activity android:name=".activities.CenterActivity" />
-        <activity android:name=".activities.SellerProductActivity" />
-        <activity android:name=".activities.CartBreakdownActivity" />
-        <activity android:name=".activities.OrderDoneActivity" />
-        <activity android:name=".activities.OrderActivity" />
-        <activity android:name=".activities.BaseMenuActivity" />
-        <activity android:name=".activities.ShopActivity" />
-        <activity android:name=".activities.LandingActivity" />
-        <activity android:name=".activities.ChangePasswordActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name="com.pedidoe.app.activities.ActivateCenterActivity"></activity>
+        <activity android:name="com.pedidoe.app.activities.ProfileActivity" />
+        <activity android:name="com.pedidoe.app.activities.RecoverPasswordActivity" />
+        <activity android:name="com.pedidoe.app.activities.ProductCalendarActivity" />
+        <activity android:name="com.pedidoe.app.activities.CreateAccountActivity" />
+        <activity android:name="com.pedidoe.app.activities.CheckEmailActivity" />
+        <activity android:name="com.pedidoe.app.activities.ProductActivity" />
+        <activity android:name="com.pedidoe.app.activities.SellerActivity" />
+        <activity android:name="com.pedidoe.app.activities.CenterActivity" />
+        <activity android:name="com.pedidoe.app.activities.SellerProductActivity" />
+        <activity android:name="com.pedidoe.app.activities.CartBreakdownActivity" />
+        <activity android:name="com.pedidoe.app.activities.OrderDoneActivity" />
+        <activity android:name="com.pedidoe.app.activities.OrderActivity" />
+        <activity android:name="com.pedidoe.app.activities.BaseMenuActivity" />
+        <activity android:name="com.pedidoe.app.activities.ShopActivity" />
+        <activity android:name="com.pedidoe.app.activities.LandingActivity" />
+        <activity android:name="com.pedidoe.app.activities.ChangePasswordActivity" />
+        <activity android:name="com.pedidoe.app.activities.LoginActivity" />
+        <activity android:name="com.pedidoe.app.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
