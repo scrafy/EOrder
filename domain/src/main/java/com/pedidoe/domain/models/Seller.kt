@@ -5,7 +5,7 @@ import com.pedidoe.domain.enumerations.Sector
 class Seller(
 
     val id: Int,
-    val gln: Long,
+    val gln: Long?,
     val companyName: String,
     val vatNumber: String,
     val address: String,

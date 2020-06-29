@@ -9,6 +9,7 @@ import com.pedidoe.app.R
 import com.pedidoe.app.helpers.LoadImageHelper
 import com.pedidoe.app.helpers.paintEditTextUnderLines
 import com.pedidoe.app.viewmodels.fragments.SellerInfoFragmentViewModel
+import com.pedidoe.domain.enumerations.Sector
 import com.pedidoe.domain.models.Seller
 import kotlinx.android.synthetic.main.fragment_seller_info.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -50,9 +51,11 @@ class SellerInfoFragment : BaseFragment() {
         editText_fragment_seller_info_post_code.setText(seller.postalCode)
         editText_fragment_seller_info_province.setText(seller.province)
         editText_fragment_seller_info_email.setText(seller.email)
-        editText_fragment_seller_info_sector.setText(seller.sector.toString())
+        if ( seller.sector != Sector.NO_DEFINIDO )
+            editText_fragment_seller_info_sector.setText(seller.sector.toString())
         editText_fragment_seller_info_country.setText(seller.country)
-        editText_fragment_seller_info_gln.setText(seller.gln.toString())
+        if ( seller.gln != null )
+            editText_fragment_seller_info_gln.setText(seller.gln.toString())
         editText_fragment_seller_info_erp.setText(seller.erp)
         editText_fragment_seller_info_seller_taxid.setText(seller.vatNumber)
 

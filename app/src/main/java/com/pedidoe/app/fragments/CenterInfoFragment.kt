@@ -9,6 +9,7 @@ import com.pedidoe.app.R
 import com.pedidoe.app.helpers.LoadImageHelper
 import com.pedidoe.app.helpers.paintEditTextUnderLines
 import com.pedidoe.app.viewmodels.fragments.CenterInfoFragmentViewModel
+import com.pedidoe.domain.enumerations.Sector
 import com.pedidoe.domain.models.Center
 import kotlinx.android.synthetic.main.fragment_center_info.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -48,7 +49,8 @@ class CenterInfoFragment : BaseFragment() {
         editText_fragment_center_info_post_code.setText(center.postalCode.toString())
         editText_fragment_center_info_province.setText(center.province)
         editText_fragment_center_info_email.setText(center.email)
-        editText_fragment_center_info_sector.setText( center.sector?.toString() )
+        if ( center.sector != Sector.NO_DEFINIDO )
+            editText_fragment_center_info_sector.setText( center.sector.toString() )
         editText_fragment_center_info_country.setText(center.country)
 
         try {
