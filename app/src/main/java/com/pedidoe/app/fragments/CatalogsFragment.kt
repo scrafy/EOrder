@@ -70,7 +70,7 @@ class CatalogsFragment : BaseFragment(),
 
         val catalog = (model as Catalog)
 
-        view.findViewById<TextView>(R.id.textView_products_list_category).text = catalog.sellerName
+        view.findViewById<TextView>(R.id.textView_products_list_category).text = catalog.name
         view.findViewById<TextView>(R.id.textView_catalogs_list_total_products).text =
             resources.getString(R.string.catalog_fragment_number_of_products)
                 .format(catalog.totalProducts)

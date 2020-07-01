@@ -12,5 +12,11 @@ enum class Sector(var code:Int) {
     FARMACEUTICO(2),
     @SerializedName("3")
     PANADERIAS(3),
+    @SerializedName("4")
+    FRUTAS_Y_VERDURAS(4),
+    @SerializedName("5")
+    BEBIDAS(5),
+    @SerializedName("6")
+    LIMPIEZA(6),
 
 }

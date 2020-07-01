@@ -384,7 +384,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
 
         view.findViewById<TextView>(R.id.textView_catalogs_list_provider_name).text =
-            catalog.sellerName
+            catalog.name
     }
 
     private fun repaintCenterList(view: View, obj: Any?) {
@@ -505,8 +505,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
     private fun newSearch() {
 
         currentPage = 1
+        products.clear()
         productsAdapter.resetProducts()
-        products = mutableListOf()
     }
 
     private fun addDots(size: Int, v: LinearLayout) {
@@ -770,7 +770,17 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
                         ),
                         resources.getString(R.string.ok)
 
-                    ) { d, i -> }.show()
+                    ) { d, i ->
+
+                        newSearch()
+                        //searchProducts = null
+                        loadSpinnersData(listOf())
+                        this.catalogs = mutableListOf()
+                        catalogViewPager.adapter = ProductCatalogListAdapter(this, catalogs)
+                        catalogViewPager.adapter?.notifyDataSetChanged()
+                        (findViewById<LinearLayout>(R.id.linearLayout_activity_product_dots_catalogs).removeAllViews())
+
+                    }.show()
                 } else {
                     linearLayout_activity_product_dots_catalogs.removeAllViews()
                     addDots(catalogs.size, linearLayout_activity_product_dots_catalogs)
@@ -848,7 +858,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
     private fun onSelectedCategory(position: Int) {
 
-        if (searchProducts != null) {
+        if (categories.isNotEmpty()) {
             newSearch()
             if (position == 0)
                 searchProducts?.category = null
@@ -902,7 +912,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
     private fun loadSpinnersData(_categories: List<String>) {
 
         categories.clear()
-        categories.add(this.resources.getString(R.string.product_categories))
+        if (_categories.isNotEmpty())
+            categories.add(this.resources.getString(R.string.product_categories))
         categories.addAll(_categories)
         productSpinners = FilterProductSpinners(
             this,
