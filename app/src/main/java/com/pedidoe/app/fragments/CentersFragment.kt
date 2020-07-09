@@ -75,8 +75,6 @@ class CentersFragment : BaseFragment(),
         model = getViewModel()
         init()
         setObservers()
-
-
     }
 
     override fun setAdapterListeners(view: View, obj: Any?) {
@@ -122,9 +120,6 @@ class CentersFragment : BaseFragment(),
                 R.id.textView_centers_list_view_products
             ).visibility = View.INVISIBLE
         }
-
-
-
     }
 
     fun setObservers() {
@@ -147,8 +142,6 @@ class CentersFragment : BaseFragment(),
                 refreshLayout.isRefreshing = false
                 model.getManagerExceptionService().manageException(this.context!!, ex)
             })
-
-
     }
 
     private fun init() {

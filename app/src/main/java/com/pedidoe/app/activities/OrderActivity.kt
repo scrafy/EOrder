@@ -129,6 +129,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
                 { d, i ->
 
                     model.cleanShop()
+                    model.addCenterToOrder(center.id!!, center.name!!, center.imageUrl, center.buyerId)
                     model.getCatalogByCenter(center.id)
 
                 },
@@ -316,6 +317,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CatalogsFragment()
         var args = Bundle()
         args.putString("catalogs", Gson.Create().toJson(catalogs))
+        args.putInt("centerId", this.center.id)
         fragment.arguments = args
 
         if (catalogs.isNotEmpty() && catalogs.size > 1) {
@@ -332,6 +334,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CatalogsFragment()
         var args = Bundle()
         args.putString("catalogs", Gson.Create().toJson(catalogs))
+        args.putInt("centerId", this.center.id)
         fragment.arguments = args
 
         if (catalogs.isNotEmpty() && catalogs.size > 1) {

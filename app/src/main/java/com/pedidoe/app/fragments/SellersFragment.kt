@@ -111,6 +111,7 @@ class SellersFragment : BaseFragment(),
             this.activity as LifecycleOwner,
             Observer<ServerResponse<List<Seller>>> {
 
+                refreshLayout.isRefreshing = false
                 sellers = it.ServerData?.Data ?: mutableListOf()
                 adapter.sellers = sellers
                 adapter.notifyDataSetChanged()

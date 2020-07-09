@@ -75,10 +75,15 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
 
     fun addCenterToOrder(centerId: Int, centerName: String, centerImageUrl: String?, buyerId:Int?) {
 
-        unitOfWorkService.getShopService().getOrder().center.centerId = centerId
-        unitOfWorkService.getShopService().getOrder().center.centerName = centerName
-        unitOfWorkService.getShopService().getOrder().center.imageUrl = centerImageUrl
-        unitOfWorkService.getShopService().getOrder().center.buyerId = buyerId
+        var order = unitOfWorkService.getShopService().getOrder()
+
+        if (order.center.centerId == null || order.center.centerId == centerId)
+        {
+            unitOfWorkService.getShopService().getOrder().center.centerId = centerId
+            unitOfWorkService.getShopService().getOrder().center.centerName = centerName
+            unitOfWorkService.getShopService().getOrder().center.imageUrl = centerImageUrl
+            unitOfWorkService.getShopService().getOrder().center.buyerId = buyerId
+        }
     }
 
     fun addSellerToOrder(sellerId: Int, sellerName: String, primaryCode: String) {
