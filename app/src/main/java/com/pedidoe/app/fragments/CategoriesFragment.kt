@@ -33,6 +33,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
     private var categories: List<Category> = listOf()
     private lateinit var adapter: CategoriesAdapter
     private lateinit var catalog: Catalog
+    private lateinit var centre: Center
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var categorySelected: Category
 
@@ -121,13 +122,14 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
 
     private fun init() {
         this.catalog = Gson.Create().fromJson(arguments!!.getString("catalog"), Catalog::class.java)
-        model.getCategories(this.catalog.id)
+        this.centre = Gson.Create().fromJson(arguments!!.getString("center"), Center::class.java)
+        model.getCategories(this.catalog.id, this.centre.id)
         imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
         refreshLayout = this.view?.findViewById(R.id.swipeRefresh_categories_fragment)!!
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getCategories(this.catalog.id)
+            model.getCategories(this.catalog.id, this.centre.id)
         }
 
     }

@@ -12,6 +12,10 @@ import com.pedidoe.app.widgets.AlertDialogOk
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+
+
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
 
@@ -57,6 +61,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
 
+        val pInfo = this.packageManager.getPackageInfo(packageName, 0)
+        val version = pInfo.versionName
+        linearLayout_login_activity_textView_version.text = "V $version"
         model.loadSessionToken(this)
         if (model.isLogged())
             startActivity(Intent(this, LandingActivity::class.java))

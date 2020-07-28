@@ -128,8 +128,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
 
         view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
-            product.category
+
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
@@ -333,15 +332,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             Observer<ServerResponse<List<Product>>> {
 
                 imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
-                if (it.ServerData?.Data.isNullOrEmpty()) {
-
-                    AlertDialogOk(
-                        context!!,
-                        resources.getString(R.string.productos),
-                        resources.getString(R.string.products_fragment_no_products_search_message),
-                        resources.getString(R.string.ok)
-                    ) { d, i -> }.show()
-                } else {
+                if ( !it.ServerData?.Data.isNullOrEmpty() ) {
 
                     pagination = it.ServerData?.PaginationData!!
                     aux = it.ServerData?.Data!!
@@ -351,7 +342,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     setProductCurrentState()
                     adapter.products = products
                     adapter.notifyItemRangeInserted(oldSize, aux.size)
-
                 }
 
             })
@@ -488,6 +478,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     private fun onSelectedCategory(position: Int) {
 
+        favoriteButtonClicked = false
+        paintFavoriteHeart( favoriteButtonClicked )
         newSearch()
         if (position == 0)
             searchProducts.category = null

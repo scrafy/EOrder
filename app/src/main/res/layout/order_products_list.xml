@@ -5,14 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="1dp"
     app:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        >
 
         <ImageView
             android:id="@+id/imgView_order_product_list_img_product"
@@ -26,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:paddingRight="20dp">
 
             <LinearLayout
@@ -81,15 +83,6 @@
                             ></ImageView>
                     </LinearLayout>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textView_order_product_list_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Alimentacion"
-                    android:textColor="@color/secondaryText"
-                    android:textSize="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

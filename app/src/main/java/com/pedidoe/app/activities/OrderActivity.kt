@@ -293,6 +293,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var args = Bundle()
 
         args.putString("catalog", Gson.Create().toJson(this.catalog))
+        args.putString("center", Gson.Create().toJson(this.center))
         fragment.arguments = args
 
         this.supportFragmentManager.beginTransaction()

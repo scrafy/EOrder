@@ -15,11 +15,11 @@ class CategoryRepository(
     ICategoryRepository {
 
 
-    override fun getCategories(catalogId: Int): ServerResponse<List<Category>> {
+    override fun getCategories(catalogId: Int, centreId: Int): ServerResponse<List<Category>> {
 
         httpClient.addAuthorizationHeader(true)
         val url =
-            "${configurationManager.getProperty("endpoint_url")}Category/${catalogId}/Categories"
+            "${configurationManager.getProperty("endpoint_url")}Category/${catalogId}/${centreId}/Categories"
         val resp = httpClient.getJsonResponse(
             url,
             null

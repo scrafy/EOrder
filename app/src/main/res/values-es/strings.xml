@@ -138,7 +138,7 @@
     <!--ORDER ACTIVITY-->
     <string name="alert_dialog_order_activity_change_center">Hay un pedido pendiente para el centro %s.\nSi cambia de centro, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al centro %s?</string>
     <string name="alert_dialog_order_activity_change_seller">Hay un pedido pendiente para el proveedor %s.\nSi cambia de proveedor, perderá los productos añadidos a su carro de la compra.\n\n¿Desea iniciar un pedido al proveedor %s?</string>
-    <string name="alert_dialog_order_activity_button_deny">No change</string>
+    <string name="alert_dialog_order_activity_button_deny">No cambiar</string>
     <string name="alert_dialog_order_activity_change_center_button_confirm">Cambiar de centro</string>
     <string name="alert_dialog_order_activity_change_seller_button_confirm">Cambiar de proveedor</string>
     <string name="alert_dialog_order_activity_no_catalog_message">No se ha encontrado ningún catálogo</string>
@@ -225,7 +225,6 @@
     <!--PRODUCTS FRAGMENT-->
 
     <string name="products_fragment_no_products_message">Lista de productos cargada...</string>
-    <string name="products_fragment_no_products_search_message">No se ha encontrado ningún producto con los criterios de búsqueda establecidos</string>
     <string name="products_fragment_no_favorite_products_message">No ha añadido ningún producto a su lista de favoritos aún</string>
     <string name="products_fragment_more_products">Más productos</string>
 

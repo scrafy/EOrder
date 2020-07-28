@@ -9,8 +9,8 @@ class CategoriesUseCase(
     private val categoryRepository: ICategoryRepository
 ) : ICategoriesUseCase {
 
-    override fun getCategories(catalogId: Int): ServerResponse<List<Category>> {
+    override fun getCategories(catalogId: Int, centreId: Int): ServerResponse<List<Category>> {
 
-        return categoryRepository.getCategories(catalogId)
+        return categoryRepository.getCategories(catalogId, centreId)
     }
 }

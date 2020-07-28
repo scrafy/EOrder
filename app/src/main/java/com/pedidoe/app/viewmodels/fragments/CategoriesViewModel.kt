@@ -18,11 +18,11 @@ class CategoriesViewModel : BaseMainMenuActionsViewModel() {
 
 
 
-    fun getCategories(catalogId: Int) {
+    fun getCategories(catalogId: Int, centreId: Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
-            var result = unitOfWorkUseCase.getCategoriesUseCase().getCategories(catalogId)
+            var result = unitOfWorkUseCase.getCategoriesUseCase().getCategories(catalogId, centreId)
             categoriesResult.postValue(result)
         }
     }

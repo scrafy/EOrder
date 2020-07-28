@@ -103,8 +103,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "" else product.price.toString() + "€"
 
-        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
-            product.category
+
         view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
         this.setAdapterListeners(
             view,

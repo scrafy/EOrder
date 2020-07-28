@@ -412,8 +412,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
 
         view.findViewById<TextView>(R.id.textView_order_product_list_name).text = product.name
-        view.findViewById<TextView>(R.id.textView_order_product_list_category).text =
-            product.category
+
         view.findViewById<TextView>(R.id.textView_order_product_list_price).text =
             if (product.price == 0F) "" else product.price.toString() + "€"
         view.findViewById<TextView>(R.id.textView_order_product_list_amount).text =
@@ -617,7 +616,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
                 catalogSelected = catalogs[position]
                 searchProducts?.catalogId = (catalogSelected as Catalog).id
-                model.getCategories((catalogSelected as Catalog).id)
+                model.getCategories((catalogSelected as Catalog).id, (centerSelected as Center).id)
             }
 
         })
@@ -702,15 +701,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
             Observer<ServerResponse<List<Product>>> {
 
                 imgView_activity_product_pedidoe_loading.visibility = View.INVISIBLE
-                if (it.ServerData?.Data.isNullOrEmpty()) {
-
-                    AlertDialogOk(
-                        this,
-                        resources.getString(R.string.productos),
-                        resources.getString(R.string.products_fragment_no_products_search_message),
-                        resources.getString(R.string.ok)
-                    ) { d, i -> }.show()
-                } else {
+                if ( !it.ServerData?.Data.isNullOrEmpty() ) {
 
                     pagination = it.ServerData?.PaginationData!!
                     aux = it.ServerData?.Data!!
@@ -720,7 +711,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
                     setProductCurrentState()
                     productsAdapter.products = products
                     productsAdapter.notifyItemRangeInserted(oldSize, aux.size)
-
                 }
 
             })
@@ -796,7 +786,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
                         null,
                         null
                     )
-                    model.getCategories((catalogSelected as Catalog).id)
+                    model.getCategories((catalogSelected as Catalog).id, (centerSelected as Center).id)
                 }
 
             })
@@ -857,6 +847,9 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
     }
 
     private fun onSelectedCategory(position: Int) {
+
+        favoriteButtonClicked = false
+        paintFavoriteHeart( favoriteButtonClicked )
 
         if (categories.isNotEmpty()) {
             newSearch()
