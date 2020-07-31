@@ -43,6 +43,22 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
 
     }
 
+    override fun remove(url: String, headers: Map<String, String>?): String? {
+
+        val request = with(Request.Builder()) {
+            addHeader("Accept", "application/json")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            headers?.forEach { header -> addHeader(header.key, header.value) }
+            delete(null)
+            url(url)
+            build()
+        }
+        var resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp?.body?.string()
+    }
+
     override fun postJsonData(url: String, body: Any, headers: Map<String, String>?): String? {
 
         val request = with(Request.Builder()) {
@@ -51,6 +67,22 @@ class OkHttpClient(private val client: OkHttpClient, private val tokenService: I
                 addHeader("Authorization", "Bearer ${tokenService.getToken()}")
             headers?.forEach { header -> addHeader(header.key, header.value) }
             post(Gson.Create().toJson(body).toRequestBody("application/json; charset=utf-8".toMediaType()))
+            url(url)
+            build()
+        }
+        var resp = client.newCall(request).execute()
+        this.refreshToken(resp.headers["Authorization"])
+        return resp?.body?.string()
+    }
+
+    override fun postNoBody(url: String, headers: Map<String, String>?): String? {
+
+        val request = with(Request.Builder()) {
+            addHeader("Accept", "application/json")
+            if (addAuthorizationHeader)
+                addHeader("Authorization", "Bearer ${tokenService.getToken()}")
+            headers?.forEach { header -> addHeader(header.key, header.value) }
+            post(Gson.Create().toJson(null).toRequestBody("application/json; charset=utf-8".toMediaType()))
             url(url)
             build()
         }

@@ -16,6 +16,9 @@ class ShopViewModel : BaseViewModel() {
 
     val confirmOrderResult: MutableLiveData<ServerResponse<Any>> = MutableLiveData()
     val summaryTotalsOrderResult: MutableLiveData<Any> = MutableLiveData()
+    val getFavoriteProductsIdsResult: MutableLiveData<ServerResponse<List<Int>>> = MutableLiveData()
+    val addProductToFavoriteListResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
+    val deleteProductFromFavoriteListResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
     fun getTotalBaseAmount(): Float? = unitOfWorkService.getShopService().getTotalBaseAmount()
@@ -54,15 +57,33 @@ class ShopViewModel : BaseViewModel() {
     }
 
 
-    fun writeProductsFavorites(context: Context, productId: Int) {
+    fun saveProductAsFavorite(productId: Int) {
 
-        unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getAddProductToFavoriteListUseCase().AddProductToFavorite(productId)
+            addProductToFavoriteListResult.postValue(result)
+        }
     }
 
-    fun loadFavoritesProducts(context: Context): List<Int>? {
+    fun deleteProductFromFavorites(productId: Int) {
 
-        return unitOfWorkService.getFavoritesService().loadFavoriteProducts(context)
 
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getDeleteProductToFavoriteListUseCase().DeleteProductFromFavorite(productId)
+            deleteProductFromFavoriteListResult.postValue(result)
+        }
+    }
+
+    fun getFavoriteProductsIds() {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getProductFavoriteListUseCase().GetFavoriteProducts()
+            getFavoriteProductsIdsResult.postValue(result)
+        }
     }
 
     fun writeShopToSharedPreferencesOrder(context:Context){

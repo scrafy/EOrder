@@ -16,22 +16,6 @@ class ProductRepository(
 ) : BaseRepository(),
     IProductRepository {
 
-    override fun getProductsByCatalog(
-        centerId: Int,
-        catalogId: Int
-    ): ServerResponse<List<Product>> {
-
-       var products =  listOf<Product>()
-
-        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
-        return resp
-    }
-
-    override fun getProductsBySeller(centerId: Int, sellerId: Int): ServerResponse<List<Product>> {
-
-        var resp =  ServerResponse<List<Product>>(200, null, ServerData(listOf<Product>(),null))
-        return resp
-    }
 
     override fun searchProducts(search: SearchProduct, page: Int): ServerResponse<List<Product>> {
 
@@ -43,6 +27,50 @@ class ProductRepository(
         )
         var response = Gson.Create().fromJson<ServerResponse<List<Product>>>(
             resp, object : TypeToken<ServerResponse<List<Product>>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
+    }
+
+    override fun addProductToFavoriteList(productId: Int): ServerResponse<String> {
+
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.postNoBody(
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/${productId}/addfavoriteproduct",
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<String>>(
+            resp, object : TypeToken<ServerResponse<String>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
+
+    }
+
+    override fun deleteProductFromFavoriteList(productId: Int): ServerResponse<String> {
+
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.remove(
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/${productId}/removefavoriteproduct",
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<String>>(
+            resp, object : TypeToken<ServerResponse<String>>() {}.type
+        )
+        checkServerErrorInResponse(response)
+        return response
+
+    }
+
+    override fun getProductsFromFavoriteList(): ServerResponse<List<Int>> {
+
+        httpClient.addAuthorizationHeader(true)
+        var resp = httpClient.getJsonResponse(
+            "${configurationManager.getProperty("endpoint_url")}ProductDetails/favoriteproducts",
+            null
+        )
+        var response = Gson.Create().fromJson<ServerResponse<List<Int>>>(
+            resp, object : TypeToken<ServerResponse<List<Int>>>() {}.type
         )
         checkServerErrorInResponse(response)
         return response

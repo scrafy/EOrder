@@ -22,7 +22,6 @@ class UnitOfWorkService(
     private var validationModelService: IValidationModelService? = null
     private var shopService: IShopService? = null
     private var addProductToShopService: IAddProductToShopService? = null
-    private var favoritesService: IFavoritesService? = null
     private var calendarService: ICalendarService? = null
 
 
@@ -50,14 +49,6 @@ class UnitOfWorkService(
             managerException = ManagerException()
 
         return managerException as IManagerException
-    }
-
-    fun getFavoritesService(): IFavoritesService {
-
-        if (favoritesService == null)
-            favoritesService = FavoritesService(getSharedPreferencesService())
-
-        return favoritesService as IFavoritesService
     }
 
     fun getAddProductToShopService(): IAddProductToShopService {
@@ -99,7 +90,7 @@ class UnitOfWorkService(
     }
 
     fun getLoadImageService(): ILoadImagesService {
-        // probar a devolver la misma instancia para ver como se compora la cara de imagenes
+
         return LoadImagesService()
     }
 }

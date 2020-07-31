@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.pedidoe.app.R
@@ -91,9 +92,10 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         var heart = view.findViewById<ImageView>(R.id.imgView_order_product_list_heart)
 
 
-        try{
-            Glide.with(this).load(product.imageUrl).into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
-        }catch (ex:Exception){
+        try {
+            Glide.with(this).load(product.imageUrl)
+                .into(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
+        } catch (ex: Exception) {
             LoadImageHelper().setGifLoading(view.findViewById<ImageView>(R.id.imgView_order_product_list_img_product))
         }
 
@@ -151,12 +153,27 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
         })
 
+        model.getFavoriteProductsIdsResult.observe(
+            this as LifecycleOwner,
+            Observer<ServerResponse<List<Int>>> {
+
+                val ids = it.ServerData?.Data
+
+                if (!ids.isNullOrEmpty()) {
+                    this.products.forEach { p -> p.favorite = false }
+                    this.products.filter { p ->
+                        p.id in ids
+                    }.forEach { p -> p.favorite = true }
+                }
+                adapter.products = products
+                adapter.notifyDataSetChanged()
+
+            })
+
         model.summaryTotalsOrderResult.observe(this, Observer<Any> {
 
             this.products = model.getProducts()
             setProductsFavoriteState()
-            adapter.products = this.products
-            adapter.notifyDataSetChanged()
             this.setTotals()
         })
 
@@ -216,10 +233,11 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
-            model.writeProductsFavorites(
-                this,
-                product.id
-            )
+
+            if (product.favorite)
+                model.saveProductAsFavorite(product.id)
+            else
+                model.deleteProductFromFavorites(product.id)
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -322,16 +340,8 @@ class ShopActivity : BaseActivity(), IRepaintModel,
 
     private fun setProductsFavoriteState() {
 
-        products.forEach { p ->
+        model.getFavoriteProductsIds()
 
-            p.favorite = false
-        }
-        val favorites = model.loadFavoritesProducts(this)
-
-        if (favorites != null)
-            products.filter { p ->
-                p.id in favorites
-            }.forEach { p -> p.favorite = true }
     }
 
     private fun setTotals() {

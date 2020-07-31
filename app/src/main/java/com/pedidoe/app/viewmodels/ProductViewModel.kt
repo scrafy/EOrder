@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.pedidoe.application.enums.SharedPreferenceKeyEnum
 import com.pedidoe.domain.factories.Gson
 import com.pedidoe.domain.models.*
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +19,9 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
     val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
     val searchProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
     val getFavoriteProductsResult: MutableLiveData<ServerResponse<List<Product>>> = MutableLiveData()
+    val getFavoriteProductsIdsResult: MutableLiveData<ServerResponse<List<Int>>> = MutableLiveData()
+    val addProductToFavoriteListResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
+    val deleteProductFromFavoriteListResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
 
 
     fun getAddProductToCartObservable(): LiveData<Any> =
@@ -37,12 +39,12 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
 
     fun getFavoriteProducts(context: Context, search: SearchProduct) {
 
-        var clone = Gson.Create().fromJson<SearchProduct>(Gson.Create().toJson(search), SearchProduct::class.java)
-
-        clone.ProductsIds = loadFavoritesProducts(context)
-        clone.category = null
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
 
+            var ids = unitOfWorkUseCase.getProductFavoriteListUseCase().GetFavoriteProducts()
+            var clone = Gson.Create().fromJson<SearchProduct>(Gson.Create().toJson(search), SearchProduct::class.java)
+            clone.ProductsIds = ids.ServerData?.Data
+            clone.category = null
             var result = unitOfWorkUseCase.getFavoriteProductsUseCase().getFavoriteProducts( context, clone )
             getFavoriteProductsResult.postValue(result)
         }
@@ -115,12 +117,6 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
     fun removeProductFromShop(product: Product) =
         unitOfWorkService.getShopService().removeProductFromShop(product)
 
-
-    fun writeProductsFavorites(context: Context, productId: Int) {
-
-        unitOfWorkService.getFavoritesService().writeProductToFavorites(context, productId)
-    }
-
     fun searchProducts(search: SearchProduct, page:Int) {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
@@ -130,13 +126,33 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         }
     }
 
-    fun loadFavoritesProducts(context: Context?): List<Int>? {
+    fun saveProductAsFavorite(productId: Int) {
 
-        return unitOfWorkService.getSharedPreferencesService().loadFromSharedPreferences<List<Int>>(
-            context,
-            SharedPreferenceKeyEnum.FAVORITE_PRODUCTS.key,
-            List::class.java
-        )?.map { p -> p.toInt() }
 
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getAddProductToFavoriteListUseCase().AddProductToFavorite(productId)
+            addProductToFavoriteListResult.postValue(result)
+        }
     }
+
+    fun deleteProductFromFavorites(productId: Int) {
+
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getDeleteProductToFavoriteListUseCase().DeleteProductFromFavorite(productId)
+            deleteProductFromFavoriteListResult.postValue(result)
+        }
+    }
+
+    fun getFavoriteProductsIds() {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getProductFavoriteListUseCase().GetFavoriteProducts()
+            getFavoriteProductsIdsResult.postValue(result)
+        }
+    }
+
 }

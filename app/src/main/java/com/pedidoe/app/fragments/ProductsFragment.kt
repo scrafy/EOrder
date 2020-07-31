@@ -104,11 +104,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         favoriteButtonClicked = !favoriteButtonClicked
 
-        if ( favoriteButtonClicked ){
+        if (favoriteButtonClicked) {
 
             model.getFavoriteProducts(context!!, searchProducts)
-        }
-        else {
+        } else {
             paintFavoriteHeart(false)
             products.clear()
             adapter.products = products
@@ -232,11 +231,10 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
 
-            model.writeProductsFavorites(
-                this.context!!,
-                product.id
-            )
-
+            if (product.favorite)
+                model.saveProductAsFavorite(product.id)
+            else
+                model.deleteProductFromFavorites(product.id)
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -332,7 +330,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             Observer<ServerResponse<List<Product>>> {
 
                 imgView_products_fragment_pedidoe_loading.visibility = View.INVISIBLE
-                if ( !it.ServerData?.Data.isNullOrEmpty() ) {
+                if (!it.ServerData?.Data.isNullOrEmpty()) {
 
                     pagination = it.ServerData?.PaginationData!!
                     aux = it.ServerData?.Data!!
@@ -343,6 +341,31 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     adapter.products = products
                     adapter.notifyItemRangeInserted(oldSize, aux.size)
                 }
+
+            })
+
+        model.getFavoriteProductsIdsResult.observe(
+            this.activity as LifecycleOwner,
+            Observer<ServerResponse<List<Int>>> {
+
+                val ids = it.ServerData?.Data
+
+                if (!ids.isNullOrEmpty()) {
+                    this.products.forEach { p -> p.favorite = false }
+                    this.products.filter { p ->
+                        p.id in ids
+                    }.forEach { p -> p.favorite = true }
+                }
+                adapter.products = products
+                adapter.notifyDataSetChanged()
+
+            })
+
+        model.deleteProductFromFavoriteListResult.observe(
+            this.activity as LifecycleOwner,
+            Observer<Any> {
+
+                model.getFavoriteProducts(context!!, searchProducts)
 
             })
 
@@ -357,16 +380,13 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                         resources.getString(R.string.productos),
                         resources.getString(R.string.products_fragment_no_favorite_products_message),
                         resources.getString(R.string.ok)
-                    ) { d, i ->  favoriteButtonClicked = false}.show()
+                    ) { d, i -> favoriteButtonClicked = false }.show()
 
                 } else {
                     paintFavoriteHeart(true)
                     favoriteButtonClicked = true
                     products = it.ServerData?.Data!! as MutableList<Product>
                     setProductCurrentState()
-                    adapter.products = products
-                    adapter.notifyDataSetChanged()
-
                 }
 
             })
@@ -452,12 +472,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             products.filter { !it.amountsByDay.isNullOrEmpty() }.forEach { it.amountsByDay = null }
         }
 
-        val favorites = model.loadFavoritesProducts(context)
-        this.products.forEach { p -> p.favorite = false }
-        if (favorites != null)
-            this.products.filter { p ->
-                p.id in favorites
-            }.forEach { p -> p.favorite = true }
+        model.getFavoriteProductsIds()
+
     }
 
     private fun searchProducts() {
@@ -466,7 +482,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
     }
 
-    private fun paintFavoriteHeart( full:Boolean ){
+    private fun paintFavoriteHeart(full: Boolean) {
 
         val toolbar = this.activity!!.findViewById<Toolbar>(R.id.toolbar)
         val menuItem = toolbar?.menu?.findItem(R.id.item_menu_product_list_favorite)
@@ -479,7 +495,7 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
     private fun onSelectedCategory(position: Int) {
 
         favoriteButtonClicked = false
-        paintFavoriteHeart( favoriteButtonClicked )
+        paintFavoriteHeart(favoriteButtonClicked)
         newSearch()
         if (position == 0)
             searchProducts.category = null

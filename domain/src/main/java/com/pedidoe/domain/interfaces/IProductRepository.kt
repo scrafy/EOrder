@@ -6,8 +6,8 @@ import com.pedidoe.domain.models.ServerResponse
 
 interface IProductRepository {
 
-    fun getProductsByCatalog(centerId: Int, catalogId: Int): ServerResponse<List<Product>>
-    fun getProductsBySeller(centerId:Int, sellerId: Int): ServerResponse<List<Product>>
     fun searchProducts(search: SearchProduct, page:Int): ServerResponse<List<Product>>
-
+    fun addProductToFavoriteList(productId: Int): ServerResponse<String>
+    fun deleteProductFromFavoriteList(productId: Int): ServerResponse<String>
+    fun getProductsFromFavoriteList(): ServerResponse<List<Int>>
 }

@@ -20,11 +20,9 @@ class UnitOfWorkUseCase(
     private var favoriteProductsUseCase: IFavoriteProductsUseCase? = null
     private var orderDoneUseCase: IOrdersDoneUseCase? = null
     private var orderSummaryTotalsUseCase: IOrderSummaryTotalsUseCase? = null
-    private var productsByCatalogUseCase: IProductsByCatalogUseCase? = null
     private var changePasswordUseCase: IChangePasswordUseCase? = null
     private var centersUseCase: IUserCentersUseCase? = null
     private var sellersUseCase: ISellersUseCase? = null
-    private var productsBySellerUseCase: IProductsBySellerUseCase? = null
     private var checkCenterActivationCodeUseCase: ICheckCenterActivationCodeUseCase? = null
     private var createAccountUseCase: ICreateAccountUseCase? = null
     private var recoverPasswordUseCase: IRecoverPasswordUseCase? = null
@@ -32,6 +30,9 @@ class UnitOfWorkUseCase(
     private var categoriesUseCase: ICategoriesUseCase? = null
     private var searchProductsUseCase: ISearchProductsUseCase? = null
     private var associateAccountToCentreUseCase:IAssociateAccountToCentreCodeUseCase? = null
+    private var addProductToFavoriteListUseCase:IAddProductToFavoriteListUseCase? = null
+    private var deleteProductToFavoriteListUseCase:IDeleteProductFromFavoriteListUseCase? = null
+    private var productFavoriteListUseCase:IGetProductFavoriteListUseCase? = null
 
 
     fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
@@ -43,6 +44,36 @@ class UnitOfWorkUseCase(
             )
         }
         return existsUserEmailUseCase as IExistsUserEmailUseCase
+    }
+
+    fun getProductFavoriteListUseCase(): IGetProductFavoriteListUseCase {
+
+        if (productFavoriteListUseCase == null) {
+            productFavoriteListUseCase = GetProductFavoriteListUseCase(
+                unitOfWorkRepository.getProductRepository()
+            )
+        }
+        return productFavoriteListUseCase as IGetProductFavoriteListUseCase
+    }
+
+    fun getAddProductToFavoriteListUseCase(): IAddProductToFavoriteListUseCase {
+
+        if (addProductToFavoriteListUseCase == null) {
+            addProductToFavoriteListUseCase = AddProductToFavoriteListUseCase(
+                unitOfWorkRepository.getProductRepository()
+            )
+        }
+        return addProductToFavoriteListUseCase as IAddProductToFavoriteListUseCase
+    }
+
+    fun getDeleteProductToFavoriteListUseCase(): IDeleteProductFromFavoriteListUseCase {
+
+        if (deleteProductToFavoriteListUseCase == null) {
+            deleteProductToFavoriteListUseCase = DeleteProductFromFavoriteListUseCase(
+                unitOfWorkRepository.getProductRepository()
+            )
+        }
+        return deleteProductToFavoriteListUseCase as IDeleteProductFromFavoriteListUseCase
     }
 
     fun getSearchProductsUseCase(): ISearchProductsUseCase {
@@ -89,16 +120,6 @@ class UnitOfWorkUseCase(
         return checkCenterActivationCodeUseCase as ICheckCenterActivationCodeUseCase
     }
 
-
-    fun getProductsBySellerUseCase(): IProductsBySellerUseCase {
-
-        if (productsBySellerUseCase == null)
-            productsBySellerUseCase = ProductsBySellerUseCase(
-                unitOfWorkRepository.getProductRepository()
-            )
-
-        return productsBySellerUseCase as IProductsBySellerUseCase
-    }
 
     fun getSellersUseCase(): ISellersUseCase {
 
@@ -177,17 +198,6 @@ class UnitOfWorkUseCase(
 
         return orderSummaryTotalsUseCase as IOrderSummaryTotalsUseCase
     }
-
-    fun getProductsByCatalogUseCase(): IProductsByCatalogUseCase {
-
-        if (productsByCatalogUseCase == null)
-            productsByCatalogUseCase = ProductsByCatalogUseCase(
-                unitOfWorkRepository.getProductRepository()
-            )
-
-        return productsByCatalogUseCase as IProductsByCatalogUseCase
-    }
-
 
     fun getChangePasswordUseCase(): IChangePasswordUseCase {
 

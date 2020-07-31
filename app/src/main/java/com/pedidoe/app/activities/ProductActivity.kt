@@ -37,8 +37,6 @@ import com.pedidoe.application.interfaces.ICheckValidSession
 import com.pedidoe.application.interfaces.IShowSnackBarMessage
 import com.pedidoe.domain.models.*
 import kotlinx.android.synthetic.main.activity_product.*
-import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout
-import kotlinx.android.synthetic.main.activity_seller_product.expandableLayout2
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -225,10 +223,10 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
             product.favorite = !product.favorite
             productsAdapter.notifyDataSetChanged()
 
-            model.writeProductsFavorites(
-                this,
-                product.id
-            )
+            if (product.favorite)
+                model.saveProductAsFavorite(product.id)
+            else
+                model.deleteProductFromFavorites(product.id)
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -809,6 +807,23 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
             this.showFloatingButton()
         })
 
+        model.getFavoriteProductsIdsResult.observe(
+            this as LifecycleOwner,
+            Observer<ServerResponse<List<Int>>> {
+
+                val ids = it.ServerData?.Data
+
+                if (!ids.isNullOrEmpty()) {
+                    this.products.forEach { p -> p.favorite = false }
+                    this.products.filter { p ->
+                        p.id in ids
+                    }.forEach { p -> p.favorite = true }
+                }
+                productsAdapter.products = products
+                productsAdapter.notifyDataSetChanged()
+
+            })
+
         model.getFavoriteProductsResult.observe(
             this as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> {
@@ -827,8 +842,6 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
                     favoriteButtonClicked = true
                     products = it.ServerData?.Data!! as MutableList<Product>
                     setProductCurrentState()
-                    productsAdapter.products = products
-                    productsAdapter.notifyDataSetChanged()
 
                 }
 
@@ -886,12 +899,8 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
             products.filter { !it.amountsByDay.isNullOrEmpty() }.forEach { it.amountsByDay = null }
         }
 
-        val favorites = model.loadFavoritesProducts(this)
-        this.products.forEach { p -> p.favorite = false }
-        if (favorites != null)
-            this.products.filter { p ->
-                p.id in favorites
-            }.forEach { p -> p.favorite = true }
+        model.getFavoriteProductsIds()
+
     }
 
     private fun onSelectedOrder(position: Int) {
