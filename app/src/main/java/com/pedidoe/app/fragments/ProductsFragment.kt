@@ -233,8 +233,18 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
             if (product.favorite)
                 model.saveProductAsFavorite(product.id)
-            else
+            else {
                 model.deleteProductFromFavorites(product.id)
+
+                if ( favoriteButtonClicked ){
+                    val index = products.indexOf(products.find { p -> p.id == product.id })
+                    products.removeAt(index)
+                    adapter.notifyItemRemoved(index)
+                    if ( products.isNullOrEmpty() ){
+                        onFavoriteIconClicked()
+                    }
+                }
+            }
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -365,8 +375,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this.activity as LifecycleOwner,
             Observer<Any> {
 
-                model.getFavoriteProducts(context!!, searchProducts)
-
             })
 
         model.getFavoriteProductsResult.observe(
@@ -380,11 +388,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                         resources.getString(R.string.productos),
                         resources.getString(R.string.products_fragment_no_favorite_products_message),
                         resources.getString(R.string.ok)
-                    ) { d, i -> favoriteButtonClicked = false }.show()
+                    ) { d, i ->  favoriteButtonClicked = false;  paintFavoriteHeart(favoriteButtonClicked)}.show()
 
                 } else {
-                    paintFavoriteHeart(true)
                     favoriteButtonClicked = true
+                    paintFavoriteHeart(favoriteButtonClicked)
                     products = it.ServerData?.Data!! as MutableList<Product>
                     setProductCurrentState()
                 }

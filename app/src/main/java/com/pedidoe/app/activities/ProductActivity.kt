@@ -225,8 +225,18 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
             if (product.favorite)
                 model.saveProductAsFavorite(product.id)
-            else
+            else {
                 model.deleteProductFromFavorites(product.id)
+
+                if ( favoriteButtonClicked ){
+                    val index = products.indexOf(products.find { p -> p.id == product.id })
+                    products.removeAt(index)
+                    productsAdapter.notifyItemRemoved(index)
+                    if ( products.isNullOrEmpty() ){
+                        onFavoriteIconClicked()
+                    }
+                }
+            }
         }
 
         view.findViewById<ImageView>(R.id.imgView_order_order_product_list_calendar)
@@ -713,6 +723,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
             })
 
+
         model.centersResult
             .observe(this, Observer<ServerResponse<List<Center>>> {
 
@@ -824,18 +835,27 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
             })
 
+        model.deleteProductFromFavoriteListResult.observe(
+            this as LifecycleOwner,
+            Observer<Any> {
+
+                if ( favoriteButtonClicked )
+                    model.getFavoriteProducts(this, searchProducts)
+
+            })
+
         model.getFavoriteProductsResult.observe(
             this as LifecycleOwner,
             Observer<ServerResponse<List<Product>>> {
 
-                if (it.ServerData?.Data.isNullOrEmpty()) {
+                if ( it.ServerData?.Data.isNullOrEmpty() ) {
 
                     AlertDialogOk(
                         this,
                         resources.getString(R.string.productos),
                         resources.getString(R.string.products_fragment_no_favorite_products_message),
                         resources.getString(R.string.ok)
-                    ) { d, i ->  favoriteButtonClicked = false}.show()
+                    ) { d, i ->  favoriteButtonClicked = false;  paintFavoriteHeart(favoriteButtonClicked)}.show()
 
                 } else {
                     paintFavoriteHeart(true)
