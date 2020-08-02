@@ -1,7 +1,7 @@
 package com.pedidoe.infrastructure.di
 
 import com.pedidoe.domain.interfaces.*
-import com.pedidoe.infrastructure.interfaces.ICategoryRepository
+import com.pedidoe.domain.interfaces.ICategoryRepository
 import com.pedidoe.infrastructure.repositories.*
 
 class UnitOfWorkRepository(
@@ -19,6 +19,7 @@ class UnitOfWorkRepository(
     private var productRepository: IProductRepository? = null
     private var sellerRepository: ISellerRepository? = null
     private var categoryRepository: ICategoryRepository? = null
+    private var metaInfoRepository: IMetaInfoRepository? = null
 
 
     fun getUserRepository(): IUserRepository {
@@ -28,6 +29,15 @@ class UnitOfWorkRepository(
 
 
         return userRepository as IUserRepository
+    }
+
+    fun getMetaInfoRepository(): IMetaInfoRepository {
+
+        if (metaInfoRepository == null)
+            metaInfoRepository = MetaInfoRepository(unitOfWorkService.getHttpClient(), configurationManager)
+
+
+        return metaInfoRepository as IMetaInfoRepository
     }
 
     fun getCatalogRepository(): ICatalogRepository {

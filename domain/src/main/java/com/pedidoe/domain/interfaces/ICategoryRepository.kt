@@ -1,4 +1,4 @@
-package com.pedidoe.infrastructure.interfaces
+package com.pedidoe.domain.interfaces
 
 import com.pedidoe.domain.models.Category
 import com.pedidoe.domain.models.ServerResponse

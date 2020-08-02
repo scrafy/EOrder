@@ -65,7 +65,6 @@
             android:id="@+id/linearLayout_login_activity_textView_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="V 1.0.0"
             android:paddingRight="20dp"
             android:paddingBottom="10dp"
             android:textAlignment="textEnd"

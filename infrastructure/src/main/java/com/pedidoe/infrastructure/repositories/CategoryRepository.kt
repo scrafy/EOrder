@@ -4,7 +4,7 @@ import com.pedidoe.domain.factories.Gson
 import com.pedidoe.domain.interfaces.IConfigurationManager
 import com.pedidoe.domain.models.Category
 import com.pedidoe.domain.models.ServerResponse
-import com.pedidoe.infrastructure.interfaces.ICategoryRepository
+import com.pedidoe.domain.interfaces.ICategoryRepository
 import com.pedidoe.infrastructure.interfaces.IHttpClient
 import com.google.gson.reflect.TypeToken
 

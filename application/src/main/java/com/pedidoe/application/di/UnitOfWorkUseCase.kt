@@ -33,6 +33,7 @@ class UnitOfWorkUseCase(
     private var addProductToFavoriteListUseCase:IAddProductToFavoriteListUseCase? = null
     private var deleteProductToFavoriteListUseCase:IDeleteProductFromFavoriteListUseCase? = null
     private var productFavoriteListUseCase:IGetProductFavoriteListUseCase? = null
+    private var apkVersionUseCase:IApkVersionUseCase? = null
 
 
     fun getExistsUserEmailUseCase(): IExistsUserEmailUseCase {
@@ -44,6 +45,16 @@ class UnitOfWorkUseCase(
             )
         }
         return existsUserEmailUseCase as IExistsUserEmailUseCase
+    }
+
+    fun getApkVersionUseCase(): IApkVersionUseCase {
+
+        if (apkVersionUseCase == null) {
+            apkVersionUseCase = ApkVersionUseCase(
+                unitOfWorkRepository.getMetaInfoRepository()
+            )
+        }
+        return apkVersionUseCase as IApkVersionUseCase
     }
 
     fun getProductFavoriteListUseCase(): IGetProductFavoriteListUseCase {

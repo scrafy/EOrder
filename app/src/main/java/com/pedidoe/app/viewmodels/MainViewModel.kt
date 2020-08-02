@@ -5,20 +5,19 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.pedidoe.application.enums.SharedPreferenceKeyEnum
-import com.pedidoe.domain.models.CenterCode
+import com.pedidoe.domain.models.ApkVersion
 import com.pedidoe.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 class MainViewModel : BaseViewModel() {
 
-    val checkCenterActivationCodeResult: MutableLiveData<ServerResponse<Boolean>> =
-        MutableLiveData()
+    val apkVersionResult: MutableLiveData<ServerResponse<ApkVersion>> = MutableLiveData()
 
     fun isLogged(): Boolean = unitOfWorkService.getJwtTokenService().isValidToken()
-
 
     fun loadSessionToken(context: Context) {
 
@@ -38,15 +37,15 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
-    fun checkActivationCenterCode(code: String) {
+    fun getCurrentApkVersion()
+    {
 
         CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
-            checkCenterActivationCodeResult.postValue(
-                unitOfWorkUseCase.getCheckCenterActivationCodeUseCase().checkCenterActivationCode(
-                    CenterCode(code)
-                )
-            )
+
+            val apkVersion = unitOfWorkUseCase.getApkVersionUseCase().getApkVersion()
+            apkVersionResult.postValue(apkVersion)
         }
 
     }
+
 }
