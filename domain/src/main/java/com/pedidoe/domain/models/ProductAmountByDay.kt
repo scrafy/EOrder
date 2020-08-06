@@ -1,6 +1,7 @@
 package com.pedidoe.domain.models
 
-import java.time.LocalDate
+import org.threeten.bp.LocalDate
+
 
 class ProductAmountByDay(
     val day: LocalDate,

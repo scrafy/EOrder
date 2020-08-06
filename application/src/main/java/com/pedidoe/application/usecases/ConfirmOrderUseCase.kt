@@ -10,7 +10,7 @@ import com.pedidoe.domain.models.Order
 import com.pedidoe.application.interfaces.IShopService
 import com.pedidoe.domain.interfaces.IJwtTokenService
 import com.pedidoe.domain.interfaces.IOrderRepository
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -10,8 +10,8 @@ android {
         applicationId "com.pedidoe"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 13
-        versionName "1.0.2"
+        versionCode 14
+        versionName "1.0.3-b"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,6 +21,14 @@ android {
         }
     }
     sourceSets { main { res.srcDirs = ['src/main/res'] } }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 allprojects {
@@ -59,6 +67,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation project(path: ':domain')

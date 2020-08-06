@@ -1,7 +1,9 @@
 package com.pedidoe.app.activities
 
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -52,27 +54,62 @@ class MainActivity : AppCompatActivity(), IShowSnackBarMessage {
 
         model.apkVersionResult.observe(this, Observer<ServerResponse<ApkVersion>> {
 
-            val apkVersionDeployed = it.ServerData?.Data?.version
+            val apkVersionDeployed = it.ServerData?.Data
             val version = this.packageManager.getPackageInfo(packageName, 0).versionName
 
-            if ( apkVersionDeployed == null ){
+            if (apkVersionDeployed?.version == null) {
                 AlertDialogOk(
                     this,
-                    "APK version",
-                    "There was a problem, please, contact with the app´s administrator",
+                    resources.getString(R.string.main_activity_apk_new_version_title),
+                    resources.getString(R.string.main_activity_apk_new_version__problem_message),
                     resources.getString(R.string.ok)
-                ) { d, i ->  finish(); exitProcess(0)}.show()
+                ) { d, i -> finish(); exitProcess(0) }.show()
 
-            }else if ( apkVersionDeployed != version ){
+            } else if (apkVersionDeployed.version != version) {
 
-                AlertDialogOk(
-                    this,
-                    "APK version",
-                    "Please, Go to Play Store and download the last app´s available version: $apkVersionDeployed",
-                    resources.getString(R.string.ok)
-                ) { d, i ->  finish(); exitProcess(0)}.show()
+                if (apkVersionDeployed.isMandatory) {
 
-            }else{
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.main_activity_apk_new_version_title),
+                        String.format(resources.getString(R.string.main_activity_apk_new_version_message), apkVersionDeployed.version),
+                        resources.getString(R.string.ok)
+                    ) { d, i ->
+
+                        val marketUri = "https://play.google.com/store/apps/details?id=com.pedidoe"
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(marketUri)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        startActivity(intent)
+                        finish()
+                        exitProcess(0)
+                    }.show()
+
+                } else {
+
+                    AlertDialogOk(
+                        this,
+                        resources.getString(R.string.main_activity_apk_new_version_title),
+                        String.format(resources.getString(R.string.main_activity_apk_new_version_message), apkVersionDeployed.version),
+                        resources.getString(R.string.ok)
+                    ) { d, i ->
+
+                        val marketUri = "https://play.google.com/store/apps/details?id=com.pedidoe"
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(marketUri)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+                        startActivity(intent)
+
+                    }.show()
+
+                }
+
+            } else {
+
                 val pInfo = this.packageManager.getPackageInfo(packageName, 0)
                 val version = pInfo.versionName
                 linearLayout_login_activity_textView_version.text = "V $version"

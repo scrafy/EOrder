@@ -11,7 +11,7 @@ import com.pedidoe.domain.services.ValidationModelService
 import org.koin.core.KoinComponent
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 class UnitOfWorkService(
     private val jwtTokenService: IJwtTokenService,
     private val configurationManager: IConfigurationManager

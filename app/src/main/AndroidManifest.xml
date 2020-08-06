@@ -23,7 +23,6 @@
         <activity android:name="com.pedidoe.app.activities.ProductActivity" />
         <activity android:name="com.pedidoe.app.activities.SellerActivity" />
         <activity android:name="com.pedidoe.app.activities.CenterActivity" />
-        <activity android:name="com.pedidoe.app.activities.SellerProductActivity" />
         <activity android:name="com.pedidoe.app.activities.CartBreakdownActivity" />
         <activity android:name="com.pedidoe.app.activities.OrderDoneActivity" />
         <activity android:name="com.pedidoe.app.activities.OrderActivity" />

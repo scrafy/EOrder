@@ -151,6 +151,9 @@
     <string name="main_activity_enter_code">Enter your center activation code</string>
     <string name="main_activity_code">Code...</string>
     <string name="main_activity_activate_center">Activate center</string>
+    <string name="main_activity_apk_new_version_title">New Version</string>
+    <string name="main_activity_apk_new_version_message">There is a new application version: %s You will be redirected to Google Play Store to install it"</string>
+    <string name="main_activity_apk_new_version__problem_message">There was a problem, please, contact with the app´s administrator</string>
 
 
     <!--ACTIVITY SELLER PRODUCT-->

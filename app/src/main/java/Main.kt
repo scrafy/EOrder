@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pedidoe.app.di.appModule
 import com.pedidoe.application.di.UnitOfWorkService
 import com.pedidoe.application.di.applicationModule
@@ -25,8 +26,9 @@ class Main : Application(), LifecycleObserver {
 
 
     override fun onCreate() {
-        super.onCreate()
 
+        super.onCreate()
+        AndroidThreeTen.init(this)
         startKoin {
             modules(
                 listOf(

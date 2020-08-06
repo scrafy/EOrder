@@ -27,8 +27,8 @@ import com.pedidoe.domain.models.Product
 import com.pedidoe.domain.models.ProductAmountByDay
 import kotlinx.android.synthetic.main.activity_product_calendar.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.time.LocalDate
-import java.time.temporal.ChronoField
+import org.threeten.bp.LocalDate
+import org.threeten.bp.temporal.ChronoField
 
 
 @RequiresApi(Build.VERSION_CODES.O)

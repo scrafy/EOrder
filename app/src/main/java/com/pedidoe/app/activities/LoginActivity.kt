@@ -26,6 +26,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 class LoginActivity : AppCompatActivity(), IManageFormErrors,
     IShowSnackBarMessage {

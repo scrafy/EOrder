@@ -1,7 +1,8 @@
 package com.pedidoe.domain.models
 
 import com.pedidoe.domain.enumerations.Currency
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
+
 
 class Order {
 

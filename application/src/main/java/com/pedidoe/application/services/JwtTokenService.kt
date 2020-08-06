@@ -2,6 +2,7 @@ package com.pedidoe.application.services
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.pedidoe.application.extensions.convertToLocalDateTime
 import com.pedidoe.domain.enumerations.ErrorCode
 import com.pedidoe.domain.exceptions.InvalidJwtTokenException
 import com.pedidoe.domain.interfaces.IConfigurationManager
@@ -12,9 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneOffset
 import java.nio.charset.StandardCharsets
-import java.time.Instant
-import java.util.*
+import java.text.SimpleDateFormat
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -52,10 +55,8 @@ class JwtTokenService(
         if (token == null)
             return false
 
-        val date: Date = jws?.body?.expiration!!
-
-        if (date < Date.from(Instant.now())) {
-            return false
+        if ( jws?.body?.expiration!!.convertToLocalDateTime() < LocalDateTime.now(ZoneOffset.UTC)) {
+                return false
         }
         return true
 
@@ -81,7 +82,7 @@ class JwtTokenService(
     }
 
     private fun setToken(token: String): Jws<Claims?> {
-        //Thread.sleep(4000)
+
         return try {
 
             Jwts.parserBuilder()
