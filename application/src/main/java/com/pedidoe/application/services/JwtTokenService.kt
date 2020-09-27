@@ -55,7 +55,14 @@ class JwtTokenService(
         if (token == null)
             return false
 
-        if ( jws?.body?.expiration!!.convertToLocalDateTime() < LocalDateTime.now(ZoneOffset.UTC)) {
+        var exp = jws?.body?.expiration!!.convertToLocalDateTime()
+
+        if ( jws?.body?.expiration!!.timezoneOffset > 0 )
+           exp = exp.plusMinutes(jws?.body?.expiration!!.timezoneOffset.toLong())
+        else
+           exp = exp.minusMinutes( (jws?.body?.expiration!!.timezoneOffset * -1).toLong())
+
+        if ( exp < LocalDateTime.now(ZoneOffset.UTC)) {
                 return false
         }
         return true

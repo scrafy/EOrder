@@ -48,4 +48,9 @@ class MainViewModel : BaseViewModel() {
 
     }
 
+    fun LoadOrderFromSharedPreferences(context: Context)
+    {
+        unitOfWorkService.getShopService().loadShopForSharedPreferencesOrder(context)
+    }
+
 }

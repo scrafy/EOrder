@@ -1,7 +1,6 @@
 package com.pedidoe.app.activities
 
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -114,8 +113,10 @@ class MainActivity : AppCompatActivity(), IShowSnackBarMessage {
                 val version = pInfo.versionName
                 linearLayout_login_activity_textView_version.text = "V $version"
                 model.loadSessionToken(this)
-                if (model.isLogged())
+                if ( model.isLogged() ) {
+                    model.LoadOrderFromSharedPreferences(this)
                     startActivity(Intent(this, LandingActivity::class.java))
+                }
             }
 
 
