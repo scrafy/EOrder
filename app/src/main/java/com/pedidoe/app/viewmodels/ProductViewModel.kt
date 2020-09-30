@@ -95,6 +95,10 @@ class ProductViewModel : BaseMainMenuActionsViewModel() {
         unitOfWorkService.getShopService().getOrder().primaryCode = primaryCode
     }
 
+    fun addCatalogToOrder( catalogId: Int ){
+        unitOfWorkService.getShopService().getOrder().catalogId = catalogId
+    }
+
     fun cleanShop() = unitOfWorkService.getShopService().cleanShop()
 
     fun resetAmountOfProducts(){

@@ -9,6 +9,7 @@ import com.pedidoe.domain.models.ServerResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.pedidoe.domain.models.Order
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,6 +34,16 @@ class OrderViewModel : BaseMainMenuActionsViewModel() {
         unitOfWorkService.getShopService().getOrder().seller.sellerName = sellerName
         unitOfWorkService.getShopService().getOrder().primaryCode = primaryCode
     }
+
+    fun addCatalogToOrder(catalogId: Int) {
+
+        unitOfWorkService.getShopService().getOrder().catalogId = catalogId
+    }
+
+    fun getOrder() : Order {
+        return unitOfWorkService.getShopService().getOrder()
+    }
+
 
     fun cleanShop() = unitOfWorkService.getShopService().cleanShop()
 

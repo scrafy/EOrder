@@ -12,7 +12,7 @@
     <string name="cancel">Cancelar</string>
     <string name="modify">Modificar</string>
     <string name="send">Enviar</string>
-    <string name="view_product">Ver producto</string>
+    <string name="view_product">Ver productos</string>
     <string name="number_units">Número de unidades</string>
     <string name="change_password">Change password</string>
     <string name="productos">Productos</string>
@@ -68,7 +68,7 @@
     <string name="textview_shop_center">Centro:</string>
     <string name="textview_shop_seller">Proveedor:</string>
     <string name="textview_shop_order_summary">Resumen del pedido</string>
-    <string name="textview_shop_product_list">Lista de productos</string>
+    <string name="textview_shop_follow_buying">Seguir comprando...</string>
     <string name="button_shop_confirm">Confirmar pedido</string>
     <string name="alert_dialog_shop_empty_title">Tienda</string>
     <string name="alert_dialog_shop_empty_message">El carro de la compra está vacío,por favor, añada un producto...</string>
@@ -224,6 +224,9 @@
 
     <!--SELLERS FRAGMENT-->
     <string name="seller_fragment_choose_seller">Seleccione un proveedor</string>
+
+    <!--CATEGORIES FRAGMENT-->
+    <string name="categories_fragment_title">Seleccione una categoría</string>
 
     <!--PRODUCTS FRAGMENT-->
 

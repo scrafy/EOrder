@@ -310,6 +310,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
 
         addSellerToOrder(catalogSelected as Catalog)
         addCenterToOrder(centerSelected as Center)
+        addCatalogToOrder((catalogSelected as Catalog).id)
         product.amount++
         model.addProductToShop(product)
         productsAdapter.notifyDataSetChanged()
@@ -330,6 +331,7 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
     private fun addAmountOfProduct(product: Product) {
 
         addSellerToOrder(catalogSelected as Catalog)
+        addCatalogToOrder((catalogSelected as Catalog).id)
         addCenterToOrder(centerSelected as Center)
         var dialog: AlertDialogInput? = null
         dialog = AlertDialogInput(
@@ -877,6 +879,11 @@ class ProductActivity : BaseMenuActivity(), IShowSnackBarMessage, IFavoriteIconC
     private fun addSellerToOrder(catalog: Catalog) {
 
         model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
+    }
+
+    private fun addCatalogToOrder(catalogId: Int) {
+
+        model.addCatalogToOrder(catalogId)
     }
 
     private fun onSelectedCategory(position: Int) {

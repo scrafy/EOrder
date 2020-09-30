@@ -1,5 +1,6 @@
 package com.pedidoe.app.fragments
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.pedidoe.app.R
+import com.pedidoe.app.activities.ProductActivity
 import com.pedidoe.app.adapters.fragments.SellerAdapter
 import com.pedidoe.app.helpers.GridLayoutItemDecoration
 import com.pedidoe.app.helpers.LoadImageHelper
@@ -31,6 +33,7 @@ import com.pedidoe.application.interfaces.IShowSnackBarMessage
 import com.pedidoe.domain.models.Seller
 import com.pedidoe.domain.models.ServerResponse
 import kotlinx.android.synthetic.main.sellers_fragment.*
+import kotlinx.android.synthetic.main.sellers_list.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -85,6 +88,12 @@ class SellersFragment : BaseFragment(),
 
                 (context as ISelectSeller).selectSeller(seller)
             }
+
+        view.findViewById<TextView>(R.id.textView_seller_list_view_products).setOnClickListener {
+
+            val intent = Intent(context, ProductActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

@@ -32,8 +32,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
     private lateinit var model: CategoriesViewModel
     private var categories: List<Category> = listOf()
     private lateinit var adapter: CategoriesAdapter
-    private lateinit var catalog: Catalog
-    private lateinit var centre: Center
+    private var catalogId: Int = 0
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var categorySelected: Category
 
@@ -69,7 +68,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
                     DataProductFragment(
                         categories,
                         categorySelected,
-                        catalog.id,
+                        this.catalogId,
                         model.getCenterSelected()!!
 
                     )
@@ -121,15 +120,15 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
     }
 
     private fun init() {
-        this.catalog = Gson.Create().fromJson(arguments!!.getString("catalog"), Catalog::class.java)
-        this.centre = Gson.Create().fromJson(arguments!!.getString("center"), Center::class.java)
-        model.getCategories(this.catalog.id, this.centre.id)
+        this.catalogId = arguments!!.getInt("catalogId")
+        val centerId = arguments!!.getInt("centerId")
+        model.getCategories(catalogId, centerId)
         imgView_products_fragment_pedidoe_loading.visibility = View.VISIBLE
         refreshLayout = this.view?.findViewById(R.id.swipeRefresh_categories_fragment)!!
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
         refreshLayout.setOnRefreshListener {
 
-            model.getCategories(this.catalog.id, this.centre.id)
+            model.getCategories(catalogId, centerId)
         }
 
     }

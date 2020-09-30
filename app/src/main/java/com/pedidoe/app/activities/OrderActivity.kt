@@ -36,7 +36,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
     private lateinit var model: OrderViewModel
     private lateinit var center: Center
-    private lateinit var catalog: Catalog
+    private var catalog: Catalog? = null
     private lateinit var centers: List<Center>
     private lateinit var catalogs: List<Catalog>
 
@@ -154,6 +154,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         if (model.isPossibleChangeCatalog(catalog.sellerId)) {
 
             model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
+            model.addCatalogToOrder(this.catalog?.id!!)
             loadCategoriesFragment()
 
         } else {
@@ -170,6 +171,7 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
                     model.cleanProducts()
                     model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
+                    model.addCatalogToOrder(this.catalog?.id!!)
                     loadCategoriesFragment()
 
                 },
@@ -239,8 +241,8 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
                             loadCatalogsFragment()
                     } else {
                         catalog = catalogs[0]
-                        model.addSellerToOrder(catalog.sellerId, catalog.sellerName, catalog.primaryCode)
-
+                        model.addSellerToOrder(catalog?.sellerId!!, catalog?.sellerName!!, catalog?.primaryCode!!)
+                        model.addCatalogToOrder(catalog?.id!!)
                         if (centers.isNotEmpty() && centers.size > 1)
                             loadCategoriesFragment()
                         else
@@ -274,7 +276,12 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
     private fun init() {
 
-        model.getCenters()
+        if ( this.intent.getBooleanExtra("loadCategoriesFragment", false) )
+        {
+            loadCategoriesFragmentNoReplace()
+        }else{
+            model.getCenters()
+        }
     }
 
     override fun showMessage(message: String) {
@@ -292,8 +299,15 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CategoriesFragment()
         var args = Bundle()
 
-        args.putString("catalog", Gson.Create().toJson(this.catalog))
-        args.putString("center", Gson.Create().toJson(this.center))
+        if ( this.catalog == null )
+        {
+            args.putInt("catalogId", model.getOrder().catalogId!!)
+            args.putInt("centerId", model.getOrder().center.centerId!!)
+        }else
+        {
+            args.putInt("catalogId", this.catalog?.id!!)
+            args.putInt("centerId", this.center.id)
+        }
         fragment.arguments = args
 
         this.supportFragmentManager.beginTransaction()
@@ -306,8 +320,16 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CategoriesFragment()
         var args = Bundle()
 
-        args.putString("catalog", Gson.Create().toJson(this.catalog))
-        args.putString("center", Gson.Create().toJson(this.center))
+        if ( this.catalog == null )
+        {
+            args.putInt("catalogId", model.getOrder().catalogId!!)
+            args.putInt("centerId", model.getOrder().center.centerId!!)
+        }else
+        {
+            args.putInt("catalogId", this.catalog?.id!!)
+            args.putInt("centerId", this.center.id)
+        }
+
         fragment.arguments = args
 
         supportFragmentManager.beginTransaction()
@@ -344,8 +366,6 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
             this.supportFragmentManager.beginTransaction()
                 .add(R.id.linear_layout_center_fragment_container, fragment).commit()
         }
-
-
     }
 
     private fun loadProductsFragment(data: String) {

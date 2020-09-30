@@ -403,6 +403,16 @@ class ShopActivity : BaseActivity(), IRepaintModel,
                 },
                 { _, _ -> }
             ).show()
+
+
+        }
+
+        textview_shop_follow_buying.setOnClickListener{
+
+            val intent = Intent()
+            intent.putExtra("loadCategoriesFragment", true)
+            intent.setClass(this, OrderActivity::class.java)
+            startActivity(intent)
         }
 
         textView_activity_shop_breakdown.setOnClickListener {

@@ -42,6 +42,7 @@
             android:textStyle="bold"
             android:paddingRight="6dp"
             android:paddingLeft="6dp"
+            android:text="Seller1"
             ></TextView>
 
         <LinearLayout
@@ -49,8 +50,20 @@
             android:layout_height="match_parent"
             android:gravity="bottom|right"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView_seller_list_view_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11dp"
+                android:layout_gravity="end"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:background="@drawable/shape_boton_rounded"
+                android:text="@string/view_product"
+                android:textColor="@color/colorPrimary">
 
-
+            </TextView>
         </LinearLayout>
 
     </LinearLayout>

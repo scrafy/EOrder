@@ -12,7 +12,7 @@
     <string name="cancel">Cancel</string>
     <string name="modify">Modify</string>
     <string name="send">Send</string>
-    <string name="view_product">View product</string>
+    <string name="view_product">View products</string>
     <string name="number_units">Number of units</string>
     <string name="change_password">Change password</string>
     <string name="productos">Products</string>
@@ -68,7 +68,7 @@
     <string name="textview_shop_center">Center:</string>
     <string name="textview_shop_seller">Seller:</string>
     <string name="textview_shop_order_summary">Order Summary</string>
-    <string name="textview_shop_product_list">Product List</string>
+    <string name="textview_shop_follow_buying">Continue Shopping...</string>
     <string name="button_shop_confirm">Confirm order</string>
     <string name="alert_dialog_shop_empty_title">Shop</string>
     <string name="alert_dialog_shop_empty_message">The cart is empty, please, add a product...</string>
@@ -218,6 +218,9 @@
     <!--CATALOGS FRAGMENT-->
     <string name="catalog_fragment_number_of_products">%d products</string>
     <string name="catalog_fragment_choose_catalogue">Select a catalogue</string>
+
+    <!--CATEGORIES FRAGMENT-->
+    <string name="categories_fragment_title">Select a category</string>
 
     <!--PRODUCTS FRAGMENT-->
 
