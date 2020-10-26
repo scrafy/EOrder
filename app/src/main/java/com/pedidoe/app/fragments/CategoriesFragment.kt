@@ -64,16 +64,7 @@ class CategoriesFragment : BaseFragment(), IRepaintModel, IShowSnackBarMessage,
             .setOnClickListener {
                 categorySelected = category
 
-                var dataString = Gson.Create().toJson(
-                    DataProductFragment(
-                        categories,
-                        categorySelected,
-                        this.catalogId,
-                        model.getCenterSelected()!!
-
-                    )
-                )
-                (this.activity as ISelectCategory).selectCategory(dataString)
+                (this.activity as ISelectCategory).selectCategory(category.categoryName)
             }
     }
 

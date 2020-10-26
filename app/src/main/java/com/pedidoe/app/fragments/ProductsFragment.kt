@@ -225,8 +225,6 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             }
         }
 
-
-
         view.findViewById<ImageView>(R.id.imgView_order_product_list_heart).setOnClickListener {
             product.favorite = !product.favorite
             adapter.notifyDataSetChanged()
@@ -350,9 +348,25 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
                     setProductCurrentState()
                     adapter.products = products
                     adapter.notifyItemRangeInserted(oldSize, aux.size)
+
                 }
 
             })
+
+        model.categoriesResult.observe(
+            this.activity as LifecycleOwner,
+            Observer<ServerResponse<List<Category>>>{
+
+                loadSpinnersData(
+                    it.ServerData?.Data!!.map { it.categoryName }
+                )
+
+                if ( arguments?.getString("category") != null )
+                    spinner_products_fragment_list_categories.setSelection(categories.indexOf((arguments as Bundle).getString("category")))
+                else
+                    spinner_products_fragment_list_categories.setSelection(0)
+            }
+        )
 
         model.getFavoriteProductsIdsResult.observe(
             this.activity as LifecycleOwner,
@@ -433,14 +447,8 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         center = model.getOrder().center
         seller = model.getOrder().seller
-        val Data = Gson.Create().fromJson(
-            arguments!!.getString("data"),
-            DataProductFragment::class.java
-        )
-        searchProducts = SearchProduct(Data.centerId, Data.catalogId)
-        loadSpinnersData(
-            Data.categories.map { it.categoryName }
-        )
+        searchProducts = SearchProduct(arguments!!.getInt("centerId"), arguments!!.getInt("catalogId"), arguments?.getString("category"))
+        getCategories()
         var menu = mutableMapOf<String, Int>()
         menu["search_menu"] = R.menu.search_menu
         (context as ISetActionBar)?.setActionBar(menu, false, true)
@@ -454,7 +462,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
             this
         )
         recyclerView.adapter = adapter
-        spinner_products_fragment_list_categories.setSelection(categories.indexOf(Data.categorySelected.categoryName))
+
+       /* if ( arguments?.getString("category") != null )
+            spinner_products_fragment_list_categories.setSelection(categories.indexOf((arguments as Bundle).getString("category")))
+        else
+            spinner_products_fragment_list_categories.setSelection(0)*/
     }
 
     private fun setProductCurrentState() {
@@ -488,6 +500,11 @@ class ProductsFragment : BaseFragment(), IRepaintModel, ISetAdapterListener,
 
         model.searchProducts(searchProducts, currentPage)
 
+    }
+
+    private fun getCategories() {
+
+        model.getCategories( arguments!!.getInt("catalogId"), arguments!!.getInt("centerId") )
     }
 
     private fun paintFavoriteHeart(full: Boolean) {

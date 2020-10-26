@@ -10,8 +10,8 @@ android {
         applicationId "com.pedidoe"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 15
-        versionName "1.0.4-b"
+        versionCode 16
+        versionName "1.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

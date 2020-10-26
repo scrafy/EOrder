@@ -1,4 +1,6 @@
 *.iml
+app/release/PedidoE.apk
+app/release/output.json
 .gradle
 /local.properties
 /.idea/caches

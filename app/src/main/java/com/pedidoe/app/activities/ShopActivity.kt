@@ -410,7 +410,7 @@ class ShopActivity : BaseActivity(), IRepaintModel,
         textview_shop_follow_buying.setOnClickListener{
 
             val intent = Intent()
-            intent.putExtra("loadCategoriesFragment", true)
+            intent.putExtra("loadProductFragment", true)
             intent.setClass(this, OrderActivity::class.java)
             startActivity(intent)
         }

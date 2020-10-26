@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.pedidoe.app.viewmodels.BaseViewModel
 import com.pedidoe.application.enums.SharedPreferenceKeyEnum
 import com.pedidoe.domain.factories.Gson
+import com.pedidoe.domain.models.Category
 import com.pedidoe.domain.models.Product
 import com.pedidoe.domain.models.SearchProduct
 import com.pedidoe.domain.models.ServerResponse
@@ -23,6 +24,7 @@ class ProductsFragmentViewModel : BaseViewModel() {
     val getFavoriteProductsIdsResult: MutableLiveData<ServerResponse<List<Int>>> = MutableLiveData()
     val addProductToFavoriteListResult: MutableLiveData<ServerResponse<String>> = MutableLiveData()
     val deleteProductFromFavoriteListResult: MutableLiveData<Any> = MutableLiveData()
+    val categoriesResult: MutableLiveData<ServerResponse<List<Category>>> = MutableLiveData()
 
 
     fun searchProducts(search: SearchProduct, page:Int) {
@@ -46,6 +48,16 @@ class ProductsFragmentViewModel : BaseViewModel() {
             getFavoriteProductsResult.postValue(result)
         }
     }
+
+    fun getCategories(catalogId: Int, centreId: Int) {
+
+        CoroutineScope(Dispatchers.IO).launch(this.handleError()) {
+
+            var result = unitOfWorkUseCase.getCategoriesUseCase().getCategories(catalogId, centreId)
+            categoriesResult.postValue(result)
+        }
+    }
+
 
     fun getOrder() =
         unitOfWorkService.getShopService().getOrder()

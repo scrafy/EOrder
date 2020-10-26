@@ -184,9 +184,9 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
     }
 
-    override fun selectCategory(data: String) {
+    override fun selectCategory(categoryName: String) {
 
-        loadProductsFragment(data)
+        loadProductsFragment(categoryName)
 
     }
 
@@ -276,9 +276,9 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
 
     private fun init() {
 
-        if ( this.intent.getBooleanExtra("loadCategoriesFragment", false) )
+        if ( this.intent.getBooleanExtra("loadProductFragment", false) )
         {
-            loadCategoriesFragmentNoReplace()
+            loadProductsFragmentFromCart()
         }else{
             model.getCenters()
         }
@@ -299,15 +299,8 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CategoriesFragment()
         var args = Bundle()
 
-        if ( this.catalog == null )
-        {
-            args.putInt("catalogId", model.getOrder().catalogId!!)
-            args.putInt("centerId", model.getOrder().center.centerId!!)
-        }else
-        {
-            args.putInt("catalogId", this.catalog?.id!!)
-            args.putInt("centerId", this.center.id)
-        }
+        args.putInt("catalogId", this.catalog?.id!!)
+        args.putInt("centerId", this.center.id)
         fragment.arguments = args
 
         this.supportFragmentManager.beginTransaction()
@@ -320,15 +313,8 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         var fragment = CategoriesFragment()
         var args = Bundle()
 
-        if ( this.catalog == null )
-        {
-            args.putInt("catalogId", model.getOrder().catalogId!!)
-            args.putInt("centerId", model.getOrder().center.centerId!!)
-        }else
-        {
-            args.putInt("catalogId", this.catalog?.id!!)
-            args.putInt("centerId", this.center.id)
-        }
+        args.putInt("catalogId", this.catalog?.id!!)
+        args.putInt("centerId", this.center.id)
 
         fragment.arguments = args
 
@@ -368,15 +354,29 @@ class OrderActivity : BaseMenuActivity(), ISelectCenter, ISelectCatalog,IFavorit
         }
     }
 
-    private fun loadProductsFragment(data: String) {
+    private fun loadProductsFragment(categoryName: String) {
 
         var args = Bundle()
         var fragment = ProductsFragment()
-        args.putString("data", data)
+        args.putInt("catalogId", model.getOrder().catalogId)
+        args.putInt("centerId", model.getOrder().center.centerId!!)
+        args.putString("category", categoryName)
         fragment.arguments = args
         this.supportFragmentManager.beginTransaction()
             .replace(R.id.linear_layout_center_fragment_container, fragment)
             .addToBackStack(null).commit()
+    }
+
+    private fun loadProductsFragmentFromCart() {
+
+        var args = Bundle()
+        var fragment = ProductsFragment()
+        args.putInt("catalogId", model.getOrder().catalogId)
+        args.putInt("centerId", model.getOrder().center.centerId!!)
+        fragment.arguments = args
+
+        this.supportFragmentManager.beginTransaction()
+            .add(R.id.linear_layout_center_fragment_container, fragment).commit()
     }
 
 }

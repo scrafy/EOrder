@@ -21,5 +21,13 @@ enum class Format(var code:Int) {
     @SerializedName("7")
     BARRIL(7),
     @SerializedName("8")
-    LATA (8)
+    LATA (8),
+    @SerializedName("9")
+    LITROS (9),
+    @SerializedName("10")
+    BANDEJA (10),
+    @SerializedName("11")
+    SACO (11),
+    @SerializedName("12")
+    CUBO (12)
 }
